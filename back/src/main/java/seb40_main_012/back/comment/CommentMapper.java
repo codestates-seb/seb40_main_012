@@ -5,7 +5,7 @@ import seb40_main_012.back.comment.entity.Comment;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+//@Mapper(componentModel = "spring")
 public interface CommentMapper {
 
     Comment commentPostToComment(CommentDto.Post commentPost);

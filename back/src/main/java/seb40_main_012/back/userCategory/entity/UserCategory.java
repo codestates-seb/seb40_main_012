@@ -9,8 +9,10 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
-@Entity
+//@Entity
 public class UserCategory {
+
+
     private final Long categoryId;
     private final List<Category> category;
     private final User user;

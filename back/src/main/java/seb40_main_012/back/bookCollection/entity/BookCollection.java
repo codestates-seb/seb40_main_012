@@ -2,7 +2,7 @@ package seb40_main_012.back.bookCollection.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import seb40_main_012.back.collectionTag.entity.CollectionTag;
+import seb40_main_012.back.bookCollectionTag.entity.BookCollectionTag;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,6 +18,6 @@ public class BookCollection {
     private final String title;
     private final String content;
     private final String author;    //getUserName()
-    private final List<CollectionTag> tags;
+    private final List<BookCollectionTag> tags;
 
 }
