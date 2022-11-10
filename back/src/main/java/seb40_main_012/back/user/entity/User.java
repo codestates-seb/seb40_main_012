@@ -12,6 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Entity
 public class User {
+
     private final Long userId;
     private final String email;
     private final String password;

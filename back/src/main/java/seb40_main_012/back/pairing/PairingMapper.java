@@ -5,7 +5,7 @@ import seb40_main_012.back.pairing.entity.Pairing;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+//@Mapper(componentModel = "spring")
 public interface PairingMapper {
 
     Pairing pairingPostToPairing(PairingDto.Post pairingPost);

@@ -1,5 +1,6 @@
 package seb40_main_012.back.comment;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
