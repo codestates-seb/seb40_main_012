@@ -1,17 +1,17 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from './components/Header';
+import GlobalStyle from './GlobalStyle';
 import MainPage from './pages/MainPage/MainPage';
-import LoginPage from './pages/LoginPage/LoginPage';
+import SignInPage from './pages/SignInPage/SignInPage';
 
 import NoMatch from './pages/NoMatch';
 
 const App = () => {
   return (
     <BrowserRouter>
-      <Header />
+      <GlobalStyle />
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<SignInPage />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </BrowserRouter>
