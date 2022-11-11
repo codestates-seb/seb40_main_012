@@ -1,5 +1,7 @@
+import PageContainer from '../../components/PageContainer';
+
 const MainPage = () => {
-  return <div>MainPage</div>;
+  return <PageContainer footer>MainPage</PageContainer>;
 };
 
 export default MainPage;
