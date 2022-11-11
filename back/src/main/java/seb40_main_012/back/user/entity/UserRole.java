@@ -1,4 +1,4 @@
-package seb40_main_012.back.userRole;
+package seb40_main_012.back.user.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,5 +10,5 @@ import java.util.List;
 @RequiredArgsConstructor
 @Entity
 public class UserRole {
-    private final List<Role> roles;
+    private List<Role> roles;
 }
