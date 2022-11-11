@@ -19,6 +19,7 @@
 📄 **브랜치 명명 규칙**
 
 <code>front/[commit messeage rules]/[github username]/[구현할 기능]</code>
+
 <code>back/[commit messeage rules]/[github username]/[구현할 기능]</code>
 
 
