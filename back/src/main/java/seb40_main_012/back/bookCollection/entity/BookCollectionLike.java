@@ -10,13 +10,13 @@ import java.util.List;
 @Getter
 @RequiredArgsConstructor
 @Entity
-public class BookCollection {
+public class BookCollectionLike {
 
     @Id
     private Long collectionId;
     private String title;
     private String content;
     private String author;    //getUserName()
-    private List<BookCollectionTag> tags;
+    private List<BookCollectionLike> likes;
 
 }

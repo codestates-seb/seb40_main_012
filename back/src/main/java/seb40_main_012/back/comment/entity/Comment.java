@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
@@ -16,6 +17,8 @@ import java.time.LocalDateTime;
 @Data
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor //mapperImpl에서 에러나서 추가해두었습니다. 확인하시면 주석 삭제부탁드려용
 public class Comment {
 
     @Id

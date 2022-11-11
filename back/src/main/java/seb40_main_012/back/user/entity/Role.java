@@ -1,4 +1,4 @@
-package seb40_main_012.back.userRole;
+package seb40_main_012.back.user.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +11,6 @@ import javax.persistence.Id;
 @Entity
 public class Role {
     @Id
-    private final Long roleId;
-    private final RoleType roleType;
+    private Long roleId;
+    private RoleType roleType;
 }
