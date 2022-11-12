@@ -83,7 +83,7 @@ public class PairingController {
         Pairing pairing = pairingService.updateLike(pairingMapper.pairingLikeToPairing(likePairing), pairingId);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(pairingMapper.pairingTOPairingResponse(pairing)), HttpStatus.OK
+                new SingleResponseDto<>(pairingMapper.pairingToPairingResponse(pairing)), HttpStatus.OK
         );
     }
 
@@ -92,7 +92,7 @@ public class PairingController {
                                              @PathVariable("pairing_id") @Positive long pairingId) {
 //        Pairing pairing = pairingMapper.pairingViewToPairing(viewPairing);
         Pairing viewedPairing = pairingService.updateView(pairingId);
-        PairingDto.Response response = pairingMapper.pairingTOPairingResponse(viewedPairing);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(viewedPairing);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
@@ -103,7 +103,7 @@ public class PairingController {
     public ResponseEntity getPairing(@PathVariable("pairing_id") @Positive long pairingId) {
 
         Pairing pairing = pairingService.findPairing(pairingId);
-        PairingDto.Response response = pairingMapper.pairingTOPairingResponse(pairing);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

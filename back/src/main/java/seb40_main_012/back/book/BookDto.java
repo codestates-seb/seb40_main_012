@@ -26,6 +26,7 @@ public class BookDto {
     }
 
     @Data
+    @Builder
     public static class View {
 
         private long bookId;
@@ -34,6 +35,7 @@ public class BookDto {
     }
 
     @Data
+    @Builder
     public static class Rating {
 
         private long bookId;

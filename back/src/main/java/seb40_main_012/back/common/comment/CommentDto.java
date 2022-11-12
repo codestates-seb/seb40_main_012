@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 public class CommentDto {
 
     @Data
+    @Builder
     public static class Post {
 
         @NotBlank(message = "내용을 입력하셔야 합니다.")
@@ -21,6 +22,7 @@ public class CommentDto {
     }
 
     @Data
+    @Builder
     public static class Patch {
 
         private long commentId;
@@ -32,6 +34,7 @@ public class CommentDto {
     }
 
     @Data
+    @Builder
     public static class View {
 
         private long commentId;
@@ -40,6 +43,7 @@ public class CommentDto {
     }
 
     @Data
+    @Builder
     public static class Like {
 
         private long commentId;
