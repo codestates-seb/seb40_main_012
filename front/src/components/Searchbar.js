@@ -4,14 +4,22 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const SearchbarContainer = styled.div`
-  width: 400px;
+  width: 300px;
   height: 40px;
   background-color: #f5f5f5;
   border-radius: 3px;
   display: flex;
+  position: absolute;
+  right: 180px;
+  @media screen and (max-width: 981px) {
+    width: 30%;
+  }
+  @media screen and (max-width: 780px) {
+    display: none;
+  }
 `;
 
-const SearchInconContainer = styled.div`
+const SearchIconContainer = styled.div`
   margin: 0 12px 0 12px;
   display: flex;
   align-items: center;
@@ -26,6 +34,10 @@ const SearchbarInput = styled.input`
   &:focus {
     outline: none;
   }
+  @media screen and (max-width: 981px) {
+    display: flex;
+    min-width: 200px;
+  }
 `;
 
 export const Searchbar = () => {
@@ -34,7 +46,6 @@ export const Searchbar = () => {
 
   const handleChangeInput = (e) => {
     setInput(e.target.value);
-    console.log(input);
   };
 
   const handleOnKeyPressEnter = (e) => {
@@ -46,12 +57,12 @@ export const Searchbar = () => {
   return (
     <ThemeProvider theme={theme}>
       <SearchbarContainer>
-        <SearchInconContainer>
+        <SearchIconContainer>
           <img
             src={process.env.PUBLIC_URL + '/images/Search_Icon.svg'}
             alt="Search Icon"
           />
-        </SearchInconContainer>
+        </SearchIconContainer>
         <SearchbarInput
           type="text"
           placeholder="책, 페어링, 컬렉션을 검색해보세요"

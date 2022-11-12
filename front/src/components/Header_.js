@@ -28,6 +28,7 @@ const HeaderBtn = styled.button`
   font-weight: 700;
   border: none;
   margin: 0 15px;
+  width: 60px;
   &:hover {
     cursor: pointer;
   }
@@ -44,6 +45,9 @@ const LoginOutBtn = styled(HeaderBtn)`
   &:hover {
     cursor: pointer;
   }
+  position: absolute;
+  top: 22px;
+  right: 80px;
 `;
 
 const MyPageIconContainer = styled.div`
@@ -52,6 +56,10 @@ const MyPageIconContainer = styled.div`
   justify-content: center;
   &:hover {
     cursor: pointer;
+  }
+  img {
+    position: absolute;
+    right: 40px;
   }
 `;
 
@@ -77,7 +85,7 @@ const Header = ({ isLogin = false }) => {
         {isLogin ? (
           <LoginOutBtn>로그아웃</LoginOutBtn>
         ) : (
-          <Link to="/login">
+          <Link to="/user/signin">
             <LoginOutBtn>로그인</LoginOutBtn>
           </Link>
         )}
