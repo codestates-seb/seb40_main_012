@@ -1,0 +1,37 @@
+package seb40_main_012.back.common.image;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.Builder;
+import lombok.Data;
+import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.entity.User;
+
+import javax.persistence.*;
+
+@Data
+@Builder
+@Entity
+public class Image {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long imageId;
+
+    @Column(nullable = false)
+    private String uploadImageName;
+
+    @Column(nullable = false)
+    private String storeImageName;
+
+    @JsonBackReference
+    @OneToOne
+    @JoinColumn(name = "pairing_id")
+    private Pairing pairing;
+
+    @JsonBackReference
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+}

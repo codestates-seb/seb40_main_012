@@ -5,7 +5,7 @@ import lombok.Getter;
 public enum Category {
 
     FILM("영화"),
-    FOOD("음식"),
+    CUISINE("음식/장소"),
     MUSIC("음악"),
     BOOK("책"),
     ETC("기타");

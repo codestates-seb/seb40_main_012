@@ -1,18 +1,21 @@
-package seb40_main_012.back.comment.entity;
+package seb40_main_012.back.common.comment.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
@@ -32,6 +35,14 @@ public class Comment {
     @Column(nullable = false)
     private String body;
 
+    @Column(nullable = false)
+    private long likeCount;
+
+    @JsonBackReference
+    @ManyToOne(fetch =  FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
@@ -47,10 +58,9 @@ public class Comment {
     @JoinColumn(name = "answer_id")
     private BookCollection bookCollection;
 
-    @JsonBackReference
-    @ManyToOne(fetch =  FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @OneToMany(mappedBy = "comment")
+    @JsonManagedReference
+    private final List<Like> likes = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false, name = "CREATED_AT")

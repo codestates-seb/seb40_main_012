@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 
 @Validated
 @RestController
-@RequestMapping
+@RequestMapping("/api")
 public class BookController {
 
     @GetMapping
@@ -25,5 +26,10 @@ public class BookController {
         System.out.println("# CORS TEST");
 
         return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+
+    @PatchMapping
+    public ResponseEntity patchBook() {
+        return null;
     }
 }
