@@ -1,5 +1,6 @@
 package seb40_main_012.back.book.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -75,21 +76,24 @@ public class Book {
     //    --------------------------------------------------------------------------------------------
     /*관련 컬렉션 목록*/
     //    --------------------------------------------------------------------------------------------
-    @JsonManagedReference
-    @OneToMany(mappedBy = "book")
-    private List<BookCollection> bookCollections;
+    //    --------------------------------------------------------------------------------------------
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "book") // 일대 다
+//    private List<BookCollection> bookCollections;
+//
+//    @JsonBackReference
+//    @ManyToOne(fetch = FetchType.LAZY) // 다대 일
+//    @JoinColumn(name = "bookCollection_id")
+//    private BookCollection bookCollection;
 
-    //    --------------------------------------------------------------------------------------------
-    //    --------------------------------------------------------------------------------------------
-    // 다대 다 매핑 준비
     @JsonManagedReference
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book") // 다대 다
     private List<BookCollectionBook> bookCollectionBooks;
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
     /*비슷한 책 목록*/
     //    --------------------------------------------------------------------------------------------
-    @JsonManagedReference
-    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
-    private List<Book> similarBooks;
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
+//    private List<Book> similarBooks;
 }

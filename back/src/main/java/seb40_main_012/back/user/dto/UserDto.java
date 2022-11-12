@@ -2,6 +2,7 @@ package seb40_main_012.back.user.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -23,6 +24,7 @@ public class UserDto {
     }
 
     @Getter
+    @NoArgsConstructor
     @AllArgsConstructor
     public static class ResponseDto{
         private String email;
