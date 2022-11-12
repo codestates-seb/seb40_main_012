@@ -16,6 +16,7 @@ import java.util.List;
 public class PairingDto {
 
     @Data
+    @Builder
     public static class Post {
 
         @NotEmpty(message = "내용을 입력하셔야 합니다.")
@@ -36,6 +37,7 @@ public class PairingDto {
     }
 
     @Data
+    @Builder
     public static class Patch {
 
         private long pairingID;

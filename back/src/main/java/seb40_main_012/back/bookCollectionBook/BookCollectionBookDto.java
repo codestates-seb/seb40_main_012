@@ -12,6 +12,7 @@ import java.util.List;
 public class BookCollectionBookDto {
 
     @Data
+    @Builder
     public static class Post {
 
         @Positive
@@ -20,6 +21,7 @@ public class BookCollectionBookDto {
     }
 
     @Data
+    @Builder
     public static class Patch {
 
     }

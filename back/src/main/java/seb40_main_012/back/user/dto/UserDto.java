@@ -1,6 +1,7 @@
 package seb40_main_012.back.user.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 //@Getter
 public class UserDto {
     @Getter
+    @Builder
     @AllArgsConstructor
     public static class PostDto{
         @NotBlank
@@ -24,6 +26,7 @@ public class UserDto {
     }
 
     @Getter
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ResponseDto{
