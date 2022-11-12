@@ -3,6 +3,7 @@ package seb40_main_012.back.pairing;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.pairing.entity.Category;
 import seb40_main_012.back.user.dto.UserDto;
@@ -55,6 +56,27 @@ public class PairingDto {
 
     @Data
     @Builder
+    public static class View {
+
+        private long pairingId;
+        private long view;
+
+    }
+
+    @Data
+    @Builder
+    public static class Like {
+
+        private long pairingId;
+        private long userId;
+        private long like;
+
+    }
+
+    @Data
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Response {
 
         private long bookId;
@@ -69,22 +91,6 @@ public class PairingDto {
         private List<CommentDto.Response> comments;
         private LocalDateTime createdAt = LocalDateTime.now();
         private LocalDateTime modifiedAt = LocalDateTime.now();
-
-    }
-
-    public static class View {
-
-        private long pairingId;
-        private long view;
-
-    }
-
-    @Data
-    public static class Like {
-
-        private long pairingId;
-        private long userId;
-        private long like;
 
     }
 

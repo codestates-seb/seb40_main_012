@@ -12,6 +12,17 @@ public interface CommentMapper {
     Comment commentPatchToComment(CommentDto.Patch patchComment);
     Comment commentLikeToComment(CommentDto.Like likeComment);
 //    Comment commentViewToComment(CommentDto.View viewComment);
-    CommentDto.Response commentToCommentResponse(Comment comment);
+    default CommentDto.Response commentToCommentResponse(Comment comment) {
+
+      return CommentDto.Response.builder()
+              .commentId(comment.getCommentId())
+              .body(comment.getBody())
+              .likeCount(comment.getLikeCount())
+              .createdAt(comment.getCreatedAt())
+              .modifiedAt(comment.getModifiedAt())
+              .build();
+
+
+    };
     List<CommentDto.Response> commentsToCommentResponses(List<Comment> comments);
 }
