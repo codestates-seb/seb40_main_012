@@ -8,4 +8,5 @@ import lombok.Getter;
 public class UserCategoryDto {
     public static class PostDto{}
     public static class ResponseDto{}
+//
 }
