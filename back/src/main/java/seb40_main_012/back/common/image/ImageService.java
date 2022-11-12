@@ -1,5 +1,6 @@
 package seb40_main_012.back.common.image;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.advice.BusinessLogicException;
@@ -10,15 +11,11 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class ImageService {
 
     private final ImageService imageService;
     private final ImageRepository imageRepository;
-
-    public ImageService(ImageService imageService, ImageRepository imageRepository) {
-        this.imageService = imageService;
-        this.imageRepository = imageRepository;
-    }
 
     public Image createImage(Image image) {
         return null;

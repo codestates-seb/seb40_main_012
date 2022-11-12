@@ -2,6 +2,7 @@ package seb40_main_012.back.common.comment.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,6 +39,9 @@ public class Comment {
     @Column(nullable = false)
     private long likeCount;
 
+    @Column(nullable = false)
+    private long View;
+
     @JsonBackReference
     @ManyToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -58,7 +62,7 @@ public class Comment {
     @JoinColumn(name = "answer_id")
     private BookCollection bookCollection;
 
-    @OneToMany(mappedBy = "comment")
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
     @JsonManagedReference
     private final List<Like> likes = new ArrayList<>();
 

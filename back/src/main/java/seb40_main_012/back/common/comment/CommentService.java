@@ -1,5 +1,6 @@
 package seb40_main_012.back.common.comment;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,7 +19,6 @@ import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.Pairing;
-import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
@@ -27,6 +27,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class CommentService {
 
     private final CommentRepository commentRepository;
@@ -38,26 +39,10 @@ public class CommentService {
     private final BookCollectionRepository bookCollectionRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-
     private final LikeService likeService;
 
-    public CommentService(CommentRepository commentRepository, BookService bookService, BookRepository bookRepository,
-                          PairingService pairingService, PairingRepository pairingRepository,
-                          BookCollectionService bookCollectionService, BookCollectionRepository bookCollectionRepository,
-                          UserService userService, UserRepository userRepository, LikeService likeService) {
-        this.commentRepository = commentRepository;
-        this.bookService = bookService;
-        this.bookRepository = bookRepository;
-        this.pairingService = pairingService;
-        this.pairingRepository = pairingRepository;
-        this.bookCollectionService = bookCollectionService;
-        this.bookCollectionRepository = bookCollectionRepository;
-        this.userService = userService;
-        this.userRepository = userRepository;
-        this.likeService = likeService;
-    }
-
     public Comment createBookComment(Comment comment, long bookId) {
+
         Book findBook = bookService.findBook(bookId);
 //        User findUser = userService.findUser(userId);
         Comment savedBookComment =
@@ -65,7 +50,6 @@ public class CommentService {
                         .commentType(CommentType.BOOK)
                         .book(findBook)
 //                        .user(findUser)
-//                        .commentId(comment.getCommentId())
                         .body(comment.getBody())
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
@@ -76,6 +60,7 @@ public class CommentService {
     }
 
     public Comment createPairingComment(Comment comment, long pairingId) {
+
         Pairing findPairing = pairingService.findPairing(pairingId);
 //        User findUser = userService.findUser(userId);
 
@@ -99,6 +84,7 @@ public class CommentService {
     }
 
     public Comment updateComment(Comment comment, long commentId) {
+
         Comment findComment = findVerifiedComment(commentId);
         findComment.setBody(comment.getBody());
         findComment.setModifiedAt(LocalDateTime.now());
@@ -114,15 +100,26 @@ public class CommentService {
         return commentRepository.save(findComment);
     }
 
+    public Comment updateView(long commentId) {
+
+        Comment findComment = findVerifiedComment(commentId);
+
+        findComment.setView(findComment.getView() + 1); // View +1
+
+        return commentRepository.save(findComment);
+    }
+
     public Comment findComment(long commentId) {
         return findVerifiedComment(commentId);
     }
 
     public Page<Comment> findComments(int page, int size) {
-        return commentRepository.findAll(PageRequest.of(page, size, Sort.by("CommentId").descending()));
+
+        return commentRepository.findAll(PageRequest.of(page, size, Sort.by("likeCount").descending()));
     }
 
     public void deleteComment(long commentId) {
+
         Comment findComment = findVerifiedComment(commentId);
 
         commentRepository.delete(findComment);
@@ -132,6 +129,7 @@ public class CommentService {
     }
 
     public Comment findVerifiedComment(long commentId) {
+
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         return optionalComment.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));

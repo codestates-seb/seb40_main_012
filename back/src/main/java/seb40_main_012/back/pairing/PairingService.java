@@ -1,5 +1,6 @@
 package seb40_main_012.back.pairing;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -10,10 +11,8 @@ import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.entity.Book;
-import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.pairing.entity.Pairing;
-import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
@@ -22,6 +21,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PairingService {
 
     private final PairingRepository pairingRepository;
@@ -31,17 +31,6 @@ public class PairingService {
     private final UserRepository userRepository;
     private final LikeService likeService;
 
-    public PairingService(PairingRepository pairingRepository, BookService bookService,
-                          BookRepository bookRepository, UserService userService, UserRepository userRepository,
-                          LikeService likeService) {
-        this.pairingRepository = pairingRepository;
-        this.bookService = bookService;
-        this.bookRepository = bookRepository;
-        this.userService = userService;
-        this.userRepository = userRepository;
-        this.likeService = likeService;
-    }
-
     public Pairing createPairing(Pairing pairing, long bookId) {
         Book findBook = bookService.findBook(bookId);
 //        User findUser = userService.findUser(userId);
@@ -50,9 +39,10 @@ public class PairingService {
                 Pairing.builder()
                         .book(findBook)
 //                        .user(findUser)
-//                        .pairingId(pairing.getPairingId())
                         .imagePath(pairing.getImagePath())
+                        .title(pairing.getTitle())
                         .body(pairing.getBody())
+                        .outLinkPath(pairing.getOutLinkPath())
                         .createdAt(pairing.getCreatedAt())
                         .modifiedAt(pairing.getModifiedAt())
                         .build();
@@ -65,10 +55,26 @@ public class PairingService {
     public Pairing updatePairing(Pairing pairing, long pairingId) {
 
         Pairing findPairing = findVerifiedPairing(pairingId);
-        findPairing.setBody(pairing.getBody());
-        findPairing.setModifiedAt(LocalDateTime.now());
 
-        return pairingRepository.save(findPairing);
+        Pairing updatedPairing =
+                Pairing.builder()
+                        .book(findPairing.getBook())
+                        .user(findPairing.getUser())
+                        .pairingId(findPairing.getPairingId())
+                        .imagePath(pairing.getImagePath())
+                        .title(pairing.getTitle())
+                        .body(pairing.getBody())
+                        .outLinkPath(pairing.getOutLinkPath())
+                        .likeCount(findPairing.getLikeCount())
+                        .view(findPairing.getView())
+                        .images(findPairing.getImages())
+                        .comments(findPairing.getComments())
+                        .likes(findPairing.getLikes())
+                        .createdAt(findPairing.getCreatedAt())
+                        .modifiedAt(LocalDateTime.now())
+                        .build();
+
+        return pairingRepository.save(updatedPairing);
     }
 
     public Pairing updateLike(Pairing pairing, long pairingId) { // Like Count 값만 변경
@@ -80,7 +86,7 @@ public class PairingService {
         return pairingRepository.save(findPairing);
     }
 
-    public Pairing updateView(Pairing pairing, long pairingId) {
+    public Pairing updateView(long pairingId) {
 
         Pairing findPairing = findVerifiedPairing(pairingId);
 
@@ -96,6 +102,7 @@ public class PairingService {
     public Page<Pairing> findPairings(int page, int size) { // 페이징 처리 및 좋아요 내림차순 정렬
 
         return pairingRepository.findAll(
+
                 PageRequest.of(page, size, Sort.by("likeCount").descending())
         );
     }

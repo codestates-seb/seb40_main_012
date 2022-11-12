@@ -19,10 +19,10 @@ public class Image {
     private long imageId;
 
     @Column(nullable = false)
-    private String uploadImageName;
+    private String originalImageName;
 
     @Column(nullable = false)
-    private String storeImageName;
+    private String storedImageName;
 
     @JsonBackReference
     @OneToOne

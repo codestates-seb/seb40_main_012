@@ -5,13 +5,13 @@ import seb40_main_012.back.pairing.entity.Pairing;
 
 import java.util.List;
 
-//@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring")
 public interface PairingMapper {
 
     Pairing pairingPostToPairing(PairingDto.Post postPairing);
     Pairing pairingPatchToPairing(PairingDto.Patch patchPairing);
     Pairing pairingLikeToPairing(PairingDto.Like likePairing);
-    Pairing pairingViewToPairing(PairingDto.View viewPairing);
+//    Pairing pairingViewToPairing(PairingDto.View viewPairing);
     PairingDto.Response pairingTOPairingResponse(Pairing pairing);
     List<PairingDto.Response> pairingsToPairingResponses(List<Pairing> pairings);
 }
