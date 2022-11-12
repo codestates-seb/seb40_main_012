@@ -13,8 +13,7 @@ public class corsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000",
-                        "http://main-012-client.s3-website.ap-northeast-2.amazonaws.com",
-                        "http://seb40-pre-038.vercel.app")
+                        "http://main-012-client.s3-website.ap-northeast-2.amazonaws.com")
                 .allowedMethods("*")
 //                .exposedHeaders(Arrays.asList("Autorization"))
                 .allowCredentials(true)

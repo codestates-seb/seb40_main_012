@@ -8,8 +8,10 @@ import java.util.List;
 //@Mapper(componentModel = "spring")
 public interface PairingMapper {
 
-    Pairing pairingPostToPairing(PairingDto.Post pairingPost);
-    Pairing pairingPatchToPairing(PairingDto.Patch pairingPatch);
+    Pairing pairingPostToPairing(PairingDto.Post postPairing);
+    Pairing pairingPatchToPairing(PairingDto.Patch patchPairing);
+    Pairing pairingLikeToPairing(PairingDto.Like likePairing);
+    Pairing pairingViewToPairing(PairingDto.View viewPairing);
     PairingDto.Response pairingTOPairingResponse(Pairing pairing);
     List<PairingDto.Response> pairingsToPairingResponses(List<Pairing> pairings);
 }
