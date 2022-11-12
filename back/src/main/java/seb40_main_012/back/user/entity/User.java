@@ -1,22 +1,37 @@
 package seb40_main_012.back.user.entity;
 
-import jdk.jfr.Category;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import seb40_main_012.back.userCategory.entity.UserCategory;
+import lombok.*;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.List;
 
 @Getter
-@RequiredArgsConstructor
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "users")
 public class User {
 
-    private final Long userId;
-    private final String email;
-    private final String password;
-    private final List<UserCategory> category;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long userId;
+    private String email;
+    private String nickname;
+    private String password;
+    private String introduction;
+
+    @OneToOne
+    private Gender gender;
+
+    @OneToOne
+    private AgeGroup ageGroup;
+
+    private List<UserCategory> category;
+
+    public void setNickName(String nickName) {
+        this.nickname = nickName;
+    }
 
 
 
