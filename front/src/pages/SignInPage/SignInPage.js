@@ -60,7 +60,7 @@ const SignInPage = () => {
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Sign in
+              로그인
             </Typography>
             <Box
               component="form"
@@ -73,7 +73,7 @@ const SignInPage = () => {
                 required
                 fullWidth
                 id="email"
-                label="Email Address"
+                label="이메일"
                 name="email"
                 autoComplete="email"
                 //   autoFocus
@@ -83,14 +83,14 @@ const SignInPage = () => {
                 required
                 fullWidth
                 name="password"
-                label="Password"
+                label="비밀번호"
                 type="password"
                 id="password"
                 autoComplete="current-password"
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                label="로그인 상태 유지"
               />
               <Button
                 type="submit"
@@ -98,16 +98,17 @@ const SignInPage = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
               >
-                Sign In
+                로그인
               </Button>
-              <Grid container>
-                <Grid item xs>
-                  <Link to="#" variant="body2">
+              <Grid container justifyContent="flex-end">
+                {/* <Grid container> */}
+                {/* <Grid item xs>
+                  <Link href="#" variant="body2">
                     Forgot password?
                   </Link>
-                </Grid>
+                </Grid> */}
                 <Grid item>
-                  <Link to="#" variant="body2">
+                  <Link href="/user/signup" variant="body2">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>
