@@ -1,20 +1,20 @@
-import { useState, useEffect } from 'react';
-import axios from './api/axios';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import GlobalStyle from './GlobalStyle';
+import MainPage from './pages/MainPage/MainPage';
+import SignInPage from './pages/SignInPage/SignInPage';
+
+import NoMatch from './pages/NoMatch';
 
 const App = () => {
-  const [testData, setTestData] = useState('');
-
-  useEffect(() => {
-    axios.get('/').then((response) => {
-      return setTestData(response.data.testBody);
-    });
-  }, [testData]);
-
   return (
-    <>
-      <div>version: {process.env.REACT_APP_SERVICE_VERSION}</div>
-      <span>{testData}</span>
-    </>
+    <BrowserRouter>
+      <GlobalStyle />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/login" element={<SignInPage />} />
+        <Route path="*" element={<NoMatch />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 
