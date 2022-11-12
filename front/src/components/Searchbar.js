@@ -50,7 +50,7 @@ export const Searchbar = () => {
 
   const handleOnKeyPressEnter = (e) => {
     if (e.key === 'Enter') {
-      navigate(`/search?q=${input}`);
+      navigate(`/search?query=${input}&category=book`);
     }
   };
 
