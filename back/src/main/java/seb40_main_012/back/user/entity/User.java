@@ -19,7 +19,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String email;
-    private String nickname;
+    private String nickName;
     private String password;
     private String introduction;
 
@@ -35,7 +35,7 @@ public class User {
     private List<String> roles = new ArrayList<>();
 
     public void setNickName(String nickName) {
-        this.nickname = nickName;
+        this.nickName = nickName;
     }
 
 

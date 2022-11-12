@@ -19,7 +19,7 @@ public class UserDto {
         private String email;
 
         @NotBlank
-        private String nickname;
+        private String nickName;
 
         @NotBlank
         private String password;
@@ -31,6 +31,6 @@ public class UserDto {
     @AllArgsConstructor
     public static class ResponseDto{
         private String email;
-        private String nickname;
+        private String nickName;
     }
 }
