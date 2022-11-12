@@ -1,7 +1,9 @@
 package seb40_main_012.back.bookCollectionBook;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import seb40_main_012.back.bookCollection.entity.BookCollectionTag;
 
 import javax.validation.constraints.Positive;
@@ -24,6 +26,8 @@ public class BookCollectionBookDto {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Response {
 
         private long bookId;

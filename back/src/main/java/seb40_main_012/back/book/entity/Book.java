@@ -1,8 +1,10 @@
 package seb40_main_012.back.book.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookWiki.BookWiki;
@@ -15,6 +17,8 @@ import java.util.List;
 @Data
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Book {
     //    --------------------------------------------------------------------------------------------
     /*도서 상세 페이지 상단*/
