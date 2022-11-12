@@ -30,6 +30,9 @@ public class Pairing {
     private String imagePath;
 
     @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
     private String body;
 
     @Column
@@ -52,12 +55,16 @@ public class Pairing {
     private Book book;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pairing")
+    @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
+    private List<Comment> images;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "pairing")
+    @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
     @JsonManagedReference
-    private final List<Like> likes = new ArrayList<>();
+    private List<Like> likes = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false, name = "CREATED_AT")

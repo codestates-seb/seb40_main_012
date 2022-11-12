@@ -9,7 +9,7 @@ import org.springframework.validation.annotation.Validated;
 public class ImageDto {
 
     @Length(max = 500)
-    private String image;
+    private String imageName;
 
     private String uploadImageName;
 

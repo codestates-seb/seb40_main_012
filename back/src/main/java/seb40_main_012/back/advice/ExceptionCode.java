@@ -6,6 +6,8 @@ public enum ExceptionCode {
 
     BOOK_NOT_FOUND(404,"Book Not Found"),
 
+    BOOK_WIKI_NOT_FOUND(404,"Book Wiki Not Found"),
+
     IMAGE_NOT_FOUND(404,"Image Not Found"),
 
     PAIRING_NOT_FOUND(404,"Pairing Not Found"),

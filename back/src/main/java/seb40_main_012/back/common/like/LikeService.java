@@ -1,7 +1,9 @@
 package seb40_main_012.back.common.like;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
@@ -22,6 +24,8 @@ import seb40_main_012.back.user.service.UserService;
 import java.util.Optional;
 
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class LikeService {
 
     private final PairingService pairingService;
@@ -31,18 +35,6 @@ public class LikeService {
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final LikeRepository likeRepository;
-
-    public LikeService(PairingService pairingService, PairingRepository pairingRepository,
-                       BookCollectionRepository bookCollectionRepository, CommentService commentService,
-                       CommentRepository commentRepository, UserService userService, LikeRepository likeRepository) {
-        this.pairingService = pairingService;
-        this.pairingRepository = pairingRepository;
-        this.bookCollectionRepository = bookCollectionRepository;
-        this.commentService = commentService;
-        this.commentRepository = commentRepository;
-        this.userService = userService;
-        this.likeRepository = likeRepository;
-    }
 
     public void createPairingLike(PairingDto.Like likePairing) {
 
@@ -79,6 +71,7 @@ public class LikeService {
     public void createCommentLike(CommentDto.Like likeComment) {
 
         long commentId = likeComment.getCommentId();
+        long userId = likeComment.getUserId(); // 임시 유저 번호
 
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
 
@@ -86,7 +79,6 @@ public class LikeService {
                 new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
 
 //        User findUser = userService.findUser(userId);
-        long userId = likeComment.getUserId(); // 임시 유저 번호
 
         Like findCommentLike = likeRepository.findByCommentAndUserId(findComment, userId);
 

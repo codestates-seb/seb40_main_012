@@ -1,5 +1,6 @@
 package seb40_main_012.back.common.image;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -24,14 +25,11 @@ import java.util.List;
 @Slf4j
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/images")
 public class ImageController {
 
     private final ImageService imageService;
-
-    public ImageController(ImageService imageService) {
-        this.imageService = imageService;
-    }
 
     @Value("${/Users/gnidinger/Desktop/}")
     private String imageDirectory;
@@ -42,8 +40,9 @@ public class ImageController {
     }
 
     @PostMapping("/upload")
-    public String uploadImage(@RequestParam String imageName,
-                              @RequestParam MultipartFile file,
+    public String uploadImage(@RequestHeader("Authorization") long userId,
+                              @RequestParam("Image Name") String imageName,
+                              @RequestParam("Images") MultipartFile file,
                               HttpServletRequest request) throws IOException {
 
         log.info("request = {}", request);
@@ -51,11 +50,12 @@ public class ImageController {
         log.info("multipartFile = {}", file);
 
         if (!file.isEmpty()) {
-            String downloadPath = imageDirectory + file.getOriginalFilename();
 
-            log.info("Image Download Path = {}", downloadPath);
+            String storagePath = imageDirectory + file.getOriginalFilename();
 
-            file.transferTo(new File(downloadPath));
+            log.info("Image Storage Path = {}", storagePath);
+
+            file.transferTo(new File(storagePath));
         }
 
         return "upload-form";
@@ -64,16 +64,16 @@ public class ImageController {
     @GetMapping("/{image_id}")
     public ResponseEntity<Resource> downloadImage(@PathVariable("image_id") @Positive long imageId) throws MalformedURLException {
 
-        Image findImage = imageService.findImage(imageId);
-        String storedImageName = findImage.getStoreImageName();
-        String uploadImageName = findImage.getUploadImageName();
+        Image findedImage = imageService.findImage(imageId);
+        String storedImageName = findedImage.getStoredImageName();
+        String originalImageName = findedImage.getOriginalImageName();
 
         UrlResource resource = new UrlResource("image:" + imageDirectory + storedImageName);
 
-        log.info("uploadImageName = {}", uploadImageName);
+        log.info("originalImageName = {}", originalImageName);
 
-        String encodedUploadImageName = UriUtils.encode(uploadImageName, StandardCharsets.UTF_8);
-        String imageDisposition = "attachment; filename=\"" + encodedUploadImageName + "\"";
+        String encodedOriginalImageName = UriUtils.encode(originalImageName, StandardCharsets.UTF_8);
+        String imageDisposition = "attachment; filename=\"" + encodedOriginalImageName + "\"";
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, imageDisposition)

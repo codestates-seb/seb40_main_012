@@ -9,8 +9,8 @@ spring:
     hibernate:
       ddl-auto: create  # ??? ?? ??
     show-sql: true  # SQL ?? ??
-servlet:
-  multipart:
-    location: /Users/gnidinger/Desktop
-    maxFileSize: 5MB
-    maxRequestSize: 10MB
+  servlet:  # 이미지 로컬에 저장하기 위한 설정. S3 사용시 바꾸어야 함!
+    multipart:
+      location: /Users/gnidinger/Desktop/
+      maxFileSize: 5MB
+      maxRequestSize: 10MB
