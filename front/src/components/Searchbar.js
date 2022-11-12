@@ -65,7 +65,7 @@ export const Searchbar = () => {
         </SearchIconContainer>
         <SearchbarInput
           type="text"
-          placeholder="책, 페어링, 컬렉션을 검색해보세요"
+          placeholder="책, 컬렉션, 페어링을 검색해보세요"
           onChange={handleChangeInput}
           onKeyPress={handleOnKeyPressEnter}
         />
