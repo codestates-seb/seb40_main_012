@@ -11,7 +11,7 @@ const App = () => {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/login" element={<SignInPage />} />
+        <Route path="/signin" element={<SignInPage />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </BrowserRouter>
