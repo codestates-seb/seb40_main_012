@@ -1,9 +1,22 @@
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
+import styled from 'styled-components';
+
+const ButtonCSS = styled.button`
+  outline: none;
+  display: inline-block;
+  margin: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  width: 100px;
+  color: #737373;
+`;
 
 const Header = () => {
   return (
@@ -51,13 +64,7 @@ const Header = () => {
               </Box>
             </Grid>
             <Grid item xs={2.4}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="text"
-                sx={{ mt: 3, mb: 2, width: 100, color: 'grey' }}
-                size="small"
-              >
+              <ButtonCSS>
                 <Typography
                   color=""
                   sx={{ mt: 1.6 }}
@@ -66,7 +73,7 @@ const Header = () => {
                 >
                   내 정보 수정
                 </Typography>
-              </Button>
+              </ButtonCSS>
             </Grid>
           </Grid>
         </Box>

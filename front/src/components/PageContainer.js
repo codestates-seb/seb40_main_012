@@ -15,7 +15,7 @@ const PageContainer = ({ children, header, footer }) => {
     >
       {header === false ? null : <Header />}
       <CssBaseline />
-      <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="sm">
+      <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="md">
         {children}
       </Container>
       {footer ? <StickyFooter /> : null}
