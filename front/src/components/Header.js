@@ -16,6 +16,7 @@ const HeaderContainer = styled.div`
   }
   display: flex;
   align-items: center;
+  z-index: 5050;
 `;
 
 const LogoContainer = styled.div`
