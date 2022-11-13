@@ -35,9 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final class UserDetailsImpl extends User implements UserDetails {
         UserDetailsImpl(User user) {
-            setId(user.getId());
+            setUserId(user.getUserId());
             setEmail(user.getEmail());
-            updateNickName(user.getNickname());
+            updateNickName(user.getNickName());
             setIntroduction(user.getIntroduction());
             setPassword(user.getPassword());
             setRoles(user.getRoles());

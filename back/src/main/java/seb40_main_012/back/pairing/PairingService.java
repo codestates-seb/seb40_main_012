@@ -1,8 +1,6 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +9,6 @@ import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.entity.Book;
-import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
@@ -30,7 +27,6 @@ public class PairingService {
     private final BookRepository bookRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final LikeService likeService;
 
     public Pairing createPairing(Pairing pairing, long bookId) {
         Book findBook = bookService.findBook(bookId);
@@ -78,11 +74,11 @@ public class PairingService {
         return pairingRepository.save(updatedPairing);
     }
 
-    public Pairing updateLike(Pairing pairing, long pairingId) { // Like Count 값만 변경
+    public Pairing updateLike(Pairing pairing) { // Like Count 값만 변경
 
-        Pairing findPairing = findVerifiedPairing(pairingId);
+        Pairing findPairing = findVerifiedPairing(pairing.getPairingId());
 
-        findPairing.setLikeCount(findPairing.getLikeCount());
+        findPairing.setLikeCount(pairing.getLikeCount());
 
         return pairingRepository.save(findPairing);
     }
@@ -112,7 +108,7 @@ public class PairingService {
 
         return pairingRepository.findAll(
 
-               Sort.by("likeCount").descending()
+                Sort.by("likeCount").descending()
         );
     }
 
