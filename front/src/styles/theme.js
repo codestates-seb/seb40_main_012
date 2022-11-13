@@ -4,7 +4,7 @@ const colors = {
   purple_2: '#CFC3FF',
   purple_3: '#E8E2FF',
   dark: '#232627',
-  darygray: '#A28BFF',
+  darkgray: '#434343',
   gray: '#737373',
   lightgray: '#BFBFBF',
 };
