@@ -2,17 +2,33 @@ package seb40_main_012.back.user.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.dto.UserInfoDto;
 import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.mapper.UserMapper;
 import seb40_main_012.back.user.service.UserService;
 
-@RequestMapping("/users")
+import javax.validation.Valid;
+
+@RequestMapping("/api/users")
 @RestController
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserMapper mapper;
+
+    @PostMapping
+    public ResponseEntity postUser(@Valid @RequestBody UserDto.PostDto postdto) {
+        User user = mapper.userPostToUser(postdto);
+
+        User createdUser = userService.createUser(user);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.userToUserResponse(createdUser)), HttpStatus.CREATED);
+    }
 
     @PatchMapping("/nickname")
     @ResponseStatus(HttpStatus.OK)
@@ -26,14 +42,13 @@ public class UserController {
         return userService.verifyPassword(userId,currentPassword);
     }
 
-
     @PatchMapping("/password/update")
     @ResponseStatus(HttpStatus.OK)
     public void patchPassword(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Password request){
         userService.updatePassword(userId,request.getPassword());
     }
 
-//    @PatchMapping
+    //    @PatchMapping
 //    public void patchImage(){}
 //
     @PatchMapping

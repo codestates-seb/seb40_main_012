@@ -6,9 +6,11 @@ import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,10 +34,13 @@ public class User {
     private AgeType age;
 
     @OneToMany(mappedBy = "user")
-    private List<UserCategory> category;
+    private List<UserCategory> category = new ArrayList<>();
+
+//    @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
+//    private List<String> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
 
 
     public void updateNickName(String nickName) {

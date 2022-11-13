@@ -1,4 +1,4 @@
-package seb40_main_012.back.comment.entity;
+package seb40_main_012.back.common.comment.entity;
 
 import lombok.Getter;
 

@@ -4,10 +4,17 @@ import lombok.Getter;
 
 public enum ExceptionCode {
 
+    BOOK_NOT_FOUND(404,"Book Not Found"),
 
-    Comment_NOT_FOUND(404,"Comment Not Found"),
-    Comment_EXISTS(409, "Comment Exists"),
-    Comment_CANNOT_CHANGE(403,"Comment Can Not Be Changed"),
+    BOOK_WIKI_NOT_FOUND(404,"Book Wiki Not Found"),
+
+    IMAGE_NOT_FOUND(404,"Image Not Found"),
+
+    PAIRING_NOT_FOUND(404,"Pairing Not Found"),
+
+    COMMENT_NOT_FOUND(404,"Comment Not Found"),
+    COMMENT_EXISTS(409, "Comment Exists"),
+    COMMENT_CANNOT_CHANGE(403,"Comment Can Not Be Changed"),
 
     ANSWER_DELETED(405, "Answer Already Deleted"),
 
@@ -21,6 +28,7 @@ public enum ExceptionCode {
     USER_CANNOT_CHANGE(403,"User Can Not Be Changed"),
 
     RATED(409, "Already Rated"),
+    LIKED(409, "Already Liked"),
 
     UNAUTHORIZED(401, "Unauthorized");
 

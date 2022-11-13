@@ -1,34 +1,46 @@
 package seb40_main_012.back.user.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import seb40_main_012.back.user.entity.Category;
-import seb40_main_012.back.user.entity.User;
-import seb40_main_012.back.user.entity.UserCategory;
-import seb40_main_012.back.user.entity.enums.AgeType;
-import seb40_main_012.back.user.entity.enums.GenderType;
-
-import java.util.List;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 @Getter
-//@AllArgsConstructor
 @NoArgsConstructor
-//@Builder
 public class UserDto {
-    public static class ResponseDto{}
 
     @Getter
     @NoArgsConstructor
-    public static class Profile{
+    public static class Profile {
         private String nickname;
     }
 
     @Getter
     @NoArgsConstructor
-    public static class Password{
+    public static class Password {
         private String password;
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class PostDto {
+        @NotBlank
+        @Email
+        private String email;
 
+        @NotBlank
+        private String nickName;
 
+        @NotBlank
+        private String password;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class ResponseDto {
+        private String email;
+        private String nickName;
+    }
 }
