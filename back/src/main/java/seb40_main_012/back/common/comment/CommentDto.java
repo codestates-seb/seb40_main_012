@@ -49,7 +49,7 @@ public class CommentDto {
     public static class Like {
 
         private long commentId;
-        private long userId;
+//        private long userId;
         private long like;
 
     }

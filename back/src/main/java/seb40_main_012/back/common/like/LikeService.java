@@ -10,13 +10,11 @@ import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.CommentRepository;
-import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.common.like.entity.LikeType;
 import seb40_main_012.back.pairing.PairingDto;
 import seb40_main_012.back.pairing.PairingRepository;
-import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
@@ -28,10 +26,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LikeService {
 
-    private final PairingService pairingService;
     private final PairingRepository pairingRepository;
     private final BookCollectionRepository bookCollectionRepository;
-    private final CommentService commentService;
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final LikeRepository likeRepository;
@@ -46,9 +42,11 @@ public class LikeService {
                 new BusinessLogicException(ExceptionCode.PAIRING_NOT_FOUND));
 
 //        User findUser = userService.findUser(userId);
-        long userId = likePairing.getUserId(); // 임시 유저 번호
+        long userId = 1; // 임시 유저 번호
 
         Like findPairingLike = likeRepository.findByPairingAndUserId(findPairing, userId);
+
+        User findUser = userService.findVerifiedUser(userId);
 
         if (findPairingLike == null) {
             findPairingLike =
@@ -71,7 +69,7 @@ public class LikeService {
     public void createCommentLike(CommentDto.Like likeComment) {
 
         long commentId = likeComment.getCommentId();
-        long userId = likeComment.getUserId(); // 임시 유저 번호
+        long userId = 1; // 임시 유저 번호
 
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
 
@@ -81,6 +79,8 @@ public class LikeService {
 //        User findUser = userService.findUser(userId);
 
         Like findCommentLike = likeRepository.findByCommentAndUserId(findComment, userId);
+
+        User findUser = userService.findVerifiedUser(userId);
 
         if (findCommentLike == null) {
             findCommentLike =
