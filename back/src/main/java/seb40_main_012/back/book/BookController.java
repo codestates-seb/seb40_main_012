@@ -15,15 +15,15 @@ import java.util.Map;
 @RequestMapping
 public class BookController {
 
-    @GetMapping
-    public ResponseEntity postBook() {
-
-        Map<Object, Object> map = new HashMap<>();
-        map.put("testId", "corsTest");
-        map.put("testBody", "Cors Test Body");
-
-        System.out.println("# CORS TEST");
-
-        return new ResponseEntity<>(map, HttpStatus.OK);
-    }
+//    @GetMapping
+//    public ResponseEntity postBook() {
+//
+//        Map<Object, Object> map = new HashMap<>();
+//        map.put("testId", "corsTest");
+//        map.put("testBody", "Cors Test Body");
+//
+//        System.out.println("# CORS TEST");
+//
+//        return new ResponseEntity<>(map, HttpStatus.OK);
+//    }
 }

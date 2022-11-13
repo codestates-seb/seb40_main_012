@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping
 public class ImageController {
 
-    @PostMapping
-    public ResponseEntity postImage() {
-        return null;
-    }
-
-    @PatchMapping
-    public ResponseEntity patchImage() {
-        return null;
-    }
-
-    @GetMapping
-    public ResponseEntity getImage() {
-        return null;
-    }
-
-    @GetMapping
-    public ResponseEntity getImages() {
-        return null;
-    }
+//    @PostMapping
+//    public ResponseEntity postImage() {
+//        return null;
+//    }
+//
+//    @PatchMapping
+//    public ResponseEntity patchImage() {
+//        return null;
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity getImage() {
+//        return null;
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity getImages() {
+//        return null;
+//    }
 }

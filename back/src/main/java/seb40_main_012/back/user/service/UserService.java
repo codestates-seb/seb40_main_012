@@ -29,7 +29,7 @@ public class UserService {
         userRepository.save(findUser);
     }
 
-    public boolean verifyPassword(Long userId,String password){
+    public boolean verifyPassword(Long userId, String password){
         User findUser = findVerifiedUser(userId);
         return findUser.verifyPassword(passwordEncoder, password);
     }

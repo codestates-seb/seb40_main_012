@@ -10,7 +10,9 @@ public enum Genre {
     HISTORY("역사"),
     COMICS("만화"),
     TRAVEL("여행"),
-    ETC("기타");
+    ETC("기타"),
+    PHILOSOPHY("철학"),
+    ECONOMY("경제");
 
     @Getter
     private final String genre;

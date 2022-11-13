@@ -9,23 +9,23 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping
 public class PairingController {
 
-    @PostMapping
-    public ResponseEntity postPairing() {
-        return null;
-    }
-
-    @PatchMapping
-    public ResponseEntity patchPairing() {
-        return null;
-    }
-
-    @GetMapping
-    public ResponseEntity getPairing() {
-        return null;
-    }
-
-    @GetMapping
-    public ResponseEntity getPairings() {
-        return null;
-    }
+//    @PostMapping
+//    public ResponseEntity postPairing() {
+//        return null;
+//    }
+//
+//    @PatchMapping
+//    public ResponseEntity patchPairing() {
+//        return null;
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity getPairing() {
+//        return null;
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity getPairings() {
+//        return null;
+//    }
 }

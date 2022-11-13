@@ -13,33 +13,33 @@ import java.util.Map;
 @RequestMapping
 public class CommentController {
 
-    @PostMapping
-    public ResponseEntity postBookComment() {
-        return null;
-    }
-
-    @PostMapping
-    public ResponseEntity postPairingComment() {
-        return null;
-    }
-
-    @PostMapping
-    public ResponseEntity postBookCollectionComment() {
-        return null;
-    }
-
-    @PatchMapping
-    public ResponseEntity patchComment() {
-        return null;
-    }
-
-    @GetMapping
-    public ResponseEntity getComment() {
-        return null;
-    }
-
-    @GetMapping
-    public ResponseEntity getComments() {
-        return null;
-    }
+//    @PostMapping
+//    public ResponseEntity postBookComment() {
+//        return null;
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity postPairingComment() {
+//        return null;
+//    }
+//
+//    @PostMapping
+//    public ResponseEntity postBookCollectionComment() {
+//        return null;
+//    }
+//
+//    @PatchMapping
+//    public ResponseEntity patchComment() {
+//        return null;
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity getComment() {
+//        return null;
+//    }
+//
+//    @GetMapping
+//    public ResponseEntity getComments() {
+//        return null;
+//    }
 }
