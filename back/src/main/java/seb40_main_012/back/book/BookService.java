@@ -73,13 +73,13 @@ public class BookService {
         Book findBook = optionalBook.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
 
+        double averageRating = findBook.getAverageRating(); // 현재 평균 별점
         long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
-        long averageRating = findBook.getAverageRating(); // 현재 평균 별점
 
-        long numerator = (averageRating * ratingCount) + rating; // 분자
+        double numerator = (averageRating * ratingCount) + rating; // 분자
         long denominator = ratingCount + 1; // 분모
 
-        long newAverageRating = numerator / denominator; // 업데이트된 별점
+        double newAverageRating = numerator / denominator; // 업데이트된 별점
 
         findBook.setAverageRating(newAverageRating); // 별점 업데이트
 
