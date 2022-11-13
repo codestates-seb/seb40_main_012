@@ -34,7 +34,7 @@ public class BookService {
 
         book.setBookCollectionBooks(bookCollectionBooks);
 
-        for(BookCollectionBook bookCollectionBook : bookCollectionBooks) {
+        for (BookCollectionBook bookCollectionBook : bookCollectionBooks) {
             bookCollectionBook.setBook(book);
             long collectionBookId = bookCollectionBook.getBookCollection().getCollectionId();
 //            bookCollectionService.findBookCollection(collectionBookId); // 컬렉션 비즈니스 로직 구현 후 추가
@@ -79,7 +79,7 @@ public class BookService {
         double numerator = (averageRating * ratingCount) + rating; // 분자
         long denominator = ratingCount + 1; // 분모
 
-        double newAverageRating = numerator / denominator; // 업데이트된 별점
+        double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
 
         findBook.setAverageRating(newAverageRating); // 별점 업데이트
 

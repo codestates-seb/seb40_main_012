@@ -116,16 +116,27 @@ public class CommentController {
         );
     }
 
-    @GetMapping("/comments")
-    public ResponseEntity getComments(@Positive @RequestParam int page,
-                                      @Positive @RequestParam(required = false, defaultValue = "15") int size) {
+//    @GetMapping("/comments") // 페이지네이션으로 조회
+//    public ResponseEntity getComments(@Positive @RequestParam int page,
+//                                      @Positive @RequestParam(required = false, defaultValue = "15") int size) {
+//
+//        Page<Comment> pageComments = commentService.findComments(page - 1, size);
+//        List<Comment> comments = pageComments.getContent();
+//        List<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(comments);
+//
+//        return new ResponseEntity<>(
+//                new MultiResponseDto<>(responses, pageComments), HttpStatus.OK
+//        );
+//    }
 
-        Page<Comment> pageComments = commentService.findComments(page - 1, size);
-        List<Comment> comments = pageComments.getContent();
-        List<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(comments);
+    @GetMapping("/comments") // 리스트로 조회
+    public ResponseEntity getComments() {
+
+        List<Comment> listComments = commentService.findComments();
+        List<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(listComments);
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(responses, pageComments), HttpStatus.OK
+                new SingleResponseDto<>(responses), HttpStatus.OK
         );
     }
 

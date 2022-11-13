@@ -110,16 +110,27 @@ public class PairingController {
         );
     }
 
-    @GetMapping("/pairings")
-    public ResponseEntity getPairings(@Positive @RequestParam int page,
-                                      @Positive @RequestParam(required = false, defaultValue = "15") int size) {
+//    @GetMapping("/pairings") // 페이지네이션으로 받기
+//    public ResponseEntity getPairings(@Positive @RequestParam int page,
+//                                      @Positive @RequestParam(required = false, defaultValue = "15") int size) {
+//
+//        Page<Pairing> pagePairings = pairingService.findPairings(page - 1, size);
+//        List<Pairing> pairings = pagePairings.getContent();
+//        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairings);
+//
+//        return new ResponseEntity<>(
+//                new MultiResponseDto<>(responses, pagePairings), HttpStatus.OK
+//        );
+//    }
 
-        Page<Pairing> pagePairings = pairingService.findPairings(page - 1, size);
-        List<Pairing> questions = pagePairings.getContent();
-        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(questions);
+    @GetMapping("/pairings") // 페이지네이션으로 받기
+    public ResponseEntity getPairings() {
+
+        List<Pairing> listPairings = pairingService.findPairings();
+        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(listPairings);
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(responses, pagePairings), HttpStatus.OK
+                new SingleResponseDto<>(responses), HttpStatus.OK
         );
     }
 
