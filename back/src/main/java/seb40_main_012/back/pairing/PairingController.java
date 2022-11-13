@@ -75,8 +75,8 @@ public class PairingController {
 
     @PatchMapping("/pairings/{pairing_id}/like")
     public ResponseEntity updateLikePairing(@RequestHeader("Authorization") long userId,
-                                     @PathVariable("pairing_id") @Positive long pairingId,
-                                     @Valid @RequestBody PairingDto.Like likePairing) {
+                                            @PathVariable("pairing_id") @Positive long pairingId,
+                                            @Valid @RequestBody PairingDto.Like likePairing) {
 
         likeService.createPairingLike(likePairing);
 
@@ -89,7 +89,7 @@ public class PairingController {
 
     @PatchMapping("/pairings/{pairing_id}")
     public ResponseEntity updateViewPairing(@RequestBody PairingDto.View viewPairing,
-                                             @PathVariable("pairing_id") @Positive long pairingId) {
+                                            @PathVariable("pairing_id") @Positive long pairingId) {
 //        Pairing pairing = pairingMapper.pairingViewToPairing(viewPairing);
         Pairing viewedPairing = pairingService.updateView(pairingId);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(viewedPairing);

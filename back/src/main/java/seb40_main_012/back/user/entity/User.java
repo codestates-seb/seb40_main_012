@@ -1,13 +1,16 @@
 package seb40_main_012.back.user.entity;
 
 import lombok.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import seb40_main_012.back.user.entity.enums.AgeType;
+import seb40_main_012.back.user.entity.enums.GenderType;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Setter
 @Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,25 +20,45 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    @Column(name = "user_id")
+    private Long id;
     private String email;
-    private String nickName;
+    private String nickname;
     private String password;
     private String introduction;
 
-    /*@OneToOne
-    private Gender gender;
+    @Enumerated(EnumType.STRING)
+    private GenderType gender;
 
-    @OneToOne
-    private AgeGroup ageGroup;*/
+    @Enumerated(EnumType.STRING)
+    private AgeType age;
 
-    //private List<UserCategory> category;
+    @OneToMany(mappedBy = "user")
+    private List<UserCategory> category = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
-    private List<String> roles = new ArrayList<>();
+//    @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
+//    private List<String> roles = new ArrayList<>();
 
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    @OneToMany(mappedBy = "user")
+    private List<Role> roles = new ArrayList<>();
+
+
+    public void updateNickName(String nickName) {
+        this.nickname = nickName;
+    }
+
+    public boolean verifyPassword(BCryptPasswordEncoder passwordEncoder, String password) {
+        return passwordEncoder.matches(password,this.password);
+    }
+    public void updatePassword(BCryptPasswordEncoder passwordEncoder, String password){
+        this.password = passwordEncoder.encode(password);
+    }
+
+    public void updateUserInfo(User user) {
+        this.introduction = user.getIntroduction();
+        this.gender = user.getGender();
+        this.age = user.getAge();
+        this.category = user.getCategory();
     }
 
 
