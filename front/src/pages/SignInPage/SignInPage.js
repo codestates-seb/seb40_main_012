@@ -50,10 +50,11 @@ const SignInPage = () => {
           <CssBaseline />
           <Box
             sx={{
-              marginTop: 8,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
+              justifyContent: 'center',
+              height: 'calc(100vh - 60px - 200px)', // header, footer
             }}
           >
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
