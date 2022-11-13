@@ -1,6 +1,6 @@
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../styles/theme';
-import { Link } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import Searchbar from './Searchbar';
 
 const HeaderContainer = styled.div`
@@ -27,6 +27,7 @@ const HeaderBtn = styled.button`
   font-size: 16px;
   font-weight: 700;
   border: none;
+  border-bottom: 3px solid transparent;
   margin: 0 15px;
   width: 60px;
   &:hover {
@@ -34,9 +35,20 @@ const HeaderBtn = styled.button`
   }
 `;
 
-const CollectionBtn = styled(HeaderBtn)``;
+const CollectionBtn = styled(HeaderBtn)`
+  height: 60px;
+  &:hover,
+  .selected {
+    border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor};
+  }
+`;
 const PairingBtn = styled(HeaderBtn)`
   margin-right: 330px;
+  height: 60px;
+  &:hover,
+  .selected {
+    border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor};
+  }
 `;
 
 const LoginOutBtn = styled(HeaderBtn)`
@@ -64,6 +76,8 @@ const MyPageIconContainer = styled.div`
 `;
 
 const Header = ({ isLogin = false }) => {
+  const location = useLocation();
+
   return (
     <ThemeProvider theme={theme}>
       <HeaderContainer>
@@ -76,10 +90,18 @@ const Header = ({ isLogin = false }) => {
           </Link>
         </LogoContainer>
         <Link to="/collection">
-          <CollectionBtn>컬렉션</CollectionBtn>
+          <CollectionBtn
+            className={location.pathname === '/collection' ? 'selected' : null}
+          >
+            컬렉션
+          </CollectionBtn>
         </Link>
         <Link to="/pairing">
-          <PairingBtn>페어링</PairingBtn>
+          <PairingBtn
+            className={location.pathname === '/pairing' ? 'selected' : null}
+          >
+            페어링
+          </PairingBtn>
         </Link>
         <Searchbar />
         {isLogin ? (
