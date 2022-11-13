@@ -19,7 +19,7 @@ public class BookWikiController {
     private final BookWikiService bookWikiService;
     private final BookWikiMapper bookWikiMapper;
 
-    @PostMapping("/{book_id}/wiki/add")
+    @PostMapping("/{book_id}/wikis/add")
     public ResponseEntity postBookWiki(@PathVariable("book_id") @Positive long bookId,
                                        @Valid @RequestBody BookWikiDto.Post postBookWiki) {
 
@@ -32,7 +32,7 @@ public class BookWikiController {
         );
     }
 
-    @PatchMapping("/{bookWiki_Id}/edit")
+    @PatchMapping("/wikis/{bookWiki_Id}/edit")
     public ResponseEntity patchBookWiki(@PathVariable("bookWiki_id") @Positive long bookWikiId,
                                         @Valid @RequestBody BookWikiDto.Patch patchBookWiki) {
 
@@ -45,7 +45,7 @@ public class BookWikiController {
         );
     }
 
-    @GetMapping("/{bookWiki_id}")
+    @GetMapping("/wikis/{bookWiki_id}")
     public ResponseEntity getBookWiki(@PathVariable("bookWiki_id") @Positive long bookWikiId) {
 
         BookWiki bookWiki = bookWikiService.findBookWiki(bookWikiId);
@@ -58,7 +58,7 @@ public class BookWikiController {
 
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
-    @DeleteMapping("/{bookWiki_id}/delete") //필요한가?
+    @DeleteMapping("/wikis/{bookWiki_id}/delete") //필요한가?
     public ResponseEntity deleteBookWiki() {
         return null;
     }
