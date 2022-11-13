@@ -28,6 +28,9 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long bookId;
 
+    @Column
+    private String title;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "genre")
     private Genre genre;
@@ -80,15 +83,15 @@ public class Book {
 //    @JsonManagedReference
 //    @OneToMany(mappedBy = "book") // 일대 다
 //    private List<BookCollection> bookCollections;
-//
-//    @JsonBackReference
-//    @ManyToOne(fetch = FetchType.LAZY) // 다대 일
-//    @JoinColumn(name = "bookCollection_id")
-//    private BookCollection bookCollection;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "book") // 다대 다
-    private List<BookCollectionBook> bookCollectionBooks;
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.LAZY) // 다대 일
+    @JoinColumn(name = "bookCollection_id")
+    private BookCollection bookCollection;
+
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "book") // 다대 다
+//    private List<BookCollectionBook> bookCollectionBooks;
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
     /*비슷한 책 목록*/

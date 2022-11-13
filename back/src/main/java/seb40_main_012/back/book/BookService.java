@@ -26,22 +26,22 @@ public class BookService {
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
     // 다대 다 매핑 준비
-    private final BookCollectionService bookCollectionService;
-
-    public Book createBook(Book book) {
-
-        List<BookCollectionBook> bookCollectionBooks = book.getBookCollectionBooks();
-
-        book.setBookCollectionBooks(bookCollectionBooks);
-
-        for (BookCollectionBook bookCollectionBook : bookCollectionBooks) {
-            bookCollectionBook.setBook(book);
-            long collectionBookId = bookCollectionBook.getBookCollection().getCollectionId();
-//            bookCollectionService.findBookCollection(collectionBookId); // 컬렉션 비즈니스 로직 구현 후 추가
-        }
-
-        return bookRepository.save(book);
-    }
+//    private final BookCollectionService bookCollectionService;
+//
+//    public Book createBook(Book book) {
+//
+//        List<BookCollectionBook> bookCollectionBooks = book.getBookCollectionBooks();
+//
+//        book.setBookCollectionBooks(bookCollectionBooks);
+//
+//        for (BookCollectionBook bookCollectionBook : bookCollectionBooks) {
+//            bookCollectionBook.setBook(book);
+//            long collectionBookId = bookCollectionBook.getBookCollection().getCollectionId();
+////            bookCollectionService.findBookCollection(collectionBookId); // 컬렉션 비즈니스 로직 구현 후 추가
+//        }
+//
+//        return bookRepository.save(book);
+//    }
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
 
