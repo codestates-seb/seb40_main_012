@@ -1,8 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.5'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id 'org.asciidoctor.jvm.convert' version "3.3.2" // Spring Rest Docs
-	id 'java'
+    id 'org.springframework.boot' version '2.7.5'
+    id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'org.asciidoctor.jvm.convert' version "3.3.2" // Spring Rest Docs
+    id 'java'
 }
 
 group = 'seb40_main_012'
@@ -10,47 +10,51 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 ext {
-	set('snippetsDir', file("build/generated-snippets")) // Spring Rest Docs
+    set('snippetsDir', file("build/generated-snippets")) // Spring Rest Docs
 }
 
 configurations {
-	asciidoctorExtensions // Spring Rest Docs
+    asciidoctorExtensions // Spring Rest Docs
 }
 
 dependencies {
 
-	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // Spring Rest Docs
-	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor' // Spring Rest Docs
-	testImplementation 'org.springframework.security:spring-security-test' // Spring Security Test
-	testImplementation 'org.springframework.boot:spring-boot-starter-test' // JUnit4 Test
-
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 사진 저장을 위해 추가
-	implementation 'org.springframework.boot:spring-boot-starter-hateoas' // 하이퍼링크를 위해 추가
-	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
-	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
-	runtimeOnly 'com.h2database:h2'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-
-
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-	runtimeOnly	'io.jsonwebtoken:jjwt-jackson:0.11.5'
-	implementation 'com.google.code.gson:gson'
+    //    --------------------------------------------------------------------------------------------
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:' // WebSocket
+    implementation 'org.springframework.boot:spring-boot-devtools:' // DevTools
+    //    --------------------------------------------------------------------------------------------
+    testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // Spring Rest Docs
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor' // Spring Rest Docs
+    testImplementation 'org.springframework.security:spring-security-test' // Spring Security Test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test' // JUnit4 Test
+    //    --------------------------------------------------------------------------------------------
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 사진 저장을 위해 추가
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas' // 하이퍼링크를 위해 추가
+    implementation 'org.mapstruct:mapstruct:1.5.3.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
+    runtimeOnly 'com.h2database:h2'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    //    --------------------------------------------------------------------------------------------
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+    implementation 'com.google.code.gson:gson'
+    //    --------------------------------------------------------------------------------------------
 }
 
 //tasks.named('test') {
@@ -58,39 +62,39 @@ dependencies {
 //}
 
 tasks.named('test') {
-	outputs.dir snippetsDir // Spring Rest Docs
-	useJUnitPlatform()
+    outputs.dir snippetsDir // Spring Rest Docs
+    useJUnitPlatform()
 }
 
 tasks.named('asciidoctor') { // Spring Rest Docs
-	configurations "asciidoctorExtensions"
-	inputs.dir snippetsDir
-	dependsOn test
+    configurations "asciidoctorExtensions"
+    inputs.dir snippetsDir
+    dependsOn test
 }
 
 task copyDocument(type: Copy) { // Spring Rest Docs
-	dependsOn asciidoctor
-	from file("${asciidoctor.outputDir}")
-	into file("src/main/resources/static/docs")
+    dependsOn asciidoctor
+    from file("${asciidoctor.outputDir}")
+    into file("src/main/resources/static/docs")
 }
 
 build { // Spring Rest Docs
-	dependsOn copyDocument
+    dependsOn copyDocument
 }
 
 bootJar { // Spring Rest Docs
-	dependsOn copyDocument
-	from("${asciidoctor.outputDir}") {
-		into 'static/docs'
-	}
+    dependsOn copyDocument
+    from("${asciidoctor.outputDir}") {
+        into 'static/docs'
+    }
 }
 
 test { // 빌드시 테스트 제외
-	exclude '**/*'
+    exclude '**/*'
 }
 
 asciidoctor { // 빌드시 asciidoctor 제외
-	sources {
-		exclude 'extensions/**'
-	}
+    sources {
+        exclude 'extensions/**'
+    }
 }
