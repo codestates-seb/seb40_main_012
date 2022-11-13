@@ -49,6 +49,7 @@ public class BookWikiDto {
     @AllArgsConstructor
     public static class Response{
 
+        private long bookId;
         private long bookWikiId;
         private String imagePath;
         private String spacetimeBackground;
