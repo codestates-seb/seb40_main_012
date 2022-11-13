@@ -25,7 +25,7 @@ public class BookWikiController {
 
         BookWiki bookWiki = bookWikiMapper.bookWikiPostToBookWiki(postBookWiki);
         BookWiki createdBookWiki = bookWikiService.createBookWiki(bookWiki);
-        BookWikiDto.Response response = bookWikiMapper.bookWikiTOBookWikiResponse(createdBookWiki);
+        BookWikiDto.Response response = bookWikiMapper.bookWikiToBookWikiResponse(createdBookWiki);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED
@@ -38,7 +38,7 @@ public class BookWikiController {
 
         BookWiki bookWiki = bookWikiMapper.bookWikiPatchToBookWiki(patchBookWiki);
         BookWiki updatedBookWiki = bookWikiService.updateBookWiki(bookWiki, bookWikiId);
-        BookWikiDto.Response response = bookWikiMapper.bookWikiTOBookWikiResponse(updatedBookWiki);
+        BookWikiDto.Response response = bookWikiMapper.bookWikiToBookWikiResponse(updatedBookWiki);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
@@ -49,7 +49,7 @@ public class BookWikiController {
     public ResponseEntity getBookWiki(@PathVariable("bookWiki_id") @Positive long bookWikiId) {
 
         BookWiki bookWiki = bookWikiService.findBookWiki(bookWikiId);
-        BookWikiDto.Response response = bookWikiMapper.bookWikiTOBookWikiResponse(bookWiki);
+        BookWikiDto.Response response = bookWikiMapper.bookWikiToBookWikiResponse(bookWiki);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
