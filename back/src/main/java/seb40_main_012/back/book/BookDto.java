@@ -52,7 +52,7 @@ public class BookDto {
         private long bookId;
         private Genre genre;
         private BookWiki bookWiki;
-        private long averageRating;
+        private double averageRating;
         private List<Comment> comments;
         private List<Pairing> pairings;
         private List<BookCollection> bookCollections;

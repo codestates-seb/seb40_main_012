@@ -44,7 +44,7 @@ public class Book {
     /*도서 별점*/
     //    --------------------------------------------------------------------------------------------
     @Column
-    private long averageRating;
+    private double averageRating;
     @Column
     private long ratingCount;
     //    @JsonManagedReference
