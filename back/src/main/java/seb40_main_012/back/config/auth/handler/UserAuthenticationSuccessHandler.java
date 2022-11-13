@@ -12,6 +12,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
+    // 로그인 인증 성공 시
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
