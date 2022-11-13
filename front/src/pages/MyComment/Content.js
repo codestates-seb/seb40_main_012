@@ -118,7 +118,21 @@ const Content = () => {
         <Grid container>
           <Grid item xs={5.5} sx={{ mt: 1, mb: 2 }}>
             <CommentContainer>
-              <input
+              {editMode ? (
+                <>
+                  <input
+                    type="checkbox"
+                    name="select-all"
+                    onChange={(e) => handleAllCheck(e.target.checked)}
+                    checked={checkItems.length === data.length ? true : false}
+                  ></input>
+                  <Typography color="#737373" variant="body2" gutterBottom>
+                    전체 선택
+                  </Typography>
+                </>
+              ) : null}
+            </CommentContainer>
+            {/* <input
                 type="checkbox"
                 name="select-all"
                 onChange={(e) => handleAllCheck(e.target.checked)}
@@ -127,8 +141,7 @@ const Content = () => {
 
               <Typography color="#737373" variant="body2" gutterBottom>
                 전체 선택
-              </Typography>
-            </CommentContainer>
+              </Typography> */}
           </Grid>
           <Grid item xs={4.5} sx={{ mt: 1, mb: 2 }}>
             <Typography color="#737373" variant="body2" gutterBottom>
@@ -201,14 +214,21 @@ const Content = () => {
             {data?.map((data, key) => (
               <div key={key}>
                 <CommentContainer>
-                  <input
-                    type="checkbox"
-                    name={`select-${data.id}`}
-                    onChange={(e) =>
-                      handleSingleCheck(e.target.checked, data.id)
-                    }
-                    checked={checkItems.includes(data.id) ? true : false}
-                  />
+                  <Grid item xs={0.4}>
+                    {editMode ? (
+                      <>
+                        <input
+                          type="checkbox"
+                          name={`select-${data.id}`}
+                          onChange={(e) =>
+                            handleSingleCheck(e.target.checked, data.id)
+                          }
+                          checked={checkItems.includes(data.id) ? true : false}
+                        />
+                      </>
+                    ) : null}
+                  </Grid>
+
                   <Grid item xs={2}>
                     <BookImg>
                       <img
