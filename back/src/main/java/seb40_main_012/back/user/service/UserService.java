@@ -68,7 +68,7 @@ public class UserService {
     }
 
     public User editUserInfo(User user, List<String> category){
-        User findUser = findVerifiedUser(user.getId());
+        User findUser = findVerifiedUser(user.getUserId());
         findUser.updateUserInfo(user);
         return null;
     }

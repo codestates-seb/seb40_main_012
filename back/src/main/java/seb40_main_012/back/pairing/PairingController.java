@@ -1,7 +1,6 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
@@ -10,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.like.LikeService;
-import seb40_main_012.back.dto.MultiResponseDto;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.pairing.entity.Pairing;
 
@@ -80,12 +78,28 @@ public class PairingController {
 
         likeService.createPairingLike(likePairing);
 
-        Pairing pairing = pairingService.updateLike(pairingMapper.pairingLikeToPairing(likePairing), pairingId);
+        likePairing.setPairingId(pairingId);
+
+        Pairing pairing = pairingService.updateLike(pairingMapper.pairingLikeToPairing(likePairing));
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(pairingMapper.pairingToPairingResponse(pairing)), HttpStatus.OK
         );
     }
+
+//    @PatchMapping("/pairings/{pairing_id}/like")
+//    public ResponseEntity updateLikePairing(@RequestHeader("Authorization") long userId,
+//                                            @PathVariable("pairing_id") @Positive long pairingId,
+//                                            @Valid @RequestBody PairingDto.Like likePairing) {
+//
+//        likeService.createPairingLike(likePairing);
+//
+//        Pairing pairing = pairingService.updateLike(pairingMapper.pairingLikeToPairing(likePairing));
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(pairingMapper.pairingToPairingResponse(pairing)), HttpStatus.OK
+//        );
+//    }
 
     @PatchMapping("/pairings/{pairing_id}")
     public ResponseEntity updateViewPairing(@RequestBody PairingDto.View viewPairing,

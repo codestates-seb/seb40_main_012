@@ -1,8 +1,6 @@
 package seb40_main_012.back.common.comment;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,7 +13,6 @@ import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
-import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -40,7 +37,6 @@ public class CommentService {
     private final BookCollectionRepository bookCollectionRepository;
     private final UserService userService;
     private final UserRepository userRepository;
-    private final LikeService likeService;
 
     public Comment createBookComment(Comment comment, long bookId) {
 
@@ -92,11 +88,11 @@ public class CommentService {
         return commentRepository.save(findComment);
     }
 
-    public Comment updateLike(Comment comment, long commentId) { // Like Count 값만 변경
+    public Comment updateLike(Comment comment) { // Like Count 값만 변경
 
-        Comment findComment = findVerifiedComment(commentId);
+        Comment findComment = findVerifiedComment(comment.getCommentId());
 
-        findComment.setLikeCount(findComment.getLikeCount());
+        findComment.setLikeCount(comment.getLikeCount());
 
         return commentRepository.save(findComment);
     }

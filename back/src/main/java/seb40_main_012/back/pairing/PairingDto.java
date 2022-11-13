@@ -70,9 +70,8 @@ public class PairingDto {
     public static class Like {
 
         private long pairingId;
-        private long userId;
+//        private long userId;
         private long like;
-
     }
 
     @Data

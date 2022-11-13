@@ -1,7 +1,9 @@
 package seb40_main_012.back.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
@@ -21,9 +23,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id;
+    private Long userId;
     private String email;
-    private String nickname;
+    private String nickName;
     private String password;
     private String introduction;
 
@@ -36,15 +38,18 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserCategory> category = new ArrayList<>();
 
-//    @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
-//    private List<String> roles = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
+    private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Role> roles = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<Role> roles = new ArrayList<>();
 
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+//    private final List<Like> likes = new ArrayList<>();
 
     public void updateNickName(String nickName) {
-        this.nickname = nickName;
+        this.nickName = nickName;
     }
 
     public boolean verifyPassword(BCryptPasswordEncoder passwordEncoder, String password) {
