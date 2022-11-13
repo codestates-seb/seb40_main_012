@@ -1,8 +1,8 @@
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import StickyFooter from './StickyFooter';
 import Header from './Header';
+import Footer from './Footer';
 
 const PageContainer = ({ children, header, footer }) => {
   return (
@@ -18,7 +18,7 @@ const PageContainer = ({ children, header, footer }) => {
       <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="md">
         {children}
       </Container>
-      {footer ? <StickyFooter /> : null}
+      {footer ? <Footer /> : null}
     </Box>
   );
 };
