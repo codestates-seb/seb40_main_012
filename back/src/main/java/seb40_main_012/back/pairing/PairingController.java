@@ -123,7 +123,7 @@ public class PairingController {
 //        );
 //    }
 
-    @GetMapping("/pairings") // 페이지네이션으로 받기
+    @GetMapping("/pairings") // 리스트로 받기
     public ResponseEntity getPairings() {
 
         List<Pairing> listPairings = pairingService.findPairings();
