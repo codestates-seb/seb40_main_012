@@ -12,7 +12,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<SignInPage />} />
-        <Route path="/mypage" element={<MyComment />} />
+        <Route path="/mypage/mycomment" element={<MyComment />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </BrowserRouter>

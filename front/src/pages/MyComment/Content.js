@@ -8,6 +8,8 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
+import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 
 const ContentContainer = styled.div`
   input {
@@ -16,6 +18,7 @@ const ContentContainer = styled.div`
     height: 20px;
     border: 1.5px solid gainsboro;
     border-radius: 0.35rem;
+    margin-top: -0.1px;
     &:checked {
       border-color: transparent;
       background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
@@ -29,8 +32,8 @@ const ContentContainer = styled.div`
 const BookImg = styled.div`
   .resize {
     box-sizing: inherit;
-    width: 130px !important;
-    height: 150px !important;
+    width: 108px !important;
+    height: 164px !important;
     margin-left: 10px;
   }
 `;
@@ -64,6 +67,12 @@ const ButtonCSS = styled.button`
   outline: 0;
   background: transparent;
 `;
+
+// 컴포넌트 반복해서 보여줄 함수, data.star의 수가 1이면 1번, 5면 5번
+// const showStar = () => {
+
+// };
+
 const Content = () => {
   // const [view, setView] = useState(1);
   const [editMode, setEditMode] = useState(false);
@@ -78,18 +87,24 @@ const Content = () => {
   const data = [
     {
       id: 0,
-      src: 'https://img1.goodfon.com/wallpaper/nbig/9/68/minas-gerais-brazil-nature.jpg',
-      content: '본문 1',
+      src: 'https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300',
+      content:
+        '사상사 연구자이자 칼럼니스트인 김영민 서울대 교수가 들려주는 인생의 허무와 더불어 사는 법. 북송시대 문장가 소식의 「적벽부」를 모티프 삼아, 인류의 보편적 문제인 ‘허무’에 대한 오래된 사유의 결과물을 그만의 독특한 시선으로 포착해내고 재해석했다. 허무라는 주제를 다룬 만큼 죽음과 해골이 등장하지만, 김영민식의 유머와 통찰 덕분에 너무 무겁지 않으면서도 너무 가볍지 않게 허무를 직면하고 받아들일 수 있다. 인생이 허무하다고 느껴지는 순간을 경험한 이라면 그의 글을 통해 일상을 버틸 수 있는 작은 위안을 얻을 수 있다. 천천히 읽을수록, 곁에 두고 오래 음미할수록 그 가치가 빛을 발한다.',
+      star: 5,
     },
     {
       id: 1,
-      src: 'https://destinosmineiros.com.br/wp-content/uploads/2015/12/Fundo-Ouro-Preto-11.jpg',
-      content: '본문 2',
+      src: 'https://shopping-phinf.pstatic.net/main_3248962/32489623089.20221019150721.jpg?type=w300',
+      content:
+        '‘버지니아 울프 전집’이 29년 만에 완간을 기념하여 특별한 디자인과 더욱 가벼워진 판형으로 독자들을 찾아간다. 조이스, 프루스트와 함께 ‘의식의 흐름’의 대가라 불리는 울프는 이 실험적인 기법을 통해 인간 심리의 가장 깊은 곳까지 파고든 작가이다.',
+      star: 3,
     },
     {
       id: 2,
-      src: 'https://especiais.g1.globo.com/minas-gerais/2018/casca-danta-crioulo-tabuleiro-e-tempo-perdido-conheca-as-cachoeiras-de-minas/data/fundao_src.jpg',
-      content: '본문 3',
+      src: 'https://image.aladin.co.kr/product/23601/3/cover500/e702537182_1.jpg',
+      content:
+        '4권은 제인 오스틴이 스무 살 때 쓴 것으로, 영국을 무대로 여성의 결혼과 오해와 편견에서 일어나는 사랑의 엇갈림을 그린 연애 소설이다. 세밀한 인물 묘사와 풍자, 아이러니, 간결하게 대화를 처리하는 기법으로 오스틴의 작품 중 걸작으로 유명하다.',
+      star: 4,
     },
   ];
 
@@ -179,95 +194,109 @@ const Content = () => {
               </ButtonCSS>
             )}
           </Grid>
-
-          <div>
-            {data?.map((data, key) => (
-              <div key={key}>
-                <CommentContainer>
-                  <Grid item xs={0.5} sx={{ width: 20 }}>
-                    {editMode ? (
-                      <>
-                        <input
-                          type="checkbox"
-                          name={`select-${data.id}`}
-                          onChange={(e) =>
-                            handleSingleCheck(e.target.checked, data.id)
-                          }
-                          checked={checkItems.includes(data.id) ? true : false}
-                        />
-                      </>
-                    ) : null}
-                  </Grid>
-
-                  <Grid item xs={2} sx={{ minWidth: 150 }}>
-                    <BookImg>
-                      <img
-                        className="resize"
-                        src={data.src}
-                        alt="book thumbnail"
-                      ></img>
-                    </BookImg>
-                  </Grid>
-                  <Grid item xs={9} sx={{ width: 650 }}>
-                    <FlexBox>
-                      <Typography
-                        color="#232627"
-                        sx={{
-                          height: 125,
-                        }}
-                        variant="body2"
-                        gutterBottom
-                      >
-                        생각이 많은 건 말이야 당연히 해야 할 일이야 나에겐
-                        우리가 지금 일순위야 안전한 유리병을 핑계로 바람을 가둬
-                        둔 것 같지만 기억나? 그날의 우리가 잡았던 그 손엔 말이야
-                        설레임보다 커다란 믿음이 담겨서 난 함박웃음을 지었지만
-                        울음이 날 것도 같았어 소중한 건 언제나 두려움이니까 문을
-                        열면 들리던 목소리 너로 인해 변해있던 따뜻한 공기 여전히
-                        자신 없지만 안녕히 저기 사라진 별의 자리 아스라이 하얀
-                        빛 한동안은 꺼내 볼 수 있을 거야 아낌없이 반짝인 시간은
-                        조금씩 옅어져 가더라도 너와 내 맘에 살아 숨 쉴 테니
-                      </Typography>
-
-                      <div className="heart-star-title">
-                        <Grid item xs={3} sx={{ width: 225 }}>
-                          <div>⭐⭐⭐⭐⭐</div>
-                        </Grid>
-                        <Grid item xs={3} sx={{ width: 225 }} color="#BFBFBF">
-                          <div>❤️177</div>
-                        </Grid>
-                        <Grid
-                          item
-                          xs={6}
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'row-reverse',
-                            width: 200,
-                          }}
-                          align="right"
-                          color="#737373"
-                        >
-                          <div>제목과 작가🎖</div>
-                        </Grid>
-                      </div>
-                    </FlexBox>
-                  </Grid>
-                  <Grid
-                    item
-                    xs={0.5}
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row-reverse',
-                      width: 20,
-                    }}
-                  >
-                    {editMode ? <DeleteOutlinedIcon color="disabled" /> : null}
-                  </Grid>
-                </CommentContainer>
-              </div>
-            ))}
-          </div>
         </Grid>
+
+        <div>
+          {data?.map((data, key) => (
+            <div key={key}>
+              <Grid
+                container
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                }}
+              >
+                <Grid item xs={0.5} sx={{ width: 20 }}>
+                  {editMode ? (
+                    <>
+                      <input
+                        type="checkbox"
+                        name={`select-${data.id}`}
+                        onChange={(e) =>
+                          handleSingleCheck(e.target.checked, data.id)
+                        }
+                        checked={checkItems.includes(data.id) ? true : false}
+                      />
+                    </>
+                  ) : null}
+                </Grid>
+
+                <Grid item xs={2}>
+                  <BookImg>
+                    <img
+                      className="resize"
+                      src={data.src}
+                      alt="book thumbnail"
+                    ></img>
+                  </BookImg>
+                </Grid>
+                <Grid item xs={9}>
+                  <FlexBox>
+                    <Typography
+                      color="#232627"
+                      sx={{
+                        height: 125,
+                      }}
+                      variant="body2"
+                      gutterBottom
+                    >
+                      {data.content}
+                    </Typography>
+
+                    <div className="heart-star-title">
+                      <Grid item xs={3}>
+                        <StarBorderRoundedIcon
+                          align="center"
+                          style={{ color: 'FFF599' }}
+                        />
+                      </Grid>
+                      <Grid
+                        item
+                        xs={3}
+                        sx={{
+                          display: 'flex',
+
+                          alignItems: 'center',
+                        }}
+                        color="#BFBFBF"
+                      >
+                        <FavoriteTwoToneIcon
+                          sx={{ width: 19.5, height: 19.5 }}
+                          align="center"
+                          style={{ color: 'FFD8D8' }}
+                        />
+                        177
+                      </Grid>
+                      <Grid
+                        item
+                        xs={6}
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'row-reverse',
+                        }}
+                        align="right"
+                        color="#737373"
+                      >
+                        <div>제목과 작가🎖</div>
+                      </Grid>
+                    </div>
+                  </FlexBox>
+                </Grid>
+                <Grid
+                  item
+                  xs={0.5}
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'row-reverse',
+                  }}
+                >
+                  {editMode ? <DeleteOutlinedIcon color="disabled" /> : null}
+                </Grid>
+              </Grid>
+            </div>
+          ))}
+        </div>
       </ContentContainer>
     </>
   );

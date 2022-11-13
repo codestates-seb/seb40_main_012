@@ -39,7 +39,12 @@ const Header = () => {
                   width: 80,
                   height: 80,
                 }}
-              ></Avatar>
+              >
+                <img
+                  src="https://styles.redditmedia.com/t5_33mhbo/styles/profileIcon_7f1481qm5y291.jpeg?width=256&height=256&frame=1&crop=256:256,smart&s=6cc29126b9f6853db131a0f5189c8e86eff9a20e"
+                  alt="cat profile"
+                ></img>
+              </Avatar>
             </Grid>
             <Grid item xs={7.2}>
               <Box
@@ -66,10 +71,12 @@ const Header = () => {
             <Grid item xs={2.4}>
               <ButtonCSS>
                 <Typography
-                  color=""
-                  sx={{ mt: 1.6 }}
+                  sx={{ mt: 4 }}
                   variant="body2"
                   gutterBottom
+                  style={{
+                    fontSize: 1,
+                  }}
                 >
                   내 정보 수정
                 </Typography>
