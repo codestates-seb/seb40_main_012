@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import seb40_main_012.back.advice.ErrorResponse;
+import seb40_main_012.back.config.auth.utils.ErrorResponder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,19 +15,12 @@ import java.io.IOException;
 
 @Slf4j
 public class UserAuthenticationFailureHandler implements AuthenticationFailureHandler {
+    // 로그인 인증 실패 시
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
         log.error("# Authentication failed: {}", exception.getMessage());
 
-
-    }
-
-    private void sendErrorResponse(HttpServletResponse response) throws IOException {
-        Gson gson = new Gson();
-        ErrorResponse errorResponse = ErrorResponse.of(HttpStatus.UNAUTHORIZED);
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        response.getWriter().write(gson.toJson(errorResponse, ErrorResponse.class));
+        ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
     }
 }
