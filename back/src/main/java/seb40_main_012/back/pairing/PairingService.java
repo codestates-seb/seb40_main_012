@@ -17,6 +17,7 @@ import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -99,11 +100,19 @@ public class PairingService {
         return findVerifiedPairing(pairingId);
     }
 
-    public Page<Pairing> findPairings(int page, int size) { // 페이징 처리 및 좋아요 내림차순 정렬
+//    public Page<Pairing> findPairings(int page, int size) { // 페이징 처리 및 좋아요 내림차순 정렬
+//
+//        return pairingRepository.findAll(
+//
+//                PageRequest.of(page, size, Sort.by("likeCount").descending())
+//        );
+//    }
+
+    public List<Pairing> findPairings() { // 리스트 처리 및 좋아요 내림차순 정렬
 
         return pairingRepository.findAll(
 
-                PageRequest.of(page, size, Sort.by("likeCount").descending())
+               Sort.by("likeCount").descending()
         );
     }
 

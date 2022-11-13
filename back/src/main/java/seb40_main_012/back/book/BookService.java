@@ -26,22 +26,22 @@ public class BookService {
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
     // 다대 다 매핑 준비
-    private final BookCollectionService bookCollectionService;
-
-    public Book createBook(Book book) {
-
-        List<BookCollectionBook> bookCollectionBooks = book.getBookCollectionBooks();
-
-        book.setBookCollectionBooks(bookCollectionBooks);
-
-        for(BookCollectionBook bookCollectionBook : bookCollectionBooks) {
-            bookCollectionBook.setBook(book);
-            long collectionBookId = bookCollectionBook.getBookCollection().getCollectionId();
-//            bookCollectionService.findBookCollection(collectionBookId); // 컬렉션 비즈니스 로직 구현 후 추가
-        }
-
-        return bookRepository.save(book);
-    }
+//    private final BookCollectionService bookCollectionService;
+//
+//    public Book createBook(Book book) {
+//
+//        List<BookCollectionBook> bookCollectionBooks = book.getBookCollectionBooks();
+//
+//        book.setBookCollectionBooks(bookCollectionBooks);
+//
+//        for (BookCollectionBook bookCollectionBook : bookCollectionBooks) {
+//            bookCollectionBook.setBook(book);
+//            long collectionBookId = bookCollectionBook.getBookCollection().getCollectionId();
+////            bookCollectionService.findBookCollection(collectionBookId); // 컬렉션 비즈니스 로직 구현 후 추가
+//        }
+//
+//        return bookRepository.save(book);
+//    }
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
 
@@ -73,13 +73,13 @@ public class BookService {
         Book findBook = optionalBook.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
 
+        double averageRating = findBook.getAverageRating(); // 현재 평균 별점
         long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
-        long averageRating = findBook.getAverageRating(); // 현재 평균 별점
 
-        long numerator = (averageRating * ratingCount) + rating; // 분자
+        double numerator = (averageRating * ratingCount) + rating; // 분자
         long denominator = ratingCount + 1; // 분모
 
-        long newAverageRating = numerator / denominator; // 업데이트된 별점
+        double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
 
         findBook.setAverageRating(newAverageRating); // 별점 업데이트
 

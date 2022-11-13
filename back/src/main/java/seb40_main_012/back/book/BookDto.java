@@ -26,6 +26,7 @@ public class BookDto {
     }
 
     @Data
+    @Builder
     public static class View {
 
         private long bookId;
@@ -34,6 +35,7 @@ public class BookDto {
     }
 
     @Data
+    @Builder
     public static class Rating {
 
         private long bookId;
@@ -50,7 +52,7 @@ public class BookDto {
         private long bookId;
         private Genre genre;
         private BookWiki bookWiki;
-        private long averageRating;
+        private double averageRating;
         private List<Comment> comments;
         private List<Pairing> pairings;
         private List<BookCollection> bookCollections;

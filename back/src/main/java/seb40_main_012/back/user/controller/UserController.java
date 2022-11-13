@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.user.dto.UserDto;
+import seb40_main_012.back.user.dto.UserInfoDto;
+import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.mapper.UserMapper;
 import seb40_main_012.back.user.service.UserService;
@@ -28,26 +30,40 @@ public class UserController {
                 new SingleResponseDto<>(mapper.userToUserResponse(createdUser)), HttpStatus.CREATED);
     }
 
-//    @PatchMapping("/nickname")
-//    public void patchNickname(@RequestBody UserDto.PostDto request) {
-//        userService.updateNickname(request.getNickname);
-//    }
+    @PatchMapping("/nickname")
+    @ResponseStatus(HttpStatus.OK)
+    public void patchNickname(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Profile request) {
+        userService.updateNickname(userId,request.getNickname());
+    }
 
-    @PatchMapping("/password")
-    public void patchPassword(){}
+    @PostMapping("/password/current")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean verifyPassword(@RequestHeader("Authorization") Long userId,String currentPassword){
+        return userService.verifyPassword(userId,currentPassword);
+    }
 
+    @PatchMapping("/password/update")
+    @ResponseStatus(HttpStatus.OK)
+    public void patchPassword(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Password request){
+        userService.updatePassword(userId,request.getPassword());
+    }
+
+    //    @PatchMapping
+//    public void patchImage(){}
+//
     @PatchMapping
-    public void patchImage(){}
-
-//    @PatchMapping
-//    public UserDto.ResponseDto patchUserInfo(){}
+    @ResponseStatus(HttpStatus.OK)
+    public UserInfoDto.Response patchUserInfo(@RequestHeader("Authorization") Long userId, UserInfoDto.Post request){
+        User editedUser = userService.editUserInfo(request.toEntity(),request.getCategory());
+        return null;
+    }
 //
 //    @PatchMapping
 //    public UserDto.ResponseDto patchProfile(){}
-
-    @DeleteMapping
-    public void deleteUser(){}
-
+//
+//    @DeleteMapping
+//    public void deleteUser(){}
+//
 //    @GetMapping
 //    public UserDto.ResponseDto getUserComment(){}
 //

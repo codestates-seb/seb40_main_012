@@ -23,6 +23,7 @@ import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -113,9 +114,14 @@ public class CommentService {
         return findVerifiedComment(commentId);
     }
 
-    public Page<Comment> findComments(int page, int size) {
+//    public Page<Comment> findComments(int page, int size) { // 페이지네이션으로 받기
+//
+//        return commentRepository.findAll(PageRequest.of(page, size, Sort.by("likeCount").descending()));
+//    }
 
-        return commentRepository.findAll(PageRequest.of(page, size, Sort.by("likeCount").descending()));
+    public List<Comment> findComments() { // 리스트 처리 및 좋아요 내림차순 정렬
+
+        return commentRepository.findAll(Sort.by("likeCount").descending());
     }
 
     public void deleteComment(long commentId) {

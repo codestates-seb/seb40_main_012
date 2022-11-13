@@ -75,24 +75,24 @@ public class PairingController {
 
     @PatchMapping("/pairings/{pairing_id}/like")
     public ResponseEntity updateLikePairing(@RequestHeader("Authorization") long userId,
-                                     @PathVariable("pairing_id") @Positive long pairingId,
-                                     @Valid @RequestBody PairingDto.Like likePairing) {
+                                            @PathVariable("pairing_id") @Positive long pairingId,
+                                            @Valid @RequestBody PairingDto.Like likePairing) {
 
         likeService.createPairingLike(likePairing);
 
         Pairing pairing = pairingService.updateLike(pairingMapper.pairingLikeToPairing(likePairing), pairingId);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(pairingMapper.pairingTOPairingResponse(pairing)), HttpStatus.OK
+                new SingleResponseDto<>(pairingMapper.pairingToPairingResponse(pairing)), HttpStatus.OK
         );
     }
 
     @PatchMapping("/pairings/{pairing_id}")
     public ResponseEntity updateViewPairing(@RequestBody PairingDto.View viewPairing,
-                                             @PathVariable("pairing_id") @Positive long pairingId) {
+                                            @PathVariable("pairing_id") @Positive long pairingId) {
 //        Pairing pairing = pairingMapper.pairingViewToPairing(viewPairing);
         Pairing viewedPairing = pairingService.updateView(pairingId);
-        PairingDto.Response response = pairingMapper.pairingTOPairingResponse(viewedPairing);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(viewedPairing);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
@@ -103,23 +103,34 @@ public class PairingController {
     public ResponseEntity getPairing(@PathVariable("pairing_id") @Positive long pairingId) {
 
         Pairing pairing = pairingService.findPairing(pairingId);
-        PairingDto.Response response = pairingMapper.pairingTOPairingResponse(pairing);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
         );
     }
 
-    @GetMapping("/pairings")
-    public ResponseEntity getPairings(@Positive @RequestParam int page,
-                                      @Positive @RequestParam(required = false, defaultValue = "15") int size) {
+//    @GetMapping("/pairings") // 페이지네이션으로 받기
+//    public ResponseEntity getPairings(@Positive @RequestParam int page,
+//                                      @Positive @RequestParam(required = false, defaultValue = "15") int size) {
+//
+//        Page<Pairing> pagePairings = pairingService.findPairings(page - 1, size);
+//        List<Pairing> pairings = pagePairings.getContent();
+//        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairings);
+//
+//        return new ResponseEntity<>(
+//                new MultiResponseDto<>(responses, pagePairings), HttpStatus.OK
+//        );
+//    }
 
-        Page<Pairing> pagePairings = pairingService.findPairings(page - 1, size);
-        List<Pairing> questions = pagePairings.getContent();
-        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(questions);
+    @GetMapping("/pairings") // 리스트로 받기
+    public ResponseEntity getPairings() {
+
+        List<Pairing> listPairings = pairingService.findPairings();
+        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(listPairings);
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(responses, pagePairings), HttpStatus.OK
+                new SingleResponseDto<>(responses), HttpStatus.OK
         );
     }
 

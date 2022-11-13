@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 public class BookWikiDto {
 
     @Data
+    @Builder
     public static class Post{
 
         private String imagePath;
@@ -22,6 +23,7 @@ public class BookWikiDto {
 
     }
     @Data
+    @Builder
     public static class Patch{
 
         private String imagePath;
@@ -34,6 +36,7 @@ public class BookWikiDto {
 
     }
     @Data
+    @Builder
     public static class View{
 
         private long commentId;
@@ -46,6 +49,7 @@ public class BookWikiDto {
     @AllArgsConstructor
     public static class Response{
 
+        private long bookId;
         private long bookWikiId;
         private String imagePath;
         private String spacetimeBackground;

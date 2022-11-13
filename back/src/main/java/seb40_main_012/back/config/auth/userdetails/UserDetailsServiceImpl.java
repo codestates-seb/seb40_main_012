@@ -35,9 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final class UserDetailsImpl extends User implements UserDetails {
         UserDetailsImpl(User user) {
-            setUserId(user.getUserId());
+            setId(user.getId());
             setEmail(user.getEmail());
-            setNickName(user.getNickname());
+            updateNickName(user.getNickname());
             setIntroduction(user.getIntroduction());
             setPassword(user.getPassword());
             setRoles(user.getRoles());
@@ -45,7 +45,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         @Override
         public Collection<? extends GrantedAuthority> getAuthorities() {
-            return authorityUtils.createAuthorities(this.getRoles());
+//            return authorityUtils.createAuthorities(this.getRoles());
+            return null; //에러 때문에 주석 처리하였습니다.
         }
 
         @Override

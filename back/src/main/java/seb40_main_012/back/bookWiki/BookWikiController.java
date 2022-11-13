@@ -19,37 +19,37 @@ public class BookWikiController {
     private final BookWikiService bookWikiService;
     private final BookWikiMapper bookWikiMapper;
 
-    @PostMapping("/{book_id}/wiki/add")
+    @PostMapping("/{book_id}/wikis/add")
     public ResponseEntity postBookWiki(@PathVariable("book_id") @Positive long bookId,
                                        @Valid @RequestBody BookWikiDto.Post postBookWiki) {
 
         BookWiki bookWiki = bookWikiMapper.bookWikiPostToBookWiki(postBookWiki);
         BookWiki createdBookWiki = bookWikiService.createBookWiki(bookWiki);
-        BookWikiDto.Response response = bookWikiMapper.bookWikiTOBookWikiResponse(createdBookWiki);
+        BookWikiDto.Response response = bookWikiMapper.bookWikiToBookWikiResponse(createdBookWiki);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED
         );
     }
 
-    @PatchMapping("/{bookWiki_Id}/edit")
+    @PatchMapping("/wikis/{bookWiki_Id}/edit")
     public ResponseEntity patchBookWiki(@PathVariable("bookWiki_id") @Positive long bookWikiId,
                                         @Valid @RequestBody BookWikiDto.Patch patchBookWiki) {
 
         BookWiki bookWiki = bookWikiMapper.bookWikiPatchToBookWiki(patchBookWiki);
         BookWiki updatedBookWiki = bookWikiService.updateBookWiki(bookWiki, bookWikiId);
-        BookWikiDto.Response response = bookWikiMapper.bookWikiTOBookWikiResponse(updatedBookWiki);
+        BookWikiDto.Response response = bookWikiMapper.bookWikiToBookWikiResponse(updatedBookWiki);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
         );
     }
 
-    @GetMapping("/{bookWiki_id}")
+    @GetMapping("/wikis/{bookWiki_id}")
     public ResponseEntity getBookWiki(@PathVariable("bookWiki_id") @Positive long bookWikiId) {
 
         BookWiki bookWiki = bookWikiService.findBookWiki(bookWikiId);
-        BookWikiDto.Response response = bookWikiMapper.bookWikiTOBookWikiResponse(bookWiki);
+        BookWikiDto.Response response = bookWikiMapper.bookWikiToBookWikiResponse(bookWiki);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
@@ -58,7 +58,7 @@ public class BookWikiController {
 
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
-    @DeleteMapping("/{bookWiki_id}/delete") //필요한가?
+    @DeleteMapping("/wikis/{bookWiki_id}/delete") //필요한가?
     public ResponseEntity deleteBookWiki() {
         return null;
     }

@@ -21,6 +21,8 @@ public enum ExceptionCode {
     USER_NOT_FOUND(404,"User Not Found"),
     EMAIL_EXISTS(409, "Email Exists"),
     NICKNAME_EXISTS(409, "Nickname Exists"),
+    PASSWORD_CANNOT_CHANGE(403, "Cannot Use The Same Password"),
+
 
     USER_NOT_ALLOWED(403, "User Not Allowed"),
     USER_CANNOT_CHANGE(403,"User Can Not Be Changed"),

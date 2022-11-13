@@ -12,6 +12,6 @@ public interface PairingMapper {
     Pairing pairingPatchToPairing(PairingDto.Patch patchPairing);
     Pairing pairingLikeToPairing(PairingDto.Like likePairing);
 //    Pairing pairingViewToPairing(PairingDto.View viewPairing);
-    PairingDto.Response pairingTOPairingResponse(Pairing pairing);
+    PairingDto.Response pairingToPairingResponse(Pairing pairing);
     List<PairingDto.Response> pairingsToPairingResponses(List<Pairing> pairings);
 }
