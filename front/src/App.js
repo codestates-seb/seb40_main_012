@@ -4,6 +4,7 @@ import MainPage from './pages/MainPage/MainPage';
 import SignInPage from './pages/SignInPage/SignInPage';
 
 import NoMatch from './pages/NoMatch';
+import CollectionPage from './pages/CollectionPage/Collection';
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/login" element={<SignInPage />} />
+        <Route path="/collection" element={<CollectionPage />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </BrowserRouter>
