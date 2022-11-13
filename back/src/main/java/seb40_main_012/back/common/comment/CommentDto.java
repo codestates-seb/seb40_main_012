@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.user.dto.UserDto;
 
 import javax.validation.constraints.NotBlank;
@@ -61,7 +62,7 @@ public class CommentDto {
 
         private long commentId;
         private UserDto.ResponseDto userInformation;
-        private String commentType;
+        private CommentType commentType;
         private String body;
         private long likeCount;
         private LocalDateTime createdAt;
