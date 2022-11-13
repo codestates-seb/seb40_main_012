@@ -12,8 +12,8 @@ import Typography from '@mui/material/Typography';
 const ContentContainer = styled.div`
   input {
     appearance: none;
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 20px;
+    height: 20px;
     border: 1.5px solid gainsboro;
     border-radius: 0.35rem;
     &:checked {
@@ -49,7 +49,7 @@ const FlexBox = styled.div`
     height: 125px;
     color: #232627;
   }
-  .heart-star {
+  .heart-star-title {
     display: flex;
     flex-direction: row;
   }
@@ -115,7 +115,7 @@ const Content = () => {
   return (
     <>
       <ContentContainer>
-        <Grid container>
+        <Grid container xs={12}>
           <Grid item xs={5.5} sx={{ mt: 1, mb: 2 }}>
             <CommentContainer>
               {editMode ? (
@@ -126,74 +126,44 @@ const Content = () => {
                     onChange={(e) => handleAllCheck(e.target.checked)}
                     checked={checkItems.length === data.length ? true : false}
                   ></input>
+
                   <Typography color="#737373" variant="body2" gutterBottom>
                     전체 선택
                   </Typography>
                 </>
               ) : null}
             </CommentContainer>
-            {/* <input
-                type="checkbox"
-                name="select-all"
-                onChange={(e) => handleAllCheck(e.target.checked)}
-                checked={checkItems.length === data.length ? true : false}
-              ></input>
-
-              <Typography color="#737373" variant="body2" gutterBottom>
-                전체 선택
-              </Typography> */}
           </Grid>
           <Grid item xs={4.5} sx={{ mt: 1, mb: 2 }}>
             <Typography color="#737373" variant="body2" gutterBottom>
               별점 및 코멘트
             </Typography>
           </Grid>
-          {editMode ? (
-            <>
-              <Grid
-                item
-                xs={1}
-                sx={{
-                  mt: 1,
-                  mb: 2,
-                  display: 'flex',
-                  flexDirection: 'row-reverse',
-                }}
-              >
+          <Grid
+            xs={2}
+            item
+            sx={{
+              mt: 1,
+              mb: 2,
+              display: 'flex',
+              flexDirection: 'row-reverse',
+            }}
+          >
+            {editMode ? (
+              <>
                 <ButtonCSS>
                   <Typography color="#737373" variant="body2" gutterBottom>
                     선택 삭제
                   </Typography>
                 </ButtonCSS>
-              </Grid>
-              <Grid
-                item
-                xs={1}
-                sx={{
-                  mt: 1,
-                  mb: 2,
-                  display: 'flex',
-                  flexDirection: 'row-reverse',
-                }}
-              >
+
                 <ButtonCSS onClick={handleChangeEditMode}>
                   <Typography color="#737373" variant="body2" gutterBottom>
                     편집 완료
                   </Typography>
                 </ButtonCSS>
-              </Grid>
-            </>
-          ) : (
-            <Grid
-              item
-              xs={2}
-              sx={{
-                mt: 1,
-                mb: 2,
-                display: 'flex',
-                flexDirection: 'row-reverse',
-              }}
-            >
+              </>
+            ) : (
               <ButtonCSS onClick={handleChangeEditMode}>
                 <Typography
                   color="#737373"
@@ -207,14 +177,14 @@ const Content = () => {
                   목록 편집
                 </Typography>
               </ButtonCSS>
-            </Grid>
-          )}
+            )}
+          </Grid>
 
           <div>
             {data?.map((data, key) => (
               <div key={key}>
                 <CommentContainer>
-                  <Grid item xs={0.4}>
+                  <Grid item xs={0.5} sx={{ width: 20 }}>
                     {editMode ? (
                       <>
                         <input
@@ -229,7 +199,7 @@ const Content = () => {
                     ) : null}
                   </Grid>
 
-                  <Grid item xs={2}>
+                  <Grid item xs={2} sx={{ minWidth: 150 }}>
                     <BookImg>
                       <img
                         className="resize"
@@ -238,9 +208,16 @@ const Content = () => {
                       ></img>
                     </BookImg>
                   </Grid>
-                  <Grid item xs={10}>
+                  <Grid item xs={9} sx={{ width: 650 }}>
                     <FlexBox>
-                      <span className="comment">
+                      <Typography
+                        color="#232627"
+                        sx={{
+                          height: 125,
+                        }}
+                        variant="body2"
+                        gutterBottom
+                      >
                         생각이 많은 건 말이야 당연히 해야 할 일이야 나에겐
                         우리가 지금 일순위야 안전한 유리병을 핑계로 바람을 가둬
                         둔 것 같지만 기억나? 그날의 우리가 잡았던 그 손엔 말이야
@@ -250,21 +227,24 @@ const Content = () => {
                         자신 없지만 안녕히 저기 사라진 별의 자리 아스라이 하얀
                         빛 한동안은 꺼내 볼 수 있을 거야 아낌없이 반짝인 시간은
                         조금씩 옅어져 가더라도 너와 내 맘에 살아 숨 쉴 테니
-                      </span>
-                      <div className="heart-star">
-                        <Grid item xs={3}>
+                      </Typography>
+
+                      <div className="heart-star-title">
+                        <Grid item xs={3} sx={{ width: 225 }}>
                           <div>⭐⭐⭐⭐⭐</div>
                         </Grid>
-                        <Grid item xs={1} color="#BFBFBF">
+                        <Grid item xs={3} sx={{ width: 225 }} color="#BFBFBF">
                           <div>❤️177</div>
                         </Grid>
                         <Grid
                           item
-                          xs={10}
+                          xs={6}
                           sx={{
                             display: 'flex',
                             flexDirection: 'row-reverse',
+                            width: 200,
                           }}
+                          align="right"
                           color="#737373"
                         >
                           <div>제목과 작가🎖</div>
@@ -274,12 +254,14 @@ const Content = () => {
                   </Grid>
                   <Grid
                     item
+                    xs={0.5}
                     sx={{
                       display: 'flex',
                       flexDirection: 'row-reverse',
+                      width: 20,
                     }}
                   >
-                    <DeleteOutlinedIcon color="disabled" />
+                    {editMode ? <DeleteOutlinedIcon color="disabled" /> : null}
                   </Grid>
                 </CommentContainer>
               </div>
