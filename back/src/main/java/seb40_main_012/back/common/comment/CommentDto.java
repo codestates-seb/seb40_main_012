@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import seb40_main_012.back.user.dto.UserDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -59,7 +60,7 @@ public class CommentDto {
     public static class Response {
 
         private long commentId;
-        //        private UserDto.Response userInformation;
+        private UserDto.ResponseDto userInformation;
         private String commentType;
         private String body;
         private long likeCount;
