@@ -38,7 +38,7 @@ const HeaderBtn = styled.button`
 const CollectionBtn = styled(HeaderBtn)`
   height: 60px;
   &:hover,
-  .selected {
+  &.selected {
     border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor};
   }
 `;
@@ -46,7 +46,7 @@ const PairingBtn = styled(HeaderBtn)`
   margin-right: 330px;
   height: 60px;
   &:hover,
-  .selected {
+  &.selected {
     border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor};
   }
 `;
