@@ -1,8 +1,11 @@
 package seb40_main_012.back.user.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.user.dto.UserDto;
+import seb40_main_012.back.user.dto.UserInfoDto;
+import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
 @RequestMapping("/users")
@@ -11,26 +14,41 @@ import seb40_main_012.back.user.service.UserService;
 public class UserController {
     private final UserService userService;
 
-//    @PatchMapping("/nickname")
-//    public void patchNickname(@RequestBody UserDto.PostDto request) {
-//        userService.updateNickname(request.getNickname);
-//    }
+    @PatchMapping("/nickname")
+    @ResponseStatus(HttpStatus.OK)
+    public void patchNickname(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Profile request) {
+        userService.updateNickname(userId,request.getNickname());
+    }
 
-    @PatchMapping()
-    public void patchPassword(){}
+    @PostMapping("/password/current")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean verifyPassword(@RequestHeader("Authorization") Long userId,String currentPassword){
+        return userService.verifyPassword(userId,currentPassword);
+    }
 
-    @PatchMapping
-    public void patchImage(){}
+
+    @PatchMapping("/password/update")
+    @ResponseStatus(HttpStatus.OK)
+    public void patchPassword(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Password request){
+        userService.updatePassword(userId,request.getPassword());
+    }
 
 //    @PatchMapping
-//    public UserDto.ResponseDto patchUserInfo(){}
+//    public void patchImage(){}
+//
+    @PatchMapping
+    @ResponseStatus(HttpStatus.OK)
+    public UserInfoDto.Response patchUserInfo(@RequestHeader("Authorization") Long userId, UserInfoDto.Post request){
+        User editedUser = userService.editUserInfo(request.toEntity(),request.getCategory());
+        return null;
+    }
 //
 //    @PatchMapping
 //    public UserDto.ResponseDto patchProfile(){}
-
-    @DeleteMapping
-    public void deleteUser(){}
-
+//
+//    @DeleteMapping
+//    public void deleteUser(){}
+//
 //    @GetMapping
 //    public UserDto.ResponseDto getUserComment(){}
 //
