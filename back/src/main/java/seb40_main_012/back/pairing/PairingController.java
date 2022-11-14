@@ -37,17 +37,17 @@ public class PairingController {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
 
-        EntityModel<Pairing> entityModel = EntityModel.of(pairingService.createPairing(pairing, bookId),
-                linkTo(methodOn(PairingDto.Post.class).getOutLinkPath()).withRel("link"));
+        Pairing createPairing = pairingService.createPairing(pairing, bookId);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.CREATED);
 
-//        Pairing createPairing = pairingService.createPairing(pairing, bookId);
-//        PairingDto.Response response = pairingMapper.pairingTOPairingResponse(createPairing);
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(response), HttpStatus.CREATED);
+//        EntityModel<Pairing> entityModel = EntityModel.of(pairingService.createPairing(pairing, bookId),
+//                linkTo(methodOn(PairingDto.Post.class).getOutLinkPath()).withRel("link"));
 
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SEARCH).toUri())
-                .body(entityModel);
+//        return ResponseEntity
+//                .created(entityModel.getRequiredLink(IanaLinkRelations.SEARCH).toUri())
+//                .body(entityModel);
     }
 
     @PatchMapping("/pairings/{pairing_id}/edit")
@@ -57,18 +57,18 @@ public class PairingController {
 
         Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
 
-//        Pairing updatePairing = pairingService.updatePairing(pairing, pairingId);
-//        PairingDto.Response response = pairingMapper.pairingTOPairingResponse(updatePairing);
+        Pairing updatePairing = pairingService.updatePairing(pairing, pairingId);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatePairing);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK);
+
+//        EntityModel<Pairing> entityModel = EntityModel.of(pairingService.updatePairing(pairing, pairingId),
+//                linkTo(methodOn(PairingDto.Patch.class).getOutLinkPath()).withRel("link"));
 //
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(response), HttpStatus.OK);
-
-        EntityModel<Pairing> entityModel = EntityModel.of(pairingService.updatePairing(pairing, pairingId),
-                linkTo(methodOn(PairingDto.Patch.class).getOutLinkPath()).withRel("link"));
-
-        return ResponseEntity
-                .ok()
-                .body(entityModel);
+//        return ResponseEntity
+//                .ok()
+//                .body(entityModel);
     }
 
     @PatchMapping("/pairings/{pairing_id}/like")

@@ -14,6 +14,7 @@ import seb40_main_012.back.user.mapper.UserMapper;
 import seb40_main_012.back.user.service.UserService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 @RequestMapping("/api/users")
 @RestController
@@ -47,6 +48,18 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public void patchPassword(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Password request){
         userService.updatePassword(userId,request.getPassword());
+    }
+
+    @GetMapping("/{user_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity getUser(@PathVariable("user_id") @Positive Long userId){
+
+        User user = userService.findUser(userId);
+        UserDto.ResponseDto response = mapper.userToUserResponse(user);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK
+        );
     }
 
     //    @PatchMapping

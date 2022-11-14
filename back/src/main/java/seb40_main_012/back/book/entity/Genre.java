@@ -15,9 +15,9 @@ public enum Genre {
     ECONOMY("경제");
 
     @Getter
-    private final String genre;
+    private final String value;
 
-    Genre(String genre) {
-        this.genre = genre;
+    Genre(String value) {
+        this.value = value;
     }
 }

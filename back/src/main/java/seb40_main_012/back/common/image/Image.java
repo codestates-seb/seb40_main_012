@@ -10,6 +10,7 @@
 //import seb40_main_012.back.user.entity.User;
 //
 //import javax.persistence.*;
+//import javax.validation.constraints.NotNull;
 //
 //@Data
 //@Builder
@@ -22,11 +23,16 @@
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    private long imageId;
 //
+//    @NotNull
+//    private long imageIdx;
+//
 //    @Column(nullable = false)
 //    private String originalImageName;
 //
 //    @Column(nullable = false)
 //    private String storedImageName;
+//
+//    private long image_size;
 //
 //    @JsonBackReference
 //    @OneToOne

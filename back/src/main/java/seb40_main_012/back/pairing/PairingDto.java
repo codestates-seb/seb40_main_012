@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import seb40_main_012.back.common.comment.CommentDto;
-import seb40_main_012.back.pairing.entity.Category;
+import seb40_main_012.back.pairing.entity.ParingCategory;
 import seb40_main_012.back.user.dto.UserDto;
 
 import javax.validation.constraints.NotEmpty;
@@ -28,7 +28,7 @@ public class PairingDto {
         private String body;
 
         @NotEmpty(message = "카테고리를 선택하셔야 합니다.")
-        private Category category;
+        private ParingCategory pairingCategory;
 
         private String imagePath;
 
@@ -83,7 +83,7 @@ public class PairingDto {
         private long bookId;
         private long pairingId;
         private UserDto.ResponseDto userInformation;
-        private Category category;
+        private ParingCategory pairingCategory;
         private String title;
         private String body;
         private long likeCount;
