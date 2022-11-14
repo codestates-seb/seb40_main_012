@@ -8,7 +8,6 @@ const colors = {
   gray: '#737373',
   lightgray: '#BFBFBF',
 };
-
 const theme = {
   colors,
 };
