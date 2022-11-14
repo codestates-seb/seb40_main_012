@@ -30,20 +30,22 @@ public class PairingService {
     private final UserRepository userRepository;
 
     public Pairing createPairing(Pairing pairing, long bookId) {
+
+        User findUser = userService.getLoginUser();
+
         Book findBook = bookService.findBook(bookId);
-//        User findUser = userService.findUser(userId);
 
         Pairing savedPairing =
                 Pairing.builder()
                         .book(findBook)
-//                        .user(findUser)
+                        .user(findUser)
                         .pairingCategory(pairing.getPairingCategory())
                         .imagePath(pairing.getImagePath())
                         .title(pairing.getTitle())
                         .body(pairing.getBody())
                         .outLinkPath(pairing.getOutLinkPath())
-                        .createdAt(pairing.getCreatedAt())
-                        .modifiedAt(pairing.getModifiedAt())
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
                         .build();
 
         findBook.getPairings().add(savedPairing);
