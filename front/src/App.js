@@ -6,6 +6,7 @@ import SignUpPage from './pages/SignUpPage/SignUpPage';
 
 import NoMatch from './pages/NoMatch';
 import CollectionPage from './pages/CollectionPage/Collection';
+import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetail';
 
 const App = () => {
   return (
@@ -16,6 +17,10 @@ const App = () => {
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/user/signin" element={<SignInPage />} />
         <Route path="/user/signup" element={<SignUpPage />} />
+        <Route
+          path="/collection/:collectionid"
+          element={<CollectionDetailPage />}
+        ></Route>
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </BrowserRouter>
