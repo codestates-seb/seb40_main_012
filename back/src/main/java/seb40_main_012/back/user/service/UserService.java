@@ -8,9 +8,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
+import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.config.auth.event.UserRegistrationApplicationEvent;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
+import seb40_main_012.back.user.entity.Category;
 import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.entity.UserCategory;
+import seb40_main_012.back.user.repository.CategoryRepository;
+import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -23,6 +28,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+    private final UserCategoryRepository userCategoryRepository;
     private final ApplicationEventPublisher publisher;
     private final PasswordEncoder passwordEncoder2;
     private final CustomAuthorityUtils authorityUtils;
@@ -45,10 +52,10 @@ public class UserService {
         return savedUser;
     }
 
-    public void updateNickname(Long id, String nickname) {
+    public void updateNickName(Long id, String nickName) {
         User findUser = findVerifiedUser(id);
         //nickname 중복 검사
-        findUser.updateNickName(nickname);
+        findUser.updateNickName(nickName);
         userRepository.save(findUser);
     }
 
@@ -67,10 +74,27 @@ public class UserService {
         }
     }
 
-    public User editUserInfo(User user, List<String> category){
-        User findUser = findVerifiedUser(user.getId());
+    public User editUserInfo(User user, List<Genre> categoryValue){
+        User findUser = findVerifiedUser(user.getUserId());
+//        Category findCategory = categoryRepository.findByName(categoryValue);
+
+        categoryValue.forEach(
+                value -> {
+                    Category category = categoryRepository.save(new Category(value));
+                    UserCategory userCategory = new UserCategory(category,findUser);
+                    userCategoryRepository.save(userCategory);
+                    findUser.addUserCategory(userCategory);
+                    userRepository.save(findUser);
+                }
+        );
         findUser.updateUserInfo(user);
-        return null;
+        return findUser;
+    }
+
+    public boolean deleteUser(Long userId){
+        findVerifiedUser(userId);
+        userRepository.deleteById(userId);
+        return true;
     }
 
 

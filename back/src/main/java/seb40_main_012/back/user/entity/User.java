@@ -21,9 +21,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private Long id;
+    private Long userId;
     private String email;
-    private String nickname;
+    private String nickName;
     private String password;
     private String introduction;
 
@@ -34,17 +34,17 @@ public class User {
     private AgeType age;
 
     @OneToMany(mappedBy = "user")
-    private List<UserCategory> category = new ArrayList<>();
+    private List<UserCategory> categories = new ArrayList<>();
 
-//    @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
-//    private List<String> roles = new ArrayList<>();
+    @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
+    private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user")
-    private List<Role> roles = new ArrayList<>();
+//    @OneToMany(mappedBy = "user")
+//    private List<Role> roles = new ArrayList<>();
 
 
     public void updateNickName(String nickName) {
-        this.nickname = nickName;
+        this.nickName = nickName;
     }
 
     public boolean verifyPassword(BCryptPasswordEncoder passwordEncoder, String password) {
@@ -58,9 +58,12 @@ public class User {
         this.introduction = user.getIntroduction();
         this.gender = user.getGender();
         this.age = user.getAge();
-        this.category = user.getCategory();
+        this.categories = user.getCategories();
     }
 
+    public void addUserCategory(UserCategory userCategory) {
+        this.categories.add(userCategory);
+    }
 
 
 }

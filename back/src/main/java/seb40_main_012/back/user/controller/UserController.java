@@ -29,11 +29,13 @@ public class UserController {
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.userToUserResponse(createdUser)), HttpStatus.CREATED);
     }
+//    @PostMapping
+//    public boolean verifyNickName(){}
 
     @PatchMapping("/nickname")
     @ResponseStatus(HttpStatus.OK)
-    public void patchNickname(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Profile request) {
-        userService.updateNickname(userId,request.getNickname());
+    public void patchNickName(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Profile request) {
+        userService.updateNickName(userId,request.getNickName());
     }
 
     @PostMapping("/password/current")
@@ -48,31 +50,51 @@ public class UserController {
         userService.updatePassword(userId,request.getPassword());
     }
 
-    //    @PatchMapping
-//    public void patchImage(){}
-//
-    @PatchMapping
+    @PatchMapping("/userInfo")
     @ResponseStatus(HttpStatus.OK)
     public UserInfoDto.Response patchUserInfo(@RequestHeader("Authorization") Long userId, UserInfoDto.Post request){
         User editedUser = userService.editUserInfo(request.toEntity(),request.getCategory());
-        return null;
+        return UserInfoDto.Response.of(editedUser);
     }
 //
-//    @PatchMapping
-//    public UserDto.ResponseDto patchProfile(){}
+//    @PatchMapping //프사 수정
+//    public UserDto.ResponseDto patchProfileImage(){}
 //
-//    @DeleteMapping
-//    public void deleteUser(){}
-//
+    @DeleteMapping
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public boolean deleteUser(@RequestHeader("Authorization") Long userId){
+        return userService.deleteUser(userId);
+    }
+
+
+    /** 조회 API */
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public UserDto.ProfileResponse getNickName(@RequestHeader("Authorization") Long userId){
+        User user = userService.findVerifiedUser(userId);
+        return new UserDto.ProfileResponse(user.getNickName());
+    }
+
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public UserInfoDto.Response getUserInfo(@RequestHeader("Authorization") Long userId){
+        User user = userService.findVerifiedUser(userId);
+        return UserInfoDto.Response.of(user);
+    }
+
+
+//    참고로 유저 정보가 nul일 경우 response에서 항목 자체가 제외됩니다.
 //    @GetMapping
-//    public UserDto.ResponseDto getUserComment(){}
+//    public UserDto.ResponseDto getUserComment(@RequestHeader("Authorization") Long userId){
+//
+//    }
 //
 //    @GetMapping
 //    public UserDto.ResponseDto getUserPairing(){}
 //
 //    @GetMapping
 //    public UserDto.ResponseDto getUserBookCollection(){}
-//
+////
 //    @GetMapping
 //    public UserDto.ResponseDto getBookMarkByBookCollection(){}
 //

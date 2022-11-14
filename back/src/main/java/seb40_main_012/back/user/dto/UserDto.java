@@ -11,8 +11,16 @@ public class UserDto {
     @Getter
     @NoArgsConstructor
     public static class Profile {
-        private String nickname;
+        private String nickName;
     }
+
+    @Getter
+    @AllArgsConstructor
+    public static class ProfileResponse {
+        private String nickName;
+    }
+
+
 
     @Getter
     @NoArgsConstructor

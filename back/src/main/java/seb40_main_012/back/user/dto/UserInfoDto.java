@@ -2,11 +2,14 @@ package seb40_main_012.back.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
+import seb40_main_012.back.book.entity.Genre;
+import seb40_main_012.back.user.entity.Category;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @AllArgsConstructor
@@ -20,7 +23,7 @@ public class UserInfoDto {
         private String introduction;
         private String gender;
         private String age;
-        private List<String> category;
+        private List<Genre> category;
 
         public User toEntity(){
             return User.builder()
@@ -32,7 +35,7 @@ public class UserInfoDto {
     }
 
     @Getter
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor
     @AllArgsConstructor
     @Builder
     @JsonInclude(JsonInclude.Include.NON_NULL) //-> response에만 붙여주자
@@ -40,10 +43,17 @@ public class UserInfoDto {
         private String introduction;
         private String gender;
         private String age;
-        private List<String> category;
+        private List<CategoryDto.Response> category;
 
-        public Response of(User user){
-            return null;
+
+        public static Response of(User user){
+            return Response.builder()
+                    .introduction(user.getIntroduction())
+                    .gender(user.getGender().getValue())
+                    .age(user.getAge().getValue())
+                    .category(user.getCategories().stream()
+                            .map(x -> CategoryDto.Response.of(x.getCategory().getGenre().getValue())).collect(Collectors.toList()))
+                    .build();
         }
     }
 
