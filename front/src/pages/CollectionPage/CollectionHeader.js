@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../../styles/theme';
+import { BasicButton } from '../../components/Buttons';
 
 const CollectionHeaderContainer = styled.div`
   width: 100%;
@@ -19,18 +20,8 @@ const CollectionInfo = styled.div`
   }
 `;
 
-const CollectionWriteBtn = styled.button`
-  width: 90px;
-  height: 30px;
-  background-color: white;
-  border: none;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.darkgray};
-  background-color: ${({ theme }) => theme.colors.purple_3};
+const CollectionWriteBtn = styled(BasicButton)`
   &:hover {
-    background-color: ${({ theme }) => theme.colors.purple_2};
     cursor: pointer;
   }
 `;
@@ -43,7 +34,9 @@ const CollectionHeader = () => {
           당신만을 위한 <span>Cherry Pick</span> 컬렉션
         </CollectionInfo>
         <Link to="/collection/write">
-          <CollectionWriteBtn>컬렉션 만들기</CollectionWriteBtn>
+          <CollectionWriteBtn width="90px" height="30px" fontSize="12px">
+            컬렉션 만들기
+          </CollectionWriteBtn>
         </Link>
       </CollectionHeaderContainer>
     </ThemeProvider>
