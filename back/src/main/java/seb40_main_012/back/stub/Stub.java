@@ -79,7 +79,7 @@ public class Stub {
                         .email("straight_kang@email.com")
                         .nickName("강직진")
                         .password("1234")
-                        .roles(List.of("a.k.a. 결정왕 도단 14세"))
+                        .roles(List.of("a.k.a. 술고래 도단 14세"))
                         .build())
         );
 
