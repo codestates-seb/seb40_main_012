@@ -45,6 +45,7 @@ public class User {
     private List<UserCategory> category = new ArrayList<>();
 
     @ElementCollection // 사용자 권한 테이블 생성
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> roles = new ArrayList<>();
 
     @JsonManagedReference
