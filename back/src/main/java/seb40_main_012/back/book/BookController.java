@@ -28,7 +28,10 @@ public class BookController {
     public ResponseEntity getBook(@PathVariable("book_id") @Positive long bookId) {
 
         Book book = bookService.findBook(bookId);
+
         BookDto.Response response = bookMapper.bookToBookResponse(book);
+
+        System.out.println(response.getBookId());
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

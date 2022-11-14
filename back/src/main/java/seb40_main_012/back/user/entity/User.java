@@ -1,9 +1,15 @@
 package seb40_main_012.back.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
+import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
@@ -38,8 +44,18 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserCategory> category = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
+    @ElementCollection // 사용자 권한 테이블 생성
     private List<String> roles = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Comment> comments;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Pairing> pairings;
 
 //    @OneToMany(mappedBy = "user")
 //    private List<Role> roles = new ArrayList<>();
