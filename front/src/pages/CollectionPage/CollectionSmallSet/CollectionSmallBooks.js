@@ -4,10 +4,9 @@ import theme from '../../../styles/theme';
 import CollectionSmallBook from './CollectionSmallBook';
 
 const CollectionSmallBooksContainer = styled.div`
-  width: 25%;
   display: flex;
   flex-direction: column;
-  margin: 0 15px;
+  margin: 0 10px;
 `;
 
 const BookColumn = styled.div`
