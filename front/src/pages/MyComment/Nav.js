@@ -30,15 +30,27 @@ const BorderCSS = styled.button`
     transform-origin: 0% 50%;
   }
 `;
+const CommentBorderCSS = styled.button`
+  outline: none;
+  display: inline-block;
+  margin: 0;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  display: block;
+  content: '';
+  border-bottom: solid 3px #e8e2ff;
+`;
 
 const Nav = () => {
   return (
     <div>
       <Grid container>
         <Grid item xs={3} align="center">
-          <BorderCSS>
+          <CommentBorderCSS>
             <Typography variant="h6">나의 코멘트</Typography>
-          </BorderCSS>
+          </CommentBorderCSS>
         </Grid>
         <Grid item xs={3} align="center">
           <BorderCSS>

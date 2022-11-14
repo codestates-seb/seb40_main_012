@@ -142,7 +142,12 @@ const Content = () => {
                     checked={checkItems.length === data.length ? true : false}
                   ></input>
 
-                  <Typography color="#737373" variant="body2" gutterBottom>
+                  <Typography
+                    color="#737373"
+                    variant="body2"
+                    gutterBottom
+                    sx={{ ml: 2 }}
+                  >
                     전체 선택
                   </Typography>
                 </>
