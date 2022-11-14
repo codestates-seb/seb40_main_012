@@ -24,7 +24,11 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long userId;
+
+    @Column(nullable = false, updatable = false, unique = true)
     private String email;
+
+    @Column(nullable = false, unique = true)
     private String nickName;
     private String password;
     private String introduction;
@@ -40,6 +44,8 @@ public class User {
 
     @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
     private List<String> roles = new ArrayList<>();
+
+    private boolean firstLogin = false;
 
 //    @OneToMany(mappedBy = "user")
 //    private List<Role> roles = new ArrayList<>();
