@@ -59,31 +59,6 @@ const PrevArrow = (props) => {
   );
 };
 
-const MultipleItems = () => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-  };
-  return (
-    <SlickSlider>
-      <Slider {...settings}>
-        <CollectionSmallBooks title="재밌는 책 컬렉션" />
-        <CollectionSmallBooks title="무서운 책 컬렉션" />
-        <CollectionSmallBooks title="감동적인 책 컬렉션" />
-        <CollectionSmallBooks title="설레는 책 컬렉션" />
-        <CollectionSmallBooks title="흥미진진한 책 컬렉션" />
-        <CollectionSmallBooks title="슬픈 책 컬렉션" />
-        <CollectionSmallBooks title="따뜻한 책 컬렉션" />
-      </Slider>
-    </SlickSlider>
-  );
-};
-
 const CollectionSmallSetContainer = styled.div`
   width: 100%;
   display: flex;
@@ -98,11 +73,31 @@ const CollectionBooks = styled.div`
 `;
 
 const CollectionSmallSet = () => {
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 4,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
+  };
+
   return (
     <CollectionSmallSetContainer>
       <CollectionSetTitle title="나의 컬렉션" isMyCollection={true} />
       <CollectionBooks>
-        <MultipleItems />
+        <SlickSlider>
+          <Slider {...settings}>
+            <CollectionSmallBooks title="재밌는 책 컬렉션" />
+            <CollectionSmallBooks title="무서운 책 컬렉션" />
+            <CollectionSmallBooks title="감동적인 책 컬렉션" />
+            <CollectionSmallBooks title="설레는 책 컬렉션" />
+            <CollectionSmallBooks title="흥미진진한 책 컬렉션" />
+            <CollectionSmallBooks title="슬픈 책 컬렉션" />
+            <CollectionSmallBooks title="따뜻한 책 컬렉션" />
+          </Slider>
+        </SlickSlider>
       </CollectionBooks>
     </CollectionSmallSetContainer>
   );

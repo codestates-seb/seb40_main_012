@@ -7,6 +7,9 @@ const CollectionSmallBooksContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 10px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const BookColumn = styled.div`
@@ -17,9 +20,6 @@ const CollectionSmallInfo = styled.div`
   font-size: 14px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.darkgray};
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const CollectionSmallBooks = ({ title }) => {
@@ -31,7 +31,7 @@ const CollectionSmallBooks = ({ title }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CollectionSmallBooksContainer>
+      <CollectionSmallBooksContainer onClick={onClickCollectionInfo}>
         <BookColumn>
           <CollectionSmallBook />
           <CollectionSmallBook />
@@ -40,9 +40,7 @@ const CollectionSmallBooks = ({ title }) => {
           <CollectionSmallBook />
           <CollectionSmallBook />
         </BookColumn>
-        <CollectionSmallInfo onClick={onClickCollectionInfo}>
-          {title}
-        </CollectionSmallInfo>
+        <CollectionSmallInfo>{title}</CollectionSmallInfo>
       </CollectionSmallBooksContainer>
     </ThemeProvider>
   );
