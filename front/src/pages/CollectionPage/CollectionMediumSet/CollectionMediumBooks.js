@@ -46,9 +46,9 @@ const CollectonMediumBooks = () => {
           <CollectionTags tagList={['소설', 'sf']} />
         </MediumHeader>
         <MediumBooks>
-          <CollectonMediumBook />
-          <CollectonMediumBook />
-          <CollectonMediumBook />
+          <CollectonMediumBook bookTitle="책 제목1" />
+          <CollectonMediumBook bookTitle="책 제목2" />
+          <CollectonMediumBook bookTitle="책 제목3" />
         </MediumBooks>
       </CollectionMediumBooksContainer>
     </ThemeProvider>
