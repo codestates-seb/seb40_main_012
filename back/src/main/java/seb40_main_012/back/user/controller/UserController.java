@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.dto.UserInfoDto;
@@ -95,5 +96,10 @@ public class UserController {
 //    @GetMapping
 //    public UserDto.ResponseDto getBookMarkByBook(){}
 
+    @PatchMapping("/firstLogin")
+    public ResponseEntity patchUserOnFirstLogin(@RequestBody LoginDto.PatchDto patchDto) {
+        userService.updateOnFirstLogin(patchDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

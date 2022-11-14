@@ -65,6 +65,8 @@ public class User {
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //    private final List<Like> likes = new ArrayList<>();
 
+    private boolean firstLogin = false; // 첫 로그인 여부
+
     public void updateNickName(String nickName) {
         this.nickName = nickName;
     }
