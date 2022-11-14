@@ -31,7 +31,6 @@ public class UserService {
     private final CategoryRepository categoryRepository;
     private final UserCategoryRepository userCategoryRepository;
     private final ApplicationEventPublisher publisher;
-    private final PasswordEncoder passwordEncoder2;
     private final CustomAuthorityUtils authorityUtils;
 
     private final BCryptPasswordEncoder passwordEncoder;
@@ -41,7 +40,7 @@ public class UserService {
         if(verifiedUser.isPresent())
             throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
 
-        String encryptedPassword = passwordEncoder2.encode(user.getPassword());
+        String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
 
         List<String> roles = authorityUtils.createRoles(user.getEmail());

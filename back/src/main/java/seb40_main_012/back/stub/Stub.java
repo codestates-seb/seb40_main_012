@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
@@ -23,8 +24,6 @@ import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Configuration
 public class Stub {
@@ -117,6 +116,7 @@ public class Stub {
             log.info("BOOK STUB " +
                     bookRepository.save(Book.builder()
                             .bookId(i)
+                            .genre(Genre.NOVEL)
                             .title("Stub_Book_" + i)
                             .build()));
 
@@ -137,6 +137,9 @@ public class Stub {
                             .body("Stub_Pairing_Body_" + i)
                             .user(userService.findVerifiedUser(rand))
                             .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+                            .likeCount((long) (Math.random() * 100))
+                            .createdAt(LocalDateTime.now())
+                            .modifiedAt(LocalDateTime.now())
                             .build()));
 
             log.info("BOOK COMMENT STUB " +
@@ -145,6 +148,9 @@ public class Stub {
                             .commentType(CommentType.BOOK)
                             .user(userService.findVerifiedUser(rand))
                             .body("Stub_Book_Comment_Body_" + i)
+                            .likeCount((long) (Math.random() * 100))
+                            .createdAt(LocalDateTime.now())
+                            .modifiedAt(LocalDateTime.now())
                             .build()));
 
             log.info("PAIRING COMMENT STUB " +
@@ -153,6 +159,9 @@ public class Stub {
                             .commentType(CommentType.PAIRING)
                             .user(userService.findVerifiedUser(rand))
                             .body("Stub_Pairing_Comment_Body_" + i)
+                            .likeCount((long) (Math.random() * 100))
+                            .createdAt(LocalDateTime.now())
+                            .modifiedAt(LocalDateTime.now())
                             .build()));
         }
 

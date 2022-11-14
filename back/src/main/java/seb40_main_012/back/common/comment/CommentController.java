@@ -1,7 +1,6 @@
 package seb40_main_012.back.common.comment;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -10,7 +9,6 @@ import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
-import seb40_main_012.back.dto.MultiResponseDto;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.pairing.PairingService;
 
@@ -85,12 +83,28 @@ public class CommentController {
 
         likeService.createCommentLike(likeComment);
 
-        Comment comment = commentService.updateLike(commentMapper.commentLikeToComment(likeComment), commentId);
+        likeComment.setCommentId(commentId);
+
+        Comment comment = commentService.updateLike(commentMapper.commentLikeToComment(likeComment));
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(commentMapper.commentToCommentResponse(comment)), HttpStatus.OK
         );
     }
+
+//    @PatchMapping("/comments/{comment_id}/like")
+//    public ResponseEntity updateLikeComment(@RequestHeader("Authorization") long userId,
+//                                            @PathVariable("comment_id") @Positive long commentId,
+//                                            @Valid @RequestBody CommentDto.Like likeComment) {
+//
+//        likeService.createCommentLike(likeComment);
+//
+//        Comment comment = commentService.updateLike(commentMapper.commentLikeToComment(likeComment), commentId);
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(commentMapper.commentToCommentResponse(comment)), HttpStatus.OK
+//        );
+//    }
 
     @PatchMapping("/comments/{comment_id}")
     public ResponseEntity updateViewPairing(@RequestBody CommentDto.View viewComment,

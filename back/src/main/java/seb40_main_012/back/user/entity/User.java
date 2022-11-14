@@ -1,7 +1,9 @@
 package seb40_main_012.back.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
@@ -42,6 +44,9 @@ public class User {
 //    @OneToMany(mappedBy = "user")
 //    private List<Role> roles = new ArrayList<>();
 
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+//    private final List<Like> likes = new ArrayList<>();
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;
