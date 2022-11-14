@@ -9,6 +9,7 @@ import seb40_main_012.back.pairing.entity.ParingCategory;
 import seb40_main_012.back.user.dto.UserDto;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,7 +28,7 @@ public class PairingDto {
         @Size(max = 500, message = "500자를 넘을 수 없습니다.")
         private String body;
 
-        @NotEmpty(message = "카테고리를 선택하셔야 합니다.")
+        @NotNull(message = "카테고리를 선택하셔야 합니다.")
         private ParingCategory pairingCategory;
 
         private String imagePath;
