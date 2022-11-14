@@ -16,7 +16,6 @@ const HeaderContainer = styled.div`
   }
   display: flex;
   align-items: center;
-  z-index: 5050;
 `;
 
 const LogoContainer = styled.div`
@@ -37,7 +36,7 @@ const HeaderBtn = styled.button`
   }
 `;
 
-const CollectionBtn = styled(HeaderBtn)`
+const PairingBtn = styled(HeaderBtn)`
   height: 60px;
   border-top: 3px solid transparent;
   &:hover,
@@ -45,9 +44,10 @@ const CollectionBtn = styled(HeaderBtn)`
     border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor};
   }
 `;
-const PairingBtn = styled(HeaderBtn)`
-  margin-right: 330px;
+
+const CollectionBtn = styled(HeaderBtn)`
   height: 60px;
+  margin-right: 330px;
   border-top: 3px solid transparent;
   &:hover,
   &.selected {
@@ -94,19 +94,19 @@ const Header = ({ isLogin = false }) => {
             />
           </Link>
         </LogoContainer>
-        <Link to="/collection">
-          <CollectionBtn
-            className={location.pathname === '/collection' ? 'selected' : null}
-          >
-            컬렉션
-          </CollectionBtn>
-        </Link>
         <Link to="/pairing">
           <PairingBtn
             className={location.pathname === '/pairing' ? 'selected' : null}
           >
             페어링
           </PairingBtn>
+        </Link>
+        <Link to="/collection">
+          <CollectionBtn
+            className={location.pathname === '/collection' ? 'selected' : null}
+          >
+            컬렉션
+          </CollectionBtn>
         </Link>
         <Searchbar />
         {isLogin ? (
