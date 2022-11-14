@@ -16,6 +16,7 @@ import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
@@ -40,13 +41,15 @@ public class CommentService {
 
     public Comment createBookComment(Comment comment, long bookId) {
 
+        User findUser = userService.getLoginUser();
+
         Book findBook = bookService.findBook(bookId);
-//        User findUser = userService.findUser(userId);
+
         Comment savedBookComment =
                 Comment.builder()
                         .commentType(CommentType.BOOK)
                         .book(findBook)
-//                        .user(findUser)
+                        .user(findUser)
                         .body(comment.getBody())
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
@@ -58,15 +61,15 @@ public class CommentService {
 
     public Comment createPairingComment(Comment comment, long pairingId) {
 
+        User findUser = userService.getLoginUser();
+
         Pairing findPairing = pairingService.findPairing(pairingId);
-//        User findUser = userService.findUser(userId);
 
         Comment savedPairingComment =
                 Comment.builder()
                         .commentType(CommentType.PAIRING)
-//                        .user(findUser)
+                        .user(findUser)
                         .pairing(findPairing)
-//                        .commentId(comment.getCommentId())
                         .body(comment.getBody())
                         .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())

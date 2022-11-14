@@ -1,8 +1,6 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,9 +14,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -31,14 +26,15 @@ public class PairingController {
     private final LikeService likeService;
 
     @PostMapping("/{book_id}/pairings/add")
-    public ResponseEntity postPairing(@RequestHeader("Authorization") long userId,
-                                      @PathVariable("book_id") @Positive long bookId,
-                                      @Valid @RequestBody PairingDto.Post postPairing) {
+    public ResponseEntity postPairing(
+            @RequestHeader("Authorization") long userId,
+            @PathVariable("book_id") @Positive long bookId,
+            @Valid @RequestBody PairingDto.Post postPairing) {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
-
         Pairing createPairing = pairingService.createPairing(pairing, bookId);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
+
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED);
 

@@ -30,9 +30,10 @@ public class CommentController {
     private final LikeService likeService;
 
     @PostMapping("/books/{book_id}/comments/add")
-    public ResponseEntity postBookComment(@RequestHeader("Authorization") long userId,
-                                          @PathVariable("book_id") @Positive long bookId,
-                                          @Valid @RequestBody CommentDto.Post postComment) {
+    public ResponseEntity postBookComment(
+            @RequestHeader("Authorization") long userId,
+            @PathVariable("book_id") @Positive long bookId,
+            @Valid @RequestBody CommentDto.Post postComment) {
 
         Comment comment = commentMapper.commentPostToComment(postComment);
         Comment createdComment = commentService.createBookComment(comment, bookId);
@@ -44,9 +45,10 @@ public class CommentController {
     }
 
     @PostMapping("/pairings/{pairing_id}/comments/add")
-    public ResponseEntity postPairingComment(@RequestHeader("Authorization") long userId,
-                                             @PathVariable("pairing_id") @Positive long pairingId,
-                                             @Valid @RequestBody CommentDto.Post postComment) {
+    public ResponseEntity postPairingComment(
+            @RequestHeader("Authorization") long userId,
+            @PathVariable("pairing_id") @Positive long pairingId,
+            @Valid @RequestBody CommentDto.Post postComment) {
 
         Comment comment = commentMapper.commentPostToComment(postComment);
         Comment createdComment = commentService.createPairingComment(comment, pairingId);
