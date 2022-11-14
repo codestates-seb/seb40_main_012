@@ -6,8 +6,8 @@ const CollectionSmallSetContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
-  padding: 0 20px;
+  margin-bottom: 40px;
+  padding: 0 40px;
 `;
 
 const CollectionBooks = styled.div`
