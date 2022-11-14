@@ -2,7 +2,7 @@ package seb40_main_012.back.pairing.entity;
 
 import lombok.Getter;
 
-public enum Category {
+public enum ParingCategory {
 
     FILM("영화"),
     CUISINE("음식/장소"),
@@ -11,9 +11,9 @@ public enum Category {
     ETC("기타");
 
     @Getter
-    private final String categoryName;
+    private final String value;
 
-    Category(String categoryName) {
-        this.categoryName = categoryName;
+    ParingCategory(String value) {
+        this.value = value;
     }
 }

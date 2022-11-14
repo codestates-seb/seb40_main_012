@@ -99,7 +99,6 @@ public class BookService {
 
     public void verifyBook(long userId, Book book) {
     }
-
     public Book findVerifiedBook(long bookId) {
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         return optionalBook.orElseThrow(() ->

@@ -9,9 +9,9 @@ public enum LikeType {
     COMMENT("코멘트");
 
     @Getter
-    private final String likeType;
+    private final String value;
 
-    LikeType(String likeType) {
-        this.likeType = likeType;
+    LikeType(String value) {
+        this.value = value;
     }
 }

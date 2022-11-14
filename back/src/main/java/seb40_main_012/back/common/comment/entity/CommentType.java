@@ -9,9 +9,9 @@ public enum CommentType {
     BOOK_COLLECTION("컬렉션");
 
     @Getter
-    private final String commentType;
+    private final String value;
 
-    CommentType(String commentType) {
-        this.commentType = commentType;
+    CommentType(String value) {
+        this.value = value;
     }
 }

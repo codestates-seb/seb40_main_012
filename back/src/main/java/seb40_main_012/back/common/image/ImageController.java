@@ -7,7 +7,6 @@
 //import org.springframework.core.io.UrlResource;
 //import org.springframework.http.HttpHeaders;
 //import org.springframework.http.ResponseEntity;
-//import org.springframework.ui.Model;
 //import org.springframework.validation.annotation.Validated;
 //import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +18,6 @@
 //import java.io.IOException;
 //import java.net.MalformedURLException;
 //import java.nio.charset.StandardCharsets;
-//import java.util.ArrayList;
-//import java.util.List;
 //
 //@Slf4j
 //@Validated
