@@ -3,7 +3,6 @@ import theme from '../styles/theme';
 import { useState } from 'react';
 
 const BasicBtn = styled.button`
-  margin: 10px;
   background-color: transparent;
   color: ${({ theme }) => theme.colors.mainColor};
   border: 2px solid ${({ theme }) => theme.colors.mainColor};
@@ -47,7 +46,6 @@ export const BasicButton = ({
 };
 
 const FillBtn = styled.button`
-  margin: 10px;
   background-color: #bfbfbf;
   color: white;
   border: none;
@@ -95,8 +93,6 @@ const LikeBtnWrapper = styled.div`
   }
 `;
 const LikeBtn = styled.button`
-  margin: 10px;
-
   background-color: transparent;
   border: 1px solid ${({ theme }) => theme.colors.purple_1};
   width: 80px;
@@ -124,7 +120,6 @@ export const LikeButton = ({ children }) => {
 };
 
 const TransparBtn = styled.button`
-  margin: 10px;
   background-color: transparent;
   color: ${(props) => props.color || '${({ theme }) => theme.colors.purple_1}'};
   border: none;
@@ -169,7 +164,6 @@ export const TransparButton = ({
 };
 
 const MoreBtn = styled.button`
-  margin: 10px;
   background-color: transparent;
   color: ${({ theme }) => theme.colors.gray};
   border: none;
