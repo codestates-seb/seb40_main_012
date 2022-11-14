@@ -41,7 +41,7 @@ public class PairingDto {
     @Builder
     public static class Patch {
 
-        private long pairingID;
+        private long pairingId;
 
         @NotEmpty(message = "내용을 입력하셔야 합니다.")
         @Size(max = 30, message = "30자를 넘을 수 없습니다.")
