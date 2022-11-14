@@ -56,11 +56,11 @@ const Footer = () => {
       <FooterContainer>
         <FooterContent_1>
           <div className="copyright">Copyright Ⓒ Running_Potatoes 2022.</div>
-          <Link to="/collection">
-            <button>컬렉션</button>
-          </Link>
           <Link to="/pairing">
             <button>페어링</button>
+          </Link>
+          <Link to="/collection">
+            <button>컬렉션</button>
           </Link>
         </FooterContent_1>
         <FooterContent_2>
