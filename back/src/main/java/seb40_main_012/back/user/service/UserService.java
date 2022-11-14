@@ -2,12 +2,15 @@ package seb40_main_012.back.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
+import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.config.auth.event.UserRegistrationApplicationEvent;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 import seb40_main_012.back.user.entity.User;
@@ -84,5 +87,26 @@ public class UserService {
 //        Pattern pattern = Pattern.compile();
 //    }
 
+    public void updateOnFirstLogin(LoginDto.PatchDto patchDto) {
+        User loginUser = getLoginUser(); // 로그인 유저 가져오기
+        loginUser.setGender(patchDto.getGenderType());
+        loginUser.setAge(patchDto.getAge());
+        // TODO: 선호 장르 등록하기
+        loginUser.setFirstLogin(true); // "나중에 하기" 또는 "확인" 버튼 클릭 시
+
+        userRepository.save(loginUser);
+    }
+
+    public User getLoginUser() { // 로그인된 유저 가져오기
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if(authentication == null || authentication.getName() == null || authentication.getName().equals("anonymousUser"))
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+
+        Optional<User> optionalUser = userRepository.findByEmail(authentication.getName());
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+
+        return user;
+    }
 
 }
