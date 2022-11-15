@@ -1,9 +1,9 @@
+import { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-// import FormControlLabel from '@mui/material/FormControlLabel';
-// import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -12,35 +12,66 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
+import SignUpTextField from './SignUpTextField';
 
-// function Copyright(props) {
-//   return (
-//     <Typography
-//       variant="body2"
-//       color="text.secondary"
-//       align="center"
-//       {...props}
-//     >
-//       {'Copyright © '}
-//       <Link color="inherit" href="https://mui.com/">
-//         Your Website
-//       </Link>{' '}
-//       {new Date().getFullYear()}
-//       {'.'}
-//     </Typography>
-//   );
-// }
+import { signUpAsync } from '../../store/modules/signUpSlice';
 
 const theme = createTheme();
 
+const inputInfo = [
+  {
+    label: '별명',
+    id: 'nickName',
+    autoComplete: 'nickname',
+    type: 'text',
+  },
+  {
+    label: '이메일',
+    id: 'email',
+    autoComplete: 'email',
+    type: 'text',
+  },
+  {
+    label: '비밀번호',
+    id: 'password',
+    autoComplete: 'new-password',
+    type: 'password',
+  },
+  {
+    label: '비밀번호 재확인',
+    id: 'passwordCheck',
+    autoComplete: 'new-password',
+    type: 'password',
+  },
+];
+
 const SignUpPage = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const inputRef = useRef([]);
+
+  useEffect(() => {
+    inputRef.current[0].focus();
+  }, []);
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
+    const params = {
+      nickName: data.get('nickName'),
       email: data.get('email'),
       password: data.get('password'),
-    });
+    };
+    // console.log(params);
+    dispatch(signUpAsync(params))
+      .then((response) => {
+        if (response.payload?.data) {
+          navigate('/user/signin', { replace: true });
+        } else {
+          console.log(response.payload?.errorMessage);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -72,57 +103,20 @@ const SignUpPage = () => {
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="nickname"
-                    label="별명"
-                    name="nickname"
-                    autoComplete="nickname"
-                    // autoFocus
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    id="email"
-                    label="이메일"
-                    name="email"
-                    autoComplete="email"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="password"
-                    label="비밀번호"
-                    type="password"
-                    id="password"
-                    autoComplete="new-password"
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    required
-                    fullWidth
-                    name="password-check"
-                    label="비밀번호 재확인"
-                    type="password-check"
-                    id="password-check"
-                    autoComplete="new-password-check"
-                  />
-                </Grid>
-                {/* <Grid item xs={12}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox value="allowExtraEmails" color="primary" />
-                    }
-                    label="I want to receive inspiration, marketing promotions and updates via email."
-                  />
-                </Grid> */}
+                {inputInfo.map((v, i) => (
+                  <Grid key={v.id} item xs={12}>
+                    <SignUpTextField
+                      inputRef={inputRef}
+                      refIndex={i}
+                      label={v.label}
+                      id={v.id}
+                      autoComplete={v.autoComplete}
+                      type={v.type}
+                      required
+                      fullWidth
+                    />
+                  </Grid>
+                ))}
               </Grid>
               <Button
                 type="submit"
@@ -134,14 +128,14 @@ const SignUpPage = () => {
               </Button>
               <Grid container justifyContent="flex-end">
                 <Grid item>
+                  이미 가입하셨나요?{' '}
                   <Link href="/user/signin" variant="body2">
-                    Already have an account? Sign in
+                    로그인
                   </Link>
                 </Grid>
               </Grid>
             </Box>
           </Box>
-          {/* <Copyright sx={{ mt: 5 }} /> */}
         </Container>
       </ThemeProvider>
     </PageContainer>
