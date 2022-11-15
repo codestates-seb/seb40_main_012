@@ -8,11 +8,15 @@ import NoMatch from './pages/NoMatch';
 import CollectionPage from './pages/CollectionPage/Collection';
 import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetail';
 
+//임시 페이지!
+import ReduxPage from './pages/Temp_Redux';
+
 const App = () => {
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
+        <Route path="/redux" element={<ReduxPage />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/user/signin" element={<SignInPage />} />
