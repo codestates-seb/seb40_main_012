@@ -13,6 +13,11 @@ const MainBookContainer = styled.div`
     height: 90%;
     aspect-ratio: 7 / 10;
     object-fit: cover;
+    margin-left: 20px;
+    @media screen and (max-width: 640px) {
+      width: 30%;
+      height: auto;
+    }
   }
   display: flex;
   align-items: center;
@@ -26,15 +31,18 @@ const MainBookInfo = styled.div`
   justify-content: center;
   margin: 0 30px;
   background-color: #f5f5f5;
-  min-width: 300px;
-  height: 200px;
+  min-width: 120px;
   border-radius: 20px;
   padding: 20px;
+
   .title {
     font-size: 22px;
     font-weight: 700;
     color: ${({ theme }) => theme.colors.dark};
     margin-bottom: 5px;
+    @media screen and (max-width: 640px) {
+      font-size: 18px;
+    }
   }
   .author {
     font-size: 14px;

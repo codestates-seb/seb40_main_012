@@ -9,7 +9,7 @@ const MainBooksContainer = styled.div`
   display: flex;
   justify-content: center;
   margin: 25px 0;
-  min-width: 500px;
+  min-width: 650px;
 `;
 
 const MainCarousel = styled.div`
