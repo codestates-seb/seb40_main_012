@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import TextField from '@mui/material/TextField';
-import { setInputValue } from '../../store/modules/signUpSlice';
+import { setInputValue, setInputStatus } from '../../store/modules/signUpSlice';
 
 const SignUpTextField = ({
   inputRef,
@@ -14,10 +14,10 @@ const SignUpTextField = ({
   fullWidth,
 }) => {
   const dispatch = useDispatch();
-  const selectInputValue = useSelector((state) => state.signUp, shallowEqual);
+  const selectSignUP = useSelector((state) => state.signUp, shallowEqual);
+  const { inputValue, inputStatus } = selectSignUP;
 
   const [inputHelperText, setInputHelperText] = useState('');
-  const [inputStatus, setInputStatus] = useState('');
 
   const handleChangeInput = (event) => {
     const { id, value } = event.target;
@@ -27,71 +27,71 @@ const SignUpTextField = ({
   const handleBlur = (event) => {
     const { id, value } = event.target;
     if (required && value.length <= 0) {
-      setInputStatus('error');
+      dispatch(setInputStatus({ id, value: 'error' }));
       setInputHelperText('필수 정보입니다.');
       return;
     }
 
     switch (id) {
       case 'nickName':
-        isValidNickName(value);
+        isValidNickName(id, value);
         break;
       case 'email':
-        isValidEmail(value);
+        isValidEmail(id, value);
         break;
       case 'password':
-        isValidPassword(value);
+        isValidPassword(id, value);
         break;
       case 'passwordCheck':
-        isValidPasswordCheck(value);
+        isValidPasswordCheck(id, value);
         break;
       default:
         break;
     }
   };
 
-  const isValidNickName = (value) => {
+  const isValidNickName = (id, value) => {
     const regExp = /^[a-z0-9_-]{5,20}$/;
 
     if (!regExp.test(value)) {
       setInputHelperText(
         '5~20자의 영문 소문자, 숫자와 특수기호(_),(-)만 사용 가능합니다.'
       );
-      setInputStatus('error');
+      dispatch(setInputStatus({ id, value: 'error' }));
       return;
     }
 
     // 중복확인 api
     // setInputHelperText('이미 사용중인 닉네임입니다.');
-    // setInputStatus('error');
+    // dispatch(setInputStatus({ id, value: 'error' }));
 
     // setInputHelperText('사용할 수 있는 닉네임입니다.');
-    // setInputStatus('success');
+    // dispatch(setInputStatus({ id, value: 'success' }));
     setInputHelperText('');
-    setInputStatus('');
+    dispatch(setInputStatus({ id, value: '' }));
   };
 
-  const isValidEmail = (value) => {
+  const isValidEmail = (id, value) => {
     const regExp =
       /^[-0-9A-Za-z!#$%&'*+/=?^_`{|}~.]+@[-0-9A-Za-z!#$%&'*+/=?^_`{|}~]+[.]{1}[0-9A-Za-z]/;
 
     if (!regExp.test(value)) {
       setInputHelperText('이메일 주소를 다시 확인해주세요.');
-      setInputStatus('error');
+      dispatch(setInputStatus({ id, value: 'error' }));
       return;
     }
 
     // 중복확인 api
     // setInputHelperText('이미 사용중인 이메일입니다.');
-    // setInputStatus('error');
+    // dispatch(setInputStatus({ id, value: 'error' }));
 
     // setInputHelperText('사용할 수 있는 이메일입니다.');
-    // setInputStatus('success');
+    // dispatch(setInputStatus({ id, value: 'success' }));
     setInputHelperText('');
-    setInputStatus('');
+    dispatch(setInputStatus({ id, value: '' }));
   };
 
-  const isValidPassword = (value) => {
+  const isValidPassword = (id, value) => {
     const regExp =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
 
@@ -99,23 +99,23 @@ const SignUpTextField = ({
       setInputHelperText(
         '8~16자 영문 대 소문자, 숫자, 특수문자(@$!%*?&)를 사용하세요.'
       );
-      setInputStatus('error');
+      dispatch(setInputStatus({ id, value: 'error' }));
       return;
     }
 
     setInputHelperText('');
-    setInputStatus('');
+    dispatch(setInputStatus({ id, value: '' }));
   };
 
-  const isValidPasswordCheck = (value) => {
-    if (value !== selectInputValue.password) {
+  const isValidPasswordCheck = (id, value) => {
+    if (value !== inputValue.password) {
       setInputHelperText('비밀번호가 일치하지 않습니다.');
-      setInputStatus('error');
+      dispatch(setInputStatus({ id, value: 'error' }));
       return;
     }
 
     setInputHelperText('');
-    setInputStatus('');
+    dispatch(setInputStatus({ id, value: '' }));
   };
 
   const handleKeyDown = (event) => {
@@ -124,7 +124,7 @@ const SignUpTextField = ({
 
   return (
     <TextField
-      error={inputStatus === 'error'}
+      error={inputStatus[id] === 'error'}
       inputRef={(el) => (inputRef.current[refIndex] = el)}
       required={required}
       fullWidth={fullWidth}
@@ -132,10 +132,10 @@ const SignUpTextField = ({
       label={label}
       name={id}
       autoComplete={autoComplete}
-      value={selectInputValue[id]}
+      value={inputValue[id]}
       onChange={handleChangeInput}
       helperText={
-        inputStatus === 'success' || inputStatus === 'error'
+        inputStatus[id] === 'success' || inputStatus[id] === 'error'
           ? inputHelperText
           : ''
       }

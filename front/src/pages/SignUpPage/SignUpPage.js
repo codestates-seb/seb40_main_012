@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -14,7 +14,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
 import SignUpTextField from './SignUpTextField';
 
-import { signUpAsync } from '../../store/modules/signUpSlice';
+import {
+  signUpAsync,
+  selectDisabledSubmitButton,
+} from '../../store/modules/signUpSlice';
 
 const theme = createTheme();
 
@@ -48,6 +51,7 @@ const inputInfo = [
 const SignUpPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const disabledSubmitButton = useSelector(selectDisabledSubmitButton);
   const inputRef = useRef([]);
 
   useEffect(() => {
@@ -123,6 +127,7 @@ const SignUpPage = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
+                disabled={disabledSubmitButton}
               >
                 가입하기
               </Button>

@@ -4,10 +4,8 @@ import { signUp } from '../../api/signUpAPI';
 const initialState = {
   loading: false,
   error: null,
-  nickName: '',
-  email: '',
-  password: '',
-  passwordCheck: '',
+  inputValue: { nickName: '', email: '', password: '', passwordCheck: '' },
+  inputStatus: { nickName: '', email: '', password: '', passwordCheck: '' },
 };
 
 export const checkDuplicateNickNameAsync = createAsyncThunk(
@@ -57,22 +55,10 @@ export const signUpSlice = createSlice({
   initialState,
   reducers: {
     setInputValue: (state, { payload }) => {
-      switch (payload.id) {
-        case 'nickName':
-          state.nickName = payload.value;
-          break;
-        case 'email':
-          state.email = payload.value;
-          break;
-        case 'password':
-          state.password = payload.value;
-          break;
-        case 'passwordCheck':
-          state.passwordCheck = payload.value;
-          break;
-        default:
-          break;
-      }
+      state.inputValue[payload.id] = payload.value;
+    },
+    setInputStatus: (state, { payload }) => {
+      state.inputStatus[payload.id] = payload.value;
     },
   },
   extraReducers: (builder) => {
@@ -95,6 +81,11 @@ export const signUpSlice = createSlice({
       });
   },
 });
-export const { setInputValue } = signUpSlice.actions;
+export const { setInputValue, setInputStatus } = signUpSlice.actions;
+
+export const selectDisabledSubmitButton = (state) =>
+  Object.values(state.signUp.inputStatus).includes('error') ||
+  Object.values(state.signUp.inputValue).filter((v) => v.length <= 0).length >
+    0;
 
 export default signUpSlice.reducer;
