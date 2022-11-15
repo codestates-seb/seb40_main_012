@@ -4,6 +4,8 @@ import PageContainer from '../../components/PageContainer';
 import CollectionDetailHeader from './CollectionDetailHeader';
 import CollectionTags from './CollectionTags';
 import CollectionHeaderBtns from './CollectionHeaderBtns';
+import CollectionIntro from './CollectionIntro';
+import CollectionDetailBooks from './CollectionDetailBooks';
 
 const CollectionTagBtn = styled.div`
   display: flex;
@@ -24,6 +26,8 @@ const CollectionDetailPage = () => {
           <CollectionTags taglist={['소설', 'sf', '시리즈물']} />
           <CollectionHeaderBtns />
         </CollectionTagBtn>
+        <CollectionIntro intro="뫄뫄하고 재밌는 컬렉션입니다!" />
+        <CollectionDetailBooks />
       </ThemeProvider>
     </PageContainer>
   );

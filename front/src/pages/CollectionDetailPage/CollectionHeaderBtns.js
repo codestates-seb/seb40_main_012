@@ -30,7 +30,13 @@ const CollectionHeaderBtns = () => {
   return (
     <ThemeProvider theme={theme}>
       <CollectionHeaderBtnsContainer>
-        <CollectionBookmark>북마크</CollectionBookmark>
+        <CollectionBookmark>
+          <img
+            src={process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'}
+            alt="bookmark icon"
+          />
+          북마크
+        </CollectionBookmark>
         <CollectionHeart>
           <img
             src={process.env.PUBLIC_URL + '/images/heart_filled_icon.svg'}
