@@ -1,0 +1,323 @@
+= CHERRY PICK
+:sectnums:
+:toc: left
+:toclevels: 4
+:toc-title: Table of Contents
+:source-highlighter: prettify
+
+Seb40_Pre_038 <serin.b@codestates.com>
+
+v1.0.1, 2022.11.15
+
+***
+
+== UserController
+
+=== 회원 가입
+
+.Curl-Request
+
+include::{snippets}/Post_User/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Post_User/http-request.adoc[]
+
+.Request-Fields
+include::{snippets}/Post_User/request-fields.adoc[]
+
+.Http-Response
+include::{snippets}/Post_User/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Post_User/response-fields.adoc[]
+
+=== 로그인
+
+=== 회원 조회
+
+.Curl-Request
+
+include::{snippets}/Get_User/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Get_User/http-request.adoc[]
+
+.Http-Response
+include::{snippets}/Get_User/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Get_User/response-fields.adoc[]
+
+=== 회원 닉네임 수정
+
+=== 회원 비밀번호 변경
+
+=== 회원정보 수정
+
+=== 탈퇴
+
+== Book Controller
+
+=== 책 정보 조회
+
+.Curl-Request
+
+include::{snippets}/Get_Book/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Get_Book/http-request.adoc[]
+
+.Http-Response
+include::{snippets}/Get_Book/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Get_Book/response-fields.adoc[]
+
+=== 별점 매기기
+
+=== 조회수
+
+== BookWiki Controller
+
+=== 파고들기 생성
+
+.Curl-Request
+
+include::{snippets}/Post_Book_Wiki/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Post_Book_Wiki/http-request.adoc[]
+
+.Request-Fields
+include::{snippets}/Post_Book_Wiki/request-fields.adoc[]
+
+.Http-Response
+include::{snippets}/Post_Book_Wiki/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Post_Book_Wiki/response-fields.adoc[]
+
+=== 파고들기 수정
+
+.Curl-Request
+
+include::{snippets}/Patch_Book_Wiki/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Patch_Book_Wiki/http-request.adoc[]
+
+.Request-Fields
+include::{snippets}/Patch_Book_Wiki/request-fields.adoc[]
+
+.Http-Response
+include::{snippets}/Patch_Book_Wiki/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Patch_Book_Wiki/response-fields.adoc[]
+
+=== 파고들기 조회
+
+.Curl-Request
+
+include::{snippets}/Get_Book_Wiki/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Get_Book_Wiki/http-request.adoc[]
+
+.Http-Response
+include::{snippets}/Get_Book_Wiki/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Get_Book_Wiki/response-fields.adoc[]
+
+== Pairing Controller
+
+=== 페어링 생성
+
+.Curl-Request
+
+include::{snippets}/Post_Pairing/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Post_Pairing/http-request.adoc[]
+
+.Request-Fields
+include::{snippets}/Post_Pairing/request-fields.adoc[]
+
+.Http-Response
+include::{snippets}/Post_Pairing/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Post_Pairing/response-fields.adoc[]
+
+=== 페어링 수정
+
+.Curl-Request
+
+include::{snippets}/Patch_Pairing/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Patch_Pairing/http-request.adoc[]
+
+.Request-Fields
+include::{snippets}/Patch_Pairing/request-fields.adoc[]
+
+.Http-Response
+include::{snippets}/Patch_Pairing/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Patch_Pairing/response-fields.adoc[]
+
+=== 페어링 조회
+
+.Curl-Request
+
+include::{snippets}/Get_Pairing/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Get_Pairing/http-request.adoc[]
+
+.Http-Response
+include::{snippets}/Get_Pairing/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Get_Pairing/response-fields.adoc[]
+
+=== 페어링 좋아요
+
+=== 페어링 전체 조회
+
+.Curl-Request
+
+include::{snippets}/Get_Pairings/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Get_Pairings/http-request.adoc[]
+
+.Http-Response
+include::{snippets}/Get_Pairings/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Get_Pairings/response-fields.adoc[]
+
+=== 페어링 삭제
+
+.Curl-Request
+
+include::{snippets}/Delete_Pairing/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Delete_Pairing/http-request.adoc[]
+
+.Http-Response
+include::{snippets}/Delete_Pairing/http-response.adoc[]
+
+== Book Collection Controller
+=== 컬렉션 생성
+=== 컬렉션 수정
+=== 컬렉션 조회
+=== 컬렉션 전체 조회
+=== 컬렉션 삭제
+=== 컬렉션 좋아요
+
+== Comment Controller
+
+=== 책 코멘트 달기
+
+.Curl-Request
+
+include::{snippets}/Post_Book_Comment/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Post_Book_Comment/http-request.adoc[]
+
+.Request-Fields
+include::{snippets}/Post_Book_Comment/request-fields.adoc[]
+
+.Http-Response
+include::{snippets}/Post_Book_Comment/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Post_Book_Comment/response-fields.adoc[]
+
+=== 책 코멘트 좋아요
+
+=== 페어링 코멘트 달기
+
+.Curl-Request
+
+include::{snippets}/Post_Pairing_Comment/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Post_Pairing_Comment/http-request.adoc[]
+
+.Request-Fields
+include::{snippets}/Post_Pairing_Comment/request-fields.adoc[]
+
+.Http-Response
+include::{snippets}/Post_Pairing_Comment/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Post_Pairing_Comment/response-fields.adoc[]
+
+=== 컬렉션 코멘트 달기
+
+=== 코멘트 수정
+
+.Curl-Request
+
+include::{snippets}/Patch_Comment/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Patch_Comment/http-request.adoc[]
+
+.Request-Fields
+include::{snippets}/Patch_Comment/request-fields.adoc[]
+
+.Http-Response
+include::{snippets}/Patch_Comment/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Patch_Comment/response-fields.adoc[]
+
+=== 코멘트 조회
+
+.Curl-Request
+
+include::{snippets}/Get_Comment/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Get_Comment/http-request.adoc[]
+
+.Http-Response
+include::{snippets}/Get_Comment/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Get_Comment/response-fields.adoc[]
+
+=== 코멘트 전체 조회
+
+.Curl-Request
+
+include::{snippets}/Get_Comments/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Get_Comments/http-request.adoc[]
+
+.Http-Response
+include::{snippets}/Get_Comments/http-response.adoc[]
+
+.Response-Fields
+include::{snippets}/Get_Comments/response-fields.adoc[]
+
+=== 코멘트 삭제
+
+.Curl-Request
+
+include::{snippets}/Delete_Comment/curl-request.adoc[]
+
+.Http-Request
+include::{snippets}/Delete_Comment/http-request.adoc[]
+
+.Http-Response
+include::{snippets}/Delete_Comment/http-response.adoc[]
