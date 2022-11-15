@@ -32,7 +32,7 @@ public class BookWikiController {
         );
     }
 
-    @PatchMapping("/wikis/{bookWiki_Id}/edit")
+    @PatchMapping("/wikis/{bookWiki_id}/edit")
     public ResponseEntity patchBookWiki(@PathVariable("bookWiki_id") @Positive long bookWikiId,
                                         @Valid @RequestBody BookWikiDto.Patch patchBookWiki) {
 
