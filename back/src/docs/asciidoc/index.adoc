@@ -5,7 +5,7 @@
 :toc-title: Table of Contents
 :source-highlighter: prettify
 
-Seb40_Pre_038 <serin.b@codestates.com>
+Seb40_Pre_038 a.k.a Running Potatoes <bangserin980302@gmail.com>
 
 v1.0.1, 2022.11.15
 
