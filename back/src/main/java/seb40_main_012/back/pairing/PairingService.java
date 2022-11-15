@@ -55,6 +55,8 @@ public class PairingService {
 
     public Pairing updatePairing(Pairing pairing, long pairingId) {
 
+        User findUser = userService.getLoginUser();
+
         Pairing findPairing = findVerifiedPairing(pairingId);
 
         Pairing updatedPairing =
@@ -78,9 +80,9 @@ public class PairingService {
         return pairingRepository.save(updatedPairing);
     }
 
-    public Pairing updateLike(Pairing pairing) { // Like Count 값만 변경
+    public Pairing updateLike(Pairing pairing, long pairingId) { // Like Count 값만 변경
 
-        Pairing findPairing = findVerifiedPairing(pairing.getPairingId());
+        Pairing findPairing = findVerifiedPairing(pairingId);
 
         findPairing.setLikeCount(pairing.getLikeCount());
 

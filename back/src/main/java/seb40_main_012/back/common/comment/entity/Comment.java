@@ -35,14 +35,14 @@ public class Comment {
     @Column(nullable = false)
     private CommentType commentType;
 
-    @Column(nullable = false)
-    private String body = "";
+    @Column
+    private String body;
 
     @Column(nullable = false)
-    private long likeCount = 0;
+    private long likeCount;
 
     @Column(nullable = false)
-    private long view = 0;
+    private long view;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
