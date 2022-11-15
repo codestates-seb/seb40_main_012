@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
@@ -42,7 +43,8 @@ public class Stub {
                                BookRepository bookRepository, BookService bookService,
                                BookCollectionRepository bookCollectionRepository, BookCollectionService bookCollectionService,
                                PairingRepository pairingRepository, PairingService pairingService,
-                               CommentRepository commentRepository, CommentService commentService) {
+                               CommentRepository commentRepository, CommentService commentService,
+                               BCryptPasswordEncoder encoder) {
 
         // ------------------------------------------------------------------------------------------
         // USER STUB
@@ -52,7 +54,7 @@ public class Stub {
                     userRepository.save(User.builder()
                             .email("stub_email_" + i + "@email.com")
                             .nickName("Stub_Potato_" + i)
-                            .password("1234")
+                            .password(encoder.encode("1234"))
                             .roles(List.of("USER"))
                             .build()));
         }
@@ -61,7 +63,7 @@ public class Stub {
                 userRepository.save(User.builder()
                         .email("hayoung_sama@email.com")
                         .nickName("하영사마")
-                        .password("1234")
+                        .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 시큐리티 요정"))
                         .build()));
 
@@ -69,7 +71,7 @@ public class Stub {
                 userRepository.save(User.builder()
                         .email("kkomkkom_kim@email.com")
                         .nickName("김꼼꼼")
-                        .password("1234")
+                        .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 디자인 엔드포인트"))
                         .build())
         );
@@ -78,7 +80,7 @@ public class Stub {
                 userRepository.save(User.builder()
                         .email("straight_kang@email.com")
                         .nickName("강직진")
-                        .password("1234")
+                        .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 술고래 도단 14세"))
                         .build())
         );
@@ -87,7 +89,7 @@ public class Stub {
                 userRepository.save(User.builder()
                         .email("spring_sunshine@email.com")
                         .nickName("봄날의 햇살")
-                        .password("1234")
+                        .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 풀스택 마스터"))
                         .build())
         );
@@ -96,7 +98,7 @@ public class Stub {
                 userRepository.save(User.builder()
                         .email("taeyoung@email.com")
                         .nickName("걍태영")
-                        .password("1234")
+                        .password(encoder.encode("1234"))
                         .roles(List.of("응원 담당"))
                         .build())
         );
@@ -105,7 +107,7 @@ public class Stub {
                 userRepository.save(User.builder()
                         .email("smile_angel@email.com")
                         .nickName("미소천사")
-                        .password("1234")
+                        .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 소리없는 작업왕"))
                         .build())
         );
@@ -114,7 +116,7 @@ public class Stub {
                 userRepository.save(User.builder()
                         .email("lemonlime_serin@email.com")
                         .nickName("과즙세린")
-                        .password("1234")
+                        .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 사령탑 & 텐션 담당"))
                         .build())
         );
@@ -125,7 +127,7 @@ public class Stub {
                             .roles(List.of("USER"))
                             .email("stub_email_" + i + "@email.com")
                             .nickName("Stub_Potato_" + i)
-                            .password("1234")
+                            .password(encoder.encode("1234"))
                             .roles(List.of("USER"))
                             .build()));
         }

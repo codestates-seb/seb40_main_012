@@ -44,6 +44,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserCategory> category = new ArrayList<>();
 
+    @Column(nullable = false, name = "roles")
     @ElementCollection // 사용자 권한 테이블 생성
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> roles = new ArrayList<>();
@@ -65,7 +66,7 @@ public class User {
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //    private final List<Like> likes = new ArrayList<>();
 
-    private boolean firstLogin = false; // 첫 로그인 여부
+    private boolean firstLogin = true; // 첫 로그인 여부
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;
