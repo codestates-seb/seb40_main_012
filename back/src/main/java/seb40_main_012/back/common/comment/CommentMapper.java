@@ -21,6 +21,7 @@ public interface CommentMapper {
                       UserDto.ResponseDto.builder()
                               .email(comment.getUser().getEmail())
                               .nickName(comment.getUser().getNickName())
+                              .roles(comment.getUser().getRoles())
                               .build()
               )
               .commentType(comment.getCommentType())
