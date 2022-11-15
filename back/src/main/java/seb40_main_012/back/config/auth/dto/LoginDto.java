@@ -8,12 +8,12 @@ import seb40_main_012.back.user.entity.enums.GenderType;
 
 import java.util.List;
 
-//@Getter
-//@Builder
 public class LoginDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class PostDto {
         private String email;
         private String password;
@@ -34,5 +34,8 @@ public class LoginDto {
     @AllArgsConstructor
     public static class ResponseDto {
         private boolean firstLogin;
+        private String nickName;
+        private String email;
+        private List<String> roles;
     }
 }
