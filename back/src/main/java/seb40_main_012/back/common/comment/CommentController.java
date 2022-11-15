@@ -10,7 +10,9 @@ import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
+import seb40_main_012.back.pairing.PairingDto;
 import seb40_main_012.back.pairing.PairingService;
+import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -79,18 +81,19 @@ public class CommentController {
     }
 
     @PatchMapping("/comments/{comment_id}/like")
-    public ResponseEntity updateLikeComment(@RequestHeader("Authorization") long userId,
+    public ResponseEntity updateLikeComment(
+//            @RequestHeader("Authorization") long userId,
                                             @PathVariable("comment_id") @Positive long commentId,
                                             @Valid @RequestBody CommentDto.Like likeComment) {
 
-        likeService.createCommentLike(likeComment);
+        likeService.createCommentLike(commentId); // 좋아요 눌렀나 검증
 
-        likeComment.setCommentId(commentId);
-
-        Comment comment = commentService.updateLike(commentMapper.commentLikeToComment(likeComment));
+        Comment comment = commentMapper.commentLikeToComment(likeComment);
+        Comment updatedLikeComment = commentService.updateLike(comment, commentId);
+        CommentDto.Response response = commentMapper.commentToCommentResponse(updatedLikeComment);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(commentMapper.commentToCommentResponse(comment)), HttpStatus.OK
+                new SingleResponseDto<>(response), HttpStatus.OK
         );
     }
 

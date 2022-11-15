@@ -14,6 +14,8 @@ import javax.persistence.*;
 @Data
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Likes")
 public class Like {
 
@@ -34,7 +36,7 @@ public class Like {
     private LikeType likeType;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pairing_id")
     private Pairing pairing;
 

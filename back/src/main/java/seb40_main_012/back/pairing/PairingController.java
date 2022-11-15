@@ -47,14 +47,14 @@ public class PairingController {
     }
 
     @PatchMapping("/pairings/{pairing_id}/edit")
-    public ResponseEntity patchPairing(@RequestHeader("Authorization") long userId,
+    public ResponseEntity patchPairing(
+//            @RequestHeader("Authorization") long userId,
                                        @PathVariable("pairing_id") @Positive long pairingId,
                                        @Valid @RequestBody PairingDto.Patch patchPairing) {
 
         Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
-
-        Pairing updatePairing = pairingService.updatePairing(pairing, pairingId);
-        PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatePairing);
+        Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK);
@@ -68,18 +68,20 @@ public class PairingController {
     }
 
     @PatchMapping("/pairings/{pairing_id}/like")
-    public ResponseEntity updateLikePairing(@RequestHeader("Authorization") long userId,
+    public ResponseEntity updateLikePairing(
+//            @RequestHeader("Authorization") long userId,
                                             @PathVariable("pairing_id") @Positive long pairingId,
                                             @Valid @RequestBody PairingDto.Like likePairing) {
 
-        likeService.createPairingLike(likePairing);
 
-        likePairing.setPairingId(pairingId);
+        likeService.createPairingLike(pairingId); // 좋아요 눌렀는지 검증
 
-        Pairing pairing = pairingService.updateLike(pairingMapper.pairingLikeToPairing(likePairing));
+        Pairing pairing = pairingMapper.pairingLikeToPairing(likePairing);
+        Pairing updatedLikePairing = pairingService.updateLike(pairing, pairingId);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedLikePairing);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(pairingMapper.pairingToPairingResponse(pairing)), HttpStatus.OK
+                new SingleResponseDto<>(response), HttpStatus.OK
         );
     }
 
@@ -98,9 +100,8 @@ public class PairingController {
 //    }
 
     @PatchMapping("/pairings/{pairing_id}")
-    public ResponseEntity updateViewPairing(@RequestBody PairingDto.View viewPairing,
-                                            @PathVariable("pairing_id") @Positive long pairingId) {
-//        Pairing pairing = pairingMapper.pairingViewToPairing(viewPairing);
+    public ResponseEntity updateViewPairing(@PathVariable("pairing_id") @Positive long pairingId) {
+
         Pairing viewedPairing = pairingService.updateView(pairingId);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(viewedPairing);
 

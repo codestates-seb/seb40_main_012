@@ -57,22 +57,23 @@ public class PairingDto {
 
     }
 
+//    @Data
+//    @Builder
+//    public static class View {
+//
+//        private long pairingId;
+//        private long view;
+//
+//    }
+
     @Data
     @Builder
-    public static class View {
-
-        private long pairingId;
-        private long view;
-
-    }
-
-    @Data
-    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class Like {
 
-        private long pairingId;
-//        private long userId;
-        private long like;
+//        private long pairingId;
+        private long likeCount;
     }
 
     @Data

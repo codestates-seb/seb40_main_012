@@ -45,11 +45,11 @@ public class CommentDto {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Like {
 
-        private long commentId;
-//        private long userId;
-        private long like;
+        private long likeCount;
 
     }
 

@@ -24,13 +24,16 @@ public interface PairingMapper {
                 .outLinkPath(postPairing.getOutLinkPath())
                 .build();
 
-    };
+    }
+
+    ;
 
     Pairing pairingPatchToPairing(PairingDto.Patch patchPairing);
 
     Pairing pairingLikeToPairing(PairingDto.Like likePairing);
 
-    //    Pairing pairingViewToPairing(PairingDto.View viewPairing);
+//    Pairing pairingViewToPairing(PairingDto.View viewPairing);
+
     default PairingDto.Response pairingToPairingResponse(Pairing pairing) {
 
         User user = pairing.getUser();
@@ -83,8 +86,9 @@ public interface PairingMapper {
                 .modifiedAt(pairing.getModifiedAt())
                 .build();
 
-    };
+    }
 
+    ;
 
 
     List<PairingDto.Response> pairingsToPairingResponses(List<Pairing> pairings);

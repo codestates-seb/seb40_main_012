@@ -91,9 +91,9 @@ public class CommentService {
         return commentRepository.save(findComment);
     }
 
-    public Comment updateLike(Comment comment) { // Like Count 값만 변경
+    public Comment updateLike(Comment comment, long commentId) { // Like Count 값만 변경
 
-        Comment findComment = findVerifiedComment(comment.getCommentId());
+        Comment findComment = findVerifiedComment(commentId);
 
         findComment.setLikeCount(comment.getLikeCount());
 
