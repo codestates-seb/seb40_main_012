@@ -12,7 +12,7 @@ public class UserDto {
     @Getter
     @NoArgsConstructor
     public static class Profile {
-        private String nickname;
+        private String nickName;
     }
 
     @Getter

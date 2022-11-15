@@ -35,7 +35,7 @@ public class UserController {
     @PatchMapping("/nickname")
     @ResponseStatus(HttpStatus.OK)
     public void patchNickname(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Profile request) {
-        userService.updateNickname(userId,request.getNickname());
+        userService.updateNickname(userId,request.getNickName());
     }
 
     @PostMapping("/password/current")
