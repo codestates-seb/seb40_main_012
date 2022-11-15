@@ -27,7 +27,7 @@ public class PairingController {
 
     @PostMapping("/{book_id}/pairings/add")
     public ResponseEntity postPairing(
-            @RequestHeader("Authorization") long userId,
+//            @RequestHeader("Authorization") long userId,
             @PathVariable("book_id") @Positive long bookId,
             @Valid @RequestBody PairingDto.Post postPairing) {
 

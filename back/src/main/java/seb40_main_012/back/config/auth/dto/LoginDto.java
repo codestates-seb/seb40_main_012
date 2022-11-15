@@ -14,6 +14,8 @@ public class LoginDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class PostDto {
         private String email;
         private String password;
@@ -21,6 +23,8 @@ public class LoginDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class PatchDto {
         private GenderType genderType;
         private AgeType age;

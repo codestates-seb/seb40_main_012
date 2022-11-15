@@ -31,7 +31,7 @@ public class CommentController {
 
     @PostMapping("/books/{book_id}/comments/add")
     public ResponseEntity postBookComment(
-            @RequestHeader("Authorization") long userId,
+//            @RequestHeader("Authorization") long userId,
             @PathVariable("book_id") @Positive long bookId,
             @Valid @RequestBody CommentDto.Post postComment) {
 
@@ -46,7 +46,7 @@ public class CommentController {
 
     @PostMapping("/pairings/{pairing_id}/comments/add")
     public ResponseEntity postPairingComment(
-            @RequestHeader("Authorization") long userId,
+//            @RequestHeader("Authorization") long userId,
             @PathVariable("pairing_id") @Positive long pairingId,
             @Valid @RequestBody CommentDto.Post postComment) {
 

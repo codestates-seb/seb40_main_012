@@ -51,8 +51,8 @@ public class CommentService {
                         .book(findBook)
                         .user(findUser)
                         .body(comment.getBody())
-                        .createdAt(comment.getCreatedAt())
-                        .modifiedAt(comment.getModifiedAt())
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
                         .build();
 
         findBook.getComments().add(savedBookComment);
@@ -71,8 +71,8 @@ public class CommentService {
                         .user(findUser)
                         .pairing(findPairing)
                         .body(comment.getBody())
-                        .createdAt(comment.getCreatedAt())
-                        .modifiedAt(comment.getModifiedAt())
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
                         .build();
 
         findPairing.getComments().add(savedPairingComment);
