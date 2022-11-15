@@ -123,7 +123,7 @@ const Header = ({ isLogin = false }) => {
         {/* Redux Toolkit 참고용 페이지!! */}
         <Link to="/redux">
           <RTKBtn
-            className={location.pathname === '/collection' ? 'selected' : null}
+            className={location.pathname === '/redux' ? 'selected' : null}
           >
             Redux TK
           </RTKBtn>
