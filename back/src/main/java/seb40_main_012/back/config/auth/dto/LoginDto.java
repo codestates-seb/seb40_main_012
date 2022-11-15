@@ -21,6 +21,8 @@ public class LoginDto {
 
     @Getter
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class PatchDto {
         private GenderType genderType;
         private AgeType age;
