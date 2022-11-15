@@ -13,6 +13,7 @@ import PairingBook from './pages/PairingPage/PairingBook';
 import PairingEtc from './pages/PairingPage/PairingEtc';
 import PairingDetail from './pages/PairingPage/PairingDetail/PairingDetail';
 import CollectionPage from './pages/CollectionPage/Collection';
+import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetail';
 
 const App = () => {
   return (
@@ -30,6 +31,10 @@ const App = () => {
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/user/signin" element={<SignInPage />} />
         <Route path="/user/signup" element={<SignUpPage />} />
+        <Route
+          path="/collection/:collectionid"
+          element={<CollectionDetailPage />}
+        ></Route>
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </BrowserRouter>
