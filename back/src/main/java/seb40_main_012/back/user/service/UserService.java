@@ -96,7 +96,7 @@ public class UserService {
         loginUser.setGender(patchDto.getGenderType());
         loginUser.setAge(patchDto.getAge());
         // TODO: 선호 장르 등록하기
-        loginUser.setFirstLogin(true); // "나중에 하기" 또는 "확인" 버튼 클릭 시
+        loginUser.setFirstLogin(false); // "나중에 하기" 또는 "확인" 버튼 클릭 시
 
         userRepository.save(loginUser);
     }
