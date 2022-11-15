@@ -64,7 +64,7 @@ public class CommentController {
         return null;
     }
 
-    @PatchMapping("/comments/{comments_id}/edit")
+    @PatchMapping("/comments/{comment_id}/edit")
     public ResponseEntity patchComment(@RequestHeader("Authorization") long userId,
                                        @PathVariable("comment_id") @Positive long commentId,
                                        @Valid @RequestBody CommentDto.Patch patchComment) {
