@@ -1,9 +1,6 @@
 package seb40_main_012.back.common.comment;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.user.dto.UserDto;
 

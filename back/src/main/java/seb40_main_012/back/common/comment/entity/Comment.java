@@ -24,7 +24,7 @@ import java.util.List;
 @Builder
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor //mapperImpl에서 에러나서 추가해두었습니다. 확인하시면 주석 삭제부탁드려용
+@NoArgsConstructor
 public class Comment {
 
     @Id
@@ -36,13 +36,13 @@ public class Comment {
     private CommentType commentType;
 
     @Column(nullable = false)
-    private String body;
+    private String body = "";
 
     @Column(nullable = false)
-    private long likeCount;
+    private long likeCount = 0;
 
     @Column(nullable = false)
-    private long view;
+    private long view = 0;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
