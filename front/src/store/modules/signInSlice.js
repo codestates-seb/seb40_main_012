@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { signIn } from '../../api/signInAPI';
+import axios from '../../api/axios';
 
 const initialState = {
   loading: false,
@@ -7,8 +8,8 @@ const initialState = {
   inputValue: { email: '', password: '' },
   inputStatus: { email: '', password: '' },
   inputHelperText: { email: '', password: '' },
+  isLogin: false,
   firstLogin: false,
-  authorization: 'Bearer',
 };
 
 export const signInAsync = createAsyncThunk(
@@ -16,6 +17,8 @@ export const signInAsync = createAsyncThunk(
   async (params, thunkAPI) => {
     try {
       const response = await signIn(params);
+      axios.defaults.headers.common['Authorization'] =
+        'Bearer ' + response.headers.authorization;
 
       return response;
     } catch (error) {
@@ -45,14 +48,20 @@ export const signInSlice = createSlice({
       .addCase(signInAsync.pending, (state) => {
         state.error = null;
         state.loading = true;
+        state.isLogin = false;
       })
       .addCase(signInAsync.fulfilled, (state, action) => {
         state.error = null;
         state.loading = false;
+        state.isLogin = true;
         state.firstLogin = action.payload.data.firstLogin;
+        state.inputValue = { email: '', password: '' };
+        state.inputStatus = { email: '', password: '' };
+        state.inputHelperText = { email: '', password: '' };
       })
       .addCase(signInAsync.rejected, (state, action) => {
         state.loading = false;
+        state.isLogin = false;
         if (action.payload) {
           state.error = action.payload.errorMessage;
         } else {
