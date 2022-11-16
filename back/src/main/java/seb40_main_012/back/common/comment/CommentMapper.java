@@ -1,6 +1,7 @@
 package seb40_main_012.back.common.comment;
 
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Slice;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.user.dto.UserDto;
 
@@ -31,5 +32,11 @@ public interface CommentMapper {
               .modifiedAt(comment.getModifiedAt())
               .build();
     };
-    List<CommentDto.Response> commentsToCommentResponses(List<Comment> comments);
+//    default Slice<CommentDto.Response> commentsToCommentResponses(Slice<Comment> comments) {
+//
+//        if (comments == null) return null;
+//
+//        Slice<CommentDto.Response> slice = new Slice<CommentDto.Response>(comments);
+//    }
+//    List<CommentDto.Response> commentsToCommentResponses(List<Comment> comments);
 }

@@ -1,6 +1,8 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +11,8 @@ import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.UserRepository;
@@ -29,28 +33,59 @@ public class PairingService {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    public Pairing createPairing(Pairing pairing, long bookId) {
+    public Pairing createPairing(Pairing pairing, String isbn13) {
 
         User findUser = userService.getLoginUser();
 
-        Book findBook = bookService.findBook(bookId);
+        Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
 
-        Pairing savedPairing =
-                Pairing.builder()
-                        .book(findBook)
-                        .user(findUser)
-                        .pairingCategory(pairing.getPairingCategory())
-                        .imagePath(pairing.getImagePath())
-                        .title(pairing.getTitle())
-                        .body(pairing.getBody())
-                        .outLinkPath(pairing.getOutLinkPath())
-                        .createdAt(LocalDateTime.now())
-                        .modifiedAt(LocalDateTime.now())
-                        .build();
+        if (optionalBook.isEmpty()) {
 
-        findBook.getPairings().add(savedPairing);
+            Book savedBook =
+                    Book.builder()
+                            .isbn13(isbn13)
+                            .build();
 
-        return pairingRepository.save(savedPairing);
+            bookRepository.save(savedBook);
+
+            Pairing savedPairing =
+                    Pairing.builder()
+                            .book(savedBook)
+                            .user(findUser)
+                            .pairingCategory(pairing.getPairingCategory())
+                            .imagePath(pairing.getImagePath())
+                            .title(pairing.getTitle())
+                            .body(pairing.getBody())
+                            .outLinkPath(pairing.getOutLinkPath())
+                            .createdAt(LocalDateTime.now())
+                            .modifiedAt(LocalDateTime.now())
+                            .build();
+
+            savedBook.getPairings().add(savedPairing);
+
+            return pairingRepository.save(savedPairing);
+
+        } else {
+
+            Book findBook = optionalBook.get();
+
+            Pairing savedPairing =
+                    Pairing.builder()
+                            .book(findBook)
+                            .user(findUser)
+                            .pairingCategory(pairing.getPairingCategory())
+                            .imagePath(pairing.getImagePath())
+                            .title(pairing.getTitle())
+                            .body(pairing.getBody())
+                            .outLinkPath(pairing.getOutLinkPath())
+                            .createdAt(LocalDateTime.now())
+                            .modifiedAt(LocalDateTime.now())
+                            .build();
+
+            findBook.getPairings().add(savedPairing);
+
+            return pairingRepository.save(savedPairing);
+        }
     }
 
     public Pairing updatePairing(Pairing pairing, long pairingId) {
@@ -110,15 +145,24 @@ public class PairingService {
 //        );
 //    }
 
-    public List<Pairing> findPairings() { // 리스트 처리 및 좋아요 내림차순 정렬
+    public Slice<Pairing> findPairings() { // 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        return pairingRepository.findAll(
+        PageRequest pageRequest = PageRequest.of(1, 5, Sort.by(Sort.Direction.DESC, "likeCount"));
 
-                Sort.by("likeCount").descending()
-        );
+        return pairingRepository.findSliceBy(pageRequest);
     }
 
+//    public List<Pairing> findPairings() { // 리스트 처리 및 좋아요 내림차순 정렬
+//
+//        return pairingRepository.findAll(
+//
+//                Sort.by("likeCount").descending()
+//        );
+//    }
+
     public void deletePairing(long pairingId) {
+
+        User findUser = userService.getLoginUser();
 
         Pairing findPairing = findVerifiedPairing(pairingId);
 

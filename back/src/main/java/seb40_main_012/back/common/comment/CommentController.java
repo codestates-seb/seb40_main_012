@@ -1,6 +1,7 @@
 package seb40_main_012.back.common.comment;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -10,9 +11,7 @@ import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
-import seb40_main_012.back.pairing.PairingDto;
 import seb40_main_012.back.pairing.PairingService;
-import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -31,14 +30,12 @@ public class CommentController {
     private final CommentMapper commentMapper;
     private final LikeService likeService;
 
-    @PostMapping("/books/{book_id}/comments/add")
-    public ResponseEntity postBookComment(
-//            @RequestHeader("Authorization") long userId,
-            @PathVariable("book_id") @Positive long bookId,
-            @Valid @RequestBody CommentDto.Post postComment) {
+    @PostMapping("/books/{isbn13}/comments/add")
+    public ResponseEntity postBookComment(@PathVariable("isbn13") @Positive String isbn13,
+                                          @Valid @RequestBody CommentDto.Post postComment) {
 
         Comment comment = commentMapper.commentPostToComment(postComment);
-        Comment createdComment = commentService.createBookComment(comment, bookId);
+        Comment createdComment = commentService.createBookComment(comment, isbn13);
         CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
 
         return new ResponseEntity<>(
@@ -47,10 +44,8 @@ public class CommentController {
     }
 
     @PostMapping("/pairings/{pairing_id}/comments/add")
-    public ResponseEntity postPairingComment(
-//            @RequestHeader("Authorization") long userId,
-            @PathVariable("pairing_id") @Positive long pairingId,
-            @Valid @RequestBody CommentDto.Post postComment) {
+    public ResponseEntity postPairingComment(@PathVariable("pairing_id") @Positive long pairingId,
+                                             @Valid @RequestBody CommentDto.Post postComment) {
 
         Comment comment = commentMapper.commentPostToComment(postComment);
         Comment createdComment = commentService.createPairingComment(comment, pairingId);
@@ -67,8 +62,7 @@ public class CommentController {
     }
 
     @PatchMapping("/comments/{comment_id}/edit")
-    public ResponseEntity patchComment(@RequestHeader("Authorization") long userId,
-                                       @PathVariable("comment_id") @Positive long commentId,
+    public ResponseEntity patchComment(@PathVariable("comment_id") @Positive long commentId,
                                        @Valid @RequestBody CommentDto.Patch patchComment) {
 
         Comment comment = commentMapper.commentPatchToComment(patchComment);
@@ -81,9 +75,7 @@ public class CommentController {
     }
 
     @PatchMapping("/comments/{comment_id}/like")
-    public ResponseEntity updateLikeComment(
-//            @RequestHeader("Authorization") long userId,
-                                            @PathVariable("comment_id") @Positive long commentId,
+    public ResponseEntity updateLikeComment(@PathVariable("comment_id") @Positive long commentId,
                                             @Valid @RequestBody CommentDto.Like likeComment) {
 
         likeService.createCommentLike(commentId); // 좋아요 눌렀나 검증
@@ -151,17 +143,16 @@ public class CommentController {
     @GetMapping("/comments") // 리스트로 조회
     public ResponseEntity getComments() {
 
-        List<Comment> listComments = commentService.findComments();
-        List<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(listComments);
+        Slice<Comment> sliceComments = commentService.findComments();
+//        Slice<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(listComments);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(responses), HttpStatus.OK
+                new SingleResponseDto<>(sliceComments), HttpStatus.OK
         );
     }
 
     @DeleteMapping("/comments/{comment_id}/delete")
-    public ResponseEntity deleteComment(@RequestHeader("Authorization") long userId,
-                                        @PathVariable("comment_id") @Positive long commentId) {
+    public ResponseEntity deleteComment(@PathVariable("comment_id") @Positive long commentId) {
 
         commentService.deleteComment(commentId);
 

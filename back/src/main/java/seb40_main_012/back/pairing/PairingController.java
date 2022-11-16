@@ -1,6 +1,7 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -25,14 +26,14 @@ public class PairingController {
     private final BookService bookService;
     private final LikeService likeService;
 
-    @PostMapping("/{book_id}/pairings/add")
+    @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
 //            @RequestHeader("Authorization") long userId,
-            @PathVariable("book_id") @Positive long bookId,
+            @PathVariable("isbn13") @Positive String isbn13,
             @Valid @RequestBody PairingDto.Post postPairing) {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
-        Pairing createPairing = pairingService.createPairing(pairing, bookId);
+        Pairing createPairing = pairingService.createPairing(pairing, isbn13);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
 
         return new ResponseEntity<>(
@@ -47,9 +48,7 @@ public class PairingController {
     }
 
     @PatchMapping("/pairings/{pairing_id}/edit")
-    public ResponseEntity patchPairing(
-//            @RequestHeader("Authorization") long userId,
-                                       @PathVariable("pairing_id") @Positive long pairingId,
+    public ResponseEntity patchPairing(@PathVariable("pairing_id") @Positive long pairingId,
                                        @Valid @RequestBody PairingDto.Patch patchPairing) {
 
         Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
@@ -68,9 +67,7 @@ public class PairingController {
     }
 
     @PatchMapping("/pairings/{pairing_id}/like")
-    public ResponseEntity updateLikePairing(
-//            @RequestHeader("Authorization") long userId,
-                                            @PathVariable("pairing_id") @Positive long pairingId,
+    public ResponseEntity updateLikePairing(@PathVariable("pairing_id") @Positive long pairingId,
                                             @Valid @RequestBody PairingDto.Like likePairing) {
 
 
@@ -134,20 +131,32 @@ public class PairingController {
 //        );
 //    }
 
-    @GetMapping("/pairings") // 리스트로 받기
+//    @GetMapping("/pairings") // 리스트로 받기
+//    public ResponseEntity getPairings() {
+//
+//        List<Pairing> listPairings = pairingService.findPairings();
+//        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(listPairings);
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(responses), HttpStatus.OK
+//        );
+//    }
+
+    @GetMapping("/pairings") // 슬라이스로 받기
     public ResponseEntity getPairings() {
 
-        List<Pairing> listPairings = pairingService.findPairings();
-        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(listPairings);
+        Slice<Pairing> slicePairings = pairingService.findPairings();
+//        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(listPairings);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(responses), HttpStatus.OK
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
         );
     }
 
+
+
     @DeleteMapping("/pairings/{pairing_id}/delete")
-    public ResponseEntity deletePairing(@RequestHeader("Authorization") long userId,
-                                        @PathVariable("pairing_id") @Positive long pairingId) {
+    public ResponseEntity deletePairing(@PathVariable("pairing_id") @Positive long pairingId) {
 
         pairingService.deletePairing(pairingId);
 

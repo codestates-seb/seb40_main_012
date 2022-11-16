@@ -7,12 +7,11 @@ public enum Genre {
     NOVEL("소설"),
     ESSAY("수필"),
     POEM("시"),
-    HISTORY("역사"),
+    HUMANITIES("인문학"),
+    SOCIAL("사회과학"),
+    NATURAL("자연과학"),
     COMICS("만화"),
-    TRAVEL("여행"),
-    ETC("기타"),
-    PHILOSOPHY("철학"),
-    ECONOMY("경제");
+    ETC("기타");
 
     @Getter
     private final String value;

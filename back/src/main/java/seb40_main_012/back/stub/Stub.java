@@ -135,6 +135,7 @@ public class Stub {
 
             log.info("BOOK STUB " +
                     bookRepository.save(Book.builder()
+                            .isbn13("" + i)
                             .genre(Genre.NOVEL)
                             .view((int) (Math.random() * 150))
                             .title("Stub_Book_" + i)
@@ -162,7 +163,7 @@ public class Stub {
                                     .imagePath("Stub_Image_Path_" + i)
                                     .title("Stub_Pairing_Title_" + i)
                                     .body("Stub_Pairing_Body_" + i)
-                                    .book(bookService.findVerifiedBook(i))
+                                    .book(bookService.findVerifiedBook("" + i))
                                     .user(userService.findUser(rand))
                                     .outLinkPath("Stub_Pairing_OutLink_Path" + i)
                                     .likeCount((long) (Math.random() * 100))
@@ -200,7 +201,7 @@ public class Stub {
                             Comment.builder()
                                     .commentType(CommentType.BOOK)
                                     .view((int) (Math.random() * 150))
-                                    .book(bookService.findBook(i))
+                                    .book(bookService.findBook("" + i))
                                     .user(userService.findUser(rand))
                                     .body("Stub_Book_Comment_Body_" + i)
                                     .likeCount((long) (Math.random() * 100))

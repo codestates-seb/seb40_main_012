@@ -28,10 +28,13 @@ public class Book {
     private long bookId;
 
     @Column
+    private String isbn13;
+
+    @Column
     private String title;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, name = "genre")
+    @Column(name = "genre")
     private Genre genre;
 
     private String author;
@@ -47,9 +50,11 @@ public class Book {
     //    --------------------------------------------------------------------------------------------
     @Column
     private double averageRating;
+
     @Column
     private long ratingCount;
-    //    @JsonManagedReference
+
+//    @JsonManagedReference
 //    @OneToMany(mappedBy = "book")
 //    private List<Rating> ratings;
     //    --------------------------------------------------------------------------------------------
@@ -75,7 +80,6 @@ public class Book {
     @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Pairing> pairings = new ArrayList<>();
-
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
     /*관련 컬렉션 목록*/

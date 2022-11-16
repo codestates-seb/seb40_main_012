@@ -5,10 +5,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
+import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.dto.SingleResponseDto;
+import seb40_main_012.back.pairing.PairingDto;
+import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -24,13 +28,22 @@ public class BookController {
     private final BookService bookService;
     private final BookMapper bookMapper;
 
-    @GetMapping("/{book_id}")
-    public ResponseEntity getBook(@PathVariable("book_id") @Positive long bookId) {
+    @PostMapping("/{add}")
+    public ResponseEntity postBook(@Valid @RequestBody BookDto.Post postBook) {
 
-        Book book = bookService.findBook(bookId);
+        Book book = bookMapper.bookPostToBook(postBook);
+        Book createBook = bookService.createBook(book);
+        BookDto.Response response = bookMapper.bookToBookResponse(createBook);
 
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{isbn13}")
+    public ResponseEntity getBook(@PathVariable("isbn13") @Positive String isbn13) {
+
+        Book book = bookService.findBook(isbn13);
         BookDto.Response response = bookMapper.bookToBookResponse(book);
-
         System.out.println(response.getBookId());
 
         return new ResponseEntity<>(
@@ -43,12 +56,11 @@ public class BookController {
         return null;
     }
 
-    @PatchMapping("/{book_id}/rating")
-    public ResponseEntity patchRating(@RequestHeader("Authorization") long userId,
-                                      @PathVariable("book_id") @Positive long bookId,
+    @PatchMapping("/{isbn13}/rating")
+    public ResponseEntity patchRating(@PathVariable("isbn13") @Positive String isbn13,
                                       @Valid @RequestBody BookDto.Rating ratingBook) {
 
-        Book book = bookService.updateRating(ratingBook);
+        Book book = bookService.updateRating(ratingBook, isbn13);
         BookDto.Response response = bookMapper.bookToBookResponse(book);
 
         return new ResponseEntity<>(
@@ -56,11 +68,12 @@ public class BookController {
         );
     }
 
-    @PatchMapping("/{book_id}")
-    public ResponseEntity updateViewPairing(@RequestBody BookDto.View viewBook,
-                                            @PathVariable("book_id") @Positive long bookId) {
+    @PatchMapping("/{isbn13}")
+    public ResponseEntity updateViewPairing(
+//            @RequestBody BookDto.View viewBook,
+                                            @PathVariable("isbn13") @Positive String isbn13) {
 //        Book book = bookMapper.bookViewToBook(viewBook);
-        Book viewedBook = bookService.updateView(bookId);
+        Book viewedBook = bookService.updateView(isbn13);
         BookDto.Response response = bookMapper.bookToBookResponse(viewedBook);
 
         return new ResponseEntity<>(
