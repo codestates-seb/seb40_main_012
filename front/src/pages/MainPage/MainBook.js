@@ -2,7 +2,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import theme from '../../styles/theme';
 
 const randomColor = () => {
-  return Math.floor(Math.random() * 20) + 220;
+  return Math.floor(Math.random() * 50) + 200;
 };
 
 const MainBookContainer = styled.div`
@@ -61,7 +61,7 @@ const MainBookInfo = styled.div`
 `;
 
 const MainBook = ({ bookTitle, author, publish, genre, rating }) => {
-  const randomRGB = `rgb(${randomColor()}, ${randomColor()}, 255)`;
+  const randomRGB = `rgb(${randomColor()}, ${randomColor()}, ${randomColor()})`;
   return (
     <ThemeProvider theme={theme}>
       <MainBookContainer bgcolor={randomRGB}>
