@@ -142,7 +142,14 @@ public class PairingController {
 //        );
 //    }
 
-    @GetMapping("/pairings") // 슬라이스로 받기
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    조회 API 세분화
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+    @GetMapping("/pairings/likes") // 좋아요 순 슬라이스로 받기
     public ResponseEntity getPairings() {
 
         Slice<Pairing> slicePairings = pairingService.findPairings();
@@ -153,6 +160,121 @@ public class PairingController {
         );
     }
 
+    @GetMapping("/pairings/newest") // 최신순 슬라이스로 받기
+    public ResponseEntity getPairingsNewest() {
+
+        Slice<Pairing> slicePairings = pairingService.findPairingsNewest();
+//        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(listPairings);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/film/likes") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getFilmPairingsLikes() {
+
+        Slice<Pairing> slicePairings = pairingService.findFilmPairingsLikes();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/film/newest") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getFilmPairingsNewest() {
+
+        Slice<Pairing> slicePairings = pairingService.findFilmPairingsNewest();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/cuisine/likes") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getCuisinePairingsLikes() {
+
+        Slice<Pairing> slicePairings = pairingService.findCuisinePairingsLikes();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/cuisine/newest") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getCuisinePairingsNewest() {
+
+        Slice<Pairing> slicePairings = pairingService.findCuisinePairingsNewest();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/music/likes") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getMusicPairingsLikes() {
+
+        Slice<Pairing> slicePairings = pairingService.findMusicPairingsLikes();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/music/newest") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getMusicPairingsNewest() {
+
+        Slice<Pairing> slicePairings = pairingService.findMusicPairingsNewest();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/book/likes") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getBookPairingsLikes() {
+
+        Slice<Pairing> slicePairings = pairingService.findBookPairingsLikes();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/book/newest") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getBookPairingsNewest() {
+
+        Slice<Pairing> slicePairings = pairingService.findBookPairingsNewest();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/etc/likes") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getEtcPairingsLikes() {
+
+        Slice<Pairing> slicePairings = pairingService.findEtcPairingsLikes();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/etc/newest") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getEtcPairingsNewest() {
+
+        Slice<Pairing> slicePairings = pairingService.findEtcPairingsNewest();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(slicePairings), HttpStatus.OK
+        );
+    }
+
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
 
 
     @DeleteMapping("/pairings/{pairing_id}/delete")

@@ -145,12 +145,79 @@ public class PairingService {
 //        );
 //    }
 
-    public Slice<Pairing> findPairings() { // 슬라이스 처리 및 좋아요 내림차순 정렬
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    조회 API 세분화
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+    public Slice<Pairing> findPairings() { // 전체 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(1, 5, Sort.by(Sort.Direction.DESC, "likeCount"));
+        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "likeCount"));
 
         return pairingRepository.findSliceBy(pageRequest);
     }
+
+    public Slice<Pairing> findPairingsNewest() { // 전체 슬라이스 처리 및 등록일 내림차순 정렬
+
+        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+
+        return pairingRepository.findSliceBy(pageRequest);
+    }
+
+    public Slice<Pairing> findFilmPairingsLikes() { // 영화 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+
+        return pairingRepository.findCategorySliceByLikeDesc("FILM");
+    }
+
+    public Slice<Pairing> findFilmPairingsNewest() { // 영화 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+
+        return pairingRepository.findCategorySliceByNewestDesc("FILM");
+    }
+
+    public Slice<Pairing> findCuisinePairingsLikes() { // 음식/장소 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+
+        return pairingRepository.findCategorySliceByLikeDesc("CUISINE");
+    }
+
+    public Slice<Pairing> findCuisinePairingsNewest() { // 음식/장소 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+
+        return pairingRepository.findCategorySliceByNewestDesc("CUISINE");
+    }
+
+    public Slice<Pairing> findMusicPairingsLikes() { // 음악 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+
+        return pairingRepository.findCategorySliceByLikeDesc("MUSIC");
+    }
+
+    public Slice<Pairing> findMusicPairingsNewest() { // 음악 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+
+        return pairingRepository.findCategorySliceByNewestDesc("MUSIC");
+    }
+
+    public Slice<Pairing> findBookPairingsLikes() { // 책 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+
+        return pairingRepository.findCategorySliceByLikeDesc("BOOK");
+    }
+
+    public Slice<Pairing> findBookPairingsNewest() { // 책 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+
+        return pairingRepository.findCategorySliceByNewestDesc("BOOK");
+    }
+
+    public Slice<Pairing> findEtcPairingsLikes() { // 기타 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+
+        return pairingRepository.findCategorySliceByLikeDesc("ETC");
+    }
+
+    public Slice<Pairing> findEtcPairingsNewest() { // 기타 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+
+        return pairingRepository.findCategorySliceByNewestDesc("ETC");
+    }
+
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
 
 //    public List<Pairing> findPairings() { // 리스트 처리 및 좋아요 내림차순 정렬
 //
