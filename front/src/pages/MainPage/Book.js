@@ -15,6 +15,7 @@ const BookTitle = styled.div`
   font-size: 14px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.darkgray};
+  white-space: nowrap;
 `;
 
 const Book = ({ bookTitle }) => {
