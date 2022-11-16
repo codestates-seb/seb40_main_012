@@ -1,7 +1,5 @@
 package seb40_main_012.back.stub;
 
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -131,7 +129,7 @@ public class Stub {
                             .build()));
         }
 
-        for (long i = 1; i <= 35; i++) {
+        for (long i = 1; i <= 50; i++) {
 
             log.info("BOOK STUB " +
                     bookRepository.save(Book.builder()
@@ -151,7 +149,7 @@ public class Stub {
         // PAIRING STUB
         // ------------------------------------------------------------------------------------------
 
-        for (long i = 1; i <= 35; i++) {
+        for (long i = 1; i <= 10; i++) {
 
             long rand = (long) (Math.random() * 35) + 1;
 
@@ -159,6 +157,94 @@ public class Stub {
                     pairingRepository.save(
                             Pairing.builder()
                                     .pairingCategory(ParingCategory.FILM)
+                                    .view((int) (Math.random() * 150))
+                                    .imagePath("Stub_Image_Path_" + i)
+                                    .title("Stub_Pairing_Title_" + i)
+                                    .body("Stub_Pairing_Body_" + i)
+                                    .book(bookService.findVerifiedBook("" + i))
+                                    .user(userService.findUser(rand))
+                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
+        }
+
+        for (long i = 11; i <= 20; i++) {
+
+            long rand = (long) (Math.random() * 35) + 1;
+
+            log.info("PAIRING STUB " +
+                    pairingRepository.save(
+                            Pairing.builder()
+                                    .pairingCategory(ParingCategory.CUISINE)
+                                    .view((int) (Math.random() * 150))
+                                    .imagePath("Stub_Image_Path_" + i)
+                                    .title("Stub_Pairing_Title_" + i)
+                                    .body("Stub_Pairing_Body_" + i)
+                                    .book(bookService.findVerifiedBook("" + i))
+                                    .user(userService.findUser(rand))
+                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
+        }
+
+        for (long i = 21; i <= 30; i++) {
+
+            long rand = (long) (Math.random() * 35) + 1;
+
+            log.info("PAIRING STUB " +
+                    pairingRepository.save(
+                            Pairing.builder()
+                                    .pairingCategory(ParingCategory.MUSIC)
+                                    .view((int) (Math.random() * 150))
+                                    .imagePath("Stub_Image_Path_" + i)
+                                    .title("Stub_Pairing_Title_" + i)
+                                    .body("Stub_Pairing_Body_" + i)
+                                    .book(bookService.findVerifiedBook("" + i))
+                                    .user(userService.findUser(rand))
+                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
+        }
+
+        for (long i = 31; i <= 40; i++) {
+
+            long rand = (long) (Math.random() * 35) + 1;
+
+            log.info("PAIRING STUB " +
+                    pairingRepository.save(
+                            Pairing.builder()
+                                    .pairingCategory(ParingCategory.BOOK)
+                                    .view((int) (Math.random() * 150))
+                                    .imagePath("Stub_Image_Path_" + i)
+                                    .title("Stub_Pairing_Title_" + i)
+                                    .body("Stub_Pairing_Body_" + i)
+                                    .book(bookService.findVerifiedBook("" + i))
+                                    .user(userService.findUser(rand))
+                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
+        }
+
+        for (long i = 41; i <= 50; i++) {
+
+            long rand = (long) (Math.random() * 35) + 1;
+
+            log.info("PAIRING STUB " +
+                    pairingRepository.save(
+                            Pairing.builder()
+                                    .pairingCategory(ParingCategory.ETC)
                                     .view((int) (Math.random() * 150))
                                     .imagePath("Stub_Image_Path_" + i)
                                     .title("Stub_Pairing_Title_" + i)

@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface BookCollectionRepository extends JpaRepository<BookCollection,Long> {
     Long countBy();
-    List<BookCollection> findByUser_UserId(Long userId);
+//    List<BookCollection> findByUser_UserId(Long userId);
 }
