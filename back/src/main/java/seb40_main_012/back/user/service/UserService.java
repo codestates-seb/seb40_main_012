@@ -65,9 +65,16 @@ public class UserService {
         return savedUser;
     }
 
+    public boolean verifyNickName(String nickName){
+        if(userRepository.findByNickName(nickName)==null)
+            return true;
+        else {
+            throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
+        }
+    }
     public void updateNickName(Long id, String nickName) {
         User findUser = findVerifiedUser(id);
-        //nickname 중복 검사
+        verifyNickName(nickName);
         findUser.updateNickName(nickName);
         userRepository.save(findUser);
     }

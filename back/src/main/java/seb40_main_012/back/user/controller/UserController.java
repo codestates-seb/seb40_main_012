@@ -29,7 +29,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -39,7 +39,7 @@ public class UserController {
     private final PairingRepository pairingRepository;
     private final BookCollectionRepository collectionRepository;
 
-    @PostMapping
+    @PostMapping("/users")
     public ResponseEntity postUser(@Valid @RequestBody UserDto.PostDto postdto) {
         User user = mapper.userPostToUser(postdto);
 
@@ -47,34 +47,36 @@ public class UserController {
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.userToUserResponse(createdUser)), HttpStatus.CREATED);
     }
-//    @PostMapping
-//    public boolean verifyNickName(){}
+    @PostMapping("/users/verify/nickName")
+    public boolean verifyNickName(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Profile request){
+        return userService.verifyNickName(request.getNickName());
+    }
 
-    @PatchMapping("/nickname")
+    @PatchMapping("/users/nickname")
     @ResponseStatus(HttpStatus.OK)
     public void patchNickName(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Profile request) {
         userService.updateNickName(userId,request.getNickName());
     }
 
-    @PostMapping("/password/current")
+    @PostMapping("/users/password/current")
     @ResponseStatus(HttpStatus.OK)
     public boolean verifyPassword(@RequestHeader("Authorization") Long userId,@RequestBody String currentPassword){
         return userService.verifyPassword(userId,currentPassword);
     }
 
-    @PatchMapping("/password/update")
+    @PatchMapping("/users/password/update")
     @ResponseStatus(HttpStatus.OK)
     public void patchPassword(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Password request){
         userService.updatePassword(userId,request.getPassword());
     }
 
-    @PatchMapping("/userInfo")
+    @PatchMapping("/users/userInfo")
     @ResponseStatus(HttpStatus.OK)
     public UserInfoDto.Response patchUserInfo(@RequestHeader("Authorization") Long userId, @RequestBody UserInfoDto.Post request){
         User editedUser = userService.editUserInfo(userId,request.toEntity(),request.getCategory());
         return UserInfoDto.Response.of(editedUser);
     }
-    @GetMapping("/{user_id}")
+    @GetMapping("/users/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity getUser(@PathVariable("user_id") @Positive Long userId){
 
@@ -100,21 +102,21 @@ public class UserController {
 
 
     /** 조회 API */
-    @GetMapping("/nickName")
+    @GetMapping("/users/nickName")
     @ResponseStatus(HttpStatus.OK)
     public UserDto.ProfileResponse getNickName(@RequestHeader("Authorization") Long userId){
         User user = userService.findVerifiedUser(userId);
         return new UserDto.ProfileResponse(user.getNickName());
     }
 
-    @GetMapping("/userInfo")
+    @GetMapping("/users/userInfo")
     @ResponseStatus(HttpStatus.OK)
     public UserInfoDto.Response getUserInfo(@RequestHeader("Authorization") Long userId){
         User user = userService.findVerifiedUser(userId);
         return UserInfoDto.Response.of(user);
     }
 
-    @GetMapping("/userComment")
+    @GetMapping("/users/userComment")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<CommentDto.UserComment> getUserComment(@RequestHeader("Authorization") Long userId){
         List<Comment> comments = userService.getUserComment(userId);
@@ -123,7 +125,7 @@ public class UserController {
         return new ListResponseDto<>(listCount,commentDto);
     }
 
-    @GetMapping("/userPairing")
+    @GetMapping("/users/userPairing")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<PairingDto.UserPairing> getUserPairing(@RequestHeader("Authorization") Long userId){
         List<Pairing> pairings = userService.getUserPairing(userId);
@@ -132,7 +134,7 @@ public class UserController {
         return new ListResponseDto<>(listCount,pairingDto);
     }
 
-    @GetMapping("/userCollection")
+    @GetMapping("/users/userCollection")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection(@RequestHeader("Authorization") Long userId){
         List<BookCollection> collections = userService.getUserCollection(userId);
@@ -158,7 +160,7 @@ public class UserController {
 //    @GetMapping
 //    public UserDto.ResponseDto getBookMarkByBook(){}
 
-    @PatchMapping("/firstLogin")
+    @PatchMapping("/users/firstLogin")
     public ResponseEntity patchUserOnFirstLogin(@RequestBody LoginDto.PatchDto patchDto) {
         userService.updateOnFirstLogin(patchDto);
         return new ResponseEntity<>(HttpStatus.OK);
