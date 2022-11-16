@@ -32,9 +32,8 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
-        Optional<User> verifiedUser = userRepository.findByEmail(user.getEmail());
-        if (verifiedUser.isPresent())
-            throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
+        // TODO: 닉네임 중복 검사        
+        verifyEmail(user.getEmail());
 
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
@@ -118,5 +117,11 @@ public class UserService {
         User findUser = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         return findUser;
+    }
+
+    public void verifyEmail(String email) { // 이메일 중복 검사
+        Optional<User> verifiedUser = userRepository.findByEmail(email);
+        if (verifiedUser.isPresent())
+            throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
     }
 }
