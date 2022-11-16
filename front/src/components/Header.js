@@ -2,6 +2,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import theme from '../styles/theme';
 import { useLocation, Link } from 'react-router-dom';
 import Searchbar from './Searchbar';
+import { useSelector } from 'react-redux';
 
 const HeaderContainer = styled.div`
   position: fixed;
@@ -92,8 +93,13 @@ const RTKBtn = styled(HeaderBtn)`
   }
 `;
 
-const Header = ({ isLogin = false }) => {
+const Header = () => {
   const location = useLocation();
+  const isLogin = useSelector((state) => state.signIn.isLogin);
+
+  const handleClickLogoutButton = (e) => {
+    console.log(e.target.textContent);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -130,7 +136,7 @@ const Header = ({ isLogin = false }) => {
         </Link>
         <Searchbar />
         {isLogin ? (
-          <LoginOutBtn>로그아웃</LoginOutBtn>
+          <LoginOutBtn onClick={handleClickLogoutButton}>로그아웃</LoginOutBtn>
         ) : (
           <Link to="/user/signin">
             <LoginOutBtn>로그인</LoginOutBtn>
