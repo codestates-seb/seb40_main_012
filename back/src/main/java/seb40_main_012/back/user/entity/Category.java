@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import seb40_main_012.back.book.entity.Genre;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -24,5 +25,9 @@ public class Category {
     private Genre genre;
 
     @OneToMany(mappedBy = "category")
-    private List<UserCategory> categories;
+    private List<UserCategory> categories = new ArrayList<>();
+
+    public Category(Genre genre){
+        this.genre = genre;
+    }
 }

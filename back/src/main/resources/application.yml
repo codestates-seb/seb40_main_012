@@ -1,14 +1,15 @@
 spring:
-  h2:
-    console:
-      enabled: true
-      path: /h2  # Context path
-  datasource:
-    url: jdbc:h2:mem:CherryPick  # JDBC URL
   jpa:
     hibernate:
-      ddl-auto: create  # ??? ?? ??
-    show_sql: true
+      ddl-auto: update  # ??? ?? ??
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+    database: mysql
+    open-in-view: true
+  profiles:
+    include: database, security
 server:
   servlet:
     encoding:
@@ -18,13 +19,26 @@ server:
       location: ""
       maxFileSize: 5MB
       maxRequestSize: 10MB
+  error:
+    include-stacktrace: never
+#  port: 443
+#  ssl:
+#    enabled: true
+#    key-store: back/src/main/resources/bootsecurity.p12
+#    key-store-password: mhyMHY#1040
+#    key-store-type: PKCS12
+#    key-alias: bootsecurity
 mail:
   address:
     admin: admin@gmail.com
 jwt:
   secret-key: temporary1111potato1111temporary1111potato # ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 30
+
   refresh-token-expiration-minutes: 420
 aladin:
   url: http://www.aladin.co.kr/ttb/api/ItemSearch.aspx
   ttb: ttbgcnb871441001
+
+  refresh-token-expiration-minutes: 420
+

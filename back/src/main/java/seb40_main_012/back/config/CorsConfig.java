@@ -13,7 +13,7 @@ public class CorsConfig implements WebMvcConfigurer {
                 .allowedOrigins("http://localhost:3000",
                         "http://main-012-client.s3-website.ap-northeast-2.amazonaws.com")
                 .allowedMethods("*")
-                .exposedHeaders("Authorization", "Refresh")
+                .exposedHeaders("Authorization", "Set-Cookie")
                 .allowCredentials(true)
                 .maxAge(3000);
     }

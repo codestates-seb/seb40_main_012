@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import seb40_main_012.back.common.comment.entity.Comment;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
@@ -42,22 +43,28 @@ public class User {
     private AgeType age;
 
     @OneToMany(mappedBy = "user")
-    private List<UserCategory> category = new ArrayList<>();
+    private List<UserCategory> categories = new ArrayList<>();
 
     @Column(nullable = false, name = "roles")
     @ElementCollection // 사용자 권한 테이블 생성
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> roles = new ArrayList<>();
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "user")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "user")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Pairing> pairings;
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Pairing> pairings = new ArrayList<>();
+
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user")
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<Comment> comments;
+//
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user")
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<Pairing> pairings;
 
 //    @OneToMany(mappedBy = "user")
 //    private List<Role> roles = new ArrayList<>();
@@ -83,9 +90,11 @@ public class User {
         this.introduction = user.getIntroduction();
         this.gender = user.getGender();
         this.age = user.getAge();
-        this.category = user.getCategory();
     }
 
+    public void addUserCategory(UserCategory userCategory) {
+        this.categories.add(userCategory);
+    }
 
 
 }

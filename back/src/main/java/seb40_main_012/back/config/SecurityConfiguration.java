@@ -50,7 +50,7 @@ public class SecurityConfiguration {
                 .apply(new CustomFilterConfigurer())
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .antMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("USER", "ADMIN") // 회원 탈퇴, 강제 탈퇴
+//                        .antMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("USER", "ADMIN") // 회원 탈퇴, 강제 탈퇴
                         .anyRequest().permitAll()
                 );
         return http.build();
