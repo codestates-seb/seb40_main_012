@@ -34,6 +34,8 @@ public class Book {
     @Column(nullable = false, name = "genre")
     private Genre genre;
 
+    private String author;
+
     @Column
     private long view;
     //    --------------------------------------------------------------------------------------------

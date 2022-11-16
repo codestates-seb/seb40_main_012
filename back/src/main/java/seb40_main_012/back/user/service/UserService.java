@@ -12,10 +12,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
+import seb40_main_012.back.book.entity.Genre;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.common.comment.CommentRepository;
+import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.config.auth.event.UserRegistrationApplicationEvent;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
+import seb40_main_012.back.pairing.PairingRepository;
+import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.entity.Category;
 import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.entity.UserCategory;
+import seb40_main_012.back.user.repository.CategoryRepository;
+import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 
 import java.util.List;
@@ -24,11 +35,18 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final CategoryRepository categoryRepository;
+    private final UserCategoryRepository userCategoryRepository;
+    private final CommentRepository commentRepository;
+    private final PairingRepository pairingRepository;
+    private final BookCollectionRepository collectionRepository;
     private final ApplicationEventPublisher publisher;
     private final CustomAuthorityUtils authorityUtils;
+
     private final BCryptPasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
@@ -46,32 +64,71 @@ public class UserService {
         return savedUser;
     }
 
-    public void updateNickname(Long id, String nickname) {
+    public boolean verifyNickName(String nickName){
+        if(userRepository.findByNickName(nickName)==null)
+            return true;
+        else {
+            throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
+        }
+    }
+    public void updateNickName(Long id, String nickName) {
         User findUser = findVerifiedUser(id);
-        //nickname 중복 검사
-        findUser.updateNickName(nickname);
+        verifyNickName(nickName);
+        findUser.updateNickName(nickName);
         userRepository.save(findUser);
     }
 
-    public boolean verifyPassword(Long userId, String password) {
+    public boolean verifyPassword(Long userId, String password){
         User findUser = findVerifiedUser(userId);
         return findUser.verifyPassword(passwordEncoder, password);
     }
-
-    public void updatePassword(Long id, String password) {
+    public void updatePassword(Long id, String password){
         User findUser = findVerifiedUser(id);
-        if (verifyPassword(id, password)) {
+        if(verifyPassword(id,password)){
             throw new BusinessLogicException(ExceptionCode.PASSWORD_CANNOT_CHANGE);
-        } else {
-            findUser.updatePassword(passwordEncoder, password);
+        }
+        else{
+            findUser.updatePassword(passwordEncoder,password);
 //            userRepository.save(findUser);
         }
     }
 
-    public User editUserInfo(User user, List<String> category) {
-        User findUser = findVerifiedUser(user.getUserId());
+    /** 리팩토링 필요 */
+    public User editUserInfo(Long id,User user, List<Genre> categoryValue){
+        User findUser = findVerifiedUser(id);
+//        Category findCategory = categoryRepository.findByName(categoryValue);
+
+        categoryValue.forEach(
+                value -> {
+                    Category category = categoryRepository.save(new Category(value));
+                    UserCategory userCategory = new UserCategory(category,findUser);
+                    userCategoryRepository.save(userCategory);
+                    findUser.addUserCategory(userCategory);
+                    userRepository.save(findUser);
+                }
+        );
         findUser.updateUserInfo(user);
-        return null;
+        return findUser;
+    }
+
+    public boolean deleteUser(Long userId){
+        findVerifiedUser(userId);
+        userRepository.deleteById(userId);
+        return true;
+    }
+
+    public List<Comment> getUserComment(Long userId){
+        User findUser = findVerifiedUser(userId);
+        List<Comment> comments = findUser.getComments();
+        return comments;
+    }
+
+    public List<Pairing> getUserPairing(Long userId){
+        return pairingRepository.findByUser_UserId(userId);
+    }
+
+    public List<BookCollection> getUserCollection(Long userId){
+        return collectionRepository.findByUser_UserId(userId);
     }
 
     public User findUser(long userId) {
@@ -79,13 +136,16 @@ public class UserService {
     }
 
     public User findVerifiedUser(Long id) {
-        Optional<User> optionalUser =
-                userRepository.findById(id);
-        return optionalUser.orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        User findUser = userRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+        return findUser;
     }
 
-    /* @Valid 와 차이 확인*/
+//    public List<Pairing> getBookMarkByPairing(Long id){
+//
+//    }
+
+
+    /** @Valid 와 차이 확인*/
 //    public boolean validPassword(String password) {
 //        Pattern pattern = Pattern.compile();
 //    }

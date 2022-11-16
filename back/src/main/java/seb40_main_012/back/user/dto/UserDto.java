@@ -18,6 +18,14 @@ public class UserDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    public static class ProfileResponse {
+        private String nickName;
+    }
+
+
+
+    @Getter
     @NoArgsConstructor
     public static class Password {
         private String password;
@@ -26,6 +34,7 @@ public class UserDto {
     @Getter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class PostDto {
         @Email
         @NotBlank(message = "이메일을 입력하셔야 합니다")

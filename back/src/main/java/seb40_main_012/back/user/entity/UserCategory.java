@@ -16,7 +16,6 @@ import javax.persistence.Id;
 public class UserCategory {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_category_id")
     private Long id;
@@ -28,5 +27,10 @@ public class UserCategory {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public UserCategory(Category category, User user) {
+        this.category = category;
+        this.user = user;
+    }
 
 }

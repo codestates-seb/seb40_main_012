@@ -25,7 +25,6 @@ import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.ParingCategory;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
-import seb40_main_012.back.user.entity.enums.RoleType;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
