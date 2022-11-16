@@ -9,14 +9,15 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
+import seb40_main_012.back.user.entity.User;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
@@ -35,8 +36,9 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
             setAuthenticationToContext(claims);
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
-        } catch (ExpiredJwtException ee) {
+        } catch (ExpiredJwtException ee) { // AccessToken 기간 만료
             request.setAttribute("exception", ee);
+            response.sendError(401, "Access Token이 만료되었습니다");
         } catch (Exception e) {
             request.setAttribute("exception", e);
         }
