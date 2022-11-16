@@ -9,8 +9,14 @@ import org.springframework.stereotype.Service;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.entity.Genre;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.common.comment.CommentRepository;
+import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.config.auth.event.UserRegistrationApplicationEvent;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
+import seb40_main_012.back.pairing.PairingRepository;
+import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.Category;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.UserCategory;
@@ -30,6 +36,9 @@ public class UserService {
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final UserCategoryRepository userCategoryRepository;
+    private final CommentRepository commentRepository;
+    private final PairingRepository pairingRepository;
+    private final BookCollectionRepository collectionRepository;
     private final ApplicationEventPublisher publisher;
     private final CustomAuthorityUtils authorityUtils;
 
@@ -73,8 +82,9 @@ public class UserService {
         }
     }
 
-    public User editUserInfo(User user, List<Genre> categoryValue){
-        User findUser = findVerifiedUser(user.getUserId());
+    /** 리팩토링 필요 */
+    public User editUserInfo(Long id,User user, List<Genre> categoryValue){
+        User findUser = findVerifiedUser(id);
 //        Category findCategory = categoryRepository.findByName(categoryValue);
 
         categoryValue.forEach(
@@ -96,12 +106,30 @@ public class UserService {
         return true;
     }
 
+    public List<Comment> getUserComment(Long userId){
+        User findUser = findVerifiedUser(userId);
+        List<Comment> comments = findUser.getComments();
+        return comments;
+    }
+
+    public List<Pairing> getUserPairing(Long userId){
+        return pairingRepository.findByUser_UserId(userId);
+    }
+
+    public List<BookCollection> getUserCollection(Long userId){
+        return collectionRepository.findByUser_UserId(userId);
+    }
 
 
     public User findVerifiedUser(Long id) {
         User findUser = userRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
         return findUser;
     }
+
+//    public List<Pairing> getBookMarkByPairing(Long id){
+//
+//    }
+
 
     /** @Valid 와 차이 확인*/
 //    public boolean validPassword(String password) {

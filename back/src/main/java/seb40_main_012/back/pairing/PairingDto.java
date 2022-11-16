@@ -1,11 +1,10 @@
 package seb40_main_012.back.pairing;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import seb40_main_012.back.common.comment.CommentDto;
+import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.entity.Category;
+import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.dto.UserDto;
 
 import javax.validation.constraints.NotEmpty;
@@ -94,5 +93,47 @@ public class PairingDto {
         private LocalDateTime modifiedAt = LocalDateTime.now();
 
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class UserPairing{
+        private String content;
+        private String bookName;
+        private String author;
+        //        private Image  bookCover;
+        private Long pairingLike;
+
+        public static PairingDto.UserPairing of(Pairing pairing){
+            return UserPairing.builder()
+                    .content(pairing.getBody())
+                    .bookName(pairing.getBook().getTitle())
+                    .author(pairing.getBook().getAuthor())
+                    .pairingLike(pairing.getLikeCount())
+                    .build();
+        }
+    }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class BookmarkedPairing{
+        private String title;
+        private String content;
+        private String userName;
+        private Long pairingLike;
+//        private Image bookCover;
+
+        public static PairingDto.BookmarkedPairing of(Pairing pairing){
+            return BookmarkedPairing.builder()
+                    .title(pairing.getTitle())
+                    .content(pairing.getBody())
+                    .userName(pairing.getUser().getNickName())
+                    .pairingLike(pairing.getLikeCount())
+                    .build();
+        }
+    }
+
 
 }

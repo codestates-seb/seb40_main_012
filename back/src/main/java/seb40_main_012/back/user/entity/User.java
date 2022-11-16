@@ -3,7 +3,9 @@ package seb40_main_012.back.user.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
+import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
@@ -41,6 +43,12 @@ public class User {
     @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
     private List<String> roles = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Pairing> pairings = new ArrayList<>();
+
 //    @OneToMany(mappedBy = "user")
 //    private List<Role> roles = new ArrayList<>();
 
@@ -63,7 +71,6 @@ public class User {
         this.introduction = user.getIntroduction();
         this.gender = user.getGender();
         this.age = user.getAge();
-        this.categories = user.getCategories();
     }
 
     public void addUserCategory(UserCategory userCategory) {
