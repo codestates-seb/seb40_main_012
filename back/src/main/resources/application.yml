@@ -18,10 +18,19 @@ server:
       location: ""
       maxFileSize: 5MB
       maxRequestSize: 10MB
+  error:
+    include-stacktrace: never
+#  port: 443
+#  ssl:
+#    enabled: true
+#    key-store: back/src/main/resources/bootsecurity.p12
+#    key-store-password: mhyMHY#1040
+#    key-store-type: PKCS12
+#    key-alias: bootsecurity
 mail:
   address:
     admin: admin@gmail.com
 jwt:
   secret-key: temporary1111potato1111temporary1111potato # ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 30
-  refresh-token-expiration-minutes: 420
+  access-token-expiration-minutes: 1
+  refresh-token-expiration-minutes: 3
