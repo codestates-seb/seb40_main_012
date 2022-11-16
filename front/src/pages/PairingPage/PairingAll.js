@@ -1,26 +1,21 @@
 import PageContainer from '../../components/PageContainer';
 import PairingTab from './PairingComponents/PairingTab';
 import PairingCuration from './PairingComponents/PairingCuration';
+import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import axios from 'axios';
+import { asyncGetPairing } from '../../store/modules/pairingSlice';
 const PairingPage = () => {
+  const dispatch = useDispatch();
   useEffect(() => {
-    const getPairingAll = async () => {
-      await axios
-        .get('http://localhost:8080/api/books/pairings')
-        .then((res) => {
-          console.log(res.data.data[0].title);
-          return res.data.data;
-        })
-        .catch(console.error());
-    };
-    getPairingAll();
-  }, []);
-  const title = '되나..?';
+    dispatch(asyncGetPairing());
+  }, [dispatch]);
+
+  const pairingData = useSelector((state) => state.pairing.data);
+  const title = '큐레이션 제목: Hot Pairing';
   return (
     <PageContainer footer>
       <PairingTab />
-      <PairingCuration title={title} />
+      <PairingCuration title={title} pairingData={pairingData} />
     </PageContainer>
   );
 };

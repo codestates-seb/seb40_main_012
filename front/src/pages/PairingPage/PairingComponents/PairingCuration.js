@@ -53,7 +53,7 @@ const FirstPhotoContents = styled.div`
   background-color: ${({ theme }) => theme.colors.purple_2};
   border-radius: 25px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 `;
@@ -64,6 +64,10 @@ const OtherPhotoContents = styled.div`
   margin: 5px;
   background-color: ${({ theme }) => theme.colors.purple_2};
   border-radius: 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 const LineContents = styled.div`
@@ -72,32 +76,63 @@ const LineContents = styled.div`
   margin: 5px;
   background-color: ${({ theme }) => theme.colors.purple_3};
   border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
-const PairingCuration = ({ title }) => {
+const PairingCuration = ({ title, pairingData }) => {
   const navigate = useNavigate();
   const onClickPairing = (pairingId) => {
     navigate(`/pairing/${pairingId}`);
   };
+  let sortingArr;
+  if (pairingData.length !== 0) {
+    sortingArr = [...pairingData].sort(function (a, b) {
+      return b.likeCount - a.likeCount;
+    });
+  }
+  console.log(sortingArr);
   return (
     <ThemeProvider theme={theme}>
       <h1>{title}</h1>
       <PairingCurationWrapper>
         <PhotoContainer>
-          <FirstPhotoContents onClick={() => onClickPairing(1)}>
-            <h2>미드나잇 라이브러리와 어바웃 타임</h2>
+          <FirstPhotoContents
+            onClick={() => onClickPairing(sortingArr[0].pairingId)}
+          >
+            <h1>{sortingArr && sortingArr[0].title}</h1>
           </FirstPhotoContents>
           <SecondContainer>
-            <OtherPhotoContents></OtherPhotoContents>
-            <OtherPhotoContents></OtherPhotoContents>
+            <OtherPhotoContents
+              onClick={() => onClickPairing(sortingArr[1].pairingId)}
+            >
+              <h1>{sortingArr && sortingArr[1].title}</h1>
+            </OtherPhotoContents>
+            <OtherPhotoContents
+              onClick={() => onClickPairing(sortingArr[2].pairingId)}
+            >
+              <h1>{sortingArr && sortingArr[2].title}</h1>
+            </OtherPhotoContents>
           </SecondContainer>
         </PhotoContainer>
         <ColumnContainer>
-          <LineContents></LineContents>
-          <LineContents></LineContents>
-          <LineContents></LineContents>
-          <LineContents></LineContents>
-          <LineContents></LineContents>
+          <LineContents onClick={() => onClickPairing(sortingArr[3].pairingId)}>
+            <h1>{sortingArr && sortingArr[3].title}</h1>
+          </LineContents>
+          <LineContents onClick={() => onClickPairing(sortingArr[4].pairingId)}>
+            <h1>{sortingArr && sortingArr[4].title}</h1>
+          </LineContents>
+          <LineContents onClick={() => onClickPairing(sortingArr[5].pairingId)}>
+            <h1>{sortingArr && sortingArr[5].title}</h1>
+          </LineContents>
+          <LineContents onClick={() => onClickPairing(sortingArr[6].pairingId)}>
+            <h1>{sortingArr && sortingArr[6].title}</h1>
+          </LineContents>
+          <LineContents onClick={() => onClickPairing(sortingArr[7].pairingId)}>
+            <h1>{sortingArr && sortingArr[7].title}</h1>
+          </LineContents>
         </ColumnContainer>
       </PairingCurationWrapper>
     </ThemeProvider>
