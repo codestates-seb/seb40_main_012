@@ -3,6 +3,8 @@ package seb40_main_012.back.user.dto;
 import lombok.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -25,14 +27,16 @@ public class UserDto {
     @Builder
     @AllArgsConstructor
     public static class PostDto {
-        @NotBlank
         @Email
+        @NotBlank(message = "이메일을 입력하셔야 합니다")
         private String email;
 
-        @NotBlank
+        @NotBlank(message = "닉네임을 입력하셔야 합니다")
+        @Pattern(regexp = "[0-9a-zA-Z가-힣]{3,20}", message = "3~20자의 한글, 영문, 숫자만 사용 가능합니다")
         private String nickName;
 
-        @NotBlank
+        @NotBlank(message = "패스워드를 입력하셔야 합니다")
+        @Pattern(regexp = "[0-9a-zA-Z@$!%*?&]{8,16}", message = "8~16자 영문, 숫자, 특수문자(@$!%*?&)를 입력하셔야 합니다")
         private String password;
     }
 
