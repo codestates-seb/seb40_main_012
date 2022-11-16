@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,7 +16,8 @@ import SignUpTextField from './SignUpTextField';
 
 import {
   signUpAsync,
-  selectDisabledSubmitButton,
+  selectValidCheckArray,
+  setIsValid,
 } from '../../store/modules/signUpSlice';
 
 const theme = createTheme();
@@ -51,7 +52,11 @@ const inputInfo = [
 const SignUpPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const disabledSubmitButton = useSelector(selectDisabledSubmitButton);
+  const validCheckArray = useSelector(selectValidCheckArray, shallowEqual);
+  const inputValue = useSelector(
+    (state) => state.signUp.inputValue,
+    shallowEqual
+  );
   const inputRef = useRef([]);
 
   useEffect(() => {
@@ -60,6 +65,13 @@ const SignUpPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (validCheckArray.length > 0) {
+      for (const key of validCheckArray) {
+        dispatch(setIsValid(key, inputValue[key], true));
+      }
+      return;
+    }
+
     const data = new FormData(event.currentTarget);
     const params = {
       nickName: data.get('nickName'),
@@ -127,7 +139,6 @@ const SignUpPage = () => {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
-                disabled={disabledSubmitButton}
               >
                 가입하기
               </Button>
