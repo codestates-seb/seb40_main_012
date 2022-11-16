@@ -1,15 +1,11 @@
 import Grid from '@mui/material/Grid';
 import { useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
-import theme from '../../../styles/theme';
 
-const Btn = styled.button`
-  background-color: ${({ theme }) => theme.colors.mainColor};
-`;
 const ContentContainer = styled.div`
   input {
     appearance: none;
@@ -145,9 +141,6 @@ const Content = () => {
             <CommentContainer>
               {editMode ? (
                 <>
-                  <ThemeProvider theme={theme}>
-                    <Btn />
-                  </ThemeProvider>
                   <input
                     type="checkbox"
                     name="select-all"

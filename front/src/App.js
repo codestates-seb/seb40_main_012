@@ -11,6 +11,7 @@ import MyCollection from './pages/MyPage/MyCollection/MyCollection';
 import MyPick from './pages/MyPage/MyPick/MyPick';
 import EditProfile from './pages/MyPage/EditProfile/EditProfile';
 import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetail';
+import ChangePassWd from './pages/MyPage/EditProfile/ChangePassWd';
 
 const App = () => {
   return (
@@ -29,7 +30,12 @@ const App = () => {
         <Route path="/mypage/mypairing" element={<MyParing />} />
         <Route path="/mypage/mycollection" element={<MyCollection />} />
         <Route path="/mypage/mypick" element={<MyPick />} />
-        <Route path="/mypage/editprofile" element={<EditProfile />} />
+        <Route path="/settings/profile" element={<EditProfile />} />
+        <Route
+          path="/settings/profile/changepasswd"
+          element={<ChangePassWd />}
+        />
+
         <Route
           path="/collection/:collectionid"
           element={<CollectionDetailPage />}
