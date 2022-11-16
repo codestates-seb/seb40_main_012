@@ -1,1 +1,1 @@
-export const USERS_URL = '/api/users';
+export const SIGN_UP_URL = '/api/users';
