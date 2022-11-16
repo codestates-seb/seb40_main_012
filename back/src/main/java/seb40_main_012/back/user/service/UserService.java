@@ -127,7 +127,8 @@ public class UserService {
     }
 
     public List<BookCollection> getUserCollection(Long userId){
-        return collectionRepository.findByUser_UserId(userId);
+//        return collectionRepository.findByUser_UserId(userId);
+        return collectionRepository.findAll();
     }
 
     public User findUser(long userId) {

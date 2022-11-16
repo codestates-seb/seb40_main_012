@@ -8,7 +8,7 @@ public enum ParingCategory {
     CUISINE("음식/장소"),
     MUSIC("음악"),
     BOOK("책"),
-    ETC("기타");
+    ETC( "기타");
 
     @Getter
     private final String value;

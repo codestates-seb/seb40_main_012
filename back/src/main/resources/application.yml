@@ -7,6 +7,7 @@ spring:
         format_sql: true
         show_sql: true
     database: h2
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: true
   profiles:
     include: database, security
