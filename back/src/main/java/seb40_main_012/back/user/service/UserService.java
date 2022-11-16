@@ -113,4 +113,10 @@ public class UserService {
         return user;
     }
 
+    public User findUserByEmail(String email) { // 이메일로 유저 찾기
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        User findUser = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+
+        return findUser;
+    }
 }
