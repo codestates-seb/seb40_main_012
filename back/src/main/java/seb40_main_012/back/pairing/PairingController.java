@@ -1,8 +1,6 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -16,9 +14,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.List;
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 @Validated
 @RestController
 @RequiredArgsConstructor
@@ -31,59 +26,62 @@ public class PairingController {
     private final LikeService likeService;
 
     @PostMapping("/{book_id}/pairings/add")
-    public ResponseEntity postPairing(@RequestHeader("Authorization") long userId,
-                                      @PathVariable("book_id") @Positive long bookId,
-                                      @Valid @RequestBody PairingDto.Post postPairing) {
+    public ResponseEntity postPairing(
+//            @RequestHeader("Authorization") long userId,
+            @PathVariable("book_id") @Positive long bookId,
+            @Valid @RequestBody PairingDto.Post postPairing) {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
+        Pairing createPairing = pairingService.createPairing(pairing, bookId);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
 
-        EntityModel<Pairing> entityModel = EntityModel.of(pairingService.createPairing(pairing, bookId),
-                linkTo(methodOn(PairingDto.Post.class).getOutLinkPath()).withRel("link"));
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.CREATED);
 
-//        Pairing createPairing = pairingService.createPairing(pairing, bookId);
-//        PairingDto.Response response = pairingMapper.pairingTOPairingResponse(createPairing);
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(response), HttpStatus.CREATED);
+//        EntityModel<Pairing> entityModel = EntityModel.of(pairingService.createPairing(pairing, bookId),
+//                linkTo(methodOn(PairingDto.Post.class).getOutLinkPath()).withRel("link"));
 
-        return ResponseEntity
-                .created(entityModel.getRequiredLink(IanaLinkRelations.SEARCH).toUri())
-                .body(entityModel);
+//        return ResponseEntity
+//                .created(entityModel.getRequiredLink(IanaLinkRelations.SEARCH).toUri())
+//                .body(entityModel);
     }
 
     @PatchMapping("/pairings/{pairing_id}/edit")
-    public ResponseEntity patchPairing(@RequestHeader("Authorization") long userId,
+    public ResponseEntity patchPairing(
+//            @RequestHeader("Authorization") long userId,
                                        @PathVariable("pairing_id") @Positive long pairingId,
                                        @Valid @RequestBody PairingDto.Patch patchPairing) {
 
         Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
+        Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
 
-//        Pairing updatePairing = pairingService.updatePairing(pairing, pairingId);
-//        PairingDto.Response response = pairingMapper.pairingTOPairingResponse(updatePairing);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK);
+
+//        EntityModel<Pairing> entityModel = EntityModel.of(pairingService.updatePairing(pairing, pairingId),
+//                linkTo(methodOn(PairingDto.Patch.class).getOutLinkPath()).withRel("link"));
 //
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(response), HttpStatus.OK);
-
-        EntityModel<Pairing> entityModel = EntityModel.of(pairingService.updatePairing(pairing, pairingId),
-                linkTo(methodOn(PairingDto.Patch.class).getOutLinkPath()).withRel("link"));
-
-        return ResponseEntity
-                .ok()
-                .body(entityModel);
+//        return ResponseEntity
+//                .ok()
+//                .body(entityModel);
     }
 
     @PatchMapping("/pairings/{pairing_id}/like")
-    public ResponseEntity updateLikePairing(@RequestHeader("Authorization") long userId,
+    public ResponseEntity updateLikePairing(
+//            @RequestHeader("Authorization") long userId,
                                             @PathVariable("pairing_id") @Positive long pairingId,
                                             @Valid @RequestBody PairingDto.Like likePairing) {
 
-        likeService.createPairingLike(likePairing);
 
-        likePairing.setPairingId(pairingId);
+        likeService.createPairingLike(pairingId); // 좋아요 눌렀는지 검증
 
-        Pairing pairing = pairingService.updateLike(pairingMapper.pairingLikeToPairing(likePairing));
+        Pairing pairing = pairingMapper.pairingLikeToPairing(likePairing);
+        Pairing updatedLikePairing = pairingService.updateLike(pairing, pairingId);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedLikePairing);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(pairingMapper.pairingToPairingResponse(pairing)), HttpStatus.OK
+                new SingleResponseDto<>(response), HttpStatus.OK
         );
     }
 
@@ -102,9 +100,8 @@ public class PairingController {
 //    }
 
     @PatchMapping("/pairings/{pairing_id}")
-    public ResponseEntity updateViewPairing(@RequestBody PairingDto.View viewPairing,
-                                            @PathVariable("pairing_id") @Positive long pairingId) {
-//        Pairing pairing = pairingMapper.pairingViewToPairing(viewPairing);
+    public ResponseEntity updateViewPairing(@PathVariable("pairing_id") @Positive long pairingId) {
+
         Pairing viewedPairing = pairingService.updateView(pairingId);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(viewedPairing);
 

@@ -20,6 +20,7 @@ public interface UserMapper {
 
         responseDto.email(user.getEmail());
         responseDto.nickName(user.getNickName());
+        responseDto.roles(user.getRoles());
 
         return responseDto.build();
     }

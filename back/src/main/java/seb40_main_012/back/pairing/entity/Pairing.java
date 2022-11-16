@@ -3,6 +3,8 @@ package seb40_main_012.back.pairing.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.common.comment.entity.Comment;
@@ -17,6 +19,7 @@ import java.util.List;
 @Data
 @Builder
 @Entity
+@ToString(exclude = "book")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Pairing {
@@ -24,6 +27,10 @@ public class Pairing {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long pairingId;
+
+    @Enumerated(EnumType.STRING)
+    @Column
+    private ParingCategory pairingCategory;
 
     @Column
     private String imagePath;
@@ -44,7 +51,7 @@ public class Pairing {
     private long view;
 
     @JsonBackReference
-    @ManyToOne(fetch =  FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -55,13 +62,16 @@ public class Pairing {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Comment> images;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<Like> likes = new ArrayList<>();
 

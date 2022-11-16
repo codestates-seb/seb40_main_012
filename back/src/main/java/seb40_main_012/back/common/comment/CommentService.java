@@ -16,6 +16,7 @@ import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
@@ -40,16 +41,18 @@ public class CommentService {
 
     public Comment createBookComment(Comment comment, long bookId) {
 
+        User findUser = userService.getLoginUser();
+
         Book findBook = bookService.findBook(bookId);
-//        User findUser = userService.findUser(userId);
+
         Comment savedBookComment =
                 Comment.builder()
                         .commentType(CommentType.BOOK)
                         .book(findBook)
-//                        .user(findUser)
+                        .user(findUser)
                         .body(comment.getBody())
-                        .createdAt(comment.getCreatedAt())
-                        .modifiedAt(comment.getModifiedAt())
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
                         .build();
 
         findBook.getComments().add(savedBookComment);
@@ -58,18 +61,18 @@ public class CommentService {
 
     public Comment createPairingComment(Comment comment, long pairingId) {
 
+        User findUser = userService.getLoginUser();
+
         Pairing findPairing = pairingService.findPairing(pairingId);
-//        User findUser = userService.findUser(userId);
 
         Comment savedPairingComment =
                 Comment.builder()
                         .commentType(CommentType.PAIRING)
-//                        .user(findUser)
+                        .user(findUser)
                         .pairing(findPairing)
-//                        .commentId(comment.getCommentId())
                         .body(comment.getBody())
-                        .createdAt(comment.getCreatedAt())
-                        .modifiedAt(comment.getModifiedAt())
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
                         .build();
 
         findPairing.getComments().add(savedPairingComment);
@@ -88,9 +91,9 @@ public class CommentService {
         return commentRepository.save(findComment);
     }
 
-    public Comment updateLike(Comment comment) { // Like Count 값만 변경
+    public Comment updateLike(Comment comment, long commentId) { // Like Count 값만 변경
 
-        Comment findComment = findVerifiedComment(comment.getCommentId());
+        Comment findComment = findVerifiedComment(commentId);
 
         findComment.setLikeCount(comment.getLikeCount());
 

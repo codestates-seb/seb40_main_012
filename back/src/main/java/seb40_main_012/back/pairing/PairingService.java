@@ -10,6 +10,7 @@ import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
@@ -29,19 +30,22 @@ public class PairingService {
     private final UserRepository userRepository;
 
     public Pairing createPairing(Pairing pairing, long bookId) {
+
+        User findUser = userService.getLoginUser();
+
         Book findBook = bookService.findBook(bookId);
-//        User findUser = userService.findUser(userId);
 
         Pairing savedPairing =
                 Pairing.builder()
                         .book(findBook)
-//                        .user(findUser)
+                        .user(findUser)
+                        .pairingCategory(pairing.getPairingCategory())
                         .imagePath(pairing.getImagePath())
                         .title(pairing.getTitle())
                         .body(pairing.getBody())
                         .outLinkPath(pairing.getOutLinkPath())
-                        .createdAt(pairing.getCreatedAt())
-                        .modifiedAt(pairing.getModifiedAt())
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
                         .build();
 
         findBook.getPairings().add(savedPairing);
@@ -50,6 +54,8 @@ public class PairingService {
     }
 
     public Pairing updatePairing(Pairing pairing, long pairingId) {
+
+        User findUser = userService.getLoginUser();
 
         Pairing findPairing = findVerifiedPairing(pairingId);
 
@@ -74,9 +80,9 @@ public class PairingService {
         return pairingRepository.save(updatedPairing);
     }
 
-    public Pairing updateLike(Pairing pairing) { // Like Count 값만 변경
+    public Pairing updateLike(Pairing pairing, long pairingId) { // Like Count 값만 변경
 
-        Pairing findPairing = findVerifiedPairing(pairing.getPairingId());
+        Pairing findPairing = findVerifiedPairing(pairingId);
 
         findPairing.setLikeCount(pairing.getLikeCount());
 

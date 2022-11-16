@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
@@ -22,7 +24,7 @@ import java.util.List;
 @Builder
 @Entity
 @AllArgsConstructor
-@NoArgsConstructor //mapperImpl에서 에러나서 추가해두었습니다. 확인하시면 주석 삭제부탁드려용
+@NoArgsConstructor
 public class Comment {
 
     @Id
@@ -33,17 +35,17 @@ public class Comment {
     @Column(nullable = false)
     private CommentType commentType;
 
-    @Column(nullable = false)
+    @Column
     private String body;
 
     @Column(nullable = false)
     private long likeCount;
 
     @Column(nullable = false)
-    private long View;
+    private long view;
 
     @JsonBackReference
-    @ManyToOne(fetch =  FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -59,11 +61,12 @@ public class Comment {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "answer_id")
+    @JoinColumn(name = "bookCollection_id")
     private BookCollection bookCollection;
 
-    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
     @JsonManagedReference
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private final List<Like> likes = new ArrayList<>();
 
     @CreatedDate

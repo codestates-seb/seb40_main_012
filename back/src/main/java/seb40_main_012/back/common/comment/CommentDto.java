@@ -1,6 +1,7 @@
 package seb40_main_012.back.common.comment;
 
 import lombok.*;
+import lombok.*;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.user.dto.UserDto;
@@ -16,6 +17,8 @@ public class CommentDto {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Post {
 
         @NotBlank(message = "내용을 입력하셔야 합니다.")
@@ -47,11 +50,11 @@ public class CommentDto {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Like {
 
-        private long commentId;
-//        private long userId;
-        private long like;
+        private long likeCount;
 
     }
 

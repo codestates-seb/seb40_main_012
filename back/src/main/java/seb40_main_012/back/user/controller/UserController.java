@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
@@ -24,6 +25,7 @@ import seb40_main_012.back.user.mapper.UserMapper;
 import seb40_main_012.back.user.service.UserService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -72,6 +74,20 @@ public class UserController {
         User editedUser = userService.editUserInfo(userId,request.toEntity(),request.getCategory());
         return UserInfoDto.Response.of(editedUser);
     }
+    @GetMapping("/{user_id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity getUser(@PathVariable("user_id") @Positive Long userId){
+
+        User user = userService.findUser(userId);
+        UserDto.ResponseDto response = mapper.userToUserResponse(user);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK
+        );
+    }
+
+    //    @PatchMapping
+//    public void patchImage(){}
 //
 //    @PatchMapping //프사 수정
 //    public UserDto.ResponseDto patchProfileImage(){}
@@ -141,5 +157,11 @@ public class UserController {
 //
 //    @GetMapping
 //    public UserDto.ResponseDto getBookMarkByBook(){}
+
+    @PatchMapping("/firstLogin")
+    public ResponseEntity patchUserOnFirstLogin(@RequestBody LoginDto.PatchDto patchDto) {
+        userService.updateOnFirstLogin(patchDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

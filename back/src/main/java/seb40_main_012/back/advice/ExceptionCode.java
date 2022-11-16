@@ -30,7 +30,8 @@ public enum ExceptionCode {
     RATED(409, "Already Rated"),
     LIKED(409, "Already Liked"),
 
-    UNAUTHORIZED(401, "Unauthorized");
+    UNAUTHORIZED(401, "Unauthorized"), // 인증이 필요한 상태
+    FORBIDDEN(403, "Forbidden"); // 인증은 되었으나 권한이 없는 상태
 
     @Getter
     private int status;

@@ -19,6 +19,15 @@ server:
       location: ""
       maxFileSize: 5MB
       maxRequestSize: 10MB
+  error:
+    include-stacktrace: never
+#  port: 443
+#  ssl:
+#    enabled: true
+#    key-store: back/src/main/resources/bootsecurity.p12
+#    key-store-password: mhyMHY#1040
+#    key-store-type: PKCS12
+#    key-alias: bootsecurity
 mail:
   address:
     admin: admin@gmail.com

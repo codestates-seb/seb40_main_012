@@ -1,8 +1,13 @@
 package seb40_main_012.back.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import seb40_main_012.back.common.comment.entity.Comment;
+import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -40,7 +45,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<UserCategory> categories = new ArrayList<>();
 
-    @ElementCollection(fetch = FetchType.EAGER) // 사용자 권한 테이블 생성
+    @Column(nullable = false, name = "roles")
+    @ElementCollection // 사용자 권한 테이블 생성
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
@@ -49,12 +56,24 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Pairing> pairings = new ArrayList<>();
 
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user")
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<Comment> comments;
+//
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "user")
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<Pairing> pairings;
+
 //    @OneToMany(mappedBy = "user")
 //    private List<Role> roles = new ArrayList<>();
 
 //    @JsonManagedReference
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 //    private final List<Like> likes = new ArrayList<>();
+
+    private boolean firstLogin = true; // 첫 로그인 여부
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;

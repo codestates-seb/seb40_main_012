@@ -10,7 +10,9 @@ import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
+import seb40_main_012.back.pairing.PairingDto;
 import seb40_main_012.back.pairing.PairingService;
+import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -30,9 +32,10 @@ public class CommentController {
     private final LikeService likeService;
 
     @PostMapping("/books/{book_id}/comments/add")
-    public ResponseEntity postBookComment(@RequestHeader("Authorization") long userId,
-                                          @PathVariable("book_id") @Positive long bookId,
-                                          @Valid @RequestBody CommentDto.Post postComment) {
+    public ResponseEntity postBookComment(
+//            @RequestHeader("Authorization") long userId,
+            @PathVariable("book_id") @Positive long bookId,
+            @Valid @RequestBody CommentDto.Post postComment) {
 
         Comment comment = commentMapper.commentPostToComment(postComment);
         Comment createdComment = commentService.createBookComment(comment, bookId);
@@ -44,9 +47,10 @@ public class CommentController {
     }
 
     @PostMapping("/pairings/{pairing_id}/comments/add")
-    public ResponseEntity postPairingComment(@RequestHeader("Authorization") long userId,
-                                             @PathVariable("pairing_id") @Positive long pairingId,
-                                             @Valid @RequestBody CommentDto.Post postComment) {
+    public ResponseEntity postPairingComment(
+//            @RequestHeader("Authorization") long userId,
+            @PathVariable("pairing_id") @Positive long pairingId,
+            @Valid @RequestBody CommentDto.Post postComment) {
 
         Comment comment = commentMapper.commentPostToComment(postComment);
         Comment createdComment = commentService.createPairingComment(comment, pairingId);
@@ -62,7 +66,7 @@ public class CommentController {
         return null;
     }
 
-    @PatchMapping("/comments/{comments_id}/edit")
+    @PatchMapping("/comments/{comment_id}/edit")
     public ResponseEntity patchComment(@RequestHeader("Authorization") long userId,
                                        @PathVariable("comment_id") @Positive long commentId,
                                        @Valid @RequestBody CommentDto.Patch patchComment) {
@@ -77,18 +81,19 @@ public class CommentController {
     }
 
     @PatchMapping("/comments/{comment_id}/like")
-    public ResponseEntity updateLikeComment(@RequestHeader("Authorization") long userId,
+    public ResponseEntity updateLikeComment(
+//            @RequestHeader("Authorization") long userId,
                                             @PathVariable("comment_id") @Positive long commentId,
                                             @Valid @RequestBody CommentDto.Like likeComment) {
 
-        likeService.createCommentLike(likeComment);
+        likeService.createCommentLike(commentId); // 좋아요 눌렀나 검증
 
-        likeComment.setCommentId(commentId);
-
-        Comment comment = commentService.updateLike(commentMapper.commentLikeToComment(likeComment));
+        Comment comment = commentMapper.commentLikeToComment(likeComment);
+        Comment updatedLikeComment = commentService.updateLike(comment, commentId);
+        CommentDto.Response response = commentMapper.commentToCommentResponse(updatedLikeComment);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(commentMapper.commentToCommentResponse(comment)), HttpStatus.OK
+                new SingleResponseDto<>(response), HttpStatus.OK
         );
     }
 

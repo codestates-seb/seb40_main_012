@@ -10,11 +10,13 @@ import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.CommentRepository;
+import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.common.like.entity.LikeType;
 import seb40_main_012.back.pairing.PairingDto;
 import seb40_main_012.back.pairing.PairingRepository;
+import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
@@ -31,22 +33,18 @@ public class LikeService {
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final LikeRepository likeRepository;
+    private final PairingService pairingService;
+    private final CommentService commentService;
 
-    public void createPairingLike(PairingDto.Like likePairing) {
+    public void createPairingLike(long pairingId) {
 
-        long pairingId = likePairing.getPairingId();
+        Pairing findPairing = pairingService.findPairing(pairingId);
 
-        Optional<Pairing> optionalPairing = pairingRepository.findById(pairingId);
+        User findUser = userService.getLoginUser();
 
-        Pairing findPairing = optionalPairing.orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.PAIRING_NOT_FOUND));
-
-//        User findUser = userService.findUser(userId);
-        long userId = 1; // 임시 유저 번호
+        long userId = findUser.getUserId();
 
         Like findPairingLike = likeRepository.findByPairingAndUserId(findPairing, userId);
-
-        User findUser = userService.findVerifiedUser(userId);
 
         if (findPairingLike == null) {
             findPairingLike =
@@ -66,21 +64,15 @@ public class LikeService {
     public void createBookCollectionLike(User user, BookCollection bookCollection) {
     }
 
-    public void createCommentLike(CommentDto.Like likeComment) {
+    public void createCommentLike(long commentId) {
 
-        long commentId = likeComment.getCommentId();
-        long userId = 1; // 임시 유저 번호
+        Comment findComment = commentService.findComment(commentId);
 
-        Optional<Comment> optionalComment = commentRepository.findById(commentId);
+        User findUser = userService.getLoginUser();
 
-        Comment findComment = optionalComment.orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
-
-//        User findUser = userService.findUser(userId);
+        long userId = findUser.getUserId();
 
         Like findCommentLike = likeRepository.findByCommentAndUserId(findComment, userId);
-
-        User findUser = userService.findVerifiedUser(userId);
 
         if (findCommentLike == null) {
             findCommentLike =

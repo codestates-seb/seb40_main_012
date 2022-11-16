@@ -2,22 +2,21 @@ package seb40_main_012.back.book.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
-import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookWiki.BookWiki;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@Builder
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Book {
@@ -35,10 +34,10 @@ public class Book {
     @Column(nullable = false, name = "genre")
     private Genre genre;
 
+    private String author;
+
     @Column
     private long view;
-
-
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
     /*도서 기본 정보*/
@@ -65,15 +64,17 @@ public class Book {
     /*도서 평가*/
     //    --------------------------------------------------------------------------------------------
     @JsonManagedReference
-    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "book")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Comment> comments = new ArrayList<>();
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
     /*추천 페어링 목록*/
     //    --------------------------------------------------------------------------------------------
     @JsonManagedReference
-    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
-    private List<Pairing> pairings;
+    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Pairing> pairings = new ArrayList<>();
 
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------

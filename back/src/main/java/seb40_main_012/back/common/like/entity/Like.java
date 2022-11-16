@@ -14,6 +14,8 @@ import javax.persistence.*;
 @Data
 @Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "Likes")
 public class Like {
 
@@ -34,7 +36,7 @@ public class Like {
     private LikeType likeType;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "pairing_id")
     private Pairing pairing;
 
@@ -44,7 +46,7 @@ public class Like {
 //    private BookCollection bookCollection;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "comment_id")
     private Comment comment;
 
