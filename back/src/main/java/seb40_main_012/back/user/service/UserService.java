@@ -7,7 +7,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.advice.BusinessLogicException;
@@ -50,8 +49,8 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
-        // TODO: 닉네임 중복 검사        
         verifyEmail(user.getEmail());
+        verifyNickName(user.getNickName());
 
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
@@ -179,9 +178,10 @@ public class UserService {
         return findUser;
     }
 
-    public void verifyEmail(String email) { // 이메일 중복 검사
+    public boolean verifyEmail(String email) { // 이메일 중복 검사
         Optional<User> verifiedUser = userRepository.findByEmail(email);
         if (verifiedUser.isPresent())
             throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
+        return true;
     }
 }

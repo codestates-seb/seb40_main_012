@@ -48,8 +48,13 @@ public class UserController {
                 new SingleResponseDto<>(mapper.userToUserResponse(createdUser)), HttpStatus.CREATED);
     }
     @PostMapping("/users/verify/nickName")
-    public boolean verifyNickName(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Profile request){
+    public boolean verifyNickName(@Valid @RequestBody UserDto.Profile request){
         return userService.verifyNickName(request.getNickName());
+    }
+
+    @PostMapping("/users/verify/email")
+    public boolean verifyEmail(@Valid @RequestBody UserDto.EmailDto emailDto) {
+        return userService.verifyEmail(emailDto.getEmail());
     }
 
     @PatchMapping("/users/nickname")
