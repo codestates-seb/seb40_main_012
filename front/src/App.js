@@ -16,11 +16,15 @@ import PairingDetail from './pages/PairingPage/PairingDetail/PairingDetail';
 import CollectionPage from './pages/CollectionPage/Collection';
 import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetail';
 
+//임시 페이지!
+import ReduxPage from './pages/Temp_Redux';
+
 const App = () => {
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
+        <Route path="/redux" element={<ReduxPage />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/pairing" element={<PairingPage />} />
         <Route path="/pairing/film" element={<PairingMovie />} />
