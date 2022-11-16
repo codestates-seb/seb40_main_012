@@ -129,4 +129,5 @@ public class GlobalExceptionAdvice {
 
         return ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
 }

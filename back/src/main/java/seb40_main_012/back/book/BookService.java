@@ -6,12 +6,19 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
+import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchController;
+import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
+import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
+import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -19,6 +26,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BookService {
 
+    private final BookInfoSearchController bookInfoSearchController;
+    private final BookInfoSearchService bookInfoSearchService;
     private final BookRepository bookRepository;
     private final UserService userService;
 
@@ -49,26 +58,51 @@ public class BookService {
 //        return null;
 //    }
 
+    public Book createBook(Book book) {
+
+        User findUser = userService.getLoginUser();
+
+        String categoryName = bookInfoSearchService.bookSearch(book.getIsbn13()).getItem().get(0).categoryName;
+
+        Book savedBook =
+                Book.builder()
+                        .isbn13(book.getIsbn13())
+                        .averageRating(book.getAverageRating())
+                        .build();
+
+        if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
+        else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
+        else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
+        else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
+        else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
+        else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
+        else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
+        else savedBook.setGenre(Genre.ETC);
+
+
+        return bookRepository.save(savedBook);
+    }
+
     public Book updateBook(Book book) {
         return null;
     }
 
-    public Book updateView(long bookId) {
+    public Book updateView(String isbn13) {
 
-        Book findBook = findVerifiedBook(bookId);
+        Book findBook = findVerifiedBook(isbn13);
 
         findBook.setView(findBook.getView() + 1); // View +1
 
         return bookRepository.save(findBook);
     }
 
-    public Book updateRating(BookDto.Rating ratingBook) {
+    public Book updateRating(BookDto.Rating ratingBook, String isbn13) {
 
-        long bookId = ratingBook.getBookId();
-        long userId = ratingBook.getUserId(); // 임시 유저 번호
+        User findUser = userService.getLoginUser();
+
         long rating = ratingBook.getRating(); // 입력받은 별점
 
-        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
 
         Book findBook = optionalBook.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
@@ -86,8 +120,8 @@ public class BookService {
         return bookRepository.save(findBook);
     }
 
-    public Book findBook(long bookId) {
-        return findVerifiedBook(bookId);
+    public Book findBook(String isbn13) {
+        return findVerifiedBook(isbn13);
     }
 
     public Page<Book> findBooks(int page, int size) {
@@ -99,8 +133,9 @@ public class BookService {
 
     public void verifyBook(long userId, Book book) {
     }
-    public Book findVerifiedBook(long bookId) {
-        Optional<Book> optionalBook = bookRepository.findById(bookId);
+    public Book findVerifiedBook(String isbn13) {
+//        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
         return optionalBook.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
     }

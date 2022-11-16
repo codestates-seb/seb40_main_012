@@ -32,12 +32,15 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 
 
+    //    --------------------------------------------------------------------------------------------
+	implementation 'com.googlecode.json-simple:json-simple:1.1.1' // 책 정보 검색
+	implementation 'org.projectlombok:lombok:1.18.24'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
+	implementation 'org.apache.httpcomponents:httpclient:4.5.13'
     //    --------------------------------------------------------------------------------------------
     implementation 'org.springframework.boot:spring-boot-starter-websocket:' // WebSocket
     implementation 'org.webjars:sockjs-client:1.5.1' // SockJS

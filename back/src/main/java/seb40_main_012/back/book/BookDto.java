@@ -16,30 +16,37 @@ import java.util.List;
 public class BookDto {
 
     @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Post {
 
-    }
-
-    @Data
-    public static class Patch {
+        private String isbn13;
+        private long averageRating;
+        private List<Comment> comments;
+        private String commentBody;
 
     }
 
     @Data
     @Builder
-    public static class View {
-
-        private long bookId;
-        private long view;
+    public static class Patch {
 
     }
+
+//    @Data
+//    @Builder
+//    public static class View {
+//
+//        private long bookId;
+//        private long view;
+//
+//    }
 
     @Data
     @Builder
     public static class Rating {
 
-        private long bookId;
-        private long userId;
         private long rating;
     }
 
@@ -50,7 +57,7 @@ public class BookDto {
     public static class Response {
 
         private long bookId;
-        private Genre genre;
+        private String isbn13;
         private BookWiki bookWiki;
         private double averageRating;
         private List<Comment> comments;

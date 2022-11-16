@@ -8,6 +8,7 @@ import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.pairing.entity.ParingCategory;
 import seb40_main_012.back.user.dto.UserDto;
 
+import javax.persistence.Lob;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -18,6 +19,8 @@ public class PairingDto {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Post {
 
         @NotEmpty(message = "내용을 입력하셔야 합니다.")
@@ -49,6 +52,7 @@ public class PairingDto {
 
         @NotEmpty(message = "내용을 입력하셔야 합니다.")
         @Size(max = 500, message = "500자를 넘을 수 없습니다.")
+        @Lob
         private String body;
 
         private String imagePath;
