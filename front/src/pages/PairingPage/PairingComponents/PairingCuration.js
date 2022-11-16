@@ -1,5 +1,6 @@
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../../../styles/theme';
+import { useNavigate } from 'react-router-dom';
 
 const PairingCurationWrapper = styled.div`
   width: 100%;
@@ -74,13 +75,17 @@ const LineContents = styled.div`
 `;
 
 const PairingCuration = ({ title }) => {
+  const navigate = useNavigate();
+  const onClickPairing = (pairingId) => {
+    navigate(`/pairing/${pairingId}`);
+  };
   return (
     <ThemeProvider theme={theme}>
       <h1>{title}</h1>
       <PairingCurationWrapper>
         <PhotoContainer>
-          <FirstPhotoContents>
-            <h2>이건 제목입니다</h2>
+          <FirstPhotoContents onClick={() => onClickPairing(1)}>
+            <h2>미드나잇 라이브러리와 어바웃 타임</h2>
           </FirstPhotoContents>
           <SecondContainer>
             <OtherPhotoContents></OtherPhotoContents>
