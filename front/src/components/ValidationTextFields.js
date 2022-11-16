@@ -1,8 +1,6 @@
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import TextField from '@mui/material/TextField';
-import { setInputValue, setIsValid } from '../../store/modules/signUpSlice';
 
-const SignUpTextField = ({
+const ValidationTextFields = ({
   inputRef,
   refIndex,
   label,
@@ -11,19 +9,20 @@ const SignUpTextField = ({
   type,
   required,
   fullWidth,
+  setInputValue,
+  setIsValid,
+  inputValue,
+  inputStatus,
+  inputHelperText,
 }) => {
-  const dispatch = useDispatch();
-  const selectSignUP = useSelector((state) => state.signUp, shallowEqual);
-  const { inputValue, inputStatus, inputHelperText } = selectSignUP;
-
   const handleChangeInput = (event) => {
     const { id, value } = event.target;
-    dispatch(setInputValue({ id, value }));
+    setInputValue(id, value);
   };
 
   const handleBlur = (event) => {
     const { id, value } = event.target;
-    dispatch(setIsValid(id, value, required));
+    setIsValid(id, value, required);
   };
 
   const handleKeyDown = (event) => {
@@ -32,7 +31,7 @@ const SignUpTextField = ({
 
   return (
     <TextField
-      error={inputStatus[id] === 'error'}
+      error={inputStatus === 'error'}
       inputRef={(el) => (inputRef.current[refIndex] = el)}
       required={required}
       fullWidth={fullWidth}
@@ -40,11 +39,11 @@ const SignUpTextField = ({
       label={label}
       name={id}
       autoComplete={autoComplete}
-      value={inputValue[id]}
+      value={inputValue}
       onChange={handleChangeInput}
       helperText={
-        inputStatus[id] === 'success' || inputStatus[id] === 'error'
-          ? inputHelperText[id]
+        inputStatus === 'success' || inputStatus === 'error'
+          ? inputHelperText
           : ''
       }
       type={type}
@@ -54,4 +53,4 @@ const SignUpTextField = ({
   );
 };
 
-export default SignUpTextField;
+export default ValidationTextFields;

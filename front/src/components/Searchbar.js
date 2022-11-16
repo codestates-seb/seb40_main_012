@@ -40,7 +40,7 @@ const SearchbarInput = styled.input`
   }
 `;
 
-export const Searchbar = () => {
+const Searchbar = () => {
   const [input, setInput] = useState('');
   const navigate = useNavigate();
 

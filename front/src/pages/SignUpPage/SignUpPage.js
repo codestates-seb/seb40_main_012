@@ -1,6 +1,6 @@
-import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,67 +12,36 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
-import SignUpTextField from './SignUpTextField';
 
 import {
   signUpAsync,
   selectValidCheckArray,
   setIsValid,
 } from '../../store/modules/signUpSlice';
+import SignUpTextFields from './SignUpTextFields';
 
 const theme = createTheme();
 
-const inputInfo = [
-  {
-    label: '별명',
-    id: 'nickName',
-    autoComplete: 'nickname',
-    type: 'text',
-  },
-  {
-    label: '이메일',
-    id: 'email',
-    autoComplete: 'email',
-    type: 'text',
-  },
-  {
-    label: '비밀번호',
-    id: 'password',
-    autoComplete: 'new-password',
-    type: 'password',
-  },
-  {
-    label: '비밀번호 재확인',
-    id: 'passwordCheck',
-    autoComplete: 'new-password',
-    type: 'password',
-  },
-];
+const SignInLink = styled(Link)`
+  font-size: 1rem;
+`;
 
 const SignUpPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const validCheckArray = useSelector(selectValidCheckArray, shallowEqual);
-  const inputValue = useSelector(
-    (state) => state.signUp.inputValue,
-    shallowEqual
-  );
-  const inputRef = useRef([]);
-
-  useEffect(() => {
-    inputRef.current[0].focus();
-  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
     if (validCheckArray.length > 0) {
       for (const key of validCheckArray) {
-        dispatch(setIsValid(key, inputValue[key], true));
+        dispatch(setIsValid(key, data.get(key), true));
       }
       return;
     }
 
-    const data = new FormData(event.currentTarget);
     const params = {
       nickName: data.get('nickName'),
       email: data.get('email'),
@@ -119,20 +88,7 @@ const SignUpPage = () => {
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
-                {inputInfo.map((v, i) => (
-                  <Grid key={v.id} item xs={12}>
-                    <SignUpTextField
-                      inputRef={inputRef}
-                      refIndex={i}
-                      label={v.label}
-                      id={v.id}
-                      autoComplete={v.autoComplete}
-                      type={v.type}
-                      required
-                      fullWidth
-                    />
-                  </Grid>
-                ))}
+                <SignUpTextFields />
               </Grid>
               <Button
                 type="submit"
@@ -145,9 +101,9 @@ const SignUpPage = () => {
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   이미 가입하셨나요?{' '}
-                  <Link href="/user/signin" variant="body2">
+                  <SignInLink href="/user/signin" variant="body2">
                     로그인
-                  </Link>
+                  </SignInLink>
                 </Grid>
               </Grid>
             </Box>
