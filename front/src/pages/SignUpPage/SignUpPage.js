@@ -1,4 +1,3 @@
-import { useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
@@ -12,55 +11,20 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
-import ValidationTextFields from '../../components/ValidationTextFields';
 
 import {
   signUpAsync,
   selectValidCheckArray,
   setIsValid,
-  setInputValue,
 } from '../../store/modules/signUpSlice';
+import SignUpTextFields from './SignUpTextFields';
 
 const theme = createTheme();
-
-const inputInfo = [
-  {
-    label: '별명',
-    id: 'nickName',
-    autoComplete: 'nickname',
-    type: 'text',
-  },
-  {
-    label: '이메일',
-    id: 'email',
-    autoComplete: 'email',
-    type: 'text',
-  },
-  {
-    label: '비밀번호',
-    id: 'password',
-    autoComplete: 'new-password',
-    type: 'password',
-  },
-  {
-    label: '비밀번호 재확인',
-    id: 'passwordCheck',
-    autoComplete: 'new-password',
-    type: 'password',
-  },
-];
 
 const SignUpPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const validCheckArray = useSelector(selectValidCheckArray, shallowEqual);
-  const selectSignUP = useSelector((state) => state.signUp, shallowEqual);
-  const { inputValue, inputStatus, inputHelperText } = selectSignUP;
-  const inputRef = useRef([]);
-
-  useEffect(() => {
-    inputRef.current[0].focus();
-  }, []);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -89,14 +53,6 @@ const SignUpPage = () => {
       })
       .catch((err) => console.log(err));
   };
-
-  const handleChangeInput = useCallback((id, value) => {
-    dispatch(setInputValue({ id, value }));
-  });
-
-  const handleBlur = useCallback((id, value, required) => {
-    dispatch(setIsValid(id, value, required));
-  });
 
   return (
     <PageContainer footer>
@@ -127,25 +83,7 @@ const SignUpPage = () => {
               sx={{ mt: 3 }}
             >
               <Grid container spacing={2}>
-                {inputInfo.map((v, i) => (
-                  <Grid key={v.id} item xs={12}>
-                    <ValidationTextFields
-                      inputRef={inputRef}
-                      refIndex={i}
-                      label={v.label}
-                      id={v.id}
-                      autoComplete={v.autoComplete}
-                      type={v.type}
-                      required
-                      fullWidth
-                      setInputValue={handleChangeInput}
-                      setIsValid={handleBlur}
-                      inputValue={inputValue[v.id]}
-                      inputStatus={inputStatus[v.id]}
-                      inputHelperText={inputHelperText[v.id]}
-                    />
-                  </Grid>
-                ))}
+                <SignUpTextFields />
               </Grid>
               <Button
                 type="submit"
