@@ -4,6 +4,7 @@ import MainBook from './MainBook';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { NextArrow, PrevArrow } from '../../components/CarouselArrows';
 
 const MainBooksContainer = styled.div`
   display: flex;
@@ -15,6 +16,21 @@ const MainBooksContainer = styled.div`
 const MainCarousel = styled.div`
   width: 95%;
   padding: 30px 0;
+  //기본 arrow 삭제
+  .slick-prev::before,
+  .slick-next::before {
+    opacity: 0;
+    display: none;
+  }
+  .slick-next {
+    right: 20px;
+    top: 47%;
+  }
+  .slick-prev {
+    left: 22px;
+    top: 47%;
+    z-index: 100;
+  }
 `;
 
 const MainBooks = () => {
@@ -24,6 +40,12 @@ const MainBooks = () => {
     speed: 500,
     slidesToShow: 1,
     dots: true,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    pauseOnHover: true,
+    nextArrow: <NextArrow />,
+    prevArrow: <PrevArrow />,
   };
   return (
     <ThemeProvider theme={theme}>
