@@ -1,23 +1,20 @@
 import PageContainer from '../../components/PageContainer';
-import { Counter } from '../../components/Counter/Counter';
-import Box from '@mui/material/Box';
+import Guide from './Guide';
+import MainBooks from './MainBooks';
+import BestBooks from './BestBooks';
+import UserBooks from './UserBooks';
+import BestCollections from './BestCollections';
+import BestPairings from './BestPairings';
 
 const MainPage = () => {
   return (
     <PageContainer footer>
-      <Box
-        sx={{
-          marginTop: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: 'calc(100vh - 60px - 200px)', // header, footer
-          minHeight: '410px',
-        }}
-      >
-        <Counter />
-      </Box>
+      <MainBooks />
+      <Guide />
+      <BestBooks />
+      <UserBooks nickname="김뫄뫄" />
+      <BestCollections />
+      <BestPairings />
     </PageContainer>
   );
 };
