@@ -85,6 +85,7 @@ export const signUpSlice = createSlice({
       });
   },
 });
+
 export const { setInputValue, setInputStatus } = signUpSlice.actions;
 
 export const setIsValid = (id, value, required) => (dispatch) => {

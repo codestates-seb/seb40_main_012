@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -20,6 +21,10 @@ import {
 import SignUpTextFields from './SignUpTextFields';
 
 const theme = createTheme();
+
+const SignInLink = styled(Link)`
+  font-size: 1rem;
+`;
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -96,9 +101,9 @@ const SignUpPage = () => {
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   이미 가입하셨나요?{' '}
-                  <Link href="/user/signin" variant="body2">
+                  <SignInLink href="/user/signin" variant="body2">
                     로그인
-                  </Link>
+                  </SignInLink>
                 </Grid>
               </Grid>
             </Box>
