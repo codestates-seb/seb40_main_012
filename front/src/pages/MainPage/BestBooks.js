@@ -17,11 +17,11 @@ const BestBooks = () => {
     <BestBooksContainer>
       <MainBooksTitle title="요즘 뜨는 책" />
       <BooksContainer>
-        <Book bookTitle="책 제목1" />
-        <Book bookTitle="책 제목2" />
-        <Book bookTitle="책 제목3" />
-        <Book bookTitle="책 제목4" />
-        <Book bookTitle="책 제목5" />
+        <Book bookTitle="책 제목1" bookId={1} />
+        <Book bookTitle="책 제목2" bookId={1} />
+        <Book bookTitle="책 제목3" bookId={1} />
+        <Book bookTitle="책 제목4" bookId={1} />
+        <Book bookTitle="책 제목5" bookId={1} />
       </BooksContainer>
     </BestBooksContainer>
   );

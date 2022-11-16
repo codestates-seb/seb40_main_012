@@ -17,11 +17,11 @@ const UserBooks = ({ nickname }) => {
     <UserBooksContainer>
       <MainBooksTitle title={`${nickname}님을 위한 책`} />
       <BooksContainer>
-        <Book bookTitle="책 제목1" />
-        <Book bookTitle="책 제목2" />
-        <Book bookTitle="책 제목3" />
-        <Book bookTitle="책 제목4" />
-        <Book bookTitle="책 제목5" />
+        <Book bookTitle="책 제목1" bookId={1} />
+        <Book bookTitle="책 제목2" bookId={1} />
+        <Book bookTitle="책 제목3" bookId={1} />
+        <Book bookTitle="책 제목4" bookId={1} />
+        <Book bookTitle="책 제목5" bookId={1} />
       </BooksContainer>
     </UserBooksContainer>
   );
