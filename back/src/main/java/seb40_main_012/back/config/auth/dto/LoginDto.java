@@ -1,11 +1,10 @@
 package seb40_main_012.back.config.auth.dto;
 
 import lombok.*;
-import seb40_main_012.back.user.entity.UserCategory;
 import seb40_main_012.back.user.entity.enums.AgeType;
-import seb40_main_012.back.user.entity.enums.CategoryType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 public class LoginDto {
@@ -15,7 +14,9 @@ public class LoginDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PostDto {
+        @NotBlank(message = "이메일을 입력하셔야 합니다")
         private String email;
+        @NotBlank(message = "패스워드를 입력하셔야 합니다")
         private String password;
     }
 
