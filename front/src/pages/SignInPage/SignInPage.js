@@ -1,10 +1,12 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
+// import FormControlLabel from '@mui/material/FormControlLabel';
+// import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -34,8 +36,11 @@ const SignUpLink = styled(Link)`
 `;
 
 const SignInPage = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const validCheckArray = useSelector(selectValidCheckArray, shallowEqual);
+
+  const [showLoginError, setShowLoginError] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -53,14 +58,15 @@ const SignInPage = () => {
       password: data.get('password'),
     };
 
-    dispatch(signInAsync(params));
-    // .then((response) => {
-    // if (response.payload?.data) {
-    // } else {
-    // console.log(response.payload?.errorMessage);
-    // }
-    // })
-    // .catch((err) => console.log(err));
+    dispatch(signInAsync(params))
+      .then((response) => {
+        if (!response.payload?.errorMessage) {
+          navigate('/', { replace: true });
+        } else {
+          setShowLoginError((prev) => !prev);
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -94,10 +100,10 @@ const SignInPage = () => {
               <Grid container spacing={2}>
                 <SignInTextFields />
               </Grid>
-              <FormControlLabel
+              {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="이메일 저장"
-              />
+              /> */}
               {/* <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
                 label="로그인 상태 유지"
@@ -110,10 +116,12 @@ const SignInPage = () => {
               >
                 로그인
               </Button>
-              <LoginErrorMsg>
-                아이디(로그인 전용 아이디) 또는 비밀번호를 잘못 입력했습니다.
-                입력하신 내용을 다시 확인해주세요.
-              </LoginErrorMsg>
+              {showLoginError ? (
+                <LoginErrorMsg>
+                  아이디(로그인 전용 아이디) 또는 비밀번호를 잘못 입력했습니다.
+                  입력하신 내용을 다시 확인해주세요.
+                </LoginErrorMsg>
+              ) : null}
               <Grid container justifyContent="flex-end">
                 {/* <Grid container> */}
                 {/* <Grid item xs>

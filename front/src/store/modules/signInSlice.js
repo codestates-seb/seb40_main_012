@@ -47,12 +47,9 @@ export const signInSlice = createSlice({
         state.loading = true;
       })
       .addCase(signInAsync.fulfilled, (state, action) => {
-        console.log(action.payload);
         state.error = null;
         state.loading = false;
         state.firstLogin = action.payload.data.firstLogin;
-        // state.authorization = action.payload.headers.authorization;
-        // console.log(action.payload.headers);
       })
       .addCase(signInAsync.rejected, (state, action) => {
         state.loading = false;
