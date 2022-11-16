@@ -1,4 +1,5 @@
 import styled, { ThemeProvider } from 'styled-components';
+import { LikeButton, PickButton } from '../../components/Buttons';
 import theme from '../../styles/theme';
 
 const CollectionHeaderBtnsContainer = styled.div`
@@ -9,7 +10,7 @@ const CollectionHeaderBtnsContainer = styled.div`
 const CollectionBtns = styled.div`
   display: flex;
   align-items: center;
-  margin: 0 7px;
+  margin: 0 3px;
   color: ${({ theme }) => theme.colors.darkgray};
   font-size: 15px;
   font-weight: 500;
@@ -31,18 +32,20 @@ const CollectionHeaderBtns = () => {
     <ThemeProvider theme={theme}>
       <CollectionHeaderBtnsContainer>
         <CollectionBookmark>
-          <img
+          {/* <img
             src={process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'}
             alt="bookmark icon"
           />
-          북마크
+          북마크 */}
+          <PickButton>나의 Pick</PickButton>
         </CollectionBookmark>
         <CollectionHeart>
-          <img
+          {/* <img
             src={process.env.PUBLIC_URL + '/images/heart_filled_icon.svg'}
             alt="heart icon"
           />
-          {'123'}
+          {'123'} */}
+          <LikeButton>{'123'}</LikeButton>
         </CollectionHeart>
         <CollectionShare>
           <img
