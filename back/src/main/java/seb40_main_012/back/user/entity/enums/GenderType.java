@@ -4,14 +4,15 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import lombok.Getter;
 
 public enum GenderType {
-    FEMALE("여성"),
-    MALE("남성"),
-    NOBODY("외계인");
-    @Getter
-    private String value;
-    GenderType(String value){
-        this.value = value;
-    }
+    FEMALE,
+    MALE,
+    NOBODY;
+
+//    @Getter
+//    private String value;
+//    GenderType(String value){
+//        this.value = value;
+//    }
 
     @JsonCreator
     public static GenderType from(String x){

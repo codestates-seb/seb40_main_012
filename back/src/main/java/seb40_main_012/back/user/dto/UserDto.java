@@ -16,6 +16,14 @@ public class UserDto {
     }
 
     @Getter
+    @AllArgsConstructor
+    public static class ProfileResponse {
+        private String nickName;
+    }
+
+
+
+    @Getter
     @NoArgsConstructor
     public static class Password {
         private String password;
@@ -24,6 +32,7 @@ public class UserDto {
     @Getter
     @Builder
     @AllArgsConstructor
+    @NoArgsConstructor
     public static class PostDto {
         @NotBlank
         @Email
