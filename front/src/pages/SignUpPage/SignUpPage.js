@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
@@ -12,12 +12,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
-import SignUpTextField from './SignUpTextField';
+import ValidationTextFields from '../../components/ValidationTextFields';
 
 import {
   signUpAsync,
   selectValidCheckArray,
   setIsValid,
+  setInputValue,
 } from '../../store/modules/signUpSlice';
 
 const theme = createTheme();
@@ -53,10 +54,8 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const validCheckArray = useSelector(selectValidCheckArray, shallowEqual);
-  const inputValue = useSelector(
-    (state) => state.signUp.inputValue,
-    shallowEqual
-  );
+  const selectSignUP = useSelector((state) => state.signUp, shallowEqual);
+  const { inputValue, inputStatus, inputHelperText } = selectSignUP;
   const inputRef = useRef([]);
 
   useEffect(() => {
@@ -65,14 +64,15 @@ const SignUpPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
     if (validCheckArray.length > 0) {
       for (const key of validCheckArray) {
-        dispatch(setIsValid(key, inputValue[key], true));
+        dispatch(setIsValid(key, data.get(key), true));
       }
       return;
     }
 
-    const data = new FormData(event.currentTarget);
     const params = {
       nickName: data.get('nickName'),
       email: data.get('email'),
@@ -89,6 +89,14 @@ const SignUpPage = () => {
       })
       .catch((err) => console.log(err));
   };
+
+  const handleChangeInput = useCallback((id, value) => {
+    dispatch(setInputValue({ id, value }));
+  });
+
+  const handleBlur = useCallback((id, value, required) => {
+    dispatch(setIsValid(id, value, required));
+  });
 
   return (
     <PageContainer footer>
@@ -121,7 +129,7 @@ const SignUpPage = () => {
               <Grid container spacing={2}>
                 {inputInfo.map((v, i) => (
                   <Grid key={v.id} item xs={12}>
-                    <SignUpTextField
+                    <ValidationTextFields
                       inputRef={inputRef}
                       refIndex={i}
                       label={v.label}
@@ -130,6 +138,11 @@ const SignUpPage = () => {
                       type={v.type}
                       required
                       fullWidth
+                      setInputValue={handleChangeInput}
+                      setIsValid={handleBlur}
+                      inputValue={inputValue[v.id]}
+                      inputStatus={inputStatus[v.id]}
+                      inputHelperText={inputHelperText[v.id]}
                     />
                   </Grid>
                 ))}
