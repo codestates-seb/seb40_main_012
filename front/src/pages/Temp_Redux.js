@@ -1,5 +1,6 @@
 import PageContainer from '../components/PageContainer';
 import { Counter } from '../components/Counter/Counter';
+import BasicModalTest from '../components/TestComponent/BasicModalTest';
 import Box from '@mui/material/Box';
 
 const ReduxPage = () => {
@@ -17,6 +18,7 @@ const ReduxPage = () => {
         }}
       >
         <Counter />
+        <BasicModalTest />
       </Box>
     </PageContainer>
   );
