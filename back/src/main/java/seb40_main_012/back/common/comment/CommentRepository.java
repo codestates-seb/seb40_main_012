@@ -8,12 +8,14 @@ import org.springframework.stereotype.Repository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.Comment;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-    SliceImpl<Comment> findSliceBy(Pageable pageable);
+//    SliceImpl<Comment> findSliceBy(Pageable pageable);
+    List<Comment> findSliceBy(Pageable pageable);
 
     Long countBy();
 
