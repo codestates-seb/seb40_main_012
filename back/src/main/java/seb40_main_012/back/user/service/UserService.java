@@ -14,6 +14,8 @@ import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
+import seb40_main_012.back.bookCollection.repository.BookCollectionBookmarkRepository;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
@@ -33,6 +35,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -44,6 +47,7 @@ public class UserService {
     private final CommentRepository commentRepository;
     private final PairingRepository pairingRepository;
     private final BookCollectionRepository collectionRepository;
+    private final BookCollectionBookmarkRepository collectionBookmarkRepository;
     private final ApplicationEventPublisher publisher;
     private final CustomAuthorityUtils authorityUtils;
 
@@ -129,7 +133,7 @@ public class UserService {
     }
 
     public List<BookCollection> getUserCollection(Long userId){
-        return collectionRepository.findByUser_UserId(userId);
+        return collectionRepository.findByUseId(userId);
     }
 
     public User findUser(long userId) {
@@ -141,8 +145,13 @@ public class UserService {
         return findUser;
     }
 
+    public List<BookCollection> getBookMarkByBookCollection(Long userId){
+        List<BookCollectionBookmark> bookmarks= collectionBookmarkRepository.findByUserId(userId);
+        List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
+        return collections;
+    }
+
 //    public List<Pairing> getBookMarkByPairing(Long id){
-//
 //    }
 
 
