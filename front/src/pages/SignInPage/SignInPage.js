@@ -13,8 +13,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
+import theme from '../../styles/theme';
 
 import {
   selectValidCheckArray,
@@ -22,8 +23,6 @@ import {
 } from '../../store/modules/signInSlice';
 import { signInAsync } from '../../store/modules/authSlice';
 import SignInTextFields from './SignInTextFields';
-
-const theme = createTheme();
 
 const LoginErrorMsg = styled.div`
   font-size: 0.75rem;
@@ -33,6 +32,10 @@ const LoginErrorMsg = styled.div`
 
 const SignUpLink = styled(Link)`
   font-size: 1rem;
+`;
+
+const AvatarStyled = styled(Avatar)`
+  background-color: ${({ theme }) => theme.colors.purple_2};
 `;
 
 const SignInPage = () => {
@@ -85,9 +88,9 @@ const SignInPage = () => {
               minHeight: '410px',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <AvatarStyled sx={{ m: 1 }}>
               <LockOutlinedIcon />
-            </Avatar>
+            </AvatarStyled>
             <Typography component="h1" variant="h5">
               로그인
             </Typography>

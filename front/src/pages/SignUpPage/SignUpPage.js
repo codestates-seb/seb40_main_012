@@ -10,8 +10,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
+import theme from '../../styles/theme';
 
 import {
   signUpAsync,
@@ -20,10 +21,12 @@ import {
 } from '../../store/modules/signUpSlice';
 import SignUpTextFields from './SignUpTextFields';
 
-const theme = createTheme();
-
 const SignInLink = styled(Link)`
   font-size: 1rem;
+`;
+
+const AvatarStyled = styled(Avatar)`
+  background-color: ${({ theme }) => theme.colors.purple_2};
 `;
 
 const SignUpPage = () => {
@@ -75,9 +78,9 @@ const SignUpPage = () => {
               minHeight: '500px',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <AvatarStyled sx={{ m: 1 }}>
               <LockOutlinedIcon />
-            </Avatar>
+            </AvatarStyled>
             <Typography component="h1" variant="h5">
               회원가입
             </Typography>
