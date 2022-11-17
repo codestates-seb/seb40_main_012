@@ -76,6 +76,7 @@ const PairingDetail = () => {
             author="달리는 감자"
             rating="4.9"
             bookId="28"
+            disabled={false}
           ></PairingOriginBook>
         </OriginBookWrapper>
         <MainBody>
