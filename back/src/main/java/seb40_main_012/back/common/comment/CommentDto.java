@@ -16,6 +16,7 @@ import java.util.List;
 public class CommentDto {
 
     @Data
+    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Post {
