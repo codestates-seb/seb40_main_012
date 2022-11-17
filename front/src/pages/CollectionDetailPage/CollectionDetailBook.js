@@ -23,15 +23,19 @@ const CollectionDetailBookContainer = styled.div`
 
 const BookInfo = styled.div`
   display: flex;
+  flex-direction: column;
   font-size: 16px;
   font-weight: 700;
   justify-content: space-between;
-  white-space: nowrap;
   .title {
     color: ${({ theme }) => theme.colors.dark};
+    word-wrap: normal;
   }
   .rating {
     color: ${({ theme }) => theme.colors.mainColor};
+  }
+  @media screen and (max-width: 640px) {
+    display: none;
   }
 `;
 
