@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -173,9 +174,9 @@ public class CommentService {
 //        return commentRepository.findAll(PageRequest.of(page, size, Sort.by("likeCount").descending()));
 //    }
 
-    public Slice<Comment> findComments() { // 리스트 처리 및 좋아요 내림차순 정렬
+    public SliceImpl<Comment> findComments() { // 리스트 처리 및 좋아요 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(1, 5, Sort.by(Sort.Direction.DESC, "likeCount"));
+        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "likeCount"));
 
         return commentRepository.findSliceBy(pageRequest);
     }
