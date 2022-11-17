@@ -2,6 +2,18 @@ import styled, { ThemeProvider } from 'styled-components';
 import theme from '../../../styles/theme';
 import { useNavigate } from 'react-router-dom';
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin: 20px;
+  .CurationTitle {
+    margin: 5px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+`;
+
 const PairingCurationWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -98,55 +110,57 @@ const PairingCuration = ({ title, pairingData }) => {
   };
   return (
     <ThemeProvider theme={theme}>
-      <h1>{title}</h1>
-      <PairingCurationWrapper>
-        <PhotoContainer>
-          <FirstPhotoContents
-            onClick={() => onClickPairing(pairingData[0].pairingId)}
-          >
-            <h1>{pairingData[0] && pairingData[0].title}</h1>
-          </FirstPhotoContents>
-          <SecondContainer>
-            <OtherPhotoContents
-              onClick={() => onClickPairing(pairingData[1].pairingId)}
+      <Wrapper>
+        <h1 className="CurationTitle">{title}</h1>
+        <PairingCurationWrapper>
+          <PhotoContainer>
+            <FirstPhotoContents
+              onClick={() => onClickPairing(pairingData[0].pairingId)}
             >
-              <h1>{pairingData[1] && pairingData[1].title}</h1>
-            </OtherPhotoContents>
-            <OtherPhotoContents
-              onClick={() => onClickPairing(pairingData[2].pairingId)}
+              <h1>{pairingData[0] && pairingData[0].title}</h1>
+            </FirstPhotoContents>
+            <SecondContainer>
+              <OtherPhotoContents
+                onClick={() => onClickPairing(pairingData[1].pairingId)}
+              >
+                <h1>{pairingData[1] && pairingData[1].title}</h1>
+              </OtherPhotoContents>
+              <OtherPhotoContents
+                onClick={() => onClickPairing(pairingData[2].pairingId)}
+              >
+                <h1>{pairingData[2] && pairingData[2].title}</h1>
+              </OtherPhotoContents>
+            </SecondContainer>
+          </PhotoContainer>
+          <ColumnContainer>
+            <LineContents
+              onClick={() => onClickPairing(pairingData[3].pairingId)}
             >
-              <h1>{pairingData[2] && pairingData[2].title}</h1>
-            </OtherPhotoContents>
-          </SecondContainer>
-        </PhotoContainer>
-        <ColumnContainer>
-          <LineContents
-            onClick={() => onClickPairing(pairingData[3].pairingId)}
-          >
-            <h1>{pairingData[3] && pairingData[3].title}</h1>
-          </LineContents>
-          <LineContents
-            onClick={() => onClickPairing(pairingData[4].pairingId)}
-          >
-            <h1>{pairingData[4] && pairingData[4].title}</h1>
-          </LineContents>
-          <LineContents
-            onClick={() => onClickPairing(pairingData[5].pairingId)}
-          >
-            <h1>{pairingData[5] && pairingData[5].title}</h1>
-          </LineContents>
-          <LineContents
-            onClick={() => onClickPairing(pairingData[6].pairingId)}
-          >
-            <h1>{pairingData[6] && pairingData[6].title}</h1>
-          </LineContents>
-          <LineContents
-            onClick={() => onClickPairing(pairingData[7].pairingId)}
-          >
-            <h1>{pairingData[7] && pairingData[7].title}</h1>
-          </LineContents>
-        </ColumnContainer>
-      </PairingCurationWrapper>
+              <h1>{pairingData[3] && pairingData[3].title}</h1>
+            </LineContents>
+            <LineContents
+              onClick={() => onClickPairing(pairingData[4].pairingId)}
+            >
+              <h1>{pairingData[4] && pairingData[4].title}</h1>
+            </LineContents>
+            <LineContents
+              onClick={() => onClickPairing(pairingData[5].pairingId)}
+            >
+              <h1>{pairingData[5] && pairingData[5].title}</h1>
+            </LineContents>
+            <LineContents
+              onClick={() => onClickPairing(pairingData[6].pairingId)}
+            >
+              <h1>{pairingData[6] && pairingData[6].title}</h1>
+            </LineContents>
+            <LineContents
+              onClick={() => onClickPairing(pairingData[7].pairingId)}
+            >
+              <h1>{pairingData[7] && pairingData[7].title}</h1>
+            </LineContents>
+          </ColumnContainer>
+        </PairingCurationWrapper>
+      </Wrapper>
     </ThemeProvider>
   );
 };
