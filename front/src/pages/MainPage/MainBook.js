@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../../styles/theme';
+import { GenterMatcher } from '../../util/GenreMatcher';
 
 const randomColor = () => {
   return Math.floor(Math.random() * 50) + 200;
@@ -83,7 +84,7 @@ const MainBook = ({ bookId, bookTitle, author, publish, genre, rating }) => {
         <MainBookInfo>
           <div className="title">{bookTitle}</div>
           <div className="author">{`${author} ·${publish}`}</div>
-          <div className="genre">{genre}</div>
+          <div className="genre">{GenterMatcher(genre)}</div>
           <div className="rating">★ {rating}</div>
         </MainBookInfo>
       </MainBookContainer>
