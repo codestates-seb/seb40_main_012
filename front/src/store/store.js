@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage';
 import counterReducer from './modules/counterSlice';
 import signUpReducer from './modules/signUpSlice';
 import signInReducer from './modules/signInSlice';
+import duplicationCheckReducer from './modules/duplicationCheckSlice';
 
 const persistConfig = {
   key: 'root',
@@ -24,6 +25,7 @@ export const rootReducer = combineReducers({
   counter: counterReducer,
   signUp: signUpReducer,
   signIn: signInReducer,
+  duplicationCheck: duplicationCheckReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

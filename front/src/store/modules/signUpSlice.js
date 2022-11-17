@@ -9,34 +9,6 @@ const initialState = {
   inputHelperText: { nickName: '', email: '', password: '', passwordCheck: '' },
 };
 
-export const checkDuplicateNickNameAsync = createAsyncThunk(
-  'signUp/checkDuplicateNickName',
-  async (nickName, thunkAPI) => {
-    try {
-      const response = await signUp(nickName);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue({
-        errorMessage: error.response.data.message,
-      });
-    }
-  }
-);
-
-export const checkDuplicateEmailAsync = createAsyncThunk(
-  'signUp/checkDuplicateEmail',
-  async (email, thunkAPI) => {
-    try {
-      const response = await signUp(email);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue({
-        errorMessage: error.response.data.message,
-      });
-    }
-  }
-);
-
 export const signUpAsync = createAsyncThunk(
   'signUp/signUp',
   async (params, thunkAPI) => {
