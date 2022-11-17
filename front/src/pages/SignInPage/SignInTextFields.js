@@ -55,6 +55,7 @@ const SignInTextFields = () => {
             inputValue={inputValue[v.id]}
             inputStatus={inputStatus[v.id]}
             inputHelperText={inputHelperText[v.id]}
+            submit={inputInfo.length - 1 === i ? true : false}
           />
         </Grid>
       ))}
