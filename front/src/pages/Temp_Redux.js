@@ -1,6 +1,14 @@
+import styled, { ThemeProvider } from 'styled-components';
+import Box from '@mui/material/Box';
+import theme from '../styles/theme';
 import PageContainer from '../components/PageContainer';
 import { Counter } from '../components/Counter/Counter';
-import Box from '@mui/material/Box';
+import BasicModalTest from '../components/TestComponent/BasicModalTest';
+import BasicSelectTest from '../components/TestComponent/BasicSelectTest';
+
+const Btn = styled.button`
+  background-color: ${({ theme }) => theme.colors.mainColor};
+`;
 
 const ReduxPage = () => {
   return (
@@ -17,6 +25,11 @@ const ReduxPage = () => {
         }}
       >
         <Counter />
+        <BasicModalTest />
+        <ThemeProvider theme={theme}>
+          <Btn>click</Btn>
+          <BasicSelectTest />
+        </ThemeProvider>
       </Box>
     </PageContainer>
   );

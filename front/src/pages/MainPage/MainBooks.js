@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import axios from '../../api/axios';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../../styles/theme';
 import MainBook from './MainBook';
@@ -34,6 +36,17 @@ const MainCarousel = styled.div`
 `;
 
 const MainBooks = () => {
+  const [mainBooks, setMainBooks] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('/api/books/carousel')
+      .then((response) => {
+        setMainBooks(response.data.data);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   const settings = {
     infinite: true,
     centerMode: true,
@@ -52,48 +65,20 @@ const MainBooks = () => {
       <MainBooksContainer>
         <MainCarousel>
           <Slider {...settings}>
-            <MainBook
-              bookTitle="책 제목1"
-              author="저자"
-              publish="출판사"
-              genre="소설"
-              rating="4.8"
-            />
-            <MainBook
-              bookTitle="책 제목2하하하하하하하하하하하하핳하"
-              author="저자"
-              publish="출판사"
-              genre="소설"
-              rating="4.8"
-            />
-            <MainBook
-              bookTitle="책 제목3"
-              author="저자"
-              publish="출판사"
-              genre="소설"
-              rating="4.8"
-            />
-            <MainBook
-              bookTitle="책 제목4"
-              author="저자"
-              publish="출판사"
-              genre="소설"
-              rating="4.8"
-            />
-            <MainBook
-              bookTitle="책 제목5"
-              author="저자"
-              publish="출판사"
-              genre="소설"
-              rating="4.8"
-            />
-            <MainBook
-              bookTitle="책 제목6"
-              author="저자"
-              publish="출판사"
-              genre="소설"
-              rating="4.8"
-            />
+            {mainBooks.map((el, idx) => {
+              return (
+                <MainBook
+                  key={el.bookId}
+                  ranking={idx + 1}
+                  bookId={el.bookId}
+                  bookTitle={el.title}
+                  author={el.author}
+                  publish="출판사"
+                  genre={el.genre}
+                  rating={el.averageRating}
+                />
+              );
+            })}
           </Slider>
         </MainCarousel>
       </MainBooksContainer>

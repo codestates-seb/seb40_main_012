@@ -85,11 +85,6 @@ const MyPageIconContainer = styled.div`
   }
 `;
 
-const SearchbarContainer = styled.div`
-  width: 100%;
-  flex-grow: 1;
-`;
-
 //Redux Toolkit 참고용 나중에 삭제!!
 const RTKBtn = styled(HeaderBtn)`
   height: 60px;
