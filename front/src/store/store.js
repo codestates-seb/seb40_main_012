@@ -13,7 +13,13 @@ import storage from 'redux-persist/lib/storage';
 import counterReducer from './modules/counterSlice';
 import signUpReducer from './modules/signUpSlice';
 import signInReducer from './modules/signInSlice';
-
+import allPairingReducer from './modules/allPairingSlice';
+import pairingReducer from './modules/pairingSlice';
+import filmPairingReducer from './modules/filmPairingSlice';
+import cuisinePairingReducer from './modules/cuisinePairingSlice';
+import musicPairingReducer from './modules/musicPairingSlice';
+import bookPairingReducer from './modules/bookPairingSlice';
+import etcPairingReducer from './modules/etcPairingSlice';
 const persistConfig = {
   key: 'root',
   storage,
@@ -24,6 +30,13 @@ export const rootReducer = combineReducers({
   counter: counterReducer,
   signUp: signUpReducer,
   signIn: signInReducer,
+  allPairing: allPairingReducer,
+  filmPairing: filmPairingReducer,
+  cuisinePairing: cuisinePairingReducer,
+  musicPairing: musicPairingReducer,
+  bookPairing: bookPairingReducer,
+  etcPairing: etcPairingReducer,
+  pairing: pairingReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
