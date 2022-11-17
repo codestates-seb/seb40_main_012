@@ -13,18 +13,20 @@ import storage from 'redux-persist/lib/storage';
 import counterReducer from './modules/counterSlice';
 import signUpReducer from './modules/signUpSlice';
 import signInReducer from './modules/signInSlice';
+import authReducer from './modules/authSlice';
 import duplicationCheckReducer from './modules/duplicationCheckSlice';
 
 const persistConfig = {
   key: 'root',
   storage,
-  whitelist: ['signIn'],
+  whitelist: ['auth'],
 };
 
 export const rootReducer = combineReducers({
   counter: counterReducer,
   signUp: signUpReducer,
   signIn: signInReducer,
+  auth: authReducer,
   duplicationCheck: duplicationCheckReducer,
 });
 
@@ -42,7 +44,7 @@ export const store = configureStore({
           PERSIST,
           PURGE,
           REGISTER,
-          'signIn/getTokens/fulfilled',
+          'auth/getTokens/fulfilled',
         ],
       },
     }),

@@ -17,10 +17,10 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
 
 import {
-  signInAsync,
   selectValidCheckArray,
   setIsValid,
 } from '../../store/modules/signInSlice';
+import { signInAsync } from '../../store/modules/authSlice';
 import SignInTextFields from './SignInTextFields';
 
 const theme = createTheme();

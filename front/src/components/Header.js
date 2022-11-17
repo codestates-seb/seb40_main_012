@@ -95,7 +95,7 @@ const RTKBtn = styled(HeaderBtn)`
 
 const Header = () => {
   const location = useLocation();
-  const isLogin = useSelector((state) => state.signIn.isLogin);
+  const isLogin = useSelector((state) => state.auth.isLogin);
 
   const handleClickLogoutButton = (e) => {
     console.log(e.target.textContent);
