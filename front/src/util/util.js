@@ -33,4 +33,4 @@ const message = {
   },
 };
 
-export { validationCheck, message };
+export { validationCheck };

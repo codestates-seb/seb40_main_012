@@ -3,6 +3,7 @@ import theme from '../styles/theme';
 import { useLocation, Link } from 'react-router-dom';
 import Searchbar from './Searchbar';
 import { useSelector } from 'react-redux';
+import { selectIsLogin } from '../store/modules/authSlice';
 
 const HeaderContainer = styled.div`
   position: fixed;
@@ -97,7 +98,7 @@ const RTKBtn = styled(HeaderBtn)`
 
 const Header = () => {
   const location = useLocation();
-  const isLogin = useSelector((state) => state.auth.isLogin);
+  const isLogin = useSelector(selectIsLogin);
 
   const handleClickLogoutButton = (e) => {
     console.log(e.target.textContent);
