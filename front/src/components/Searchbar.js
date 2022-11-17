@@ -9,11 +9,6 @@ const SearchbarContainer = styled.div`
   background-color: #f5f5f5;
   border-radius: 3px;
   display: flex;
-  position: absolute;
-  right: 180px;
-  @media screen and (max-width: 981px) {
-    width: 30%;
-  }
   @media screen and (max-width: 780px) {
     display: none;
   }
