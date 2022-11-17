@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { signIn } from '../../api/signInAPI';
 import axios from '../../api/axios';
+import { PURGE } from 'redux-persist';
 
 const initialState = {
   loading: false,
@@ -29,7 +30,11 @@ export const signInAsync = createAsyncThunk(
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {
+      state.isLogin = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signInAsync.pending, (state) => {
@@ -53,7 +58,8 @@ export const authSlice = createSlice({
         }
         state.isLogin = false;
         state.firstLogin = action.payload.data.firstLogin;
-      });
+      })
+      .addCase(PURGE, () => initialState);
   },
 });
 
