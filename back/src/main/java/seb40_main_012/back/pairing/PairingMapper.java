@@ -1,6 +1,7 @@
 package seb40_main_012.back.pairing;
 
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.SliceImpl;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -59,6 +60,7 @@ public interface PairingMapper {
                                             .commentType(comment.getCommentType())
                                             .body(comment.getBody())
                                             .likeCount(comment.getLikeCount())
+                                            .view(comment.getView())
                                             .createdAt(comment.getCreatedAt())
                                             .modifiedAt(comment.getModifiedAt())
                                             .build()
@@ -92,5 +94,55 @@ public interface PairingMapper {
     ;
 
 
-    List<PairingDto.Response> pairingsToPairingResponses(List<Pairing> pairings);
+    default SliceImpl<PairingDto.Response> pairingsToPairingResponses(List<Pairing> pairings) {
+
+        if (pairings == null) return null;
+
+        return new SliceImpl<>(
+                pairings.stream()
+                        .map(pairing -> PairingDto.Response.builder()
+                                .bookId(pairing.getBook().getBookId())
+                                .pairingId(pairing.getPairingId())
+                                .userInformation(
+                                        UserDto.ResponseDto.builder()
+                                                .email(pairing.getUser().getEmail())
+                                                .nickName(pairing.getUser().getNickName())
+                                                .roles(pairing.getUser().getRoles())
+                                                .build()
+                                )
+                                .pairingCategory(pairing.getPairingCategory())
+                                .title(pairing.getTitle())
+                                .body(pairing.getBody())
+                                .likeCount(pairing.getLikeCount())
+                                .view(pairing.getView())
+                                .imagePath(pairing.getImagePath())
+                                .outLinkPath(pairing.getOutLinkPath())
+                                .comments(
+                                        pairing.getComments().stream()
+                                                .map(comment ->
+                                                        CommentDto.Response.builder()
+                                                                .commentId(comment.getCommentId())
+                                                                .userInformation(
+                                                                        UserDto.ResponseDto.builder()
+                                                                                .email(comment.getUser().getEmail())
+                                                                                .nickName(comment.getUser().getNickName())
+                                                                                .build()
+                                                                )
+                                                                .commentType(comment.getCommentType())
+                                                                .body(comment.getBody())
+                                                                .likeCount(comment.getLikeCount())
+                                                                .view(comment.getView())
+                                                                .createdAt(comment.getCreatedAt())
+                                                                .modifiedAt(comment.getModifiedAt())
+                                                                .build()
+                                                ).collect(Collectors.toList())
+                                )
+                                .createdAt(pairing.getCreatedAt())
+                                .modifiedAt(pairing.getModifiedAt())
+                                .build()
+                        ).collect(Collectors.toList())
+
+        );
+
+    }
 }

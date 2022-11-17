@@ -24,11 +24,14 @@ import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.entity.Category;
 import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.entity.UserCategory;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -150,6 +153,8 @@ public class CommentService {
     }
 
     public Comment updateLike(Comment comment, long commentId) { // Like Count 값만 변경
+
+        User findUser = userService.getLoginUser();
 
         Comment findComment = findVerifiedComment(commentId);
 
