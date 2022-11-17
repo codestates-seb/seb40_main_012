@@ -13,6 +13,14 @@ import EditProfile from './pages/MyPage/EditProfile/EditProfile';
 import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetail';
 import ChangePassWd from './pages/MyPage/EditProfile/ChangePassWd';
 
+import PairingPage from './pages/PairingPage/PairingAll';
+import PairingFilm from './pages/PairingPage/PairingFilm';
+import PairingCuisine from './pages/PairingPage/PairingCuisine';
+import PairingMusic from './pages/PairingPage/PairingMusic';
+import PairingBook from './pages/PairingPage/PairingBook';
+import PairingEtc from './pages/PairingPage/PairingEtc';
+import PairingWrite from './pages/PairingPage/PairingWrite/PairingWrite';
+import PairingDetail from './pages/PairingPage/PairingDetail/PairingDetail';
 //임시 페이지!
 import ReduxPage from './pages/Temp_Redux';
 
@@ -23,6 +31,14 @@ const App = () => {
       <Routes>
         <Route path="/redux" element={<ReduxPage />} />
         <Route path="/" element={<MainPage />} />
+        <Route path="/pairing" element={<PairingPage />} />
+        <Route path="/pairing/film" element={<PairingFilm />} />
+        <Route path="/pairing/cuisine" element={<PairingCuisine />} />
+        <Route path="/pairing/music" element={<PairingMusic />} />
+        <Route path="/pairing/book" element={<PairingBook />} />
+        <Route path="/pairing/etc" element={<PairingEtc />} />
+        <Route path="/pairing/write" element={<PairingWrite />} />
+        <Route path="/pairing/:pairingId" element={<PairingDetail />} />
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/user/signin" element={<SignInPage />} />
         <Route path="/user/signup" element={<SignUpPage />} />
@@ -39,7 +55,6 @@ const App = () => {
           path="/settings/profile/changepasswd"
           element={<ChangePassWd />}
         />
-
         <Route
           path="/collection/:collectionid"
           element={<CollectionDetailPage />}
