@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
+import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -110,7 +111,7 @@ public class PairingController {
     @GetMapping("/pairings/{pairing_id}")
     public ResponseEntity getPairing(@PathVariable("pairing_id") @Positive long pairingId) {
 
-        Pairing pairing = pairingService.findPairing(pairingId);
+        Pairing pairing = pairingService.updateView(pairingId);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
         return new ResponseEntity<>(
@@ -275,6 +276,15 @@ public class PairingController {
 //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
+
+    @GetMapping("/pairing/best")
+    public ResponseEntity bestTenPairings() {
+        List<Pairing> response = pairingService.findBestPairingsLikes();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK
+        );
+    }
 
 
     @DeleteMapping("/pairings/{pairing_id}/delete")

@@ -22,12 +22,15 @@ import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.ParingCategory;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.entity.Category;
 import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.entity.UserCategory;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 @Configuration
 public class Stub {
@@ -53,6 +56,11 @@ public class Stub {
                             .nickName("Stub_Potato_" + i)
                             .password(encoder.encode("1234"))
                             .roles(List.of("USER"))
+                            .categories(List.of(UserCategory.builder()
+                                    .category(Category.builder()
+                                            .genre(Genre.values()[new Random().nextInt(Genre.values().length)])
+                                            .build())
+                                    .build()))
                             .build()));
         }
 
@@ -62,6 +70,11 @@ public class Stub {
                         .nickName("하영사마")
                         .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 시큐리티 요정"))
+                        .categories(List.of(UserCategory.builder()
+                                .category(Category.builder()
+                                        .genre(Genre.NATURAL)
+                                        .build())
+                                .build()))
                         .build()));
 
         log.info("USER STUB " +
@@ -70,6 +83,11 @@ public class Stub {
                         .nickName("김꼼꼼")
                         .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 디자인 엔드포인트"))
+                        .categories(List.of(UserCategory.builder()
+                                .category(Category.builder()
+                                        .genre(Genre.SOCIAL)
+                                        .build())
+                                .build()))
                         .build())
         );
 
@@ -79,6 +97,11 @@ public class Stub {
                         .nickName("강직진")
                         .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 술고래 도단 14세"))
+                        .categories(List.of(UserCategory.builder()
+                                .category(Category.builder()
+                                        .genre(Genre.NOVEL)
+                                        .build())
+                                .build()))
                         .build())
         );
 
@@ -88,6 +111,11 @@ public class Stub {
                         .nickName("봄날의 햇살")
                         .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 풀스택 마스터"))
+                        .categories(List.of(UserCategory.builder()
+                                .category(Category.builder()
+                                        .genre(Genre.HUMANITIES)
+                                        .build())
+                                .build()))
                         .build())
         );
 
@@ -97,6 +125,11 @@ public class Stub {
                         .nickName("걍태영")
                         .password(encoder.encode("1234"))
                         .roles(List.of("응원 담당"))
+                        .categories(List.of(UserCategory.builder()
+                                .category(Category.builder()
+                                        .genre(Genre.POEM)
+                                        .build())
+                                .build()))
                         .build())
         );
 
@@ -106,6 +139,11 @@ public class Stub {
                         .nickName("미소천사")
                         .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 소리없는 작업왕"))
+                        .categories(List.of(UserCategory.builder()
+                                .category(Category.builder()
+                                        .genre(Genre.HUMANITIES)
+                                        .build())
+                                .build()))
                         .build())
         );
 
@@ -115,6 +153,11 @@ public class Stub {
                         .nickName("과즙세린")
                         .password(encoder.encode("1234"))
                         .roles(List.of("a.k.a. 사령탑 & 텐션 담당"))
+                        .categories(List.of(UserCategory.builder()
+                                .category(Category.builder()
+                                        .genre(Genre.ESSAY)
+                                        .build())
+                                .build()))
                         .build())
         );
 
@@ -126,6 +169,11 @@ public class Stub {
                             .nickName("Stub_Potato_" + i)
                             .password(encoder.encode("1234"))
                             .roles(List.of("USER"))
+                            .categories(List.of(UserCategory.builder()
+                                    .category(Category.builder()
+                                            .genre(Genre.values()[new Random().nextInt(Genre.values().length)])
+                                            .build())
+                                    .build()))
                             .build()));
         }
 
@@ -134,7 +182,7 @@ public class Stub {
             log.info("BOOK STUB " +
                     bookRepository.save(Book.builder()
                             .isbn13("" + i)
-                            .genre(Genre.NOVEL)
+                            .genre(Genre.values()[new Random().nextInt(Genre.values().length)])
                             .view((int) (Math.random() * 150))
                             .title("Stub_Book_" + i)
                             .averageRating((double) Math.round(
@@ -149,14 +197,14 @@ public class Stub {
         // PAIRING STUB
         // ------------------------------------------------------------------------------------------
 
-        for (long i = 1; i <= 10; i++) {
+        for (long i = 1; i <= 50; i++) {
 
             long rand = (long) (Math.random() * 35) + 1;
 
             log.info("PAIRING STUB " +
                     pairingRepository.save(
                             Pairing.builder()
-                                    .pairingCategory(ParingCategory.FILM)
+                                    .pairingCategory(ParingCategory.values()[new Random().nextInt(ParingCategory.values().length)])
                                     .view((int) (Math.random() * 150))
                                     .imagePath("Stub_Image_Path_" + i)
                                     .title("Stub_Pairing_Title_" + i)
@@ -171,93 +219,93 @@ public class Stub {
             );
         }
 
-        for (long i = 11; i <= 20; i++) {
-
-            long rand = (long) (Math.random() * 35) + 1;
-
-            log.info("PAIRING STUB " +
-                    pairingRepository.save(
-                            Pairing.builder()
-                                    .pairingCategory(ParingCategory.CUISINE)
-                                    .view((int) (Math.random() * 150))
-                                    .imagePath("Stub_Image_Path_" + i)
-                                    .title("Stub_Pairing_Title_" + i)
-                                    .body("Stub_Pairing_Body_" + i)
-                                    .book(bookService.findVerifiedBook("" + i))
-                                    .user(userService.findUser(rand))
-                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
-                                    .likeCount((long) (Math.random() * 100))
-                                    .createdAt(LocalDateTime.now())
-                                    .modifiedAt(LocalDateTime.now())
-                                    .build())
-            );
-        }
-
-        for (long i = 21; i <= 30; i++) {
-
-            long rand = (long) (Math.random() * 35) + 1;
-
-            log.info("PAIRING STUB " +
-                    pairingRepository.save(
-                            Pairing.builder()
-                                    .pairingCategory(ParingCategory.MUSIC)
-                                    .view((int) (Math.random() * 150))
-                                    .imagePath("Stub_Image_Path_" + i)
-                                    .title("Stub_Pairing_Title_" + i)
-                                    .body("Stub_Pairing_Body_" + i)
-                                    .book(bookService.findVerifiedBook("" + i))
-                                    .user(userService.findUser(rand))
-                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
-                                    .likeCount((long) (Math.random() * 100))
-                                    .createdAt(LocalDateTime.now())
-                                    .modifiedAt(LocalDateTime.now())
-                                    .build())
-            );
-        }
-
-        for (long i = 31; i <= 40; i++) {
-
-            long rand = (long) (Math.random() * 35) + 1;
-
-            log.info("PAIRING STUB " +
-                    pairingRepository.save(
-                            Pairing.builder()
-                                    .pairingCategory(ParingCategory.BOOK)
-                                    .view((int) (Math.random() * 150))
-                                    .imagePath("Stub_Image_Path_" + i)
-                                    .title("Stub_Pairing_Title_" + i)
-                                    .body("Stub_Pairing_Body_" + i)
-                                    .book(bookService.findVerifiedBook("" + i))
-                                    .user(userService.findUser(rand))
-                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
-                                    .likeCount((long) (Math.random() * 100))
-                                    .createdAt(LocalDateTime.now())
-                                    .modifiedAt(LocalDateTime.now())
-                                    .build())
-            );
-        }
-
-        for (long i = 41; i <= 50; i++) {
-
-            long rand = (long) (Math.random() * 35) + 1;
-
-            log.info("PAIRING STUB " +
-                    pairingRepository.save(
-                            Pairing.builder()
-                                    .pairingCategory(ParingCategory.ETC)
-                                    .view((int) (Math.random() * 150))
-                                    .imagePath("Stub_Image_Path_" + i)
-                                    .title("Stub_Pairing_Title_" + i)
-                                    .body("Stub_Pairing_Body_" + i)
-                                    .book(bookService.findVerifiedBook("" + i))
-                                    .user(userService.findUser(rand))
-                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
-                                    .likeCount((long) (Math.random() * 100))
-                                    .createdAt(LocalDateTime.now())
-                                    .modifiedAt(LocalDateTime.now())
-                                    .build())
-            );
-        }
+//        for (long i = 11; i <= 20; i++) {
+//
+//            long rand = (long) (Math.random() * 35) + 1;
+//
+//            log.info("PAIRING STUB " +
+//                    pairingRepository.save(
+//                            Pairing.builder()
+//                                    .pairingCategory(ParingCategory.CUISINE)
+//                                    .view((int) (Math.random() * 150))
+//                                    .imagePath("Stub_Image_Path_" + i)
+//                                    .title("Stub_Pairing_Title_" + i)
+//                                    .body("Stub_Pairing_Body_" + i)
+//                                    .book(bookService.findVerifiedBook("" + i))
+//                                    .user(userService.findUser(rand))
+//                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+//                                    .likeCount((long) (Math.random() * 100))
+//                                    .createdAt(LocalDateTime.now())
+//                                    .modifiedAt(LocalDateTime.now())
+//                                    .build())
+//            );
+//        }
+//
+//        for (long i = 21; i <= 30; i++) {
+//
+//            long rand = (long) (Math.random() * 35) + 1;
+//
+//            log.info("PAIRING STUB " +
+//                    pairingRepository.save(
+//                            Pairing.builder()
+//                                    .pairingCategory(ParingCategory.MUSIC)
+//                                    .view((int) (Math.random() * 150))
+//                                    .imagePath("Stub_Image_Path_" + i)
+//                                    .title("Stub_Pairing_Title_" + i)
+//                                    .body("Stub_Pairing_Body_" + i)
+//                                    .book(bookService.findVerifiedBook("" + i))
+//                                    .user(userService.findUser(rand))
+//                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+//                                    .likeCount((long) (Math.random() * 100))
+//                                    .createdAt(LocalDateTime.now())
+//                                    .modifiedAt(LocalDateTime.now())
+//                                    .build())
+//            );
+//        }
+//
+//        for (long i = 31; i <= 40; i++) {
+//
+//            long rand = (long) (Math.random() * 35) + 1;
+//
+//            log.info("PAIRING STUB " +
+//                    pairingRepository.save(
+//                            Pairing.builder()
+//                                    .pairingCategory(ParingCategory.BOOK)
+//                                    .view((int) (Math.random() * 150))
+//                                    .imagePath("Stub_Image_Path_" + i)
+//                                    .title("Stub_Pairing_Title_" + i)
+//                                    .body("Stub_Pairing_Body_" + i)
+//                                    .book(bookService.findVerifiedBook("" + i))
+//                                    .user(userService.findUser(rand))
+//                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+//                                    .likeCount((long) (Math.random() * 100))
+//                                    .createdAt(LocalDateTime.now())
+//                                    .modifiedAt(LocalDateTime.now())
+//                                    .build())
+//            );
+//        }
+//
+//        for (long i = 41; i <= 50; i++) {
+//
+//            long rand = (long) (Math.random() * 35) + 1;
+//
+//            log.info("PAIRING STUB " +
+//                    pairingRepository.save(
+//                            Pairing.builder()
+//                                    .pairingCategory(ParingCategory.ETC)
+//                                    .view((int) (Math.random() * 150))
+//                                    .imagePath("Stub_Image_Path_" + i)
+//                                    .title("Stub_Pairing_Title_" + i)
+//                                    .body("Stub_Pairing_Body_" + i)
+//                                    .book(bookService.findVerifiedBook("" + i))
+//                                    .user(userService.findUser(rand))
+//                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+//                                    .likeCount((long) (Math.random() * 100))
+//                                    .createdAt(LocalDateTime.now())
+//                                    .modifiedAt(LocalDateTime.now())
+//                                    .build())
+//            );
+//        }
 
         // ------------------------------------------------------------------------------------------
         // BOOK_COLLECTION STUB
@@ -278,37 +326,37 @@ public class Stub {
         // BOOK_COMMENT STUB
         // ------------------------------------------------------------------------------------------
 
-        for (long i = 1; i <= 35; i++) {
-
-            long rand = (long) (Math.random() * 35) + 1;
-
-            log.info("BOOK_COMMENT STUB " +
-                    commentRepository.save(
-                            Comment.builder()
-                                    .commentType(CommentType.BOOK)
-                                    .view((int) (Math.random() * 150))
-                                    .book(bookService.findBook("" + i))
-                                    .user(userService.findUser(rand))
-                                    .body("Stub_Book_Comment_Body_" + i)
-                                    .likeCount((long) (Math.random() * 100))
-                                    .createdAt(LocalDateTime.now())
-                                    .modifiedAt(LocalDateTime.now())
-                                    .build())
-            );
-        }
+//        for (long i = 1; i <= 35; i++) {
+//
+//            long rand = (long) (Math.random() * 35) + 1;
+//
+//            log.info("BOOK_COMMENT STUB " +
+//                    commentRepository.save(
+//                            Comment.builder()
+//                                    .commentType(CommentType.BOOK)
+//                                    .view((int) (Math.random() * 150))
+//                                    .book(bookService.findBook("" + i))
+//                                    .user(userService.findUser(rand))
+//                                    .body("Stub_Book_Comment_Body_" + i)
+//                                    .likeCount((long) (Math.random() * 100))
+//                                    .createdAt(LocalDateTime.now())
+//                                    .modifiedAt(LocalDateTime.now())
+//                                    .build())
+//            );
+//        }
 
         // ------------------------------------------------------------------------------------------
-        // PAIRING_COMMENT STUB
+        // Random_COMMENT STUB
         // ------------------------------------------------------------------------------------------
 
-        for (long i = 1; i <= 35; i++) {
+        for (long i = 1; i <= 50; i++) {
 
             long rand = (long) (Math.random() * 35) + 1;
 
             log.info("PAIRING_COMMENT STUB " +
                     commentRepository.save(
                             Comment.builder()
-                                    .commentType(CommentType.PAIRING)
+                                    .commentType(CommentType.values()[new Random().nextInt(CommentType.values().length)])
                                     .view((int) (Math.random() * 150))
                                     .pairing(pairingService.findPairing(i))
                                     .user(userService.findUser(rand))

@@ -60,6 +60,7 @@ public class BookDto {
         private String isbn13;
         private BookWiki bookWiki;
         private double averageRating;
+        private long view;
         private List<Comment> comments;
         private List<Pairing> pairings;
         private List<BookCollection> bookCollections;
