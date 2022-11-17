@@ -165,72 +165,72 @@ public class PairingService {
 //    조회 API 세분화
 //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
-    public Slice<Pairing> findPairings() { // 전체 슬라이스 처리 및 좋아요 내림차순 정렬
+    public List<Pairing> findPairings() { // 전체 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findSliceBy(pageRequest);
     }
 
-    public Slice<Pairing> findPairingsNewest() { // 전체 슬라이스 처리 및 등록일 내림차순 정렬
+    public List<Pairing> findPairingsNewest() { // 전체 슬라이스 처리 및 등록일 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+        PageRequest pageRequest = PageRequest.of(0, 10);
 
-        return pairingRepository.findSliceBy(pageRequest);
+        return pairingRepository.findSliceByCreatedAt(pageRequest);
     }
 
-    public Slice<Pairing> findFilmPairingsLikes() { // 영화 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+    public List<Pairing> findFilmPairingsLikes() { // 영화 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByLikeDesc("FILM", pageRequest);
     }
 
-    public Slice<Pairing> findFilmPairingsNewest() { // 영화 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
+    public List<Pairing> findFilmPairingsNewest() { // 영화 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
+        PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByNewestDesc("FILM", pageRequest);
     }
 
-    public Slice<Pairing> findCuisinePairingsLikes() { // 음식/장소 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+    public List<Pairing> findCuisinePairingsLikes() { // 음식/장소 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByLikeDesc("CUISINE", pageRequest);
     }
 
-    public Slice<Pairing> findCuisinePairingsNewest() { // 음식/장소 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
+    public List<Pairing> findCuisinePairingsNewest() { // 음식/장소 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
+        PageRequest pageRequest = PageRequest.of(0, 10);
 
 
         return pairingRepository.findCategorySliceByNewestDesc("CUISINE", pageRequest);
     }
 
-    public Slice<Pairing> findMusicPairingsLikes() { // 음악 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+    public List<Pairing> findMusicPairingsLikes() { // 음악 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByLikeDesc("MUSIC", pageRequest);
     }
 
-    public Slice<Pairing> findMusicPairingsNewest() { // 음악 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
+    public List<Pairing> findMusicPairingsNewest() { // 음악 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
+        PageRequest pageRequest = PageRequest.of(0, 10);
 
 
         return pairingRepository.findCategorySliceByNewestDesc("MUSIC", pageRequest);
     }
 
-    public Slice<Pairing> findBookPairingsLikes() { // 책 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+    public List<Pairing> findBookPairingsLikes() { // 책 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByLikeDesc("BOOK", pageRequest);
     }
 
-    public Slice<Pairing> findBookPairingsNewest() { // 책 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
+    public List<Pairing> findBookPairingsNewest() { // 책 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
 
@@ -238,14 +238,14 @@ public class PairingService {
         return pairingRepository.findCategorySliceByNewestDesc("BOOK", pageRequest);
     }
 
-    public Slice<Pairing> findEtcPairingsLikes() { // 기타 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+    public List<Pairing> findEtcPairingsLikes() { // 기타 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByLikeDesc("ETC", pageRequest);
     }
 
-    public Slice<Pairing> findEtcPairingsNewest() { // 기타 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
+    public List<Pairing> findEtcPairingsNewest() { // 기타 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
 

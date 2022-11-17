@@ -29,6 +29,7 @@ import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -202,22 +203,22 @@ public class Stub {
             long rand = (long) (Math.random() * 35) + 1;
 
             log.info("PAIRING STUB " +
-                    pairingRepository.save(
-                            Pairing.builder()
+                            pairingRepository.save(
+                                    Pairing.builder()
 //                                    .pairingCategory(ParingCategory.FILM)
-                                    .pairingCategory(ParingCategory.values()[new Random().nextInt(ParingCategory.values().length)])
-                                    .view((int) (Math.random() * 150))
-                                    .imagePath("Stub_Image_Path_" + i)
-                                    .title("Stub_Pairing_Title_" + i)
-                                    .body("Stub_Pairing_Body_" + i)
-                                    .book(bookService.findVerifiedBook("" + i))
-                                    .user(userService.findUser(rand))
-                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
-                                    .likeCount((long) (Math.random() * 100))
+                                            .pairingCategory(ParingCategory.values()[new Random().nextInt(ParingCategory.values().length)])
+                                            .view((int) (Math.random() * 150))
+                                            .imagePath("Stub_Image_Path_" + i)
+                                            .title("Stub_Pairing_Title_" + i)
+                                            .body("Stub_Pairing_Body_" + i)
+                                            .book(bookService.findVerifiedBook("" + i))
+                                            .user(userService.findUser(rand))
+                                            .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+                                            .likeCount((long) (Math.random() * 100))
 //                                    .likeCount(50)
-                                    .createdAt(LocalDateTime.now())
-                                    .modifiedAt(LocalDateTime.now())
-                                    .build())
+                                            .createdAt(LocalDateTime.now())
+                                            .modifiedAt(LocalDateTime.now())
+                                            .build())
             );
         }
 
