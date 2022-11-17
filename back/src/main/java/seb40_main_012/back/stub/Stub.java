@@ -25,6 +25,8 @@ import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.Category;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.UserCategory;
+import seb40_main_012.back.user.repository.CategoryRepository;
+import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
@@ -45,27 +47,47 @@ public class Stub {
                                BookCollectionRepository bookCollectionRepository, BookCollectionService bookCollectionService,
                                PairingRepository pairingRepository, PairingService pairingService,
                                CommentRepository commentRepository, CommentService commentService,
+                               CategoryRepository categoryRepository,
                                BCryptPasswordEncoder encoder) {
+
+        for(int i = 0; i < 9; i++) {
+            Category category = new Category();
+            category.setGenre(Genre.values()[i]);
+            categoryRepository.save(category);
+        }
 
         // ------------------------------------------------------------------------------------------
         // USER STUB
         // ------------------------------------------------------------------------------------------
+
         for (long i = 1; i <= 18; i++) {
+            User user = new User();
+            long rand = (long) (Math.random() * 9) + 1;
+            long rand2 = (long) (Math.random() * 9) + 1;
+
+            UserCategory userCategory = new UserCategory();
+            Category category = new Category();
+            category.setId(rand);
+            userCategory.addUser(user);
+            userCategory.addCategory(category);
+
+            UserCategory userCategory2 = new UserCategory();
+            Category category2 = new Category();
+            category2.setId(rand2);
+            userCategory2.addUser(user);
+            userCategory2.addCategory(category2);
+
+            user.setEmail("stub_email_" + i + "@email.com");
+            user.setNickName("Stub_Potato_" + i);
+            user.setPassword(encoder.encode("1234"));
+            user.setRoles(List.of("USER"));
+            user.setCategories(List.of(userCategory, userCategory2));
+
             log.info("USER STUB " +
-                    userRepository.save(User.builder()
-                            .email("stub_email_" + i + "@email.com")
-                            .nickName("Stub_Potato_" + i)
-                            .password(encoder.encode("1234"))
-                            .roles(List.of("USER"))
-                            .categories(List.of(UserCategory.builder()
-                                    .category(Category.builder()
-                                            .genre(Genre.values()[new Random().nextInt(Genre.values().length)])
-                                            .build())
-                                    .build()))
-                            .build()));
+                    userRepository.save(user));
         }
 
-        log.info("USER STUB " +
+        /*log.info("USER STUB " +
                 userRepository.save(User.builder()
                         .email("hayoung_sama@email.com")
                         .nickName("하영사마")
@@ -176,7 +198,7 @@ public class Stub {
                                             .build())
                                     .build()))
                             .build()));
-        }
+        }*/
 
         for (long i = 1; i <= 50; i++) {
 
@@ -200,7 +222,7 @@ public class Stub {
 
         for (long i = 1; i <= 50; i++) {
 
-            long rand = (long) (Math.random() * 35) + 1;
+            long rand = (long) (Math.random() * 18) + 1;
 
             log.info("PAIRING STUB " +
                             pairingRepository.save(
@@ -354,7 +376,7 @@ public class Stub {
 
         for (long i = 1; i <= 50; i++) {
 
-            long rand = (long) (Math.random() * 35) + 1;
+            long rand = (long) (Math.random() * 18) + 1;
 
             log.info("PAIRING_COMMENT STUB " +
                     commentRepository.save(
