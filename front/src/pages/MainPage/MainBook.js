@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../../styles/theme';
 
@@ -23,6 +24,9 @@ const MainBookContainer = styled.div`
   align-items: center;
   justify-content: center;
   margin: 0 30px;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 const MainBookInfo = styled.div`
@@ -60,11 +64,18 @@ const MainBookInfo = styled.div`
   }
 `;
 
-const MainBook = ({ bookTitle, author, publish, genre, rating }) => {
+const MainBook = ({ bookId, bookTitle, author, publish, genre, rating }) => {
   const randomRGB = `rgb(${randomColor()}, ${randomColor()}, ${randomColor()})`;
+
+  const navigate = useNavigate();
+
+  const onClickMainBook = () => {
+    navigate(`/book/${bookId}`);
+  };
+
   return (
     <ThemeProvider theme={theme}>
-      <MainBookContainer bgcolor={randomRGB}>
+      <MainBookContainer bgcolor={randomRGB} onClick={onClickMainBook}>
         <img
           src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
           alt="book cover"

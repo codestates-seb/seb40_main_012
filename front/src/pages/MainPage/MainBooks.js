@@ -69,6 +69,7 @@ const MainBooks = () => {
               return (
                 <MainBook
                   key={el.bookId}
+                  bookId={el.bookId}
                   bookTitle={el.title}
                   author={el.author}
                   publish="출판사"
