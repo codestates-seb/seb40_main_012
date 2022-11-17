@@ -19,6 +19,9 @@ const BestPairingContainer = styled.div`
     cursor: pointer;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
+  @media screen and (max-width: 640px) {
+    width: 60%;
+  }
 `;
 
 const PairingTitle = styled.div`
@@ -27,6 +30,7 @@ const PairingTitle = styled.div`
   top: 50%;
   left: 50%;
   text-align: center;
+  word-wrap: break-word;
   transform: translate(-50%, -50%);
   color: white;
   font-size: 20px;
