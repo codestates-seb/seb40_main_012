@@ -63,7 +63,7 @@ const FirstPhotoContents = styled.div`
   height: 300px;
   margin: 5px;
   background-color: ${({ theme }) => theme.colors.purple_2};
-  border-radius: 25px;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -75,10 +75,10 @@ const FirstPhotoContents = styled.div`
 
 const OtherPhotoContents = styled.div`
   width: 100%;
-  height: 140px;
+  height: 145px;
   margin: 5px;
   background-color: ${({ theme }) => theme.colors.purple_2};
-  border-radius: 25px;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -90,10 +90,10 @@ const OtherPhotoContents = styled.div`
 
 const LineContents = styled.div`
   width: 100%;
-  height: 50px;
+  height: 52px;
   margin: 5px;
   background-color: ${({ theme }) => theme.colors.purple_3};
-  border-radius: 15px;
+  border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
