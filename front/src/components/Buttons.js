@@ -1,6 +1,7 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../styles/theme';
 import { useState } from 'react';
+import styled, { ThemeProvider } from 'styled-components';
+import Button from '@mui/material/Button';
+import theme from '../styles/theme';
 
 const BasicBtn = styled.button`
   background-color: transparent;
@@ -198,3 +199,57 @@ export const MoreButton = ({
     </ThemeProvider>
   );
 };
+
+const InitButton = styled(Button)`
+  border-radius: ${(props) => props.borderRadius || '20px'};
+`;
+
+export const ContainedButton = styled(InitButton)`
+  background-color: ${({ disabled }) =>
+    disabled ? 'rgba(0, 0, 0, 0.12)' : theme.colors.mainColor};
+  color: ${({ disabled }) => (disabled ? 'rgba(0, 0, 0, 0.26)' : '#fff')};
+  box-shadow: none;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.purple_1};
+    box-shadow: none;
+  }
+  &:active {
+    background-color: ${({ theme }) => theme.colors.mainColor};
+    box-shadow: none;
+  }
+`;
+
+export const TextButton = styled(InitButton)`
+  background-color: transparent;
+  color: ${({ disabled }) =>
+    disabled ? 'rgba(0, 0, 0, 0.26)' : theme.colors.mainColor};
+  box-shadow: none;
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.purple_1};
+    color: #fff;
+    box-shadow: none;
+  }
+  &:active {
+    background-color: ${({ theme }) => theme.colors.mainColor};
+    color: #fff;
+    box-shadow: none;
+  }
+`;
+
+export const OutlinedButton = styled(TextButton)`
+  border: 2px solid
+    ${({ disabled }) =>
+      disabled ? 'rgba(0, 0, 0, 0.26)' : theme.colors.mainColor};
+  box-shadow: none;
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.purple_1};
+    background-color: ${({ theme }) => theme.colors.purple_1};
+    color: #fff;
+    box-shadow: none;
+  }
+  &:active {
+    background-color: ${({ theme }) => theme.colors.mainColor};
+    color: #fff;
+    box-shadow: none;
+  }
+`;
