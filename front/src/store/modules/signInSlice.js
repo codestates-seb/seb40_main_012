@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { signIn } from '../../api/signInAPI';
 import axios from '../../api/axios';
+import { validationCheck } from '../../util/util';
 
 const initialState = {
   loading: false,
@@ -82,10 +83,11 @@ export const signInSlice = createSlice({
 export const { setInputValue, setInputStatus } = signInSlice.actions;
 
 export const setIsValid = (id, value, required) => (dispatch) => {
-  if (required && value.length <= 0) {
+  const { test, errorMessage } = validationCheck(undefined, value, required);
+  if (!test) {
     dispatch(
       setInputStatus([
-        { id, inputStatus: 'error', inputHelperText: '필수 정보입니다.' },
+        { id, inputStatus: 'error', inputHelperText: errorMessage },
       ])
     );
     return;
