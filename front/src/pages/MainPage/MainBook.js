@@ -8,6 +8,7 @@ const randomColor = () => {
 };
 
 const MainBookContainer = styled.div`
+  position: relative;
   background-color: ${(props) => props.bgcolor};
   border-radius: 30px;
   height: 400px;
@@ -65,7 +66,29 @@ const MainBookInfo = styled.div`
   }
 `;
 
-const MainBook = ({ bookId, bookTitle, author, publish, genre, rating }) => {
+const RankInfo = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25px;
+  height: 25px;
+  padding-top: 2px;
+  background-color: ${({ theme }) => theme.colors.darkgray};
+  color: white;
+  text-align: center;
+  font-weight: 700;
+  font-size: 15px;
+`;
+
+const MainBook = ({
+  ranking,
+  bookId,
+  bookTitle,
+  author,
+  publish,
+  genre,
+  rating,
+}) => {
   const randomRGB = `rgb(${randomColor()}, ${randomColor()}, ${randomColor()})`;
 
   const navigate = useNavigate();
@@ -77,6 +100,7 @@ const MainBook = ({ bookId, bookTitle, author, publish, genre, rating }) => {
   return (
     <ThemeProvider theme={theme}>
       <MainBookContainer bgcolor={randomRGB} onClick={onClickMainBook}>
+        <RankInfo>{ranking}</RankInfo>
         <img
           src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
           alt="book cover"

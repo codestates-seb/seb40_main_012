@@ -65,10 +65,11 @@ const MainBooks = () => {
       <MainBooksContainer>
         <MainCarousel>
           <Slider {...settings}>
-            {mainBooks.map((el) => {
+            {mainBooks.map((el, idx) => {
               return (
                 <MainBook
                   key={el.bookId}
+                  ranking={idx + 1}
                   bookId={el.bookId}
                   bookTitle={el.title}
                   author={el.author}
