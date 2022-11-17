@@ -28,8 +28,8 @@ public interface PairingRepository extends JpaRepository<Pairing, Long> {
 
     @Query(nativeQuery = true, value = "select * " +
             "from Pairing " +
-            "where pairing_category = :name ")
-//            + "order by " + "like_count " + "desc")
+            "where pairing_category = :name "
+            + "order by " + "like_count desc, created_at " + "desc")
     Slice<Pairing> findCategorySliceByLikeDesc(@Param("name") String name, Pageable pageable);
 
     @Query(nativeQuery = true, value = "select * " +

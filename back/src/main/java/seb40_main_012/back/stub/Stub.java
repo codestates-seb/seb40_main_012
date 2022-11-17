@@ -204,6 +204,7 @@ public class Stub {
             log.info("PAIRING STUB " +
                     pairingRepository.save(
                             Pairing.builder()
+//                                    .pairingCategory(ParingCategory.FILM)
                                     .pairingCategory(ParingCategory.values()[new Random().nextInt(ParingCategory.values().length)])
                                     .view((int) (Math.random() * 150))
                                     .imagePath("Stub_Image_Path_" + i)
@@ -213,6 +214,7 @@ public class Stub {
                                     .user(userService.findUser(rand))
                                     .outLinkPath("Stub_Pairing_OutLink_Path" + i)
                                     .likeCount((long) (Math.random() * 100))
+//                                    .likeCount(50)
                                     .createdAt(LocalDateTime.now())
                                     .modifiedAt(LocalDateTime.now())
                                     .build())

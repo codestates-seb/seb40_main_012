@@ -152,7 +152,7 @@ public class PairingService {
 //    --------------------------------------------------------------------------------------------
     public Slice<Pairing> findPairings() { // 전체 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "likeCount"));
+        PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findSliceBy(pageRequest);
     }
@@ -166,7 +166,7 @@ public class PairingService {
 
     public Slice<Pairing> findFilmPairingsLikes() { // 영화 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "like_Count"));
+        PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByLikeDesc("FILM", pageRequest);
     }
@@ -180,7 +180,7 @@ public class PairingService {
 
     public Slice<Pairing> findCuisinePairingsLikes() { // 음식/장소 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "like_Count"));
+        PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByLikeDesc("CUISINE", pageRequest);
     }
@@ -195,7 +195,7 @@ public class PairingService {
 
     public Slice<Pairing> findMusicPairingsLikes() { // 음악 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "like_Count"));
+        PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByLikeDesc("MUSIC", pageRequest);
     }
@@ -210,7 +210,7 @@ public class PairingService {
 
     public Slice<Pairing> findBookPairingsLikes() { // 책 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "like_Count"));
+        PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByLikeDesc("BOOK", pageRequest);
     }
@@ -225,7 +225,7 @@ public class PairingService {
 
     public Slice<Pairing> findEtcPairingsLikes() { // 기타 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "like_Count"));
+        PageRequest pageRequest = PageRequest.of(0, 10);
 
         return pairingRepository.findCategorySliceByLikeDesc("ETC", pageRequest);
     }
