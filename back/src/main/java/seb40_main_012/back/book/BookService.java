@@ -14,9 +14,11 @@ import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -73,12 +75,12 @@ public class BookService {
         if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
         else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
         else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
+        else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
         else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
         else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
         else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
         else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
         else savedBook.setGenre(Genre.ETC);
-
 
         return bookRepository.save(savedBook);
     }
@@ -104,8 +106,34 @@ public class BookService {
 
         Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
 
-        Book findBook = optionalBook.orElseThrow(() ->
-                new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
+        if (optionalBook.isEmpty()) {
+
+            String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
+
+            Book savedBook =
+                    Book.builder()
+                            .isbn13(isbn13)
+                            .build();
+
+            if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
+            else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
+            else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
+            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
+            else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
+            else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
+            else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
+            else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
+            else savedBook.setGenre(Genre.ETC);
+
+            bookRepository.save(savedBook);
+
+            savedBook.setAverageRating(rating);
+
+            return bookRepository.save(savedBook);
+
+        } else {
+
+            Book findBook = optionalBook.get();
 
         double averageRating = findBook.getAverageRating(); // 현재 평균 별점
         long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
@@ -117,7 +145,7 @@ public class BookService {
 
         findBook.setAverageRating(newAverageRating); // 별점 업데이트
 
-        return bookRepository.save(findBook);
+        return bookRepository.save(findBook);}
     }
 
     public Book findBook(String isbn13) {

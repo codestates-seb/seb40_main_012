@@ -30,6 +30,7 @@ public interface CommentMapper {
               .commentType(comment.getCommentType())
               .body(comment.getBody())
               .likeCount(comment.getLikeCount())
+              .view(comment.getView())
               .createdAt(comment.getCreatedAt())
               .modifiedAt(comment.getModifiedAt())
               .build();

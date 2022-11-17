@@ -69,6 +69,7 @@ public class CommentDto {
         private CommentType commentType;
         private String body;
         private long likeCount;
+        private long view;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
 
