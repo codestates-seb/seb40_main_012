@@ -141,14 +141,14 @@ public class CommentController {
 //        );
 //    }
 
-    @GetMapping("/comments") // 리스트로 조회
+    @GetMapping("/comments") // 슬라이스로 조회
     public ResponseEntity getComments() {
 
-        SliceImpl<Comment> sliceComments = commentService.findComments();
-//        Slice<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(listComments);
+        List<Comment> sliceComments = commentService.findComments();
+        Slice<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(sliceComments);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(sliceComments), HttpStatus.OK
+                new SingleResponseDto<>(responses), HttpStatus.OK
         );
     }
 

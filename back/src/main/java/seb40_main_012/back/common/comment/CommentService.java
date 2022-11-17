@@ -174,9 +174,20 @@ public class CommentService {
 //        return commentRepository.findAll(PageRequest.of(page, size, Sort.by("likeCount").descending()));
 //    }
 
-    public SliceImpl<Comment> findComments() { // 리스트 처리 및 좋아요 내림차순 정렬
+//    public SliceImpl<Comment> findComments() { // 리스트 처리 및 좋아요 내림차순 정렬
+//
+//        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "likeCount"));
+//
+//        SliceImpl<Comment> result = commentRepository.findSliceBy(pageRequest);
+//
+//        return commentRepository.findSliceBy(pageRequest);
+//    }
+
+    public List<Comment> findComments() { // 리스트 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "likeCount"));
+
+//        SliceImpl<Comment> result = commentRepository.findSliceBy(pageRequest);
 
         return commentRepository.findSliceBy(pageRequest);
     }
