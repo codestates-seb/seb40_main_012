@@ -50,7 +50,6 @@ public class BookController {
 
         Book book = bookService.updateView(isbn13);
         BookDto.Response response = bookMapper.bookToBookResponse(book);
-        System.out.println(response.getBookId());
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
