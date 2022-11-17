@@ -46,27 +46,35 @@ export const signInSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(signInAsync.pending, (state) => {
-        state.error = null;
         state.loading = true;
-        state.isLogin = false;
-      })
-      .addCase(signInAsync.fulfilled, (state, action) => {
         state.error = null;
-        state.loading = false;
-        state.isLogin = true;
-        state.firstLogin = action.payload.data.firstLogin;
         state.inputValue = { email: '', password: '' };
         state.inputStatus = { email: '', password: '' };
         state.inputHelperText = { email: '', password: '' };
+        state.isLogin = false;
+        state.firstLogin = false;
+      })
+      .addCase(signInAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.inputValue = { email: '', password: '' };
+        state.inputStatus = { email: '', password: '' };
+        state.inputHelperText = { email: '', password: '' };
+        state.isLogin = true;
+        state.firstLogin = action.payload.data.firstLogin;
       })
       .addCase(signInAsync.rejected, (state, action) => {
         state.loading = false;
-        state.isLogin = false;
         if (action.payload) {
           state.error = action.payload.errorMessage;
         } else {
           state.error = action.error;
         }
+        // state.inputValue = { email: '', password: '' };
+        // state.inputStatus = { email: '', password: '' };
+        // state.inputHelperText = { email: '', password: '' };
+        state.isLogin = false;
+        state.firstLogin = action.payload.data.firstLogin;
       });
   },
 });
