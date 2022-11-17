@@ -1,13 +1,12 @@
 package seb40_main_012.back.user.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
+
 import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+@Setter
 @Getter
 @RequiredArgsConstructor
 @AllArgsConstructor
@@ -33,4 +32,17 @@ public class UserCategory {
         this.user = user;
     }
 
+    public void addUser(User user) {
+        this.user = user;
+        if(!this.user.getCategories().contains(this)) {
+            this.user.getCategories().add(this);
+        }
+    }
+
+    public void addCategory(Category category) {
+        this.category = category;
+        if(!this.category.getCategories().contains(this)) {
+            this.category.addUserCategory(this);
+        }
+    }
 }

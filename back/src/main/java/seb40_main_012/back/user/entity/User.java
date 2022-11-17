@@ -42,10 +42,9 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AgeType age;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
     private List<UserCategory> categories = new ArrayList<>();
 
-    @Column(nullable = false, name = "roles")
     @ElementCollection // 사용자 권한 테이블 생성
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> roles = new ArrayList<>();
@@ -94,6 +93,9 @@ public class User {
 
     public void addUserCategory(UserCategory userCategory) {
         this.categories.add(userCategory);
+        if(userCategory.getUser() != this) {
+            userCategory.addUser(this);
+        }
     }
 
 
