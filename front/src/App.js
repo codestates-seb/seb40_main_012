@@ -22,14 +22,14 @@ import PairingEtc from './pages/PairingPage/PairingEtc';
 import PairingWrite from './pages/PairingPage/PairingWrite/PairingWrite';
 import PairingDetail from './pages/PairingPage/PairingDetail/PairingDetail';
 //임시 페이지!
-import ReduxPage from './pages/Temp_Redux';
+import ReduxPage from './pages/TestPage/Temp_Redux';
+import ButtonTest from './pages/TestPage/ButtonTest';
 
 const App = () => {
   return (
     <BrowserRouter>
       <GlobalStyle />
       <Routes>
-        <Route path="/redux" element={<ReduxPage />} />
         <Route path="/" element={<MainPage />} />
         <Route path="/pairing" element={<PairingPage />} />
         <Route path="/pairing/film" element={<PairingFilm />} />
@@ -59,6 +59,8 @@ const App = () => {
           path="/collection/:collectionid"
           element={<CollectionDetailPage />}
         ></Route>
+        <Route path="/redux" element={<ReduxPage />} />
+        <Route path="/button-test" element={<ButtonTest />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
     </BrowserRouter>
