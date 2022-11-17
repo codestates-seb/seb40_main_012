@@ -2,6 +2,7 @@ package seb40_main_012.back.common.comment;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -143,7 +144,7 @@ public class CommentController {
     @GetMapping("/comments") // 리스트로 조회
     public ResponseEntity getComments() {
 
-        Slice<Comment> sliceComments = commentService.findComments();
+        SliceImpl<Comment> sliceComments = commentService.findComments();
 //        Slice<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(listComments);
 
         return new ResponseEntity<>(
