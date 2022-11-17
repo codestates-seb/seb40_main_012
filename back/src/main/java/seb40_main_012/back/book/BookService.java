@@ -128,6 +128,21 @@ public class BookService {
         return null;
     }
 
+    public List<Book> findCarouselBooks() {
+        return bookRepository.findCarouselBooks();
+    }
+    public List<Book> findBestBooks() {
+        return bookRepository.findBestBooks();
+    }
+    public List<Book> findRecommendedBooks() {
+
+        User findUser = userService.getLoginUser();
+
+        String favoriteGenre = findUser.getCategories().get(0).getCategory().getGenre().toString();
+
+        return bookRepository.findRecommendedBooks(favoriteGenre);
+    }
+
     public void deleteBook(long bookId) {
     }
 

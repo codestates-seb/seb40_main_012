@@ -79,6 +79,7 @@ public interface PairingMapper {
                 .title(pairing.getTitle())
                 .body(pairing.getBody())
                 .likeCount(pairing.getLikeCount())
+                .view(pairing.getView())
                 .imagePath(pairing.getImagePath())
                 .outLinkPath(pairing.getOutLinkPath())
                 .comments(commentResponses)

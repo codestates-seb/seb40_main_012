@@ -28,6 +28,7 @@ public interface BookMapper {
 //                .genre(book.getGenre())
                 .bookWiki(null)
                 .averageRating(book.getAverageRating())
+                .view(book.getView())
                 .comments(book.getComments())
                 .pairings(book.getPairings())
                 .bookCollections(null)

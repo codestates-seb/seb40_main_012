@@ -91,6 +91,7 @@ public class PairingDto {
         private String title;
         private String body;
         private long likeCount;
+        private long view;
         private String imagePath;
         private String outLinkPath;
         private List<CommentDto.Response> comments;
