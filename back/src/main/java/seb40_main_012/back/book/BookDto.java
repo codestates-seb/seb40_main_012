@@ -1,9 +1,6 @@
 package seb40_main_012.back.book;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
@@ -59,4 +56,24 @@ public class BookDto {
         private List<Book> similarBooks;
 
     }
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class CollectionBook {
+
+        private long bookId;
+        private Genre genre;
+        private BookWiki bookWiki;
+        private double averageRating;
+        private List<Comment> comments;
+        private List<Pairing> pairings;
+        private List<BookCollection> bookCollections;
+        private List<Book> similarBooks;
+
+//        public static CollectionBook of(Book book){
+//
+//        }
+    }
+
 }

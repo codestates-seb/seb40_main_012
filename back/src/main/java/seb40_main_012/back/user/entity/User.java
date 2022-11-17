@@ -6,6 +6,9 @@ import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
+import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
 import seb40_main_012.back.common.comment.entity.Comment;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.common.comment.entity.Comment;
@@ -56,6 +59,15 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Pairing> pairings = new ArrayList<>();
 
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<BookCollection> collections = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<BookCollectionLike> collectionLikes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<BookCollectionBookmark> collectionBookmarks = new ArrayList<>();
+
 //    @JsonManagedReference
 //    @OneToMany(mappedBy = "user")
 //    @LazyCollection(LazyCollectionOption.FALSE)
@@ -96,5 +108,12 @@ public class User {
         this.categories.add(userCategory);
     }
 
+    public void addBookCollection(BookCollection collection) {
+        this.collections.add(collection);
+    }
+
+    public void addCollectionLike(BookCollectionLike collectionLike) {
+        this.collectionLikes.add(collectionLike);
+    }
 
 }

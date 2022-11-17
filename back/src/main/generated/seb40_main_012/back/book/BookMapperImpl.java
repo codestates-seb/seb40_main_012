@@ -8,7 +8,7 @@ import seb40_main_012.back.book.entity.Book;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-14T16:13:11+0900",
+    date = "2022-11-16T21:13:42+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.5 (Azul Systems, Inc.)"
 )
 @Component
@@ -20,9 +20,9 @@ public class BookMapperImpl implements BookMapper {
             return null;
         }
 
-        Book book = new Book();
+        Book.BookBuilder book = Book.builder();
 
-        return book;
+        return book.build();
     }
 
     @Override
@@ -31,9 +31,9 @@ public class BookMapperImpl implements BookMapper {
             return null;
         }
 
-        Book book = new Book();
+        Book.BookBuilder book = Book.builder();
 
-        return book;
+        return book.build();
     }
 
     @Override
@@ -42,20 +42,11 @@ public class BookMapperImpl implements BookMapper {
             return null;
         }
 
-        Book book = new Book();
+        Book.BookBuilder book = Book.builder();
 
-        return book;
-    }
+        book.bookId( ratingBook.getBookId() );
 
-    @Override
-    public BookDto.Response bookToBookResponse(Book book) {
-        if ( book == null ) {
-            return null;
-        }
-
-        BookDto.Response response = new BookDto.Response();
-
-        return response;
+        return book.build();
     }
 
     @Override

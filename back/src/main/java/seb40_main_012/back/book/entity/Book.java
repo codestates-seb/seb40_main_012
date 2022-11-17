@@ -81,14 +81,10 @@ public class Book {
     /*관련 컬렉션 목록*/
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "book") // 일대 다
-//    private List<BookCollection> bookCollections;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "book")
+    private List<BookCollection> bookCollections = new ArrayList<>();
 
-    @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY) // 다대 일
-    @JoinColumn(name = "bookCollection_id")
-    private BookCollection bookCollection;
 
 //    @JsonManagedReference
 //    @OneToMany(mappedBy = "book") // 다대 다

@@ -7,8 +7,6 @@ import lombok.Getter;
 public class BookCollectionTagDto {
 
     @Builder
-    public static class PostDto{}
-
-    @Builder
-    public static class ResponseDto{}
+    public static class Response{
+    }
 }

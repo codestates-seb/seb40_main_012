@@ -8,7 +8,7 @@ import seb40_main_012.back.common.comment.entity.Comment;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-14T21:36:05+0900",
+    date = "2022-11-16T21:13:43+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.5 (Azul Systems, Inc.)"
 )
 @Component
@@ -22,6 +22,8 @@ public class CommentMapperImpl implements CommentMapper {
 
         Comment.CommentBuilder comment = Comment.builder();
 
+        comment.body( postComment.getBody() );
+
         return comment.build();
     }
 
@@ -33,6 +35,9 @@ public class CommentMapperImpl implements CommentMapper {
 
         Comment.CommentBuilder comment = Comment.builder();
 
+        comment.commentId( patchComment.getCommentId() );
+        comment.body( patchComment.getBody() );
+
         return comment.build();
     }
 
@@ -43,6 +48,8 @@ public class CommentMapperImpl implements CommentMapper {
         }
 
         Comment.CommentBuilder comment = Comment.builder();
+
+        comment.likeCount( likeComment.getLikeCount() );
 
         return comment.build();
     }

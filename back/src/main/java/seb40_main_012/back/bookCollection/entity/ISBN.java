@@ -7,26 +7,20 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
-@Builder
 @Getter
 @AllArgsConstructor
 @RequiredArgsConstructor
+@Builder
 @Entity
-public class BookCollectionTag {
+public class ISBN {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long BookCollectionTagId;
+    private Long isbnId;
+    private String isbnNum;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "collection_id")
     private BookCollection bookCollection;
 
-    @ManyToOne(fetch = FetchType.LAZY) //
-    @JoinColumn(name = "tag_id")
-    private Tag tag;
-
-    public BookCollectionTag(BookCollection collection, Tag tag) {
-        this.bookCollection = collection;
-        this.tag = tag;
-    }
 }

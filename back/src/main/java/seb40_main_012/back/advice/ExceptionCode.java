@@ -11,7 +11,7 @@ public enum ExceptionCode {
     IMAGE_NOT_FOUND(404,"Image Not Found"),
 
     PAIRING_NOT_FOUND(404,"Pairing Not Found"),
-
+    COLLECTION_NOT_FOUND(404,"Collection Not Found"),
     COMMENT_NOT_FOUND(404,"Comment Not Found"),
     COMMENT_EXISTS(409, "Comment Exists"),
     COMMENT_CANNOT_CHANGE(403,"Comment Can Not Be Changed"),
@@ -29,6 +29,9 @@ public enum ExceptionCode {
 
     RATED(409, "Already Rated"),
     LIKED(409, "Already Liked"),
+    FAIL_TO_LIKE(409, "Fail To Like"),
+    FAIL_TO_BOOKMARK(409, "Fail To Bookmark"),
+
 
     UNAUTHORIZED(401, "Unauthorized"), // 인증이 필요한 상태
     FORBIDDEN(403, "Forbidden"); // 인증은 되었으나 권한이 없는 상태
