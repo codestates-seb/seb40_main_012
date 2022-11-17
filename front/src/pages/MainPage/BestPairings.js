@@ -1,3 +1,5 @@
+import axios from '../../api/axios';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import BestPairing from './BestPairing';
 import MainBooksTitle from './MainBooksTitle';
@@ -18,22 +20,41 @@ const PairingsContainer = styled.div`
 `;
 
 const BestPairings = () => {
+  const [bestpairings, setBestpairings] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('/api/books/pairings/likes')
+      .then((response) => {
+        setBestpairings(response.data.data.content);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <BestPairingsContainer>
       <MainBooksTitle title="요즘 뜨는 페어링" />
       <PairingsContainer>
-        <BestPairing pairingTitle={'페어링 이름1'} pairingId={1} />
-        <BestPairing pairingTitle={'페어링 이름2'} pairingId={1} />
-        <BestPairing pairingTitle={'페어링 이름3'} pairingId={1} />
-        <BestPairing pairingTitle={'페어링 이름4'} pairingId={1} />
-        <BestPairing pairingTitle={'페어링 이름5'} pairingId={1} />
+        {bestpairings.slice(0, 5).map((el) => {
+          return (
+            <BestPairing
+              key={el.pairingId}
+              pairingTitle={el.title}
+              pairingId={el.pairingId}
+            />
+          );
+        })}
       </PairingsContainer>
       <PairingsContainer>
-        <BestPairing pairingTitle={'페어링 이름6'} pairingId={1} />
-        <BestPairing pairingTitle={'페어링 이름7'} pairingId={1} />
-        <BestPairing pairingTitle={'페어링 이름8'} pairingId={1} />
-        <BestPairing pairingTitle={'페어링 이름9'} pairingId={1} />
-        <BestPairing pairingTitle={'페어링 이름10'} pairingId={1} />
+        {bestpairings.slice(5, 10).map((el) => {
+          return (
+            <BestPairing
+              key={el.pairingId}
+              pairingTitle={el.title}
+              pairingId={el.pairingId}
+            />
+          );
+        })}
       </PairingsContainer>
     </BestPairingsContainer>
   );
