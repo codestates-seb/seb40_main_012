@@ -46,6 +46,7 @@ const MainBookInfo = styled.div`
     font-weight: 700;
     color: ${({ theme }) => theme.colors.dark};
     margin-bottom: 5px;
+    word-wrap: break-word;
     @media screen and (max-width: 640px) {
       font-size: 18px;
     }
