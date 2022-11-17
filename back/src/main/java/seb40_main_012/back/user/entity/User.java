@@ -42,7 +42,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AgeType age;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCategory> categories = new ArrayList<>();
 
     @ElementCollection // 사용자 권한 테이블 생성
