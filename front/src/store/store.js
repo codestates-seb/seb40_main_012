@@ -14,7 +14,6 @@ import counterReducer from './modules/counterSlice';
 import signUpReducer from './modules/signUpSlice';
 import signInReducer from './modules/signInSlice';
 import authReducer from './modules/authSlice';
-import duplicationCheckReducer from './modules/duplicationCheckSlice';
 import allPairingReducer from './modules/allPairingSlice';
 import pairingReducer from './modules/pairingSlice';
 import filmPairingReducer from './modules/filmPairingSlice';
@@ -34,7 +33,6 @@ export const rootReducer = combineReducers({
   signUp: signUpReducer,
   signIn: signInReducer,
   auth: authReducer,
-  duplicationCheck: duplicationCheckReducer,
   allPairing: allPairingReducer,
   filmPairing: filmPairingReducer,
   cuisinePairing: cuisinePairingReducer,
