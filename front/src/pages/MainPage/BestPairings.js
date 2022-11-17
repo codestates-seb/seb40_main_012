@@ -17,6 +17,10 @@ const PairingsContainer = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+    align-items: center;
+  }
 `;
 
 const BestPairings = () => {
