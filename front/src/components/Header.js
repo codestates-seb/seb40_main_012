@@ -17,7 +17,16 @@ const HeaderContainer = styled.div`
   }
   display: flex;
   align-items: center;
+  justify-content: space-between;
   z-index: 5050;
+  div.header_left {
+    display: flex;
+    align-items: center;
+  }
+  div.header_right {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const LogoContainer = styled.div`
@@ -49,7 +58,6 @@ const PairingBtn = styled(HeaderBtn)`
 
 const CollectionBtn = styled(HeaderBtn)`
   height: 60px;
-  margin-right: 330px;
   border-top: 3px solid transparent;
   &:hover,
   &.selected {
@@ -64,28 +72,27 @@ const LoginOutBtn = styled(HeaderBtn)`
     cursor: pointer;
     color: ${({ theme }) => theme.colors.mainColor};
   }
-  position: absolute;
-  top: 20px;
-  right: 80px;
+  margin-left: 10px;
 `;
 
 const MyPageIconContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 40px;
   &:hover {
     cursor: pointer;
   }
-  img {
-    position: absolute;
-    right: 40px;
-  }
+`;
+
+const SearchbarContainer = styled.div`
+  width: 100%;
+  flex-grow: 1;
 `;
 
 //Redux Toolkit 참고용 나중에 삭제!!
 const RTKBtn = styled(HeaderBtn)`
   height: 60px;
-  margin-right: 330px;
   border-top: 3px solid transparent;
   &:hover,
   &.selected {
@@ -104,52 +111,60 @@ const Header = () => {
   return (
     <ThemeProvider theme={theme}>
       <HeaderContainer>
-        <LogoContainer>
-          <Link to="/">
-            <img
-              src={process.env.PUBLIC_URL + '/images/CherryPick.svg'}
-              alt="CherryPick main logo"
-            />
+        <div className="header_left">
+          <LogoContainer>
+            <Link to="/">
+              <img
+                src={process.env.PUBLIC_URL + '/images/CherryPick.svg'}
+                alt="CherryPick main logo"
+              />
+            </Link>
+          </LogoContainer>
+          <Link to="/pairing">
+            <PairingBtn
+              className={location.pathname === '/pairing' ? 'selected' : null}
+            >
+              페어링
+            </PairingBtn>
           </Link>
-        </LogoContainer>
-        <Link to="/pairing">
-          <PairingBtn
-            className={location.pathname === '/pairing' ? 'selected' : null}
-          >
-            페어링
-          </PairingBtn>
-        </Link>
-        <Link to="/collection">
-          <CollectionBtn
-            className={location.pathname === '/collection' ? 'selected' : null}
-          >
-            컬렉션
-          </CollectionBtn>
-        </Link>
-        {/* Redux Toolkit 참고용 페이지!! */}
-        <Link to="/redux">
-          <RTKBtn
-            className={location.pathname === '/redux' ? 'selected' : null}
-          >
-            Redux TK
-          </RTKBtn>
-        </Link>
-        <Searchbar />
-        {isLogin ? (
-          <LoginOutBtn onClick={handleClickLogoutButton}>로그아웃</LoginOutBtn>
-        ) : (
-          <Link to="/user/signin">
-            <LoginOutBtn>로그인</LoginOutBtn>
+          <Link to="/collection">
+            <CollectionBtn
+              className={
+                location.pathname === '/collection' ? 'selected' : null
+              }
+            >
+              컬렉션
+            </CollectionBtn>
           </Link>
-        )}
-        <Link to="/mypage">
-          <MyPageIconContainer>
-            <img
-              src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
-              alt="Mypage Icon"
-            />
-          </MyPageIconContainer>
-        </Link>
+          {/* Redux Toolkit 참고용 페이지!! */}
+          <Link to="/redux">
+            <RTKBtn
+              className={location.pathname === '/redux' ? 'selected' : null}
+            >
+              Redux TK
+            </RTKBtn>
+          </Link>
+        </div>
+        <div className="header_right">
+          <Searchbar />
+          {isLogin ? (
+            <LoginOutBtn onClick={handleClickLogoutButton}>
+              로그아웃
+            </LoginOutBtn>
+          ) : (
+            <Link to="/user/signin">
+              <LoginOutBtn>로그인</LoginOutBtn>
+            </Link>
+          )}
+          <Link to="/mypage">
+            <MyPageIconContainer>
+              <img
+                src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
+                alt="Mypage Icon"
+              />
+            </MyPageIconContainer>
+          </Link>
+        </div>
       </HeaderContainer>
     </ThemeProvider>
   );

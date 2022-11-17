@@ -15,6 +15,13 @@ import signUpReducer from './modules/signUpSlice';
 import signInReducer from './modules/signInSlice';
 import authReducer from './modules/authSlice';
 import duplicationCheckReducer from './modules/duplicationCheckSlice';
+import allPairingReducer from './modules/allPairingSlice';
+import pairingReducer from './modules/pairingSlice';
+import filmPairingReducer from './modules/filmPairingSlice';
+import cuisinePairingReducer from './modules/cuisinePairingSlice';
+import musicPairingReducer from './modules/musicPairingSlice';
+import bookPairingReducer from './modules/bookPairingSlice';
+import etcPairingReducer from './modules/etcPairingSlice';
 
 const persistConfig = {
   key: 'root',
@@ -28,6 +35,13 @@ export const rootReducer = combineReducers({
   signIn: signInReducer,
   auth: authReducer,
   duplicationCheck: duplicationCheckReducer,
+  allPairing: allPairingReducer,
+  filmPairing: filmPairingReducer,
+  cuisinePairing: cuisinePairingReducer,
+  musicPairing: musicPairingReducer,
+  bookPairing: bookPairingReducer,
+  etcPairing: etcPairingReducer,
+  pairing: pairingReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
