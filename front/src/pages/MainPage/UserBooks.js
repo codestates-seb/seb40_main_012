@@ -1,3 +1,5 @@
+import axios from '../../api/axios';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Book from './Book';
 import MainBooksTitle from './MainBooksTitle';
@@ -13,15 +15,27 @@ const BooksContainer = styled.div`
 `;
 
 const UserBooks = ({ nickname }) => {
+  const [userBooks, setUserBooks] = useState([]);
+
+  //TODO: 유저 선호 장르 기능 개발 완료시 수정
+  useEffect(() => {
+    axios
+      .get('/api/books/best') // api/books/recommended 로 수정
+      .then((response) => {
+        setUserBooks(response.data.data);
+      })
+      .catch((error) => console.error(error));
+  });
+
   return (
     <UserBooksContainer>
       <MainBooksTitle title={`${nickname}님을 위한 책`} />
       <BooksContainer>
-        <Book bookTitle="책 제목1" bookId={1} />
-        <Book bookTitle="책 제목2" bookId={1} />
-        <Book bookTitle="책 제목3" bookId={1} />
-        <Book bookTitle="책 제목4" bookId={1} />
-        <Book bookTitle="책 제목5" bookId={1} />
+        {userBooks.map((el) => {
+          return (
+            <Book key={el.bookId} bookTitle={el.title} bookId={el.bookId} />
+          );
+        })}
       </BooksContainer>
     </UserBooksContainer>
   );
