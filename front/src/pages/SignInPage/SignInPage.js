@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 // import FormControlLabel from '@mui/material/FormControlLabel';
 // import Checkbox from '@mui/material/Checkbox';
@@ -16,6 +15,7 @@ import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
 import theme from '../../styles/theme';
+import { ContainedButton } from '../../components/Buttons';
 
 import {
   selectValidCheckArray,
@@ -111,14 +111,9 @@ const SignInPage = () => {
                 control={<Checkbox value="remember" color="primary" />}
                 label="로그인 상태 유지"
               /> */}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <ContainedButton type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
                 로그인
-              </Button>
+              </ContainedButton>
               {showLoginError ? (
                 <LoginErrorMsg>
                   아이디(로그인 전용 아이디) 또는 비밀번호를 잘못 입력했습니다.

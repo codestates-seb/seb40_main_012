@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -13,6 +12,7 @@ import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
 import theme from '../../styles/theme';
+import { ContainedButton } from '../../components/Buttons';
 
 import {
   signUpAsync,
@@ -93,14 +93,9 @@ const SignUpPage = () => {
               <Grid container spacing={2}>
                 <SignUpTextFields />
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <ContainedButton type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
                 가입하기
-              </Button>
+              </ContainedButton>
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   이미 가입하셨나요?{' '}
