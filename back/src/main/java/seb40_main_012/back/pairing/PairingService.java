@@ -152,66 +152,89 @@ public class PairingService {
 //    --------------------------------------------------------------------------------------------
     public Slice<Pairing> findPairings() { // 전체 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "likeCount"));
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "likeCount"));
 
         return pairingRepository.findSliceBy(pageRequest);
     }
 
     public Slice<Pairing> findPairingsNewest() { // 전체 슬라이스 처리 및 등록일 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "createdAt"));
 
         return pairingRepository.findSliceBy(pageRequest);
     }
 
     public Slice<Pairing> findFilmPairingsLikes() { // 영화 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        return pairingRepository.findCategorySliceByLikeDesc("FILM");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "like_Count"));
+
+        return pairingRepository.findCategorySliceByLikeDesc("FILM", pageRequest);
     }
 
-    public Slice<Pairing> findFilmPairingsNewest() { // 영화 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+    public Slice<Pairing> findFilmPairingsNewest() { // 영화 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
 
-        return pairingRepository.findCategorySliceByNewestDesc("FILM");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
+
+        return pairingRepository.findCategorySliceByNewestDesc("FILM", pageRequest);
     }
 
     public Slice<Pairing> findCuisinePairingsLikes() { // 음식/장소 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        return pairingRepository.findCategorySliceByLikeDesc("CUISINE");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "like_Count"));
+
+        return pairingRepository.findCategorySliceByLikeDesc("CUISINE", pageRequest);
     }
 
-    public Slice<Pairing> findCuisinePairingsNewest() { // 음식/장소 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+    public Slice<Pairing> findCuisinePairingsNewest() { // 음식/장소 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
 
-        return pairingRepository.findCategorySliceByNewestDesc("CUISINE");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
+
+
+        return pairingRepository.findCategorySliceByNewestDesc("CUISINE", pageRequest);
     }
 
     public Slice<Pairing> findMusicPairingsLikes() { // 음악 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        return pairingRepository.findCategorySliceByLikeDesc("MUSIC");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "like_Count"));
+
+        return pairingRepository.findCategorySliceByLikeDesc("MUSIC", pageRequest);
     }
 
-    public Slice<Pairing> findMusicPairingsNewest() { // 음악 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+    public Slice<Pairing> findMusicPairingsNewest() { // 음악 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
 
-        return pairingRepository.findCategorySliceByNewestDesc("MUSIC");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
+
+
+        return pairingRepository.findCategorySliceByNewestDesc("MUSIC", pageRequest);
     }
 
     public Slice<Pairing> findBookPairingsLikes() { // 책 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        return pairingRepository.findCategorySliceByLikeDesc("BOOK");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "like_Count"));
+
+        return pairingRepository.findCategorySliceByLikeDesc("BOOK", pageRequest);
     }
 
-    public Slice<Pairing> findBookPairingsNewest() { // 책 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+    public Slice<Pairing> findBookPairingsNewest() { // 책 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
 
-        return pairingRepository.findCategorySliceByNewestDesc("BOOK");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
+
+
+        return pairingRepository.findCategorySliceByNewestDesc("BOOK", pageRequest);
     }
 
     public Slice<Pairing> findEtcPairingsLikes() { // 기타 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
-        return pairingRepository.findCategorySliceByLikeDesc("ETC");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "like_Count"));
+
+        return pairingRepository.findCategorySliceByLikeDesc("ETC", pageRequest);
     }
 
-    public Slice<Pairing> findEtcPairingsNewest() { // 기타 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
+    public Slice<Pairing> findEtcPairingsNewest() { // 기타 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
 
-        return pairingRepository.findCategorySliceByNewestDesc("ETC");
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
+
+        return pairingRepository.findCategorySliceByNewestDesc("ETC", pageRequest);
     }
 
 //    --------------------------------------------------------------------------------------------
