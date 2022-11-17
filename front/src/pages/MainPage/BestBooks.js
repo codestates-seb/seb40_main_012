@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Book from './Book';
 import MainBooksTitle from './MainBooksTitle';
@@ -13,15 +15,32 @@ const BooksContainer = styled.div`
 `;
 
 const BestBooks = () => {
+  const [bestBooks, setBestBooks] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('/api/books/best')
+      .then((response) => {
+        setBestBooks(response.data.data);
+      })
+      .catch((error) => console.error(error));
+  }, []);
+
   return (
     <BestBooksContainer>
-      <MainBooksTitle title="요즘 뜨는 책" />
+      <MainBooksTitle title="체리픽에서 많이 본 책" />
       <BooksContainer>
-        <Book bookTitle="책 제목1" bookId={1} />
-        <Book bookTitle="책 제목2" bookId={1} />
-        <Book bookTitle="책 제목3" bookId={1} />
-        <Book bookTitle="책 제목4" bookId={1} />
-        <Book bookTitle="책 제목5" bookId={1} />
+        {bestBooks.map((el, idx) => {
+          return (
+            <Book
+              key={el.BestBooksbookId}
+              bookTitle={el.title}
+              bookId={el.bookId}
+              isBest={true}
+              ranking={idx + 1}
+            />
+          );
+        })}
       </BooksContainer>
     </BestBooksContainer>
   );
