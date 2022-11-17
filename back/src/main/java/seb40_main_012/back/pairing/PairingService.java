@@ -10,7 +10,9 @@ import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
+import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -32,6 +34,7 @@ public class PairingService {
     private final BookRepository bookRepository;
     private final UserService userService;
     private final UserRepository userRepository;
+    private final BookInfoSearchService bookInfoSearchService;
 
     public Pairing createPairing(Pairing pairing, String isbn13) {
 
@@ -41,10 +44,22 @@ public class PairingService {
 
         if (optionalBook.isEmpty()) {
 
+            String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
+
             Book savedBook =
                     Book.builder()
                             .isbn13(isbn13)
                             .build();
+
+            if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
+            else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
+            else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
+            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
+            else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
+            else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
+            else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
+            else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
+            else savedBook.setGenre(Genre.ETC);
 
             bookRepository.save(savedBook);
 

@@ -68,6 +68,7 @@ public class CommentService {
             if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
             else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
             else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
+            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
             else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
             else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
             else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);

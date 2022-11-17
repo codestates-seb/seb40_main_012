@@ -104,23 +104,23 @@ public class CommentController {
 //        );
 //    }
 
-    @PatchMapping("/comments/{comment_id}")
-    public ResponseEntity updateViewPairing(@RequestBody CommentDto.View viewComment,
-                                            @PathVariable("comment_id") @Positive long commentId) {
-//        Comment comment = commentMapper.commentViewToComment(viewComment);
-        Comment viewedComment = commentService.updateView(commentId);
-        CommentDto.Response response = commentMapper.commentToCommentResponse(viewedComment);
-
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.OK
-        );
-    }
+//    @PatchMapping("/comments/{comment_id}") // 조회 기능에 통합
+//    public ResponseEntity updateViewPairing(@RequestBody CommentDto.View viewComment,
+//                                            @PathVariable("comment_id") @Positive long commentId) {
+////        Comment comment = commentMapper.commentViewToComment(viewComment);
+//        Comment viewedComment = commentService.updateView(commentId);
+//        CommentDto.Response response = commentMapper.commentToCommentResponse(viewedComment);
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(response), HttpStatus.OK
+//        );
+//    }
 
 
     @GetMapping("/comments/{comment_id}")
     public ResponseEntity getComment(@PathVariable("comment_id") @Positive long commentId) {
 
-        Comment comment = commentService.findComment(commentId);
+        Comment comment = commentService.updateView(commentId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(comment);
 
         return new ResponseEntity<>(

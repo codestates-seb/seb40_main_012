@@ -97,16 +97,16 @@ public class PairingController {
 //        );
 //    }
 
-    @PatchMapping("/pairings/{pairing_id}")
-    public ResponseEntity updateViewPairing(@PathVariable("pairing_id") @Positive long pairingId) {
-
-        Pairing viewedPairing = pairingService.updateView(pairingId);
-        PairingDto.Response response = pairingMapper.pairingToPairingResponse(viewedPairing);
-
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.OK
-        );
-    }
+//    @PatchMapping("/pairings/{pairing_id}") // 조회 기능에 통합
+//    public ResponseEntity updateViewPairing(@PathVariable("pairing_id") @Positive long pairingId) {
+//
+//        Pairing viewedPairing = pairingService.updateView(pairingId);
+//        PairingDto.Response response = pairingMapper.pairingToPairingResponse(viewedPairing);
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(response), HttpStatus.OK
+//        );
+//    }
 
     @GetMapping("/pairings/{pairing_id}")
     public ResponseEntity getPairing(@PathVariable("pairing_id") @Positive long pairingId) {

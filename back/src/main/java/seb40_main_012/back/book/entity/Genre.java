@@ -7,6 +7,7 @@ public enum Genre {
     NOVEL("소설"),
     ESSAY("수필"),
     POEM("시"),
+    ART("예술"),
     HUMANITIES("인문학"),
     SOCIAL("사회과학"),
     NATURAL("자연과학"),

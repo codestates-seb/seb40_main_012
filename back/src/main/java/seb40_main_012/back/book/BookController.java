@@ -74,18 +74,18 @@ public class BookController {
         );
     }
 
-    @PatchMapping("/{isbn13}")
-    public ResponseEntity updateViewBook(
-//            @RequestBody BookDto.View viewBook,
-            @PathVariable("isbn13") @Positive String isbn13) {
-//        Book book = bookMapper.bookViewToBook(viewBook);
-        Book viewedBook = bookService.updateView(isbn13);
-        BookDto.Response response = bookMapper.bookToBookResponse(viewedBook);
-
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.OK
-        );
-    }
+//    @PatchMapping("/{isbn13}")
+//    public ResponseEntity updateViewBook( // 조회 기능에 통합
+////            @RequestBody BookDto.View viewBook,
+//            @PathVariable("isbn13") @Positive String isbn13) {
+////        Book book = bookMapper.bookViewToBook(viewBook);
+//        Book viewedBook = bookService.updateView(isbn13);
+//        BookDto.Response response = bookMapper.bookToBookResponse(viewedBook);
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(response), HttpStatus.OK
+//        );
+//    }
 
     @GetMapping("/carousel")
     public ResponseEntity carouselBooks() { // 별점으로 5개 내림차순
