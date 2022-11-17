@@ -1,3 +1,5 @@
+import { createTheme } from '@mui/material/styles';
+
 const colors = {
   mainColor: '#6741FF',
   purple_1: '#A28BFF',
@@ -8,8 +10,9 @@ const colors = {
   gray: '#737373',
   lightgray: '#BFBFBF',
 };
-const theme = {
+
+const theme = createTheme({
   colors,
-};
+});
 
 export default theme;
