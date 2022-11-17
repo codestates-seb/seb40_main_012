@@ -58,6 +58,7 @@ public class BookDto {
 
         private long bookId;
         private String isbn13;
+        private Genre genre;
         private BookWiki bookWiki;
         private double averageRating;
         private long view;
