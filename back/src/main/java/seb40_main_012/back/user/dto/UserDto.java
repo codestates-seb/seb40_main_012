@@ -19,7 +19,7 @@ public class UserDto {
     @NoArgsConstructor
     public static class Profile {
         @NotBlank(message = "닉네임을 입력하셔야 합니다")
-        @Pattern(regexp = "[0-9a-zA-Z가-힣]{3,20}", message = "3~20자의 한글, 영문, 숫자만 사용 가능합니다")
+        @Pattern(regexp = "[0-9a-zA-Zㄱ-ㅎ가-힣\\s]{3,20}", message = "3~20자의 한글, 영문, 숫자만 사용 가능합니다")
         private String nickName;
     }
 
@@ -47,7 +47,7 @@ public class UserDto {
         private String email;
 
         @NotBlank(message = "닉네임을 입력하셔야 합니다")
-        @Pattern(regexp = "[0-9a-zA-Z가-힣]{3,20}", message = "3~20자의 한글, 영문, 숫자만 사용 가능합니다")
+        @Pattern(regexp = "[0-9a-zA-Zㄱ-ㅎ가-힣\\s]{3,20}", message = "3~20자의 한글, 영문, 숫자만 사용 가능합니다")
         private String nickName;
 
         @NotBlank(message = "패스워드를 입력하셔야 합니다")
