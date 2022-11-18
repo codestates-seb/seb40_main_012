@@ -1,11 +1,10 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { signIn } from '../../api/signInAPI';
-import axios from '../../api/axios';
+import { signIn } from '../../api/authApi';
 import { PURGE } from 'redux-persist';
 
 const initialState = {
   loading: false,
-  error: null,
+  error: { status: null, message: '' },
   isLogin: false,
   firstLogin: false,
 };
@@ -15,15 +14,9 @@ export const signInAsync = createAsyncThunk(
   async (params, thunkAPI) => {
     try {
       const response = await signIn(params);
-      axios.defaults.headers.common['Authorization'] =
-        response.headers.authorization;
-      localStorage.setItem('token', response.headers.authorization);
-
-      return response;
+      return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue({
-        errorMessage: error.response.data.message,
-      });
+      return thunkAPI.rejectWithValue({ error });
     }
   }
 );
@@ -48,17 +41,17 @@ export const authSlice = createSlice({
         state.loading = false;
         state.error = null;
         state.isLogin = true;
-        state.firstLogin = action.payload.data.firstLogin;
+        state.firstLogin = action.payload.firstLogin;
       })
       .addCase(signInAsync.rejected, (state, action) => {
         state.loading = false;
         if (action.payload) {
-          state.error = action.payload.errorMessage;
+          state.error = action.payload.error;
         } else {
           state.error = action.error;
         }
         state.isLogin = false;
-        state.firstLogin = action.payload.data.firstLogin;
+        state.firstLogin = false;
       })
       .addCase(PURGE, () => initialState);
   },
