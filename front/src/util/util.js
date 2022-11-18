@@ -1,3 +1,8 @@
+import {
+  dupilicationCheckNickName,
+  dupilicationCheckEmail,
+} from '../api/duplicationCheckApi';
+
 const validationCheck = (type, value, required) => {
   let regExp = null;
   let errorMessage = '';
@@ -24,6 +29,39 @@ const validationCheck = (type, value, required) => {
   }
 };
 
+const duplicationCheck = (type, value) => {
+  let api;
+  let successMsg = '';
+  let errorMsg = '';
+  switch (type) {
+    case 'nickName':
+      api = dupilicationCheckNickName;
+      successMsg = message.duplicate.nickNameSuccess;
+      errorMsg = message.duplicate.nickNameError;
+      break;
+    case 'email':
+      api = dupilicationCheckEmail;
+      successMsg = message.duplicate.emailNameSuccess;
+      errorMsg = message.duplicate.emailNameError;
+      break;
+    default:
+      return;
+  }
+
+  return new Promise((resolve, reject) => {
+    return api(value)
+      .then(() => {
+        resolve({ status: 'success', message: successMsg });
+      })
+      .catch((error) => {
+        const { status, message } = error;
+        let errMsg = message;
+        if (status === 409) errMsg = errorMsg;
+        reject({ status: 'error', message: errMsg });
+      });
+  });
+};
+
 const message = {
   valid: {
     requiredError: '필수 정보입니다.',
@@ -32,11 +70,11 @@ const message = {
     passwordError: '8~16자 영문, 숫자, 특수문자(@$!%*?&)를 사용하세요.',
   },
   duplicate: {
-    nickNameError: '이미 사용중인 닉네임입니다.',
     nickNameSuccess: '사용할 수 있는 닉네임입니다.',
-    emailNameError: '이미 사용중인 닉네임입니다.',
+    nickNameError: '이미 사용중인 닉네임입니다.',
     emailNameSuccess: '사용할 수 있는 닉네임입니다.',
+    emailNameError: '이미 사용중인 닉네임입니다.',
   },
 };
 
-export { validationCheck };
+export { validationCheck, duplicationCheck };

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { signUp } from '../../api/signUpAPI';
-import { validationCheck } from '../../util/util';
+import { validationCheck, duplicationCheck } from '../../util/util';
 
 const initialState = {
   loading: false,
@@ -90,58 +90,34 @@ export const setIsValid = (id, value, required) => (dispatch) => {
   }
 };
 
-const isValidNickName = (id, value) => (dispatch) => {
-  console.log(value);
-
-  // 중복확인 api
-  // dispatch(
-  //   setInputStatus([
-  //     {
-  //       id,
-  //       inputStatus: 'error',
-  //       inputHelperText: '이미 사용중인 닉네임입니다.',
-  //     },
-  //   ])
-  // );
-
-  // dispatch(
-  //   setInputStatus([
-  //     {
-  //       id,
-  //       inputStatus: 'success',
-  //       inputHelperText: '사용할 수 있는 닉네임입니다.',
-  //     },
-  //   ])
-  // );
-
-  dispatch(setInputStatus([{ id, inputStatus: '', inputHelperText: '' }]));
+const isValidNickName = (id, value) => async (dispatch) => {
+  try {
+    const response = await duplicationCheck(id, value);
+    const { status, message } = response;
+    dispatch(
+      setInputStatus([{ id, inputStatus: status, inputHelperText: message }])
+    );
+  } catch (error) {
+    const { status, message } = error;
+    dispatch(
+      setInputStatus([{ id, inputStatus: status, inputHelperText: message }])
+    );
+  }
 };
 
-const isValidEmail = (id, value) => (dispatch) => {
-  console.log(value);
-
-  // 중복확인 api
-  // dispatch(
-  //   setInputStatus([
-  //     {
-  //       id,
-  //       inputStatus: 'error',
-  //       inputHelperText: '이미 사용중인 이메일입니다.',
-  //     },
-  //   ])
-  // );
-
-  // dispatch(
-  //   setInputStatus([
-  //     {
-  //       id,
-  //       inputStatus: 'success',
-  //       inputHelperText: '사용할 수 있는 이메일입니다.',
-  //     },
-  //   ])
-  // );
-
-  dispatch(setInputStatus([{ id, inputStatus: '', inputHelperText: '' }]));
+const isValidEmail = (id, value) => async (dispatch) => {
+  try {
+    const response = await duplicationCheck(id, value);
+    const { status, message } = response;
+    dispatch(
+      setInputStatus([{ id, inputStatus: status, inputHelperText: message }])
+    );
+  } catch (error) {
+    const { status, message } = error;
+    dispatch(
+      setInputStatus([{ id, inputStatus: status, inputHelperText: message }])
+    );
+  }
 };
 
 const isValidPassword = (id) => (dispatch) => {

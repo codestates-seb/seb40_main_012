@@ -1,6 +1,8 @@
 // 유저
 export const USERS_URL = '/api/users';
 export const SIGN_IN_URL = '/api/login';
+export const DUPLICATION_CHECK_NICKNAME_URL = `${USERS_URL}/verify/nickName`;
+export const DUPLICATION_CHECK_EMAIL_URL = `${USERS_URL}/verify/email`;
 
 // 책
 export const BOOKS_URL = '/api/books';
