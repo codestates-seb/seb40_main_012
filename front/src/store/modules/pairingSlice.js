@@ -11,28 +11,49 @@ export const asyncGetOnePairing = createAsyncThunk(
   'pairingSlice/asyncGetOnePairing',
   async (pairingId) => {
     return await axios.get(`${PAIRING_URL}/${pairingId}`).then((res) => {
-      console.log(res.data.data.content);
       return res.data.data;
     });
   }
 );
 
+export const asyncPostPairing = createAsyncThunk(
+  'pairingSlice/asyncPostPairing',
+  async (pairingPostBody) => {
+    console.log('axios.defaults.headers', axios.defaults.headers);
+    return await axios
+      .post(`/api/books/1/pairings/add`, pairingPostBody)
+      .then((res) => {
+        console.log('성공', res);
+      })
+      .catch((err) => {
+        console.log('post 실패', err);
+      });
+  }
+);
+
 export const pairingSlice = createSlice({
-  name: 'getPairing',
+  name: 'pairing',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(asyncGetOnePairing.pending, (state) => {
-      //   console.log('pending', state, action);
       state.status = 'pending';
     });
     builder.addCase(asyncGetOnePairing.fulfilled, (state, action) => {
-      //   console.log('fulfilled', state, action);
       state.data = action.payload;
       state.status = 'fulfilled';
     });
     builder.addCase(asyncGetOnePairing.rejected, (state) => {
-      //   console.log('reject', state, action);
+      state.data = [];
+      state.status = 'rejected';
+    });
+    builder.addCase(asyncPostPairing.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(asyncPostPairing.fulfilled, (state) => {
+      state.status = 'fulfilled';
+    });
+    builder.addCase(asyncPostPairing.rejected, (state) => {
       state.data = [];
       state.status = 'rejected';
     });
