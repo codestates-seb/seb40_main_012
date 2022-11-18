@@ -27,9 +27,6 @@ public class SecurityController {
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(request.getHeader("Cookie") == null)
-            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
-
         try {
             String refreshToken = outCookie(request);
 
@@ -50,13 +47,16 @@ public class SecurityController {
         }
     }
 
+    @Transactional
     @PostMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        if(request.getHeader("Authorization") == null)
-            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
-
         User loginUser = userService.getLoginUser();
-
+        try {
+            RefreshToken findRefreshToken = repository.findByEmail(loginUser.getEmail())
+                    .orElseThrow(() -> new NullPointerException());
+        } catch (NullPointerException ne) {
+            response.sendError(401, "로그아웃 한 사용자입니다");
+        }
         repository.deleteByEmail(loginUser.getEmail());
     }
 
