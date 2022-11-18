@@ -1,6 +1,7 @@
 package seb40_main_012.back.config.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseCookie;
@@ -13,6 +14,7 @@ import seb40_main_012.back.config.auth.entity.RefreshToken;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.mapper.UserMapper;
 import seb40_main_012.back.user.service.UserService;
 
 import javax.servlet.FilterChain;
@@ -27,6 +29,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
     private final RefreshTokenRepository repository;
+    private final UserMapper userMapper;
 
     @SneakyThrows
     @Override
@@ -48,13 +51,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String accessToken = delegateAccessToken(user);
         String refreshToken = delegateRefreshToken(user);
 
-        ObjectMapper mapper = new ObjectMapper();
-        LoginDto.ResponseDto responseDto = new LoginDto.ResponseDto();
-        responseDto.setFirstLogin(user.isFirstLogin());
-        responseDto.setNickName(user.getNickName());
-        responseDto.setEmail(user.getEmail());
-        responseDto.setRoles(user.getRoles());
-        response.getWriter().write(mapper.writeValueAsString(responseDto));
+        LoginDto.ResponseDto responseDto = userMapper.userToLoginResponse(user);
+        String json = new Gson().toJson(responseDto);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
 
         response.setHeader("Authorization", "Bearer " + accessToken);
 

@@ -1,6 +1,7 @@
 package seb40_main_012.back.config.auth.dto;
 
 import lombok.*;
+import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
@@ -27,7 +28,7 @@ public class LoginDto {
     public static class PatchDto {
         private GenderType genderType;
         private AgeType age;
-        // TODO: 선호 장르 추가
+        private List<String> genres;
     }
 
     @Setter
@@ -40,5 +41,20 @@ public class LoginDto {
         private String nickName;
         private String email;
         private List<String> roles;
+    }
+
+    @Setter
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class firstLoginResponseDto {
+        private boolean firstLogin;
+        private String nickName;
+        private String email;
+        private List<String> roles;
+        private GenderType genderType;
+        private AgeType ageType;
+        private List<Genre> genres;
     }
 }

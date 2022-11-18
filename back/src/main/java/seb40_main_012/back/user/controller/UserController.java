@@ -167,8 +167,9 @@ public class UserController {
 
     @PatchMapping("/users/firstLogin")
     public ResponseEntity patchUserOnFirstLogin(@RequestBody LoginDto.PatchDto patchDto) {
-        userService.updateOnFirstLogin(patchDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        User user = userService.updateOnFirstLogin(patchDto);
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(mapper.userToFirstLoginResponse(user)), HttpStatus.OK);
     }
 
 }
