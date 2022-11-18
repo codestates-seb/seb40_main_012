@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
-import { refreshToken } from './api/authApi';
+import { logout, refreshToken } from './api/authApi';
 
 import MainPage from './pages/MainPage/MainPage';
 import SignInPage from './pages/SignInPage/SignInPage';
@@ -42,6 +42,8 @@ const App = () => {
       await refreshToken();
     } catch (e) {
       console.log(e);
+      // 에러코드 나오면 처리 필요
+      logout();
     }
   };
 
