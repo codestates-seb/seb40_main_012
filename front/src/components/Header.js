@@ -4,8 +4,7 @@ import { useLocation, Link } from 'react-router-dom';
 import Searchbar from './Searchbar';
 import { useSelector } from 'react-redux';
 import { selectIsLogin } from '../store/modules/authSlice';
-import axios from '../api/axios';
-import { persistor } from '../index';
+import { logout } from '../api/authApi';
 
 const HeaderContainer = styled.div`
   position: fixed;
@@ -102,14 +101,12 @@ const Header = () => {
   const location = useLocation();
   const isLogin = useSelector(selectIsLogin);
 
-  const handleClickLogoutButton = () => {
-    axios.defaults.headers.common['Authorization'] = 'Bearer';
-    localStorage.removeItem('token');
-    purge();
-  };
-
-  const purge = async () => {
-    await persistor.purge();
+  const handleClickLogoutButton = async () => {
+    try {
+      await logout();
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
