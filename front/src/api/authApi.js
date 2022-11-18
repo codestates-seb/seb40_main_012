@@ -1,13 +1,34 @@
 import axios from './axios';
-import { TOKEN_REFRESH_URL } from './requests';
+import { TOKEN_REFRESH_URL, SIGN_IN_URL } from './requests';
+
+const setAxiosHeaderAuth = (value) =>
+  (axios.defaults.headers.common['Authorization'] = value);
+
+export const signIn = (params) => {
+  return new Promise((resolve, reject) => {
+    return axios
+      .post(SIGN_IN_URL, params)
+      .then((response) => {
+        setAxiosHeaderAuth(response.headers.authorization);
+        resolve(response);
+      })
+      .catch((error) => {
+        if (Object.prototype.hasOwnProperty.call(error, 'response')) {
+          const { status, message } = error.response.data;
+          reject({ status, message });
+        } else {
+          reject({ status: error.code, message: error.message });
+        }
+      });
+  });
+};
 
 export const refreshToken = () => {
   return new Promise((resolve, reject) => {
     return axios
       .get(TOKEN_REFRESH_URL)
       .then((response) => {
-        axios.defaults.headers.common['Authorization'] =
-          response.headers.authorization;
+        setAxiosHeaderAuth(response.headers.authorization);
         resolve('success');
       })
       .catch((error) => {
