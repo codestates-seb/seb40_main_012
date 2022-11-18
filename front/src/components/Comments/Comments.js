@@ -8,15 +8,19 @@ const CommentsContainer = styled.div`
   padding: 0 20px;
 `;
 
-const Comments = ({ commentsData, commentAdd }) => {
-  console.log(commentsData);
-  //redux toolkit state로 관리
-
+const Comments = ({ commentsData, commentAdd, commentDelete }) => {
   return (
     <CommentsContainer>
       <CommentsHeader cnt={commentsData.length} />
       {commentsData.map((el) => {
-        return <Comment key={el.commentId} data={el} />;
+        return (
+          <Comment
+            key={el.commentId}
+            commentId={el.commentId}
+            data={el}
+            commentDelete={commentDelete}
+          />
+        );
       })}
       <CommentAdd commentAdd={commentAdd} />
     </CommentsContainer>

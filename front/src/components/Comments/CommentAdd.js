@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectIsLogin } from '../../store/modules/authSlice';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../../styles/theme';
 
@@ -70,14 +72,16 @@ const CommentAdd = ({ commentAdd }) => {
   const [isAbleAdd, setIsAbleAdd] = useState(false);
   const [input, setInput] = useState('');
 
+  const isLogin = useSelector(selectIsLogin);
+
   const handleInputChange = (e) => {
     setInput(e.target.value);
-    if (input.length >= 5) setIsAbleAdd(true);
+    if (isLogin && input.length >= 5) setIsAbleAdd(true);
     else setIsAbleAdd(false);
   };
 
   const handleCommentAdd = () => {
-    if (setIsAbleAdd) {
+    if (isAbleAdd) {
       commentAdd(input);
       setInput('');
       setIsAbleAdd(false);

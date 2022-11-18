@@ -9,7 +9,13 @@ import PairingOriginBook from './PairingOriginBook';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { asyncGetOnePairing } from '../../../store/modules/pairingSlice';
+import {
+  asyncGetOnePairing,
+  asyncPostPairingComment,
+  asyncDeletePairingComment,
+} from '../../../store/modules/pairingSlice';
+
+import Comments from '../../../components/Comments/Comments';
 
 const TagBtn = styled.div`
   display: flex;
@@ -54,6 +60,19 @@ const PairingDetail = () => {
     dispatch(asyncGetOnePairing(pairingId));
   }, [dispatch]);
   const pairingData = useSelector((state) => state.pairing.data);
+
+  console.log(pairingData);
+
+  const handleCommentAdd = (body) => {
+    //dispatch - 코멘트 입력
+    dispatch(asyncPostPairingComment({ pairingId, body }));
+  };
+
+  const handleCommentDelete = (commentId) => {
+    //dispatch - 코멘트 삭제
+    dispatch(asyncDeletePairingComment(commentId));
+  };
+
   return (
     <PageContainer footer>
       <ThemeProvider theme={theme}>
@@ -87,6 +106,11 @@ const PairingDetail = () => {
             <a href="/">{pairingData.outLinkPath}</a>
           </InfoContent>
         </MainBody>
+        <Comments
+          commentsData={pairingData.comments}
+          commentAdd={handleCommentAdd}
+          commentDelete={handleCommentDelete}
+        />
       </ThemeProvider>
     </PageContainer>
   );
