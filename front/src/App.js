@@ -1,5 +1,8 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
+import { refreshToken } from './api/authApi';
+
 import MainPage from './pages/MainPage/MainPage';
 import SignInPage from './pages/SignInPage/SignInPage';
 import SignUpPage from './pages/SignUpPage/SignUpPage';
@@ -24,8 +27,24 @@ import PairingDetail from './pages/PairingPage/PairingDetail/PairingDetail';
 //임시 페이지!
 import ReduxPage from './pages/TestPage/Temp_Redux';
 import ButtonTest from './pages/TestPage/ButtonTest';
+import { useSelector } from 'react-redux';
+import { selectIsLogin } from './store/modules/authSlice';
 
 const App = () => {
+  const isLogin = useSelector(selectIsLogin);
+
+  useEffect(() => {
+    if (isLogin) getToken();
+  }, []);
+
+  const getToken = async () => {
+    try {
+      await refreshToken();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <BrowserRouter>
       <GlobalStyle />
