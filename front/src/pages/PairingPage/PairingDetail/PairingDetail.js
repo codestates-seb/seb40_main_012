@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   asyncGetOnePairing,
   asyncPostPairingComment,
+  asyncDeletePairingComment,
 } from '../../../store/modules/pairingSlice';
 
 import Comments from '../../../components/Comments/Comments';
@@ -62,8 +63,13 @@ const PairingDetail = () => {
   console.log(pairingData);
 
   const handleCommentAdd = (body) => {
-    //dispatch
+    //dispatch - 코멘트 입력
     dispatch(asyncPostPairingComment({ pairingId, body }));
+  };
+
+  const handleCommentDelete = (commentId) => {
+    //dispatch - 코멘트 삭제
+    dispatch(asyncDeletePairingComment(commentId));
   };
 
   return (
@@ -101,6 +107,7 @@ const PairingDetail = () => {
         <Comments
           commentsData={pairingData.comments}
           commentAdd={handleCommentAdd}
+          commentDelete={handleCommentDelete}
         />
       </ThemeProvider>
     </PageContainer>
