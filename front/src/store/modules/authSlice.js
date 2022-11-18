@@ -16,7 +16,8 @@ export const signInAsync = createAsyncThunk(
     try {
       const response = await signIn(params);
       axios.defaults.headers.common['Authorization'] =
-        'Bearer ' + response.headers.authorization;
+        response.headers.authorization;
+      localStorage.setItem('token', response.headers.authorization);
 
       return response;
     } catch (error) {

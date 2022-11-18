@@ -104,6 +104,7 @@ const Header = () => {
 
   const handleClickLogoutButton = () => {
     axios.defaults.headers.common['Authorization'] = 'Bearer';
+    localStorage.removeItem('token');
     purge();
   };
 
