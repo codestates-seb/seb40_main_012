@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -10,8 +9,10 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
+import theme from '../../styles/theme';
+import { ContainedButton } from '../../components/Buttons';
 
 import {
   signUpAsync,
@@ -20,10 +21,12 @@ import {
 } from '../../store/modules/signUpSlice';
 import SignUpTextFields from './SignUpTextFields';
 
-const theme = createTheme();
-
 const SignInLink = styled(Link)`
   font-size: 1rem;
+`;
+
+const AvatarStyled = styled(Avatar)`
+  background-color: ${({ theme }) => theme.colors.purple_2};
 `;
 
 const SignUpPage = () => {
@@ -75,9 +78,9 @@ const SignUpPage = () => {
               minHeight: '500px',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <AvatarStyled sx={{ m: 1 }}>
               <LockOutlinedIcon />
-            </Avatar>
+            </AvatarStyled>
             <Typography component="h1" variant="h5">
               회원가입
             </Typography>
@@ -90,14 +93,9 @@ const SignUpPage = () => {
               <Grid container spacing={2}>
                 <SignUpTextFields />
               </Grid>
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <ContainedButton type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
                 가입하기
-              </Button>
+              </ContainedButton>
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   이미 가입하셨나요?{' '}

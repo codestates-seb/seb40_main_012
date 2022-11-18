@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { signUp } from '../../api/signUpAPI';
+import { validationCheck } from '../../util/util';
 
 const initialState = {
   loading: false,
@@ -8,34 +9,6 @@ const initialState = {
   inputStatus: { nickName: '', email: '', password: '', passwordCheck: '' },
   inputHelperText: { nickName: '', email: '', password: '', passwordCheck: '' },
 };
-
-export const checkDuplicateNickNameAsync = createAsyncThunk(
-  'signUp/checkDuplicateNickName',
-  async (nickName, thunkAPI) => {
-    try {
-      const response = await signUp(nickName);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue({
-        errorMessage: error.response.data.message,
-      });
-    }
-  }
-);
-
-export const checkDuplicateEmailAsync = createAsyncThunk(
-  'signUp/checkDuplicateEmail',
-  async (email, thunkAPI) => {
-    try {
-      const response = await signUp(email);
-      return response.data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue({
-        errorMessage: error.response.data.message,
-      });
-    }
-  }
-);
 
 export const signUpAsync = createAsyncThunk(
   'signUp/signUp',
@@ -89,10 +62,11 @@ export const signUpSlice = createSlice({
 export const { setInputValue, setInputStatus } = signUpSlice.actions;
 
 export const setIsValid = (id, value, required) => (dispatch) => {
-  if (required && value.length <= 0) {
+  const { test, errorMessage } = validationCheck(id, value, required);
+  if (!test) {
     dispatch(
       setInputStatus([
-        { id, inputStatus: 'error', inputHelperText: '필수 정보입니다.' },
+        { id, inputStatus: 'error', inputHelperText: errorMessage },
       ])
     );
     return;
@@ -106,7 +80,7 @@ export const setIsValid = (id, value, required) => (dispatch) => {
       dispatch(isValidEmail(id, value));
       break;
     case 'password':
-      dispatch(isValidPassword(id, value));
+      dispatch(isValidPassword(id));
       break;
     case 'passwordCheck':
       dispatch(isValidPasswordCheck(id, value));
@@ -117,20 +91,7 @@ export const setIsValid = (id, value, required) => (dispatch) => {
 };
 
 const isValidNickName = (id, value) => (dispatch) => {
-  const regExp = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{3,20}$/;
-
-  if (!regExp.test(value)) {
-    dispatch(
-      setInputStatus([
-        {
-          id,
-          inputStatus: 'error',
-          inputHelperText: '3~20자의 한글, 영문, 숫자만 사용 가능합니다.',
-        },
-      ])
-    );
-    return;
-  }
+  console.log(value);
 
   // 중복확인 api
   // dispatch(
@@ -157,21 +118,7 @@ const isValidNickName = (id, value) => (dispatch) => {
 };
 
 const isValidEmail = (id, value) => (dispatch) => {
-  const regExp =
-    /^[-0-9A-Za-z!#$%&'*+/=?^_`{|}~.]+@[-0-9A-Za-z!#$%&'*+/=?^_`{|}~]+[.]{1}[0-9A-Za-z]/;
-
-  if (!regExp.test(value)) {
-    dispatch(
-      setInputStatus([
-        {
-          id,
-          inputStatus: 'error',
-          inputHelperText: '이메일 주소를 다시 확인해주세요.',
-        },
-      ])
-    );
-    return;
-  }
+  console.log(value);
 
   // 중복확인 api
   // dispatch(
@@ -197,23 +144,7 @@ const isValidEmail = (id, value) => (dispatch) => {
   dispatch(setInputStatus([{ id, inputStatus: '', inputHelperText: '' }]));
 };
 
-const isValidPassword = (id, value) => (dispatch) => {
-  const regExp =
-    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
-
-  if (!regExp.test(value)) {
-    dispatch(
-      setInputStatus([
-        {
-          id,
-          inputStatus: 'error',
-          inputHelperText: '8~16자 영문, 숫자, 특수문자(@$!%*?&)를 사용하세요.',
-        },
-      ])
-    );
-    return;
-  }
-
+const isValidPassword = (id) => (dispatch) => {
   dispatch(setInputStatus([{ id, inputStatus: '', inputHelperText: '' }]));
 };
 

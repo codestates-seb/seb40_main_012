@@ -1,6 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { signIn } from '../../api/signInAPI';
-import axios from '../../api/axios';
+import { createSlice } from '@reduxjs/toolkit';
+import { validationCheck } from '../../util/util';
 
 const initialState = {
   loading: false,
@@ -8,26 +7,7 @@ const initialState = {
   inputValue: { email: '', password: '' },
   inputStatus: { email: '', password: '' },
   inputHelperText: { email: '', password: '' },
-  isLogin: false,
-  firstLogin: false,
 };
-
-export const signInAsync = createAsyncThunk(
-  'signIn/getTokens',
-  async (params, thunkAPI) => {
-    try {
-      const response = await signIn(params);
-      axios.defaults.headers.common['Authorization'] =
-        'Bearer ' + response.headers.authorization;
-
-      return response;
-    } catch (error) {
-      return thunkAPI.rejectWithValue({
-        errorMessage: error.response.data.message,
-      });
-    }
-  }
-);
 
 export const signInSlice = createSlice({
   name: 'signIn',
@@ -43,41 +23,16 @@ export const signInSlice = createSlice({
       }
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(signInAsync.pending, (state) => {
-        state.error = null;
-        state.loading = true;
-        state.isLogin = false;
-      })
-      .addCase(signInAsync.fulfilled, (state, action) => {
-        state.error = null;
-        state.loading = false;
-        state.isLogin = true;
-        state.firstLogin = action.payload.data.firstLogin;
-        state.inputValue = { email: '', password: '' };
-        state.inputStatus = { email: '', password: '' };
-        state.inputHelperText = { email: '', password: '' };
-      })
-      .addCase(signInAsync.rejected, (state, action) => {
-        state.loading = false;
-        state.isLogin = false;
-        if (action.payload) {
-          state.error = action.payload.errorMessage;
-        } else {
-          state.error = action.error;
-        }
-      });
-  },
 });
 
 export const { setInputValue, setInputStatus } = signInSlice.actions;
 
 export const setIsValid = (id, value, required) => (dispatch) => {
-  if (required && value.length <= 0) {
+  const { test, errorMessage } = validationCheck(undefined, value, required);
+  if (!test) {
     dispatch(
       setInputStatus([
-        { id, inputStatus: 'error', inputHelperText: '필수 정보입니다.' },
+        { id, inputStatus: 'error', inputHelperText: errorMessage },
       ])
     );
     return;
