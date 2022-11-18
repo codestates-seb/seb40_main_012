@@ -25,7 +25,7 @@ const UserBooks = ({ nickname }) => {
         setUserBooks(response.data.data);
       })
       .catch((error) => console.error(error));
-  });
+  }, []);
 
   return (
     <UserBooksContainer>
