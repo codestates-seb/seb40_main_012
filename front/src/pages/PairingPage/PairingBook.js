@@ -18,8 +18,8 @@ const PairingBook = () => {
   const pairingNewestData = useSelector(
     (state) => state.bookPairing.newestData
   );
-  const titleLike = '큐레이션 제목: Hot Pairing';
-  const titleNewest = '큐레이션 제목: New Pairing';
+  const titleLike = '책과 책을 잇는 Hot Pairing';
+  const titleNewest = '책과 책을 잇는 New Pairing';
   return (
     <PageContainer footer>
       <PairingTab pathname="/pairing/book" />

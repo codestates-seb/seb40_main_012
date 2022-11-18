@@ -63,7 +63,7 @@ const SignInPage = () => {
 
     dispatch(signInAsync(params))
       .then((response) => {
-        if (!response.payload?.errorMessage) {
+        if (!response.payload?.error) {
           navigate('/', { replace: true });
         } else {
           setShowLoginError((prev) => !prev);

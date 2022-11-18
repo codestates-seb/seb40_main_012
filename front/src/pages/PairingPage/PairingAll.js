@@ -16,14 +16,15 @@ const PairingPage = () => {
 
   const pairingLikeData = useSelector((state) => state.allPairing.likeData);
   const pairingNewestData = useSelector((state) => state.allPairing.newestData);
-  const titleLike = '큐레이션 제목: Hot Pairing';
-  const titleNewest = '큐레이션 제목: New Pairing';
+  const titleBest = '당신만을 위한 Best Pairing';
+  const titleLike = '수많은 체리들의 선택, Hot Pairing';
+  const titleNewest = '따끈따끈한 New Pairing';
   return (
     <PageContainer footer>
       <PairingTab />
+      <PairingCuration title={titleBest} pairingData={pairingLikeData} />
       <PairingCuration title={titleLike} pairingData={pairingLikeData} />
       <PairingCuration title={titleNewest} pairingData={pairingNewestData} />
-      <PairingCuration title={titleLike} pairingData={pairingLikeData} />
     </PageContainer>
   );
 };
