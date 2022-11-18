@@ -3,6 +3,9 @@ import theme from '../styles/theme';
 import { useLocation, Link } from 'react-router-dom';
 import Searchbar from './Searchbar';
 import { useSelector } from 'react-redux';
+import { selectIsLogin } from '../store/modules/authSlice';
+import axios from '../api/axios';
+import { persistor } from '../index';
 
 const HeaderContainer = styled.div`
   position: fixed;
@@ -97,10 +100,15 @@ const RTKBtn = styled(HeaderBtn)`
 
 const Header = () => {
   const location = useLocation();
-  const isLogin = useSelector((state) => state.signIn.isLogin);
+  const isLogin = useSelector(selectIsLogin);
 
-  const handleClickLogoutButton = (e) => {
-    console.log(e.target.textContent);
+  const handleClickLogoutButton = () => {
+    axios.defaults.headers.common['Authorization'] = 'Bearer';
+    purge();
+  };
+
+  const purge = async () => {
+    await persistor.purge();
   };
 
   return (

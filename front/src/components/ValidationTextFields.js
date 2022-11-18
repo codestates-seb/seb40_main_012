@@ -14,6 +14,7 @@ const ValidationTextFields = ({
   inputValue,
   inputStatus,
   inputHelperText,
+  submit,
 }) => {
   const handleChangeInput = (event) => {
     const { id, value } = event.target;
@@ -26,7 +27,7 @@ const ValidationTextFields = ({
   };
 
   const handleKeyDown = (event) => {
-    if (event.code === 'Enter') event.preventDefault();
+    if (!submit && event.code === 'Enter') event.preventDefault();
   };
 
   return (

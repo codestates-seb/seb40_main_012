@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 // import FormControlLabel from '@mui/material/FormControlLabel';
 // import Checkbox from '@mui/material/Checkbox';
@@ -13,17 +12,17 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
+import theme from '../../styles/theme';
+import { ContainedButton } from '../../components/Buttons';
 
 import {
-  signInAsync,
   selectValidCheckArray,
   setIsValid,
 } from '../../store/modules/signInSlice';
+import { signInAsync } from '../../store/modules/authSlice';
 import SignInTextFields from './SignInTextFields';
-
-const theme = createTheme();
 
 const LoginErrorMsg = styled.div`
   font-size: 0.75rem;
@@ -33,6 +32,10 @@ const LoginErrorMsg = styled.div`
 
 const SignUpLink = styled(Link)`
   font-size: 1rem;
+`;
+
+const AvatarStyled = styled(Avatar)`
+  background-color: ${({ theme }) => theme.colors.purple_2};
 `;
 
 const SignInPage = () => {
@@ -85,9 +88,9 @@ const SignInPage = () => {
               minHeight: '410px',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <AvatarStyled sx={{ m: 1 }}>
               <LockOutlinedIcon />
-            </Avatar>
+            </AvatarStyled>
             <Typography component="h1" variant="h5">
               로그인
             </Typography>
@@ -108,14 +111,9 @@ const SignInPage = () => {
                 control={<Checkbox value="remember" color="primary" />}
                 label="로그인 상태 유지"
               /> */}
-              <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                sx={{ mt: 3, mb: 2 }}
-              >
+              <ContainedButton type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
                 로그인
-              </Button>
+              </ContainedButton>
               {showLoginError ? (
                 <LoginErrorMsg>
                   아이디(로그인 전용 아이디) 또는 비밀번호를 잘못 입력했습니다.
