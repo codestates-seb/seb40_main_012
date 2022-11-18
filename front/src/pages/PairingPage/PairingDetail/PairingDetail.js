@@ -9,14 +9,12 @@ import PairingOriginBook from './PairingOriginBook';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { asyncGetOnePairing } from '../../../store/modules/pairingSlice';
+import {
+  asyncGetOnePairing,
+  asyncPostPairingComment,
+} from '../../../store/modules/pairingSlice';
 
 import Comments from '../../../components/Comments/Comments';
-
-const commentAdd = (content) => {
-  console.log('comment 작성: ', content);
-  //dispatch
-};
 
 const TagBtn = styled.div`
   display: flex;
@@ -62,6 +60,12 @@ const PairingDetail = () => {
   }, [dispatch]);
   const pairingData = useSelector((state) => state.pairing.data);
   console.log(pairingData);
+
+  const handleCommentAdd = (body) => {
+    //dispatch
+    dispatch(asyncPostPairingComment({ pairingId, body }));
+  };
+
   return (
     <PageContainer footer>
       <ThemeProvider theme={theme}>
@@ -94,7 +98,10 @@ const PairingDetail = () => {
             <a href="/">{pairingData.outLinkPath}</a>
           </InfoContent>
         </MainBody>
-        <Comments commentsData={pairingData.comments} commentAdd={commentAdd} />
+        <Comments
+          commentsData={pairingData.comments}
+          commentAdd={handleCommentAdd}
+        />
       </ThemeProvider>
     </PageContainer>
   );

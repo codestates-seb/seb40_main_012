@@ -19,7 +19,7 @@ const CommentsHeaderContainer = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
 `;
 
-const CommentsHeader = ({ cnt }) => {
+const CommentsHeader = ({ cnt = 0 }) => {
   return (
     <ThemeProvider theme={theme}>
       <CommentsHeaderContainer>
