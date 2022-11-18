@@ -91,28 +91,19 @@ public class BookService {
 
     public Book updateView(String isbn13) {
 
-        Book findBook = findVerifiedBook(isbn13);
-
-        findBook.setView(findBook.getView() + 1); // View +1
-
-        return bookRepository.save(findBook);
-    }
-
-    public Book updateRating(BookDto.Rating ratingBook, String isbn13) {
-
-        User findUser = userService.getLoginUser();
-
-        long rating = ratingBook.getRating(); // 입력받은 별점
-
         Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
 
         if (optionalBook.isEmpty()) {
 
             String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
+            String title = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).title;
 
             Book savedBook =
                     Book.builder()
+                            .title(title)
                             .isbn13(isbn13)
+                            .genre(null)
+                            .view(1)
                             .build();
 
             if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
@@ -125,9 +116,8 @@ public class BookService {
             else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
             else savedBook.setGenre(Genre.ETC);
 
-            bookRepository.save(savedBook);
 
-            savedBook.setAverageRating(rating);
+
 
             return bookRepository.save(savedBook);
 
@@ -135,18 +125,76 @@ public class BookService {
 
             Book findBook = optionalBook.get();
 
-        double averageRating = findBook.getAverageRating(); // 현재 평균 별점
-        long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
+            findBook.setView(findBook.getView() + 1); // 별점 업데이트
 
-        double numerator = (averageRating * ratingCount) + rating; // 분자
-        long denominator = ratingCount + 1; // 분모
-
-        double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
-
-        findBook.setAverageRating(newAverageRating); // 별점 업데이트
-
-        return bookRepository.save(findBook);}
+            return bookRepository.save(findBook);
+        }
     }
+
+//    public Book updateRating(BookDto.Rating ratingBook, String isbn13) {
+//
+//        User findUser = userService.getLoginUser();
+//
+//        double rating = ratingBook.getRating(); // 입력받은 별점
+//
+//        Book findBook = findVerifiedBook(isbn13);
+//
+//        double averageRating = findBook.getAverageRating(); // 현재 평균 별점
+//        long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
+//
+//        double numerator = (averageRating * ratingCount) + rating; // 분자
+//        long denominator = ratingCount + 1; // 분모
+//
+//        double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
+//
+//        findBook.setAverageRating(newAverageRating); // 별점 업데이트
+//
+//        return bookRepository.save(findBook);
+
+//        Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
+//
+//        if (optionalBook.isEmpty()) {
+//
+//            String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
+//
+//            Book savedBook =
+//                    Book.builder()
+//                            .isbn13(isbn13)
+//                            .build();
+//
+//            if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
+//            else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
+//            else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
+//            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
+//            else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
+//            else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
+//            else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
+//            else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
+//            else savedBook.setGenre(Genre.ETC);
+//
+//            bookRepository.save(savedBook);
+//
+//            savedBook.setAverageRating(rating);
+//
+//            return bookRepository.save(savedBook);
+//
+//        } else {
+//
+//            Book findBook = optionalBook.get();
+//
+//            double averageRating = findBook.getAverageRating(); // 현재 평균 별점
+//            long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
+//
+//            double numerator = (averageRating * ratingCount) + rating; // 분자
+//            long denominator = ratingCount + 1; // 분모
+//
+//            double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
+//
+//            findBook.setAverageRating(newAverageRating); // 별점 업데이트
+//
+//            return bookRepository.save(findBook);
+//        }
+//    }
 
     public Book findBook(String isbn13) {
         return findVerifiedBook(isbn13);
@@ -159,9 +207,11 @@ public class BookService {
     public List<Book> findCarouselBooks() {
         return bookRepository.findCarouselBooks();
     }
+
     public List<Book> findBestBooks() {
         return bookRepository.findBestBooks();
     }
+
     public List<Book> findRecommendedBooks() {
 
         User findUser = userService.getLoginUser();
@@ -176,6 +226,7 @@ public class BookService {
 
     public void verifyBook(long userId, Book book) {
     }
+
     public Book findVerifiedBook(String isbn13) {
 //        Optional<Book> optionalBook = bookRepository.findById(bookId);
         Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);

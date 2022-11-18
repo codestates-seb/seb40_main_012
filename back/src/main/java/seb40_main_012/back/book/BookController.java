@@ -11,6 +11,7 @@ import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.rating.RatingService;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.pairing.PairingDto;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -33,6 +34,7 @@ public class BookController {
 
     private final BookService bookService;
     private final BookMapper bookMapper;
+    private final RatingService ratingService;
 
     @PostMapping("/{add}")
     public ResponseEntity postBook(@Valid @RequestBody BookDto.Post postBook) {
@@ -49,6 +51,7 @@ public class BookController {
     public ResponseEntity getBook(@PathVariable("isbn13") @Positive String isbn13) {
 
         Book book = bookService.updateView(isbn13);
+
         BookDto.Response response = bookMapper.bookToBookResponse(book);
 
         return new ResponseEntity<>(
@@ -65,7 +68,7 @@ public class BookController {
     public ResponseEntity patchRating(@PathVariable("isbn13") @Positive String isbn13,
                                       @Valid @RequestBody BookDto.Rating ratingBook) {
 
-        Book book = bookService.updateRating(ratingBook, isbn13);
+        Book book = ratingService.createBookRating(isbn13, ratingBook);
         BookDto.Response response = bookMapper.bookToBookResponse(book);
 
         return new ResponseEntity<>(
