@@ -1,5 +1,6 @@
 import axios from './axios';
-import { TOKEN_REFRESH_URL, SIGN_IN_URL } from './requests';
+import { persistor } from '../index';
+import { TOKEN_REFRESH_URL, SIGN_IN_URL, LOGOUT_URL } from './requests';
 
 const setAxiosHeaderAuth = (value) =>
   (axios.defaults.headers.common['Authorization'] = value);
@@ -29,7 +30,7 @@ export const refreshToken = () => {
       .get(TOKEN_REFRESH_URL)
       .then((response) => {
         setAxiosHeaderAuth(response.headers.authorization);
-        resolve('success');
+        resolve();
       })
       .catch((error) => {
         if (Object.prototype.hasOwnProperty.call(error, 'response')) {
@@ -40,4 +41,30 @@ export const refreshToken = () => {
         }
       });
   });
+};
+
+export const logout = () => {
+  return new Promise((resolve, reject) => {
+    return axios
+      .post(LOGOUT_URL)
+      .then(() => {
+        resolve();
+      })
+      .catch((error) => {
+        if (Object.prototype.hasOwnProperty.call(error, 'response')) {
+          const { status, message } = error.response.data;
+          reject({ status, message });
+        } else {
+          reject({ status: error.code, message: error.message });
+        }
+      })
+      .finally(() => {
+        setAxiosHeaderAuth();
+        purge();
+      });
+  });
+};
+
+const purge = async () => {
+  await persistor.purge();
 };

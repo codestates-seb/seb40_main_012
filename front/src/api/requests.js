@@ -2,6 +2,7 @@
 export const USERS_URL = '/api/users';
 export const SIGN_IN_URL = '/api/login';
 export const TOKEN_REFRESH_URL = '/api/token/refresh';
+export const LOGOUT_URL = '/api/logout';
 export const DUPLICATION_CHECK_NICKNAME_URL = `${USERS_URL}/verify/nickName`;
 export const DUPLICATION_CHECK_EMAIL_URL = `${USERS_URL}/verify/email`;
 
