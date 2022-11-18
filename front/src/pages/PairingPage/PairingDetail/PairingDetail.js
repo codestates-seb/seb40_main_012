@@ -54,7 +54,6 @@ const PairingDetail = () => {
     dispatch(asyncGetOnePairing(pairingId));
   }, [dispatch]);
   const pairingData = useSelector((state) => state.pairing.data);
-  console.log(pairingData);
   return (
     <PageContainer footer>
       <ThemeProvider theme={theme}>

@@ -11,7 +11,6 @@ export const asyncGetOnePairing = createAsyncThunk(
   'pairingSlice/asyncGetOnePairing',
   async (pairingId) => {
     return await axios.get(`${PAIRING_URL}/${pairingId}`).then((res) => {
-      console.log(res.data.data.content);
       return res.data.data;
     });
   }
@@ -23,10 +22,11 @@ export const asyncPostPairing = createAsyncThunk(
     return await axios
       .post(`/api/books/${bookId}/pairings/add`, pairingPostBody)
       .then((res) => {
-        console.log(res);
+        console.log(res.data, pairingPostBody);
+        return res.data;
       })
       .catch((err) => {
-        console.log('여기다!', err);
+        console.log('post 실패', err, pairingPostBody);
       });
   }
 );
