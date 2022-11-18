@@ -29,20 +29,36 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+        String email = null;
         try {
             Map<String, Object> claims = verifyJws(request);
-            RefreshToken findRefreshToken = refreshTokenRepository.findByEmail((String) claims.get("email"))
-                            .orElseThrow(() -> new NullPointerException());
+            email = (String) claims.get("email");
             setAuthenticationToContext(claims);
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
-        } catch (NullPointerException ne) {
-            response.sendError(401, "로그아웃 한 사용자입니다");
         } catch (ExpiredJwtException ee) { // AccessToken 기간 만료
             request.setAttribute("exception", ee);
             response.sendError(401, "Access Token이 만료되었습니다");
         } catch (Exception e) {
             request.setAttribute("exception", e);
+        }
+
+        if(email != null) {
+            try {
+                RefreshToken findRefreshToken = refreshTokenRepository.findByEmail(email).orElse(null);
+
+                if(findRefreshToken != null)
+                    jwtTokenizer.verifySignature(findRefreshToken.getTokenValue(), jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey()));
+                else
+                    response.sendError(401, "로그아웃 한 사용자입니다");
+            } catch (SignatureException se) {
+                request.setAttribute("exception", se);
+            } catch (ExpiredJwtException ee) {
+                refreshTokenRepository.deleteByEmail(email); // 만료된 refresh token 삭제
+                response.sendError(401, "Refresh Token이 만료되었습니다");
+            } catch (Exception e) {
+                request.setAttribute("exception", e);
+            }
         }
 
         filterChain.doFilter(request, response);
