@@ -27,6 +27,9 @@ public class SecurityController {
 
     @GetMapping("/token/refresh")
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if(request.getHeader("Cookie") == null)
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+
         try {
             String refreshToken = outCookie(request);
 
@@ -49,6 +52,9 @@ public class SecurityController {
 
     @PostMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if(request.getHeader("Authorization") == null)
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+
         User loginUser = userService.getLoginUser();
 
         repository.deleteByEmail(loginUser.getEmail());
