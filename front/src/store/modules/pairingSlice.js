@@ -3,7 +3,9 @@ import axios from '../../api/axios';
 import { PAIRING_URL } from '../../api/requests';
 
 const initialState = {
-  data: [],
+  data: {
+    comments: [],
+  },
   status: 'start',
 };
 
@@ -31,6 +33,28 @@ export const asyncPostPairing = createAsyncThunk(
   }
 );
 
+export const asyncPostPairingComment = createAsyncThunk(
+  'pairingSlice/asyncPostPairngComment',
+  async ({ pairingId, body }) => {
+    return await axios
+      .post(`/api/pairings/${pairingId}/comments/add`, {
+        body: body,
+      })
+      .then((res) => {
+        return res.data.data;
+      });
+  }
+);
+
+export const asyncDeletePairingComment = createAsyncThunk(
+  'pairingSlice/asyncDeletePairingComment',
+  async (commentId) => {
+    return await axios.delete(`/api/comments/${commentId}/delete`).then(() => {
+      return commentId;
+    });
+  }
+);
+
 export const pairingSlice = createSlice({
   name: 'pairing',
   initialState,
@@ -55,6 +79,30 @@ export const pairingSlice = createSlice({
     });
     builder.addCase(asyncPostPairing.rejected, (state) => {
       state.data = [];
+      state.status = 'rejected';
+    });
+    //comment 추가
+    builder.addCase(asyncPostPairingComment.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(asyncPostPairingComment.fulfilled, (state, action) => {
+      state.data.comments.push(action.payload);
+      state.status = 'fulfilled';
+    });
+    builder.addCase(asyncPostPairingComment.rejected, (state) => {
+      state.status = 'rejected';
+    });
+    //comment 삭제
+    builder.addCase(asyncDeletePairingComment.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(asyncDeletePairingComment.fulfilled, (state, action) => {
+      state.data.comments = state.data.comments.filter(
+        (el) => el.commentId !== action.payload
+      );
+      state.status = 'fulfilled';
+    });
+    builder.addCase(asyncDeletePairingComment.rejected, (state) => {
       state.status = 'rejected';
     });
   },

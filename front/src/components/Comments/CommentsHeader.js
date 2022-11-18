@@ -15,11 +15,11 @@ const CommentsHeaderContainer = styled.div`
     font-size: 18px;
     color: ${({ theme }) => theme.colors.gray};
   }
-  border-top: 1px solid ${({ theme }) => theme.colors.lightgray};
+  //border-top: 1px solid ${({ theme }) => theme.colors.lightgray};
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
 `;
 
-const CommentsHeader = ({ cnt }) => {
+const CommentsHeader = ({ cnt = 0 }) => {
   return (
     <ThemeProvider theme={theme}>
       <CommentsHeaderContainer>

@@ -81,7 +81,12 @@ const DeleteBtn = styled.div`
   }
 `;
 
-const Comment = ({ data }) => {
+//TODO: 본인이 작성한 코멘트만 삭제 버튼 활성화되도록
+const Comment = ({ data, commentId, commentDelete }) => {
+  const handleDeleteComment = () => {
+    commentDelete(commentId);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CommentContainer>
@@ -115,7 +120,7 @@ const Comment = ({ data }) => {
               </svg>
               <div>{data.likeCount}</div>
             </LikeBtn>
-            <DeleteBtn>
+            <DeleteBtn onClick={handleDeleteComment}>
               <svg
                 width="20"
                 height="20"
