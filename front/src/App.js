@@ -15,6 +15,7 @@ import MyPick from './pages/MyPage/MyPick/MyPick';
 import EditProfile from './pages/MyPage/EditProfile/EditProfile';
 import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetail';
 import ChangePassWd from './pages/MyPage/EditProfile/ChangePassWd';
+import BookDetail from './pages/BookDetailPage/BookDetail';
 
 import PairingPage from './pages/PairingPage/PairingAll';
 import PairingFilm from './pages/PairingPage/PairingFilm';
@@ -52,6 +53,7 @@ const App = () => {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<MainPage />} />
+        <Route path="/book/:bookId" element={<BookDetail />} />
         <Route path="/pairing" element={<PairingPage />} />
         <Route path="/pairing/film" element={<PairingFilm />} />
         <Route path="/pairing/cuisine" element={<PairingCuisine />} />
