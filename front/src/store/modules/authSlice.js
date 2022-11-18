@@ -7,6 +7,9 @@ const initialState = {
   error: { status: null, message: '' },
   isLogin: false,
   firstLogin: false,
+  nickName: '',
+  email: '',
+  roles: [],
 };
 
 export const signInAsync = createAsyncThunk(
@@ -36,12 +39,18 @@ export const authSlice = createSlice({
         state.error = null;
         state.isLogin = false;
         state.firstLogin = false;
+        state.nickName = '';
+        state.email = '';
+        state.roles = [];
       })
-      .addCase(signInAsync.fulfilled, (state, action) => {
+      .addCase(signInAsync.fulfilled, (state, { payload }) => {
         state.loading = false;
         state.error = null;
         state.isLogin = true;
-        state.firstLogin = action.payload.firstLogin;
+        state.firstLogin = payload.firstLogin;
+        state.nickName = payload.nickName;
+        state.email = payload.email;
+        state.roles = payload.roles;
       })
       .addCase(signInAsync.rejected, (state, action) => {
         state.loading = false;
@@ -52,6 +61,9 @@ export const authSlice = createSlice({
         }
         state.isLogin = false;
         state.firstLogin = false;
+        state.nickName = '';
+        state.email = '';
+        state.roles = [];
       })
       .addCase(PURGE, () => initialState);
   },
