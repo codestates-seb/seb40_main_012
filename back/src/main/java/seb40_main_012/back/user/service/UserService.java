@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -150,14 +151,24 @@ public class UserService {
 //        Pattern pattern = Pattern.compile();
 //    }
 
-    public void updateOnFirstLogin(LoginDto.PatchDto patchDto) {
+    public User updateOnFirstLogin(LoginDto.PatchDto patchDto) {
         User loginUser = getLoginUser(); // 로그인 유저 가져오기
         loginUser.setGender(patchDto.getGenderType());
         loginUser.setAge(patchDto.getAge());
-        // TODO: 선호 장르 등록하기
         loginUser.setFirstLogin(false); // "나중에 하기" 또는 "확인" 버튼 클릭 시
 
-        userRepository.save(loginUser);
+        List<UserCategory> userCategories = patchDto.getGenres().stream()
+                        .map(genre -> {
+                            UserCategory userCategory = new UserCategory();
+                            Category category = new Category();
+                            category.setId((long) Genre.valueOf(genre).ordinal() + 1);
+                            userCategory.addUser(loginUser);
+                            userCategory.addCategory(category);
+                            return userCategory;
+                        }).collect(Collectors.toList());
+        loginUser.setCategories(userCategories);
+
+        return userRepository.save(loginUser);
     }
 
     public User getLoginUser() { // 로그인된 유저 가져오기
