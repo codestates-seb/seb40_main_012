@@ -39,7 +39,7 @@ public class SecurityController {
             String accessToken = delegateAccessToken(findUser, base64EncodedSecretKey);
 
             response.setHeader("Authorization", "Bearer " + accessToken);
-            response.setHeader("Set-Cookie", request.getHeader("Set-Cookie"));
+            response.setHeader("Cookie", request.getHeader("Cookie"));
         } catch (ExpiredJwtException ee) {
             response.sendError(401, "Refresh Token이 만료되었습니다");
         } catch (NullPointerException ne) {
@@ -47,16 +47,10 @@ public class SecurityController {
         }
     }
 
-    @Transactional
     @PostMapping("/logout")
     public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         User loginUser = userService.getLoginUser();
-        try {
-            RefreshToken findRefreshToken = repository.findByEmail(loginUser.getEmail())
-                    .orElseThrow(() -> new NullPointerException());
-        } catch (NullPointerException ne) {
-            response.sendError(401, "로그아웃 한 사용자입니다");
-        }
+
         repository.deleteByEmail(loginUser.getEmail());
     }
 
@@ -72,7 +66,7 @@ public class SecurityController {
     }
 
     private String outCookie(HttpServletRequest request) {
-        String[] cookies = request.getHeader("Set-Cookie").split(";");
+        String[] cookies = request.getHeader("Cookie").split(";");
         String refreshToken = Arrays.stream(cookies)
                 .filter(cookie -> cookie.startsWith("refreshToken"))
                 .findFirst()
