@@ -6,7 +6,8 @@ import CollectionTags from './CollectionTags';
 import CollectionHeaderBtns from './CollectionHeaderBtns';
 import CollectionIntro from './CollectionIntro';
 import CollectionDetailBooks from './CollectionDetailBooks';
-import Comments from '../../components/Comment/Comments';
+import Comments from '../../components/Comments/Comments';
+import { comment } from 'postcss';
 
 const CollectionTagBtn = styled.div`
   display: flex;
@@ -59,6 +60,11 @@ const commentsData = [
   },
 ];
 
+const commentAdd = (content) => {
+  console.log('comment 작성: ', content);
+  //dispatch
+};
+
 const CollectionDetailPage = () => {
   return (
     <PageContainer footer>
@@ -74,7 +80,7 @@ const CollectionDetailPage = () => {
         </CollectionTagBtn>
         <CollectionIntro intro="뫄뫄하고 재밌는 컬렉션입니다!" />
         <CollectionDetailBooks />
-        <Comments commentsData={commentsData} />
+        <Comments commentsData={commentsData} commentAdd={commentAdd} />
       </ThemeProvider>
     </PageContainer>
   );

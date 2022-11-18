@@ -9,7 +9,7 @@ const CommentContainer = styled.div`
 `;
 
 const UserImgContainer = styled.div`
-  margin: 3px 6px 0 0;
+  margin: 3px 12px 0 0;
   img {
     width: 25px;
     height: 25px;
