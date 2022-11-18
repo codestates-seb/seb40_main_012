@@ -17,6 +17,20 @@ export const asyncGetOnePairing = createAsyncThunk(
   }
 );
 
+export const asyncPostPairing = createAsyncThunk(
+  'pairingSlice/asyncPostPairing',
+  async (bookId, pairingPostBody) => {
+    return await axios
+      .post(`/api/books/${bookId}/pairings/add`, pairingPostBody)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log('여기다!', err);
+      });
+  }
+);
+
 export const pairingSlice = createSlice({
   name: 'getPairing',
   initialState,
@@ -32,6 +46,19 @@ export const pairingSlice = createSlice({
       state.status = 'fulfilled';
     });
     builder.addCase(asyncGetOnePairing.rejected, (state) => {
+      //   console.log('reject', state, action);
+      state.data = [];
+      state.status = 'rejected';
+    });
+    builder.addCase(asyncPostPairing.pending, (state) => {
+      //   console.log('pending', state, action);
+      state.status = 'pending';
+    });
+    builder.addCase(asyncPostPairing.fulfilled, (state) => {
+      //   console.log('fulfilled', state, action);
+      state.status = 'fulfilled';
+    });
+    builder.addCase(asyncPostPairing.rejected, (state) => {
       //   console.log('reject', state, action);
       state.data = [];
       state.status = 'rejected';
