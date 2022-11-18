@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
 
 public interface BookCollectionLikeRepository extends JpaRepository<BookCollectionLike,Long> {
-    BookCollectionLike findByUserIdAndCollectionId(Long userId, Long collectionId);
+    BookCollectionLike findByUserUserIdAndBookCollectionCollectionId(Long userId, Long collectionId);
 }

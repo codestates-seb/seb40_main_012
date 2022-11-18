@@ -54,9 +54,8 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
-        Optional<User> verifiedUser = userRepository.findByEmail(user.getEmail());
-        if (verifiedUser.isPresent())
-            throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
+        verifyEmail(user.getEmail());
+        verifyNickName(user.getNickName());
 
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
@@ -133,7 +132,9 @@ public class UserService {
     }
 
     public List<BookCollection> getUserCollection(Long userId){
-        return collectionRepository.findByUseId(userId);
+        //findall 해서 userId만 비교?
+        return collectionRepository.findByUserUserId(userId); //왜 안될까?
+
     }
 
     public User findUser(long userId) {
@@ -146,7 +147,9 @@ public class UserService {
     }
 
     public List<BookCollection> getBookMarkByBookCollection(Long userId){
-        List<BookCollectionBookmark> bookmarks= collectionBookmarkRepository.findByUserId(userId);
+//        List<BookCollectionBookmark> bookmarks= collectionBookmarkRepository.findByUser_UserId(userId);
+        List<BookCollectionBookmark> bookmarks= collectionBookmarkRepository.findByUser(findVerifiedUser(userId));
+
         List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
         return collections;
     }
@@ -187,5 +190,12 @@ public class UserService {
         User findUser = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         return findUser;
+    }
+
+    public boolean verifyEmail(String email) { // 이메일 중복 검사
+        Optional<User> verifiedUser = userRepository.findByEmail(email);
+        if (verifiedUser.isPresent())
+            throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
+        return true;
     }
 }

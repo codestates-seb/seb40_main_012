@@ -1,11 +1,14 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
+import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -25,14 +28,14 @@ public class PairingController {
     private final BookService bookService;
     private final LikeService likeService;
 
-    @PostMapping("/{book_id}/pairings/add")
+    @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
 //            @RequestHeader("Authorization") long userId,
-            @PathVariable("book_id") @Positive long bookId,
+            @PathVariable("isbn13") @Positive String isbn13,
             @Valid @RequestBody PairingDto.Post postPairing) {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
-        Pairing createPairing = pairingService.createPairing(pairing, bookId);
+        Pairing createPairing = pairingService.createPairing(pairing, isbn13);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
 
         return new ResponseEntity<>(
@@ -47,9 +50,7 @@ public class PairingController {
     }
 
     @PatchMapping("/pairings/{pairing_id}/edit")
-    public ResponseEntity patchPairing(
-//            @RequestHeader("Authorization") long userId,
-                                       @PathVariable("pairing_id") @Positive long pairingId,
+    public ResponseEntity patchPairing(@PathVariable("pairing_id") @Positive long pairingId,
                                        @Valid @RequestBody PairingDto.Patch patchPairing) {
 
         Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
@@ -68,9 +69,7 @@ public class PairingController {
     }
 
     @PatchMapping("/pairings/{pairing_id}/like")
-    public ResponseEntity updateLikePairing(
-//            @RequestHeader("Authorization") long userId,
-                                            @PathVariable("pairing_id") @Positive long pairingId,
+    public ResponseEntity updateLikePairing(@PathVariable("pairing_id") @Positive long pairingId,
                                             @Valid @RequestBody PairingDto.Like likePairing) {
 
 
@@ -99,21 +98,21 @@ public class PairingController {
 //        );
 //    }
 
-    @PatchMapping("/pairings/{pairing_id}")
-    public ResponseEntity updateViewPairing(@PathVariable("pairing_id") @Positive long pairingId) {
-
-        Pairing viewedPairing = pairingService.updateView(pairingId);
-        PairingDto.Response response = pairingMapper.pairingToPairingResponse(viewedPairing);
-
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.OK
-        );
-    }
+//    @PatchMapping("/pairings/{pairing_id}") // 조회 기능에 통합
+//    public ResponseEntity updateViewPairing(@PathVariable("pairing_id") @Positive long pairingId) {
+//
+//        Pairing viewedPairing = pairingService.updateView(pairingId);
+//        PairingDto.Response response = pairingMapper.pairingToPairingResponse(viewedPairing);
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(response), HttpStatus.OK
+//        );
+//    }
 
     @GetMapping("/pairings/{pairing_id}")
     public ResponseEntity getPairing(@PathVariable("pairing_id") @Positive long pairingId) {
 
-        Pairing pairing = pairingService.findPairing(pairingId);
+        Pairing pairing = pairingService.updateView(pairingId);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
         return new ResponseEntity<>(
@@ -134,31 +133,187 @@ public class PairingController {
 //        );
 //    }
 
-    @GetMapping("/pairings") // 리스트로 받기
+//    @GetMapping("/pairings") // 리스트로 받기
+//    public ResponseEntity getPairings() {
+//
+//        List<Pairing> listPairings = pairingService.findPairings();
+//        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(listPairings);
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(responses), HttpStatus.OK
+//        );
+//    }
+
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    조회 API 세분화
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+    @GetMapping("/pairings/likes") // 좋아요 > 최신순 슬라이스로 받기
     public ResponseEntity getPairings() {
 
-        List<Pairing> listPairings = pairingService.findPairings();
-        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(listPairings);
+        List<Pairing> pairingList = pairingService.findPairings();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(responses), HttpStatus.OK
         );
     }
 
+    @GetMapping("/pairings/newest") // 최신순 슬라이스로 받기
+    public ResponseEntity getPairingsNewest() {
+
+        List<Pairing> pairingList = pairingService.findPairingsNewest();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+//        Slice<Pairing> slicePairings = pairingService.findPairingsNewest();
+//        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(listPairings);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/film/likes") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getFilmPairingsLikes() {
+
+        List<Pairing> pairingList = pairingService.findFilmPairingsLikes();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/film/newest") // 필름 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getFilmPairingsNewest() {
+
+        List<Pairing> pairingList = pairingService.findFilmPairingsNewest();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/cuisine/likes") // 음식/장소 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getCuisinePairingsLikes() {
+
+        List<Pairing> pairingList = pairingService.findCuisinePairingsLikes();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/cuisine/newest") // 음식/장소 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getCuisinePairingsNewest() {
+
+        List<Pairing> pairingList = pairingService.findCuisinePairingsNewest();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/music/likes") // 음악 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getMusicPairingsLikes() {
+
+        List<Pairing> pairingList = pairingService.findMusicPairingsLikes();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/music/newest") // 음악 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getMusicPairingsNewest() {
+
+        List<Pairing> pairingList = pairingService.findMusicPairingsNewest();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/book/likes") // 책 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getBookPairingsLikes() {
+
+        List<Pairing> pairingList = pairingService.findBookPairingsLikes();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/book/newest") // 책 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getBookPairingsNewest() {
+
+        List<Pairing> pairingList = pairingService.findBookPairingsNewest();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/etc/likes") // 기타 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getEtcPairingsLikes() {
+
+        List<Pairing> pairingList = pairingService.findEtcPairingsLikes();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/etc/newest") // 기타 카테고리 좋아요 순 슬라이스로 받기
+    public ResponseEntity getEtcPairingsNewest() {
+
+        List<Pairing> pairingList = pairingService.findEtcPairingsNewest();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
+
+    @GetMapping("/pairing/best")
+    public ResponseEntity bestTenPairings() {
+        List<Pairing> response = pairingService.findBestPairingsLikes();
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK
+        );
+    }
+
+
     @DeleteMapping("/pairings/{pairing_id}/delete")
-    public ResponseEntity deletePairing(@RequestHeader("Authorization") long userId,
-                                        @PathVariable("pairing_id") @Positive long pairingId) {
+    public ResponseEntity deletePairing(@PathVariable("pairing_id") @Positive long pairingId) {
 
         pairingService.deletePairing(pairingId);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @PostMapping("/pairings/{pairing-id}/bookmark")
-//    @ResponseStatus(HttpStatus.OK)
-//    public boolean bookmarkCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id") Long collectionId){
-//        return collectionService.bookmarkCollection(userId,collectionId);
-//    }
+    @PostMapping("/pairings/{pairing-id}/bookmark")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean bookmarkPairing(@RequestHeader("Authorization") Long userId, @PathVariable("pairing-id") Long pairingId){
+        return pairingService.bookmarkPairing(userId,pairingId);
+    }
 
 
 }

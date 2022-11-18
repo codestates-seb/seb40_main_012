@@ -7,6 +7,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.user.entity.User;
@@ -74,6 +75,9 @@ public class Pairing {
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<Like> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "pairing")
+    private List<PairingBookmark> bookmarks = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false, name = "CREATED_AT")

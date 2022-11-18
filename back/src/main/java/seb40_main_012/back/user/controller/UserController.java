@@ -51,8 +51,13 @@ public class UserController {
                 new SingleResponseDto<>(mapper.userToUserResponse(createdUser)), HttpStatus.CREATED);
     }
     @PostMapping("/users/verify/nickName")
-    public boolean verifyNickName(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Profile request){
+    public boolean verifyNickName(@Valid @RequestBody UserDto.Profile request){
         return userService.verifyNickName(request.getNickName());
+    }
+
+    @PostMapping("/users/verify/email")
+    public boolean verifyEmail(@Valid @RequestBody UserDto.EmailDto emailDto) {
+        return userService.verifyEmail(emailDto.getEmail());
     }
 
     @PatchMapping("/users/nickname")
@@ -142,7 +147,7 @@ public class UserController {
     public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection(@RequestHeader("Authorization") Long userId){
         List<BookCollection> collections = userService.getUserCollection(userId);
         List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x-> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
-        Long listCount = collectionRepository.countByUserId(userId);
+        Long listCount = collectionRepository.countByUserUserId(userId);
         return new ListResponseDto<>(listCount,collectionDto);
     }
 
@@ -152,7 +157,7 @@ public class UserController {
     public ListResponseDto<BookCollectionDto.BookmarkedCollection> getBookMarkByBookCollection(@RequestHeader("Authorization") Long userId){
         List<BookCollection> collections = userService.getBookMarkByBookCollection(userId);
         List<BookCollectionDto.BookmarkedCollection> bookmarkedCollectionDto = collections.stream().map(x -> BookCollectionDto.BookmarkedCollection.of(x)).collect(Collectors.toList());
-        Long listCount = collectionRepository.countByUserId(userId);
+        Long listCount = collectionRepository.countByUserUserId(userId);
         return new ListResponseDto<>(listCount,bookmarkedCollectionDto);
     }
 

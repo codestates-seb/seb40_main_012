@@ -1,12 +1,13 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: update  # ??? ?? ??
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
         show_sql: true
-    database: mysql
+    database: h2
+#    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: true
   profiles:
     include: database, security
@@ -35,3 +36,7 @@ jwt:
   secret-key: temporary1111potato1111temporary1111potato # ${JWT_SECRET_KEY}
   access-token-expiration-minutes: 30
   refresh-token-expiration-minutes: 420
+aladin:
+  url: http://www.aladin.co.kr/ttb/api/ItemSearch.aspx
+  ttb: ttbgcnb871441001
+

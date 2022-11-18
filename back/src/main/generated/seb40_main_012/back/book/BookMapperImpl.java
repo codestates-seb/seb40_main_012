@@ -5,10 +5,11 @@ import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.common.comment.entity.Comment;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-16T21:13:42+0900",
+    date = "2022-11-18T09:28:48+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.5 (Azul Systems, Inc.)"
 )
 @Component
@@ -21,6 +22,13 @@ public class BookMapperImpl implements BookMapper {
         }
 
         Book.BookBuilder book = Book.builder();
+
+        book.isbn13( postBook.getIsbn13() );
+        book.averageRating( postBook.getAverageRating() );
+        List<Comment> list = postBook.getComments();
+        if ( list != null ) {
+            book.comments( new ArrayList<Comment>( list ) );
+        }
 
         return book.build();
     }
@@ -43,8 +51,6 @@ public class BookMapperImpl implements BookMapper {
         }
 
         Book.BookBuilder book = Book.builder();
-
-        book.bookId( ratingBook.getBookId() );
 
         return book.build();
     }

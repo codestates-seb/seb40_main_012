@@ -35,7 +35,10 @@ public class BookCollection {
     private List<BookCollectionLike> collectionLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "bookCollection")
-    private List<ISBN> isbn13 = new ArrayList<>();
+    private List<BookCollectionBookmark> collectionBookmarks = new ArrayList<>();
+
+    @ElementCollection
+    private List<String> isbn13 = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -52,7 +55,7 @@ public class BookCollection {
         collectionTags.add(collectionTag);
     }
 
-    public void addISBN(ISBN isbn){
+    public void addISBN(String isbn){
         this.isbn13.add(isbn);
     }
     public void addUser(User user){

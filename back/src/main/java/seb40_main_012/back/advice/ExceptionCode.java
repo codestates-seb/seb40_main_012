@@ -23,10 +23,6 @@ public enum ExceptionCode {
     NICKNAME_EXISTS(409, "Nickname Exists"),
     PASSWORD_CANNOT_CHANGE(403, "Cannot Use The Same Password"),
 
-
-    USER_NOT_ALLOWED(403, "User Not Allowed"),
-    USER_CANNOT_CHANGE(403,"User Can Not Be Changed"),
-
     RATED(409, "Already Rated"),
     LIKED(409, "Already Liked"),
     FAIL_TO_LIKE(409, "Fail To Like"),

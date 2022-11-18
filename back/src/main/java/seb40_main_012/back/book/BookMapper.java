@@ -22,9 +22,11 @@ public interface BookMapper {
 
         return BookDto.Response.builder()
                 .bookId(book.getBookId())
-                .genre(book.getGenre())
+                .isbn13(book.getIsbn13())
+//                .genre(book.getGenre())
                 .bookWiki(null)
                 .averageRating(book.getAverageRating())
+                .view(book.getView())
                 .comments(book.getComments())
                 .pairings(book.getPairings())
                 .bookCollections(null)

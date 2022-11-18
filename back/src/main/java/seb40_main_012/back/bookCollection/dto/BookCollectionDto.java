@@ -33,6 +33,7 @@ public class BookCollectionDto {
             return BookCollection.builder()
                     .title(title)
                     .content(content)
+                    .isbn13(bookIsbns)
                     .build();
         }
     }
@@ -48,7 +49,7 @@ public class BookCollectionDto {
         private boolean userLike;
         private boolean userBookmark;
         private String collectionAuthor;
-        private List<String> tags;
+//        private List<TagDto.Response> tags;
         private List<BookDto.CollectionBook> books;
 
         public static Response of(BookCollection collection){
@@ -60,7 +61,7 @@ public class BookCollectionDto {
                     .userLike(!collection.getUser().getCollectionLikes().isEmpty())
                     .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
                     .collectionAuthor(collection.getUser().getNickName())
-                    .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
+//                    .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
 //                    .books(BookDto.CollectionBook.of())
                     .build();
         }

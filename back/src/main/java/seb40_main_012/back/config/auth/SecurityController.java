@@ -2,11 +2,8 @@ package seb40_main_012.back.config.auth;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
-import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
@@ -20,7 +17,6 @@ import java.util.*;
 @RequestMapping("/api")
 public class SecurityController {
     private final JwtTokenizer jwtTokenizer;
-    private final CustomAuthorityUtils authorityUtils;
     private final UserService userService;
 
     @GetMapping("/token/refresh")

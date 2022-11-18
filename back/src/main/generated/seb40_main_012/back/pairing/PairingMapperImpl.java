@@ -1,14 +1,12 @@
 package seb40_main_012.back.pairing;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-16T21:13:43+0900",
+    date = "2022-11-18T09:28:48+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.5 (Azul Systems, Inc.)"
 )
 @Component
@@ -42,19 +40,5 @@ public class PairingMapperImpl implements PairingMapper {
         pairing.likeCount( likePairing.getLikeCount() );
 
         return pairing.build();
-    }
-
-    @Override
-    public List<PairingDto.Response> pairingsToPairingResponses(List<Pairing> pairings) {
-        if ( pairings == null ) {
-            return null;
-        }
-
-        List<PairingDto.Response> list = new ArrayList<PairingDto.Response>( pairings.size() );
-        for ( Pairing pairing : pairings ) {
-            list.add( pairingToPairingResponse( pairing ) );
-        }
-
-        return list;
     }
 }
