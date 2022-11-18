@@ -63,7 +63,7 @@ public class Stub {
         for (long i = 1; i <= 18; i++) {
             User user = new User();
             long rand = (long) (Math.random() * 9) + 1;
-            long rand2 = (long) (Math.random() * 9) + 1;
+//            long rand2 = (long) (Math.random() * 9) + 1;
 
             UserCategory userCategory = new UserCategory();
             Category category = new Category();
@@ -71,134 +71,167 @@ public class Stub {
             userCategory.addUser(user);
             userCategory.addCategory(category);
 
-            UserCategory userCategory2 = new UserCategory();
-            Category category2 = new Category();
-            category2.setId(rand2);
-            userCategory2.addUser(user);
-            userCategory2.addCategory(category2);
+//            UserCategory userCategory2 = new UserCategory();
+//            Category category2 = new Category();
+//            category2.setId(rand2);
+//            userCategory2.addUser(user);
+//            userCategory2.addCategory(category2);
 
             user.setEmail("stub_email_" + i + "@email.com");
             user.setNickName("Stub_Potato_" + i);
             user.setPassword(encoder.encode("1234"));
             user.setRoles(List.of("USER"));
-            user.setCategories(List.of(userCategory, userCategory2));
+            user.setCategories(List.of(userCategory));
 
             log.info("USER STUB " +
                     userRepository.save(user));
         }
+        
+        User user19 = new User();
 
-        /*log.info("USER STUB " +
-                userRepository.save(User.builder()
-                        .email("hayoung_sama@email.com")
-                        .nickName("하영사마")
-                        .password(encoder.encode("1234"))
-                        .roles(List.of("시큐리티 요정"))
-                        .categories(List.of(UserCategory.builder()
-                                .category(Category.builder()
-                                        .genre(Genre.NATURAL)
-                                        .build())
-                                .build()))
-                        .build()));
+        UserCategory userCategory19 = new UserCategory();
+        Category category19 = new Category();
+        category19.setId(7L);
+        userCategory19.addUser(user19);
+        userCategory19.addCategory(category19);
 
-        log.info("USER STUB " +
-                userRepository.save(User.builder()
-                        .email("kkomkkom_kim@email.com")
-                        .nickName("김꼼꼼")
-                        .password(encoder.encode("1234"))
-                        .roles(List.of("디자인 엔드포인트"))
-                        .categories(List.of(UserCategory.builder()
-                                .category(Category.builder()
-                                        .genre(Genre.ART)
-                                        .build())
-                                .build()))
-                        .build())
-        );
+        user19.setEmail("hayoung_sama@email.com");
+        user19.setNickName("하영사마");
+        user19.setPassword(encoder.encode("1234"));
+        user19.setRoles(List.of("시큐리티 요정", "문제 해결사"));
+        user19.setCategories(List.of(userCategory19));
 
         log.info("USER STUB " +
-                userRepository.save(User.builder()
-                        .email("straight_kang@email.com")
-                        .nickName("강직진")
-                        .password(encoder.encode("1234"))
-                        .roles(List.of("술고래 도단 14세"))
-                        .categories(List.of(UserCategory.builder()
-                                .category(Category.builder()
-                                        .genre(Genre.NOVEL)
-                                        .build())
-                                .build()))
-                        .build())
-        );
+                userRepository.save(user19));
+
+        User user20 = new User();
+
+        UserCategory userCategory20 = new UserCategory();
+        Category category20 = new Category();
+        category20.setId(4L);
+        userCategory20.addUser(user20);
+        userCategory20.addCategory(category20);
+
+        user20.setEmail("kkomkkom_kim@email.com");
+        user20.setNickName("김꼼꼼");
+        user20.setPassword(encoder.encode("1234"));
+        user20.setRoles(List.of("디자인 엔드포인트"));
+        user20.setCategories(List.of(userCategory20));
 
         log.info("USER STUB " +
-                userRepository.save(User.builder()
-                        .email("spring_sunshine@email.com")
-                        .nickName("봄날의 햇살")
-                        .password(encoder.encode("1234"))
-                        .roles(List.of("풀스택 마스터"))
-                        .categories(List.of(UserCategory.builder()
-                                .category(Category.builder()
-                                        .genre(Genre.HUMANITIES)
-                                        .build())
-                                .build()))
-                        .build())
-        );
+                userRepository.save(user20));
+
+        User user21 = new User();
+
+        UserCategory userCategory21 = new UserCategory();
+        Category category21 = new Category();
+        category21.setId(1L);
+        userCategory21.addUser(user21);
+        userCategory21.addCategory(category21);
+
+        user21.setEmail("straight_kang@email.com");
+        user21.setNickName("강직진");
+        user21.setPassword(encoder.encode("1234"));
+        user21.setRoles(List.of("술고래 도단 14세"));
+        user21.setCategories(List.of(userCategory21));
 
         log.info("USER STUB " +
-                userRepository.save(User.builder()
-                        .email("taeyoung@email.com")
-                        .nickName("걍태영")
-                        .password(encoder.encode("1234"))
-                        .roles(List.of("응원 담당"))
-                        .categories(List.of(UserCategory.builder()
-                                .category(Category.builder()
-                                        .genre(Genre.POEM)
-                                        .build())
-                                .build()))
-                        .build())
-        );
+                userRepository.save(user21));
+
+        User user22 = new User();
+
+        UserCategory userCategory22 = new UserCategory();
+        Category category22 = new Category();
+        category22.setId(5L);
+        userCategory22.addUser(user22);
+        userCategory22.addCategory(category22);
+
+        user22.setEmail("spring_sunshine@email.com");
+        user22.setNickName("봄날의 햇살");
+        user22.setPassword(encoder.encode("1234"));
+        user22.setRoles(List.of("인증요정", "풀스택 마스터"));
+        user22.setCategories(List.of(userCategory22));
 
         log.info("USER STUB " +
-                userRepository.save(User.builder()
-                        .email("smile_angel@email.com")
-                        .nickName("미소천사")
-                        .password(encoder.encode("1234"))
-                        .roles(List.of("작업 살인마"))
-                        .categories(List.of(UserCategory.builder()
-                                .category(Category.builder()
-                                        .genre(Genre.SOCIAL)
-                                        .build())
-                                .build()))
-                        .build())
-        );
+                userRepository.save(user22));
+
+        User user23 = new User();
+
+        UserCategory userCategory23 = new UserCategory();
+        Category category23 = new Category();
+        category23.setId(3L);
+        userCategory23.addUser(user23);
+        userCategory23.addCategory(category23);
+
+        user23.setEmail("taeyoung@email.com");
+        user23.setNickName("걍태영");
+        user23.setPassword(encoder.encode("1234"));
+        user23.setRoles(List.of("응원 담당"));
+        user23.setCategories(List.of(userCategory23));
 
         log.info("USER STUB " +
-                userRepository.save(User.builder()
-                        .email("lemonlime_serin@email.com")
-                        .nickName("과즙세린")
-                        .password(encoder.encode("1234"))
-                        .roles(List.of("사령탑 & 텐션 담당"))
-                        .categories(List.of(UserCategory.builder()
-                                .category(Category.builder()
-                                        .genre(Genre.ESSAY)
-                                        .build())
-                                .build()))
-                        .build())
-        );
+                userRepository.save(user23));
+
+        User user24 = new User();
+
+        UserCategory userCategory24 = new UserCategory();
+        Category category24 = new Category();
+        category24.setId(6L);
+        userCategory24.addUser(user24);
+        userCategory24.addCategory(category24);
+
+        user24.setEmail("smile_angel@email.com");
+        user24.setNickName("미소천사");
+        user24.setPassword(encoder.encode("1234"));
+        user24.setRoles(List.of("작업 살인마"));
+        user24.setCategories(List.of(userCategory24));
+
+        log.info("USER STUB " +
+                userRepository.save(user24));
+
+        User user25 = new User();
+
+        UserCategory userCategory25 = new UserCategory();
+        Category category25 = new Category();
+        category25.setId(2L);
+        userCategory25.addUser(user25);
+        userCategory25.addCategory(category25);
+
+        user25.setEmail("lemonlime_serin@email.com");
+        user25.setNickName("레몬세린");
+        user25.setPassword(encoder.encode("1234"));
+        user25.setRoles(List.of("사령탑", "텐션 담당", "상큼함 담당"));
+        user25.setCategories(List.of(userCategory25));
+
+        log.info("USER STUB " +
+                userRepository.save(user25));
 
         for (long i = 26; i <= 35; i++) {
+            User user = new User();
+            long rand = (long) (Math.random() * 9) + 1;
+//            long rand2 = (long) (Math.random() * 9) + 1;
+
+            UserCategory userCategory = new UserCategory();
+            Category category = new Category();
+            category.setId(rand);
+            userCategory.addUser(user);
+            userCategory.addCategory(category);
+
+//            UserCategory userCategory2 = new UserCategory();
+//            Category category2 = new Category();
+//            category2.setId(rand2);
+//            userCategory2.addUser(user);
+//            userCategory2.addCategory(category2);
+
+            user.setEmail("stub_email_" + i + "@email.com");
+            user.setNickName("Stub_Potato_" + i);
+            user.setPassword(encoder.encode("1234"));
+            user.setRoles(List.of("USER"));
+            user.setCategories(List.of(userCategory));
+
             log.info("USER STUB " +
-                    userRepository.save(User.builder()
-                            .roles(List.of("USER"))
-                            .email("stub_email_" + i + "@email.com")
-                            .nickName("Stub_Potato_" + i)
-                            .password(encoder.encode("1234"))
-                            .roles(List.of("USER"))
-                            .categories(List.of(UserCategory.builder()
-                                    .category(Category.builder()
-                                            .genre(Genre.values()[new Random().nextInt(Genre.values().length)])
-                                            .build())
-                                    .build()))
-                            .build()));
-        }*/
+                    userRepository.save(user));
+        }
 
         for (long i = 1; i <= 50; i++) {
 
@@ -227,7 +260,6 @@ public class Stub {
             log.info("PAIRING STUB " +
                             pairingRepository.save(
                                     Pairing.builder()
-//                                    .pairingCategory(ParingCategory.FILM)
                                             .pairingCategory(ParingCategory.values()[new Random().nextInt(ParingCategory.values().length)])
                                             .view((int) (Math.random() * 150))
                                             .imagePath("Stub_Image_Path_" + i)
@@ -237,7 +269,6 @@ public class Stub {
                                             .user(userService.findUser(rand))
                                             .outLinkPath("Stub_Pairing_OutLink_Path" + i)
                                             .likeCount((long) (Math.random() * 100))
-//                                    .likeCount(50)
                                             .createdAt(LocalDateTime.now())
                                             .modifiedAt(LocalDateTime.now())
                                             .build())
