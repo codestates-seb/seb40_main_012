@@ -18,48 +18,42 @@ export const asyncGetOnePairing = createAsyncThunk(
 
 export const asyncPostPairing = createAsyncThunk(
   'pairingSlice/asyncPostPairing',
-  async (bookId, pairingPostBody) => {
+  async (pairingPostBody) => {
+    console.log('axios.defaults.headers', axios.defaults.headers);
     return await axios
-      .post(`/api/books/${bookId}/pairings/add`, pairingPostBody)
+      .post(`/api/books/1/pairings/add`, pairingPostBody)
       .then((res) => {
-        console.log(res.data, pairingPostBody);
-        return res.data;
+        console.log('성공', res);
       })
       .catch((err) => {
-        console.log('post 실패', err, pairingPostBody);
+        console.log('post 실패', err);
       });
   }
 );
 
 export const pairingSlice = createSlice({
-  name: 'getPairing',
+  name: 'pairing',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(asyncGetOnePairing.pending, (state) => {
-      //   console.log('pending', state, action);
       state.status = 'pending';
     });
     builder.addCase(asyncGetOnePairing.fulfilled, (state, action) => {
-      //   console.log('fulfilled', state, action);
       state.data = action.payload;
       state.status = 'fulfilled';
     });
     builder.addCase(asyncGetOnePairing.rejected, (state) => {
-      //   console.log('reject', state, action);
       state.data = [];
       state.status = 'rejected';
     });
     builder.addCase(asyncPostPairing.pending, (state) => {
-      //   console.log('pending', state, action);
       state.status = 'pending';
     });
     builder.addCase(asyncPostPairing.fulfilled, (state) => {
-      //   console.log('fulfilled', state, action);
       state.status = 'fulfilled';
     });
     builder.addCase(asyncPostPairing.rejected, (state) => {
-      //   console.log('reject', state, action);
       state.data = [];
       state.status = 'rejected';
     });

@@ -7,8 +7,10 @@ import TitleInput from './TitleInput';
 import BodyInput from './BodyInput';
 import OutLinkInput from './OutLinkInput';
 import useInput from '../../../util/useInput';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { asyncPostPairing } from '../../../store/modules/pairingSlice';
+import { selectIsLogin } from '../../../store/modules/authSlice';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   display: flex;
@@ -51,6 +53,8 @@ const PairingWrite = () => {
   const [outLink, outLinkBind, outLinkReset] = useInput('');
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLogin = useSelector(selectIsLogin);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -61,9 +65,10 @@ const PairingWrite = () => {
       imagePath: 'img',
       outLinkPath: outLink,
     };
-    dispatch(asyncPostPairing('1', pairingPostBody));
+    dispatch(asyncPostPairing(pairingPostBody));
     console.log(pairingPostBody);
-    // navigate('/questions', { replace: true });
+    console.log(isLogin);
+    navigate('/pairing', { replace: true });
     categoryReset();
     titleReset();
     bodyReset();
