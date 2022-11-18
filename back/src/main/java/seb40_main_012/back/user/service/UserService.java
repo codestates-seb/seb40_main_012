@@ -177,7 +177,10 @@ public class UserService {
         if(authentication == null || authentication.getName() == null || authentication.getName().equals("anonymousUser"))
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
 
-        return findUserByEmail(authentication.getName());
+        Optional<User> optionalUser = userRepository.findByEmail(authentication.getName());
+        User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
+
+        return user;
     }
 
     public User findUserByEmail(String email) { // 이메일로 유저 찾기
