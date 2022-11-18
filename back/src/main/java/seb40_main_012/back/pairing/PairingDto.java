@@ -1,6 +1,7 @@
 package seb40_main_012.back.pairing;
 
 import lombok.*;
+import org.springframework.lang.Nullable;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.pairing.entity.ParingCategory;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -25,7 +26,6 @@ public class PairingDto {
         @Size(max = 30, message = "30자를 넘을 수 없습니다.")
         private String title;
 
-        @NotEmpty(message = "내용을 입력하셔야 합니다.")
         @Size(max = 500, message = "500자를 넘을 수 없습니다.")
         private String body;
 
