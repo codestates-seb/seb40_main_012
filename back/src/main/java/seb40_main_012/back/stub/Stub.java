@@ -275,94 +275,6 @@ public class Stub {
             );
         }
 
-//        for (long i = 11; i <= 20; i++) {
-//
-//            long rand = (long) (Math.random() * 35) + 1;
-//
-//            log.info("PAIRING STUB " +
-//                    pairingRepository.save(
-//                            Pairing.builder()
-//                                    .pairingCategory(ParingCategory.CUISINE)
-//                                    .view((int) (Math.random() * 150))
-//                                    .imagePath("Stub_Image_Path_" + i)
-//                                    .title("Stub_Pairing_Title_" + i)
-//                                    .body("Stub_Pairing_Body_" + i)
-//                                    .book(bookService.findVerifiedBook("" + i))
-//                                    .user(userService.findUser(rand))
-//                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
-//                                    .likeCount((long) (Math.random() * 100))
-//                                    .createdAt(LocalDateTime.now())
-//                                    .modifiedAt(LocalDateTime.now())
-//                                    .build())
-//            );
-//        }
-//
-//        for (long i = 21; i <= 30; i++) {
-//
-//            long rand = (long) (Math.random() * 35) + 1;
-//
-//            log.info("PAIRING STUB " +
-//                    pairingRepository.save(
-//                            Pairing.builder()
-//                                    .pairingCategory(ParingCategory.MUSIC)
-//                                    .view((int) (Math.random() * 150))
-//                                    .imagePath("Stub_Image_Path_" + i)
-//                                    .title("Stub_Pairing_Title_" + i)
-//                                    .body("Stub_Pairing_Body_" + i)
-//                                    .book(bookService.findVerifiedBook("" + i))
-//                                    .user(userService.findUser(rand))
-//                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
-//                                    .likeCount((long) (Math.random() * 100))
-//                                    .createdAt(LocalDateTime.now())
-//                                    .modifiedAt(LocalDateTime.now())
-//                                    .build())
-//            );
-//        }
-//
-//        for (long i = 31; i <= 40; i++) {
-//
-//            long rand = (long) (Math.random() * 35) + 1;
-//
-//            log.info("PAIRING STUB " +
-//                    pairingRepository.save(
-//                            Pairing.builder()
-//                                    .pairingCategory(ParingCategory.BOOK)
-//                                    .view((int) (Math.random() * 150))
-//                                    .imagePath("Stub_Image_Path_" + i)
-//                                    .title("Stub_Pairing_Title_" + i)
-//                                    .body("Stub_Pairing_Body_" + i)
-//                                    .book(bookService.findVerifiedBook("" + i))
-//                                    .user(userService.findUser(rand))
-//                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
-//                                    .likeCount((long) (Math.random() * 100))
-//                                    .createdAt(LocalDateTime.now())
-//                                    .modifiedAt(LocalDateTime.now())
-//                                    .build())
-//            );
-//        }
-//
-//        for (long i = 41; i <= 50; i++) {
-//
-//            long rand = (long) (Math.random() * 35) + 1;
-//
-//            log.info("PAIRING STUB " +
-//                    pairingRepository.save(
-//                            Pairing.builder()
-//                                    .pairingCategory(ParingCategory.ETC)
-//                                    .view((int) (Math.random() * 150))
-//                                    .imagePath("Stub_Image_Path_" + i)
-//                                    .title("Stub_Pairing_Title_" + i)
-//                                    .body("Stub_Pairing_Body_" + i)
-//                                    .book(bookService.findVerifiedBook("" + i))
-//                                    .user(userService.findUser(rand))
-//                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
-//                                    .likeCount((long) (Math.random() * 100))
-//                                    .createdAt(LocalDateTime.now())
-//                                    .modifiedAt(LocalDateTime.now())
-//                                    .build())
-//            );
-//        }
-
         // ------------------------------------------------------------------------------------------
         // BOOK_COLLECTION STUB
         // ------------------------------------------------------------------------------------------
@@ -377,29 +289,6 @@ public class Stub {
                             .tags(null)
                             .build()));
         }
-
-        // ------------------------------------------------------------------------------------------
-        // BOOK_COMMENT STUB
-        // ------------------------------------------------------------------------------------------
-
-//        for (long i = 1; i <= 35; i++) {
-//
-//            long rand = (long) (Math.random() * 35) + 1;
-//
-//            log.info("BOOK_COMMENT STUB " +
-//                    commentRepository.save(
-//                            Comment.builder()
-//                                    .commentType(CommentType.BOOK)
-//                                    .view((int) (Math.random() * 150))
-//                                    .book(bookService.findBook("" + i))
-//                                    .user(userService.findUser(rand))
-//                                    .body("Stub_Book_Comment_Body_" + i)
-//                                    .likeCount((long) (Math.random() * 100))
-//                                    .createdAt(LocalDateTime.now())
-//                                    .modifiedAt(LocalDateTime.now())
-//                                    .build())
-//            );
-//        }
 
         // ------------------------------------------------------------------------------------------
         // Random_COMMENT STUB

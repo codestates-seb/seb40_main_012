@@ -40,67 +40,86 @@ public class PairingService {
 
         User findUser = userService.getLoginUser();
 
-        Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
+        Book findBook = bookService.findVerifiedBook(isbn13);
 
-        if (optionalBook.isEmpty()) {
+        Pairing savedPairing =
+                Pairing.builder()
+                        .book(findBook)
+                        .user(findUser)
+                        .pairingCategory(pairing.getPairingCategory())
+                        .imagePath(pairing.getImagePath())
+                        .title(pairing.getTitle())
+                        .body(pairing.getBody())
+                        .outLinkPath(pairing.getOutLinkPath())
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
+                        .build();
 
-            String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
+        findBook.getPairings().add(savedPairing);
 
-            Book savedBook =
-                    Book.builder()
-                            .isbn13(isbn13)
-                            .build();
+        return pairingRepository.save(savedPairing);
 
-            if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
-            else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
-            else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
-            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
-            else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
-            else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
-            else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
-            else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
-            else savedBook.setGenre(Genre.ETC);
-
-            bookRepository.save(savedBook);
-
-            Pairing savedPairing =
-                    Pairing.builder()
-                            .book(savedBook)
-                            .user(findUser)
-                            .pairingCategory(pairing.getPairingCategory())
-                            .imagePath(pairing.getImagePath())
-                            .title(pairing.getTitle())
-                            .body(pairing.getBody())
-                            .outLinkPath(pairing.getOutLinkPath())
-                            .createdAt(LocalDateTime.now())
-                            .modifiedAt(LocalDateTime.now())
-                            .build();
-
-            savedBook.getPairings().add(savedPairing);
-
-            return pairingRepository.save(savedPairing);
-
-        } else {
-
-            Book findBook = optionalBook.get();
-
-            Pairing savedPairing =
-                    Pairing.builder()
-                            .book(findBook)
-                            .user(findUser)
-                            .pairingCategory(pairing.getPairingCategory())
-                            .imagePath(pairing.getImagePath())
-                            .title(pairing.getTitle())
-                            .body(pairing.getBody())
-                            .outLinkPath(pairing.getOutLinkPath())
-                            .createdAt(LocalDateTime.now())
-                            .modifiedAt(LocalDateTime.now())
-                            .build();
-
-            findBook.getPairings().add(savedPairing);
-
-            return pairingRepository.save(savedPairing);
-        }
+//        Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
+//
+//        if (optionalBook.isEmpty()) {
+//
+//            String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
+//
+//            Book savedBook =
+//                    Book.builder()
+//                            .isbn13(isbn13)
+//                            .build();
+//
+//            if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
+//            else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
+//            else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
+//            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
+//            else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
+//            else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
+//            else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
+//            else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
+//            else savedBook.setGenre(Genre.ETC);
+//
+//            bookRepository.save(savedBook);
+//
+//            Pairing savedPairing =
+//                    Pairing.builder()
+//                            .book(savedBook)
+//                            .user(findUser)
+//                            .pairingCategory(pairing.getPairingCategory())
+//                            .imagePath(pairing.getImagePath())
+//                            .title(pairing.getTitle())
+//                            .body(pairing.getBody())
+//                            .outLinkPath(pairing.getOutLinkPath())
+//                            .createdAt(LocalDateTime.now())
+//                            .modifiedAt(LocalDateTime.now())
+//                            .build();
+//
+//            savedBook.getPairings().add(savedPairing);
+//
+//            return pairingRepository.save(savedPairing);
+//
+//        } else {
+//
+//            Book findBook = optionalBook.get();
+//
+//            Pairing savedPairing =
+//                    Pairing.builder()
+//                            .book(findBook)
+//                            .user(findUser)
+//                            .pairingCategory(pairing.getPairingCategory())
+//                            .imagePath(pairing.getImagePath())
+//                            .title(pairing.getTitle())
+//                            .body(pairing.getBody())
+//                            .outLinkPath(pairing.getOutLinkPath())
+//                            .createdAt(LocalDateTime.now())
+//                            .modifiedAt(LocalDateTime.now())
+//                            .build();
+//
+//            findBook.getPairings().add(savedPairing);
+//
+//            return pairingRepository.save(savedPairing);
+//        }
     }
 
     public Pairing updatePairing(Pairing pairing, long pairingId) {
@@ -160,7 +179,7 @@ public class PairingService {
 //        );
 //    }
 
-//    --------------------------------------------------------------------------------------------
+    //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    조회 API 세분화
 //    --------------------------------------------------------------------------------------------
