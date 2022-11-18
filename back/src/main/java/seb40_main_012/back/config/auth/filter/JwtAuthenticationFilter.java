@@ -2,6 +2,7 @@ package seb40_main_012.back.config.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseCookie;
@@ -9,13 +10,14 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.config.auth.entity.RefreshToken;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.mapper.UserMapper;
-import seb40_main_012.back.user.service.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -24,6 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
+//@Transactional(propagation = Propagation.REQUIRES_NEW)
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
@@ -67,12 +70,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sameSite("None")
                 .httpOnly(true)
                 .build();
-        response.setHeader("Set-Cookie", cookie.toString());
-        RefreshToken saveToken = RefreshToken.builder() // refresh token 저장
-                        .email(user.getEmail())
-                        .tokenValue(refreshToken)
-                        .build();
-        repository.save(saveToken);
+        response.setHeader("Cookie", cookie.toString());
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult); // 핸들러 호출
     }
@@ -98,6 +96,22 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
 
         String refreshToken = jwtTokenizer.generateRefreshToken(subject, expiration, base64EncodedSecretKey);
+
+        try {
+            RefreshToken findRefreshToken = repository.findByEmail(subject).orElse(null);
+
+            if(findRefreshToken != null) {
+                jwtTokenizer.verifySignature(findRefreshToken.getTokenValue(), base64EncodedSecretKey); // refresh Token 검증
+                return findRefreshToken.getTokenValue();
+            }
+        } catch (ExpiredJwtException ee) {
+            repository.deleteByEmail(subject); // 만료된 refresh token 삭제
+        }
+        RefreshToken saveToken = RefreshToken.builder() // refresh token 저장
+                .email(user.getEmail())
+                .tokenValue(refreshToken)
+                .build();
+        repository.save(saveToken);
 
         return refreshToken;
     }
