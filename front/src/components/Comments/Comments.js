@@ -9,7 +9,7 @@ const CommentsContainer = styled.div`
 `;
 
 const Comments = ({ commentsData, commentAdd }) => {
-  console.log(commentsData);
+  //console.log(commentsData);
   //redux toolkit state로 관리
 
   return (

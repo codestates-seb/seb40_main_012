@@ -11,6 +11,13 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncGetOnePairing } from '../../../store/modules/pairingSlice';
 
+import Comments from '../../../components/Comments/Comments';
+
+const commentAdd = (content) => {
+  console.log('comment 작성: ', content);
+  //dispatch
+};
+
 const TagBtn = styled.div`
   display: flex;
   justify-content: space-between;
@@ -87,6 +94,7 @@ const PairingDetail = () => {
             <a href="/">{pairingData.outLinkPath}</a>
           </InfoContent>
         </MainBody>
+        <Comments commentsData={pairingData.comments} commentAdd={commentAdd} />
       </ThemeProvider>
     </PageContainer>
   );
