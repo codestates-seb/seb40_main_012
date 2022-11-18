@@ -122,6 +122,17 @@ public class CommentService {
 
         User findUser = userService.getLoginUser();
 
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
+        System.out.println(findUser.getCategories().get(0).getCategory().getGenre());
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
+        System.out.println("------------------------------------------------------");
+
         Pairing findPairing = pairingService.findPairing(pairingId);
 
         Comment savedPairingComment =

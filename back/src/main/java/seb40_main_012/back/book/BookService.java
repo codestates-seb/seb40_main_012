@@ -166,7 +166,7 @@ public class BookService {
 
         User findUser = userService.getLoginUser();
 
-        String favoriteGenre = "POEM";
+        String favoriteGenre = findUser.getCategories().get(0).getCategory().getGenre().toString();
 
         return bookRepository.findRecommendedBooks(favoriteGenre);
     }
