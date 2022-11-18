@@ -7,7 +7,6 @@ import CollectionHeaderBtns from './CollectionHeaderBtns';
 import CollectionIntro from './CollectionIntro';
 import CollectionDetailBooks from './CollectionDetailBooks';
 import Comments from '../../components/Comments/Comments';
-import { comment } from 'postcss';
 
 const CollectionTagBtn = styled.div`
   display: flex;

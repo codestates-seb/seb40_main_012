@@ -36,6 +36,23 @@ const StyledLink = styled(Link)`
   }
 `;
 
+const HeadContainer = styled.div`
+  width: 100%;
+  margin-top: 22px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+`;
+
+const HeadTitle = styled.div`
+  font-size: 24px;
+  font-weight: 700;
+  color: ${({ theme }) => theme.colors.dark};
+  span {
+    color: ${({ theme }) => theme.colors.mainColor};
+  }
+`;
+
 const navObj = {
   all: '/pairing',
   film: '/pairing/film',
@@ -48,6 +65,11 @@ const navObj = {
 const PairingTab = ({ pathname = navObj.all }) => {
   return (
     <ThemeProvider theme={theme}>
+      <HeadContainer>
+        <HeadTitle>
+          깊고 넓은 즐거움, <span>Cherry Pick</span> 페어링
+        </HeadTitle>
+      </HeadContainer>
       <TabBar>
         <StyledLink to={`${navObj.all}`}>
           <TabElement

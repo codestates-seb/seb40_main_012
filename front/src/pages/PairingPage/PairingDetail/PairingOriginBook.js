@@ -48,7 +48,7 @@ const BookInfo = styled.div`
   }
 `;
 
-const PairingOriginBook = ({ bookTitle, author, rating, bookId }) => {
+const PairingOriginBook = ({ bookTitle, author, rating, bookId, disabled }) => {
   const navigate = useNavigate();
 
   const handleBookClick = () => {
@@ -58,7 +58,7 @@ const PairingOriginBook = ({ bookTitle, author, rating, bookId }) => {
   return (
     <ThemeProvider theme={theme}>
       <BookWrapper>
-        <PairingOriginBookContainer onClick={handleBookClick}>
+        <PairingOriginBookContainer onClick={disabled ? null : handleBookClick}>
           <img
             src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
             alt="book cover"

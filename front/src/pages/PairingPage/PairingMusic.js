@@ -18,8 +18,8 @@ const PairingMusic = () => {
   const pairingNewestData = useSelector(
     (state) => state.musicPairing.newestData
   );
-  const titleLike = '큐레이션 제목: Hot Pairing';
-  const titleNewest = '큐레이션 제목: New Pairing';
+  const titleLike = '음악과 함께하는 Hot Pairing';
+  const titleNewest = '음악과 함께하는  New Pairing';
   return (
     <PageContainer footer>
       <PairingTab pathname="/pairing/music" />

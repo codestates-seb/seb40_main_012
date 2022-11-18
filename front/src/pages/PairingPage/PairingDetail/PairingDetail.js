@@ -54,7 +54,6 @@ const PairingDetail = () => {
     dispatch(asyncGetOnePairing(pairingId));
   }, [dispatch]);
   const pairingData = useSelector((state) => state.pairing.data);
-  console.log(pairingData);
   return (
     <PageContainer footer>
       <ThemeProvider theme={theme}>
@@ -75,7 +74,8 @@ const PairingDetail = () => {
             bookTitle="만약 엄청나게 긴 책제목이 있으먼 어쩌지? 이보다 긴 책제목이 사실 없을 것 간긴 한데 그래도 책제목에는 리밋이 있으면 안될텐데 말이야!!"
             author="달리는 감자"
             rating="4.9"
-            bookId="28"
+            bookId={pairingData.bookId}
+            disabled={false}
           ></PairingOriginBook>
         </OriginBookWrapper>
         <MainBody>

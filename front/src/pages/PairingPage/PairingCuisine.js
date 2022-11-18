@@ -18,8 +18,8 @@ const PairingCuisine = () => {
   const pairingNewestData = useSelector(
     (state) => state.cuisinePairing.newestData
   );
-  const titleLike = '큐레이션 제목: Hot Pairing';
-  const titleNewest = '큐레이션 제목: New Pairing';
+  const titleLike = '음식 및 장소에서 Hot Pairing';
+  const titleNewest = '음식 및 장소에서 New Pairing';
   return (
     <PageContainer footer>
       <PairingTab pathname="/pairing/cuisine" />
