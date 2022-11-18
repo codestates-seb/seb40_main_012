@@ -1,6 +1,10 @@
 package seb40_main_012.back.user.dto;
 
 import lombok.*;
+import seb40_main_012.back.book.entity.Genre;
+import seb40_main_012.back.user.entity.enums.AgeType;
+import seb40_main_012.back.user.entity.enums.GenderType;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -61,13 +65,14 @@ public class UserDto {
         private String email;
     }
 
+    @Setter
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class ResponseDto {
-        private String email;
         private String nickName;
+        private String email;
         private List<String> roles;
     }
 }
