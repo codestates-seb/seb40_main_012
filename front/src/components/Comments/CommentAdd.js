@@ -77,7 +77,7 @@ const CommentAdd = ({ commentAdd }) => {
   };
 
   const handleCommentAdd = () => {
-    if (setIsAbleAdd) {
+    if (isAbleAdd) {
       commentAdd(input);
       setInput('');
       setIsAbleAdd(false);
