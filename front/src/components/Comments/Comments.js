@@ -12,7 +12,6 @@ const CommentsContainer = styled.div`
 
 const Comments = ({ commentsData, commentAdd, commentDelete }) => {
   const userEmail = useSelector(selectEmail);
-  console.log(userEmail);
 
   return (
     <CommentsContainer>
