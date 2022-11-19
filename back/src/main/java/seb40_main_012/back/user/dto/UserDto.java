@@ -73,6 +73,7 @@ public class UserDto {
     public static class ResponseDto {
         private String nickName;
         private String email;
+        private double bookTemp;
         private List<String> roles;
     }
 }
