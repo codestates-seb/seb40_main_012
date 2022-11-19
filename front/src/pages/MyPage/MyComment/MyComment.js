@@ -9,6 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import styled from 'styled-components';
+import HoverDelete from './HoverDelete';
 
 const Void = styled.div`
   min-width: 50vw;
@@ -39,6 +40,7 @@ const MyComment = () => {
         <Container maxWidth="md">
           <Header></Header>
           <Nav></Nav>
+          <HoverDelete commentData={CommentData}></HoverDelete>
           <FixContentScroll commentData={CommentData}></FixContentScroll>
           {/* <ContentScroll commentData={CommentData}></ContentScroll>
           <Content commentData={CommentData}></Content> */}
