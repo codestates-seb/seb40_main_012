@@ -6,7 +6,10 @@ import { ToDateString } from '../../util/ToDateString';
 const CommentContainer = styled.div`
   display: flex;
   padding: 10px 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray}; ;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
+  &.mine {
+    background-color: #f5f5f5;
+  }
 `;
 
 const UserImgContainer = styled.div`
@@ -76,14 +79,15 @@ const DeleteBtn = styled.div`
     path {
       fill: ${({ theme }) => theme.colors.gray};
     }
-  }
-  &:hover.my {
-    cursor: pointer;
-    svg {
+    &:hover {
+      cursor: pointer;
       path {
         fill: ${({ theme }) => theme.colors.mainColor};
       }
     }
+  }
+  &.notmine {
+    display: none;
   }
 `;
 
@@ -101,7 +105,7 @@ const Comment = ({ data, commentId, commentDelete, userEmail }) => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CommentContainer>
+      <CommentContainer className={isMyComment ? 'mine' : null}>
         <UserImgContainer>
           <img
             src={process.env.PUBLIC_URL + '/images/mypage_icon.svg'}
@@ -135,7 +139,7 @@ const Comment = ({ data, commentId, commentDelete, userEmail }) => {
               <div>{data.likeCount}</div>
             </LikeBtn>
             <DeleteBtn
-              className={isMyComment ? 'my' : null}
+              className={isMyComment ? null : 'notmine'}
               onClick={handleDeleteComment}
             >
               <svg
