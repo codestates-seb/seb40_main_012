@@ -86,6 +86,7 @@ public class UserController {
     public ResponseEntity getUser(@PathVariable("user_id") @Positive Long userId){
 
         User user = userService.findUser(userId);
+
         UserDto.ResponseDto response = mapper.userToUserResponse(user);
 
         return new ResponseEntity<>(

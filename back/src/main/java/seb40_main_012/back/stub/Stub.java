@@ -79,6 +79,7 @@ public class Stub {
 
             user.setEmail("stub_email_" + i + "@email.com");
             user.setNickName("Stub_Potato_" + i);
+            user.setBookTemp(36.5 + Math.round((Math.random() * 15) * 10) / 10.0);
             user.setPassword(encoder.encode("1234"));
             user.setRoles(List.of("USER"));
             user.setCategories(List.of(userCategory));
@@ -86,7 +87,7 @@ public class Stub {
             log.info("USER STUB " +
                     userRepository.save(user));
         }
-        
+
         User user19 = new User();
 
         UserCategory userCategory19 = new UserCategory();
@@ -97,8 +98,9 @@ public class Stub {
 
         user19.setEmail("hayoung_sama@email.com");
         user19.setNickName("하영사마");
+        user19.setBookTemp(99.9);
         user19.setPassword(encoder.encode("1234"));
-        user19.setRoles(List.of("시큐리티 요정", "문제 해결사"));
+        user19.setRoles(List.of("시큐리티 요정", "문제 해결사", "오전동 배두나"));
         user19.setCategories(List.of(userCategory19));
 
         log.info("USER STUB " +
@@ -114,8 +116,9 @@ public class Stub {
 
         user20.setEmail("kkomkkom_kim@email.com");
         user20.setNickName("김꼼꼼");
+        user20.setBookTemp(99.9);
         user20.setPassword(encoder.encode("1234"));
-        user20.setRoles(List.of("디자인 엔드포인트"));
+        user20.setRoles(List.of("디자인 엔드포인트", "염탐 복숭아"));
         user20.setCategories(List.of(userCategory20));
 
         log.info("USER STUB " +
@@ -131,8 +134,9 @@ public class Stub {
 
         user21.setEmail("straight_kang@email.com");
         user21.setNickName("강직진");
+        user21.setBookTemp(99.9);
         user21.setPassword(encoder.encode("1234"));
-        user21.setRoles(List.of("술고래 도단 14세"));
+        user21.setRoles(List.of("술고래 도단 14세", "화서동 이연희"));
         user21.setCategories(List.of(userCategory21));
 
         log.info("USER STUB " +
@@ -148,8 +152,9 @@ public class Stub {
 
         user22.setEmail("spring_sunshine@email.com");
         user22.setNickName("봄날의 햇살");
+        user22.setBookTemp(99.9);
         user22.setPassword(encoder.encode("1234"));
-        user22.setRoles(List.of("인증요정", "풀스택 마스터"));
+        user22.setRoles(List.of("인증 요정", "풀스택 마스터"));
         user22.setCategories(List.of(userCategory22));
 
         log.info("USER STUB " +
@@ -165,6 +170,7 @@ public class Stub {
 
         user23.setEmail("taeyoung@email.com");
         user23.setNickName("걍태영");
+        user23.setBookTemp(99.9);
         user23.setPassword(encoder.encode("1234"));
         user23.setRoles(List.of("응원 담당"));
         user23.setCategories(List.of(userCategory23));
@@ -182,6 +188,7 @@ public class Stub {
 
         user24.setEmail("smile_angel@email.com");
         user24.setNickName("미소천사");
+        user24.setBookTemp(99.9);
         user24.setPassword(encoder.encode("1234"));
         user24.setRoles(List.of("작업 살인마"));
         user24.setCategories(List.of(userCategory24));
@@ -199,8 +206,9 @@ public class Stub {
 
         user25.setEmail("lemonlime_serin@email.com");
         user25.setNickName("레몬세린");
+        user24.setBookTemp(99.9);
         user25.setPassword(encoder.encode("1234"));
-        user25.setRoles(List.of("사령탑", "텐션 담당", "상큼함 담당"));
+        user25.setRoles(List.of("사령탑", "텐션 담당", "상큼함 담당", "성질 담당"));
         user25.setCategories(List.of(userCategory25));
 
         log.info("USER STUB " +
@@ -225,6 +233,7 @@ public class Stub {
 
             user.setEmail("stub_email_" + i + "@email.com");
             user.setNickName("Stub_Potato_" + i);
+            user.setBookTemp(36.5 + Math.round((Math.random() * 15) * 10) / 10.0);
             user.setPassword(encoder.encode("1234"));
             user.setRoles(List.of("USER"));
             user.setCategories(List.of(userCategory));
@@ -255,7 +264,7 @@ public class Stub {
 
         for (long i = 1; i <= 50; i++) {
 
-            long rand = (long) (Math.random() * 18) + 1;
+            long rand = (long) (Math.random() * 35) + 1;
 
             log.info("PAIRING STUB " +
                             pairingRepository.save(
@@ -296,7 +305,7 @@ public class Stub {
 
         for (long i = 1; i <= 50; i++) {
 
-            long rand = (long) (Math.random() * 18) + 1;
+            long rand = (long) (Math.random() * 35) + 1;
 
             log.info("PAIRING_COMMENT STUB " +
                     commentRepository.save(

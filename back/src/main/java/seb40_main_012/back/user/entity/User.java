@@ -32,6 +32,7 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
     private String email;
+    private double bookTemp;
     private String nickName;
     private String password;
     private String introduction;
@@ -52,7 +53,8 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
     private List<Pairing> pairings = new ArrayList<>();
 
 //    @JsonManagedReference
