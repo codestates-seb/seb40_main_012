@@ -23,3 +23,5 @@ export const PAIRING_BOOK_LIKE_URL = `${PAIRING_URL}/book/likes`;
 export const PAIRING_BOOK_NEWEST_URL = `${PAIRING_URL}/book/newest`;
 export const PAIRING_ETC_LIKE_URL = `${PAIRING_URL}/etc/likes`;
 export const PAIRING_ETC_NEWEST_URL = `${PAIRING_URL}/etc/newest`;
+
+export const COMMENT_URL = '/api/comments';
