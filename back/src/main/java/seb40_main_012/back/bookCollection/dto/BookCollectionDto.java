@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import seb40_main_012.back.book.BookDto;
+import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.entity.BookCollectionTag;
@@ -30,11 +31,10 @@ public class BookCollectionDto {
         private List<String> bookIsbns;
 
         public BookCollection toEntity(){
-            return BookCollection.builder()
-                    .title(title)
-                    .content(content)
-                    .isbn13(bookIsbns)
-                    .build();
+            BookCollection collection = new BookCollection(
+                    title,content,bookIsbns
+            );
+            return collection;
         }
     }
     @Getter
@@ -49,8 +49,8 @@ public class BookCollectionDto {
         private boolean userLike;
         private boolean userBookmark;
         private String collectionAuthor;
-//        private List<TagDto.Response> tags;
-        private List<BookDto.CollectionBook> books;
+        private List<String> tags;
+        private List<String> isbns;
 
         public static Response of(BookCollection collection){
             return Response.builder()
@@ -61,8 +61,39 @@ public class BookCollectionDto {
                     .userLike(!collection.getUser().getCollectionLikes().isEmpty())
                     .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
                     .collectionAuthor(collection.getUser().getNickName())
-//                    .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
-//                    .books(BookDto.CollectionBook.of())
+                    .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
+                    .isbns(collection.getIsbn13())
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CollectionDetails{
+        private String title;
+        private String content;
+        private LocalDate lastModifiedAt;
+        private Long likeCount;
+        private boolean userLike;
+        private boolean userBookmark;
+        private String collectionAuthor;
+        private List<String> tags;
+        private List<BookInfoSearchDto.CollectionBook> books;
+
+        //collection book
+        public static CollectionDetails of(BookCollection collection,List<BookInfoSearchDto.CollectionBook> books ){
+            return CollectionDetails.builder()
+                    .title(collection.getTitle())
+                    .content(collection.getContent())
+                    .lastModifiedAt(collection.getLastModifiedAt())
+                    .likeCount(collection.getLikeCount())
+                    .userLike(!collection.getUser().getCollectionLikes().isEmpty())
+                    .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
+                    .collectionAuthor(collection.getUser().getNickName())
+                    .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
+                    .books(books)
                     .build();
         }
     }

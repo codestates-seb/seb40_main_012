@@ -17,22 +17,23 @@ public interface BookMapper {
 
     Book bookRatingToBook(BookDto.Rating ratingBook);
 
-//    BookDto.Response bookToBookResponse(Book book);
-    default BookDto.Response bookToBookResponse(Book book) {
-
-        return BookDto.Response.builder()
-                .bookId(book.getBookId())
-                .isbn13(book.getIsbn13())
+    BookDto.Response bookToBookResponse(Book book);
+//    default BookDto.Response bookToBookResponse(Book book) {
+//
+//        return BookDto.Response.builder()
+//                .bookId(book.getBookId())
+//                .isbn13(book.getIsbn13())
+//                .title(book.getTitle())
 //                .genre(book.getGenre())
-                .bookWiki(null)
-                .averageRating(book.getAverageRating())
-                .view(book.getView())
-                .comments(book.getComments())
-                .pairings(book.getPairings())
-                .bookCollections(null)
-                .similarBooks(null)
-                .build();
-    }
+//                .bookWiki(null)
+//                .averageRating(book.getAverageRating())
+//                .view(book.getView())
+//                .comments(book.getComments())
+//                .pairings(book.getPairings())
+//                .bookCollections(null)
+//                .similarBooks(null)
+//                .build();
+//    }
 
     List<BookDto.Response> booksToBookResponses(List<Book> books);
 

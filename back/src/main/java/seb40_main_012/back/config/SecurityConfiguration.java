@@ -1,5 +1,6 @@
 package seb40_main_012.back.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,25 +13,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import seb40_main_012.back.config.auth.filter.JwtAuthenticationFilter;
 import seb40_main_012.back.config.auth.filter.JwtVerificationFilter;
-import seb40_main_012.back.config.auth.handler.UserAccessDeniedHandler;
-import seb40_main_012.back.config.auth.handler.UserAuthenticationEntryPoint;
-import seb40_main_012.back.config.auth.handler.UserAuthenticationFailureHandler;
-import seb40_main_012.back.config.auth.handler.UserAuthenticationSuccessHandler;
+import seb40_main_012.back.config.auth.handler.*;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
+import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
+import seb40_main_012.back.user.mapper.UserMapper;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
-
-    public SecurityConfiguration(JwtTokenizer jwtTokenizer, CustomAuthorityUtils authorityUtils) {
-        this.jwtTokenizer = jwtTokenizer;
-        this.authorityUtils = authorityUtils;
-    }
+    private final RefreshTokenRepository repository;
+    private final UserMapper userMapper;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -68,12 +66,13 @@ public class SecurityConfiguration {
         public void configure(HttpSecurity builder) throws Exception {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
-            JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authenticationManager, jwtTokenizer);
+            JwtAuthenticationFilter jwtAuthenticationFilter =
+                    new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, repository, userMapper);
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils, repository);
 
             builder.addFilter(jwtAuthenticationFilter)
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);

@@ -51,8 +51,26 @@ public class BookCollection {
     @LastModifiedDate
     private LocalDate lastModifiedAt = LocalDate.now();
 
+    public BookCollection(String title, String content,List<String> isbn13) {
+        this.title = title;
+        this.content= content;
+        this.isbn13 = isbn13;
+        this.likeCount = 0L;
+        this.lastModifiedAt = LocalDate.now();
+    }
+    public void editCollection(BookCollection collection){
+        this.title = collection.getTitle();
+        this.content= collection.getContent();
+        this.isbn13 = collection.getIsbn13();
+        this.lastModifiedAt = LocalDate.now();
+    }
+
+
     public void addCollectionTag(BookCollectionTag collectionTag) {
         collectionTags.add(collectionTag);
+    }
+    public void setCollectionTag() {
+        this.collectionTags = new ArrayList<>();
     }
 
     public void addISBN(String isbn){

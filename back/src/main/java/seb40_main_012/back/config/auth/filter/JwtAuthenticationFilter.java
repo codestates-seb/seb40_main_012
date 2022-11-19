@@ -1,6 +1,8 @@
 package seb40_main_012.back.config.auth.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -8,8 +10,12 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import seb40_main_012.back.config.auth.dto.LoginDto;
+import seb40_main_012.back.config.auth.entity.RefreshToken;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
+import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.mapper.UserMapper;
+import seb40_main_012.back.user.service.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -18,14 +24,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
-
-    public JwtAuthenticationFilter(AuthenticationManager authenticationManager, JwtTokenizer jwtTokenizer) {
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenizer = jwtTokenizer;
-    }
+    private final RefreshTokenRepository repository;
+    private final UserMapper userMapper;
 
     @SneakyThrows
     @Override
@@ -47,13 +51,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String accessToken = delegateAccessToken(user);
         String refreshToken = delegateRefreshToken(user);
 
-        ObjectMapper mapper = new ObjectMapper();
-        LoginDto.ResponseDto responseDto = new LoginDto.ResponseDto();
-        responseDto.setFirstLogin(user.isFirstLogin());
-        responseDto.setNickName(user.getNickName());
-        responseDto.setEmail(user.getEmail());
-        responseDto.setRoles(user.getRoles());
-        response.getWriter().write(mapper.writeValueAsString(responseDto));
+        LoginDto.ResponseDto responseDto = userMapper.userToLoginResponse(user);
+        String json = new Gson().toJson(responseDto);
+        response.setContentType("application/json");
+        response.setCharacterEncoding("UTF-8");
+        response.getWriter().write(json);
 
         response.setHeader("Authorization", "Bearer " + accessToken);
 
@@ -66,6 +68,11 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .httpOnly(true)
                 .build();
         response.setHeader("Set-Cookie", cookie.toString());
+        RefreshToken saveToken = RefreshToken.builder() // refresh token 저장
+                        .email(user.getEmail())
+                        .tokenValue(refreshToken)
+                        .build();
+        repository.save(saveToken);
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult); // 핸들러 호출
     }

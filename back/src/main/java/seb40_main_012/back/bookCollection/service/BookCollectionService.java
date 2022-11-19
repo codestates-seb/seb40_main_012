@@ -29,24 +29,46 @@ public class BookCollectionService {
 
     public BookCollection postCollection(Long userId, BookCollection collection, List<String> tags){
         User findUser = userService.findVerifiedUser(userId);
+        collection.setCollectionTag();
+
         tags.forEach(
                 x -> {
-//                    Tag newTag = Tag.builder().tagName(x).build();
                     Tag newTag = new Tag(x);
                     tagRepository.save(newTag);
-                    BookCollectionTag collectionTag = new BookCollectionTag(collection,newTag); //여기까진 잘 옴
-                    collectionTagRepository.save(collectionTag);
+                    BookCollectionTag collectionTag = new BookCollectionTag(collection,newTag);
                     collectionRepository.save(collection);
+                    collectionTagRepository.save(collectionTag);
                     collection.addCollectionTag(collectionTag);
                     findUser.addBookCollection(collection);
                     collection.addUser(findUser);
                 }
         );
-        collectionRepository.save(collection);
-        findUser.addBookCollection(collection);
-
         return collection;
     }
+
+    public BookCollection patchCollection(Long userId, Long collectionId,BookCollection collection, List<String> tags){
+        User findUser = userService.findVerifiedUser(userId);
+        BookCollection bookCollection = findVerifiedCollection(collectionId);
+//        collection.setCollectionTag();
+
+        tags.forEach(
+                x -> {
+                    Tag newTag = new Tag(x);
+                    tagRepository.save(newTag);
+                    BookCollectionTag collectionTag = new BookCollectionTag(bookCollection,newTag);
+                    collectionRepository.save(bookCollection);
+                    collectionTagRepository.save(collectionTag);
+                    bookCollection.addCollectionTag(collectionTag);
+                    bookCollection.editCollection(collection);
+                    findUser.addBookCollection(bookCollection);
+                    bookCollection.addUser(findUser);
+                }
+        );
+        return bookCollection;
+    }
+
+
+
 
     //상세 조회 -> ISBN13 으로 db에서 책 별점 조회,없으면 알라딘 api에서 책 정보만 조회
     public BookCollection getCollection(Long collectionId) {
