@@ -27,6 +27,7 @@ public interface CommentMapper {
                         UserDto.ResponseDto.builder()
                                 .email(comment.getUser().getEmail())
                                 .nickName(comment.getUser().getNickName())
+                                .bookTemp(comment.getUser().getBookTemp())
                                 .roles(comment.getUser().getRoles())
                                 .build()
                 )
