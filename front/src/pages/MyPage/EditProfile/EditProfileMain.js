@@ -10,6 +10,8 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
+import WithDrawal from './WithDrawal';
+
 const options = [
   '연령대',
   '10대',
@@ -86,16 +88,18 @@ const ItemText = styled.div`
   }
 `;
 
-const WithDrawal = styled.div`
+const WithDrawalBox = styled.div`
   width: 100%;
   font-size: 13px;
   font-weight: 300;
   margin-top: 50px;
+
   color: #737373;
 `;
 
 const Btn = styled(BasicButton)`
   margin-left: 20px;
+
   &:hover {
     cursor: pointer;
   }
@@ -191,11 +195,7 @@ const EditProfileMain = () => {
           <Grid item xs={4.5} align="left" justifyContent="left">
             <NickNameInput className="nickname-border"></NickNameInput>
           </Grid>
-          <Grid item xs={3.5} align="left" justifyContent="left">
-            <Btn width="65px" height="30px" fontSize="12px">
-              변경하기
-            </Btn>
-          </Grid>
+          <Grid item xs={3.5} align="left" justifyContent="left"></Grid>
         </Grid>
         <ItemText>성별</ItemText>
         <Grid
@@ -303,7 +303,16 @@ const EditProfileMain = () => {
             </Menu>
           </Grid>
         </ItemText>
-        <WithDrawal>회원 탈퇴</WithDrawal>
+        <WithDrawal>
+          <WithDrawalBox>회원 탈퇴</WithDrawalBox>
+        </WithDrawal>
+        <div
+          style={{ display: 'flex', align: 'center', justifyContent: 'center' }}
+        >
+          <Btn width="65px" height="30px" fontSize="12px">
+            저장하기
+          </Btn>
+        </div>
       </Container>
     </>
   );

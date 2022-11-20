@@ -80,7 +80,7 @@ const Remove = styled.div`
   cursor: pointer;
   opacity: 0;
   &:hover {
-    color: #ff6b6b;
+    color: #6741ff;
   }
 `;
 
@@ -265,16 +265,16 @@ const FixContentScroll = ({ commentData }) => {
           next={data.content && fetchMoreData}
           hasMore={data.hasMore} // 스크롤 막을지 말지 결정
           loader={
-            <img
+            <p
               style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                alignContent: 'center',
+                textAlign: 'center',
               }}
-              src={'/images/cherrypick_loading.gif'}
-              alt="loading cherrypick"
-            ></img>
+            >
+              <img
+                src={'/images/cherrypick_loading.gif'}
+                alt="loading cherrypick"
+              ></img>
+            </p>
           }
           height={400}
           endMessage={
