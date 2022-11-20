@@ -32,6 +32,8 @@ const ItemText = styled.div`
   font-size: 15px;
   font-weight: 300;
   margin-top: 10px;
+  min-width: 60px;
+
   a {
     text-decoration: none !important;
     color: inherit !important;
@@ -39,8 +41,26 @@ const ItemText = styled.div`
       color: #6741ff !important;
     }
   }
+`;
+
+const GenderText = styled.div`
+  width: 100%;
+  font-size: 14px;
+  font-weight: 300;
+`;
+
+const GenderContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
   input {
+    accent-color: #5729e9;
+    margin-left: 0px;
+  }
+  .gender-flex-box {
     display: flex;
+    margin-right: 15px;
+    margin-left: 0px;
   }
 `;
 
@@ -82,7 +102,6 @@ const EditProfileMain = () => {
             ></img>
           </Avatar>
         </Grid>
-
         <TitleText>기본 정보</TitleText>
         <Grid
           container
@@ -103,13 +122,11 @@ const EditProfileMain = () => {
             </Btn>
           </Grid>
         </Grid>
-
         <ItemText>
           <Link to="/settings/profile/changepasswd" variant="body2">
             비밀번호 변경
           </Link>
         </ItemText>
-
         <TitleText>상세 정보</TitleText>
         <Grid
           container
@@ -118,9 +135,36 @@ const EditProfileMain = () => {
           justifyContent="left"
           alignItems="center"
         >
-          <Grid item xs={3.5} align="left" justifyContent="left"></Grid>
+          <Grid item xs={4} align="left" justifyContent="left">
+            <ItemText>성별</ItemText>
+          </Grid>
+          <Grid
+            item
+            align="left"
+            justifyContent="left"
+            sx={{ display: 'flex', alignItems: 'center' }}
+          >
+            <GenderContainer>
+              <div className="gender-flex-box">
+                <input type="radio" className="gender" name="gender"></input>
+                <GenderText>여성</GenderText>
+              </div>
+              <div className="gender-flex-box">
+                <input type="radio" name="gender"></input>
+                <GenderText>남성</GenderText>
+              </div>
+              <div className="gender-flex-box">
+                <input type="radio" name="gender"></input>
+                <GenderText>둘 다 아님</GenderText>
+              </div>
+              <div className="gender-flex-box">
+                <input type="radio" name="gender"></input>
+                <GenderText>공개안함</GenderText>
+              </div>
+            </GenderContainer>
+          </Grid>
         </Grid>
-        <ItemText>성별</ItemText>
+
         <Grid
           container
           xs={12}
