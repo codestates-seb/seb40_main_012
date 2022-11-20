@@ -74,6 +74,7 @@ public interface PairingMapper {
                         UserDto.ResponseDto.builder()
                                 .email(user.getEmail())
                                 .nickName(user.getNickName())
+                                .bookTemp(user.getBookTemp())
                                 .roles(user.getRoles())
                                 .build()
                 )
