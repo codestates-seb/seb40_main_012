@@ -5,8 +5,9 @@ import lombok.Getter;
 public enum LikeType {
 
     PAIRING("페어링"),
-    BOOK_COLLECTION("컬렉션"),
-    COMMENT("코멘트");
+    COMMENT("코멘트"),
+    BOOK_COLLECTION("컬렉션");
+
 
     @Getter
     private final String value;
