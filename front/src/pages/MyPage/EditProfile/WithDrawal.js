@@ -69,6 +69,9 @@ const ModalBox = styled.div`
     flex-direction: row-reverse !important;
     cursor: pointer;
   }
+  .password-check {
+    font-size: 0.8rem;
+  }
 `;
 
 //TODO: 페어링, 컬렉션 안내 메시지 추가
@@ -118,6 +121,7 @@ const Guide = () => {
               다시 로그인 하실 수 없어요.
               <br />
             </div>
+            <div className="password-check">비밀번호</div>
             <PasswordCheck></PasswordCheck>
           </ModalBox>
         </Modal>
