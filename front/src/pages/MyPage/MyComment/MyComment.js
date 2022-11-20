@@ -1,9 +1,9 @@
 import Header from '../Header';
 import PageContainer from '../../../components/PageContainer';
 import Nav from './Nav';
-// import Content from './Content';
+
 import Container from '@mui/material/Container';
-// import ContentScroll from './ContentScroll';
+
 import FixContentScroll from './FixContentScroll';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -17,6 +17,13 @@ const Void = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  .img {
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    width: 200px;
+    height: 200px;
+  }
 `;
 const MyComment = () => {
   const CommentData = useSelector((state) =>
@@ -42,17 +49,15 @@ const MyComment = () => {
           <Nav></Nav>
           <HoverDelete commentData={CommentData}></HoverDelete>
           <FixContentScroll commentData={CommentData}></FixContentScroll>
-          {/* <ContentScroll commentData={CommentData}></ContentScroll>
-          <Content commentData={CommentData}></Content> */}
         </Container>
       ) : (
         <Container maxWidth="md">
           <Header></Header>
           <Void>
             <img
-              src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Loading_icon.gif?20151024034921"
-              alt="loading"
-            />
+              src={'/images/cherrypick_loading.gif'}
+              alt="loading cherrypick"
+            ></img>
           </Void>
         </Container>
       )}

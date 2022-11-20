@@ -118,12 +118,6 @@ const EditProfileMain = () => {
           justifyContent="left"
           alignItems="center"
         >
-          <Grid item xs={4} align="left" justifyContent="left">
-            <ItemText>소개글</ItemText>
-          </Grid>
-          <Grid item xs={4.5} align="left" justifyContent="left">
-            <NickNameInput className="nickname-border"></NickNameInput>
-          </Grid>
           <Grid item xs={3.5} align="left" justifyContent="left"></Grid>
         </Grid>
         <ItemText>성별</ItemText>
@@ -160,7 +154,12 @@ const EditProfileMain = () => {
           <WithDrawalBox>회원 탈퇴</WithDrawalBox>
         </WithDrawal>
         <div
-          style={{ display: 'flex', align: 'center', justifyContent: 'center' }}
+          style={{
+            display: 'flex',
+            align: 'center',
+            justifyContent: 'center',
+            marginBottom: '4rem',
+          }}
         >
           <Btn width="65px" height="30px" fontSize="12px">
             저장하기

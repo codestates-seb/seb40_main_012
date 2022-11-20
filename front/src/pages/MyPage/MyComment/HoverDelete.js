@@ -29,6 +29,8 @@ const ContentContainer = styled.div`
     align-items: center;
     justify-content: center;
     align-content: center;
+    width: 200px;
+    height: 200px;
   }
   .fixed {
     position: fixed;
