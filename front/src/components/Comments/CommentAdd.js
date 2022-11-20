@@ -88,6 +88,12 @@ const CommentAdd = ({ commentAdd }) => {
     }
   };
 
+  const handleOnKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleCommentAdd();
+    }
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CommentAddContainer>
@@ -96,6 +102,7 @@ const CommentAdd = ({ commentAdd }) => {
             type="text"
             placeholder="댓글을 남겨보세요."
             onChange={handleInputChange}
+            onKeyPress={handleOnKeyPress}
             value={input}
           />
           <CommentAddBtn
