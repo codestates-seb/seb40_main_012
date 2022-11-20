@@ -11,7 +11,6 @@ public interface BookWikiMapper {
 
     BookWiki bookWikiPostToBookWiki(BookWikiDto.Post postBookWiki);
     BookWiki bookWikiPatchToBookWiki(BookWikiDto.Patch patchBookWiki);
-    BookWiki bookWikiViewToBookWiki(BookWikiDto.View viewBookWiki);
     BookWikiDto.Response bookWikiToBookWikiResponse(BookWiki bookWiki);
 
 }

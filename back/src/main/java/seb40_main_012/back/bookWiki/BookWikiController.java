@@ -19,12 +19,12 @@ public class BookWikiController {
     private final BookWikiService bookWikiService;
     private final BookWikiMapper bookWikiMapper;
 
-    @PostMapping("/{book_id}/wikis/add")
-    public ResponseEntity postBookWiki(@PathVariable("book_id") @Positive long bookId,
+    @PostMapping("/{isbn13}/wikis/add")
+    public ResponseEntity postBookWiki(@PathVariable("isbn13") @Positive String isbn13,
                                        @Valid @RequestBody BookWikiDto.Post postBookWiki) {
 
         BookWiki bookWiki = bookWikiMapper.bookWikiPostToBookWiki(postBookWiki);
-        BookWiki createdBookWiki = bookWikiService.createBookWiki(bookWiki);
+        BookWiki createdBookWiki = bookWikiService.createBookWiki(isbn13, bookWiki);
         BookWikiDto.Response response = bookWikiMapper.bookWikiToBookWikiResponse(createdBookWiki);
 
         return new ResponseEntity<>(
@@ -47,6 +47,8 @@ public class BookWikiController {
 
     @GetMapping("/wikis/{bookWiki_id}")
     public ResponseEntity getBookWiki(@PathVariable("bookWiki_id") @Positive long bookWikiId) {
+
+        bookWikiService.updateView(bookWikiId); // 조회수 올리기
 
         BookWiki bookWiki = bookWikiService.findBookWiki(bookWikiId);
         BookWikiDto.Response response = bookWikiMapper.bookWikiToBookWikiResponse(bookWiki);

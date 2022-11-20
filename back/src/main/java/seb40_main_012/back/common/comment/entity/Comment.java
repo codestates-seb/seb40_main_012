@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.common.like.entity.Like;
@@ -73,8 +74,8 @@ public class Comment {
     @Column(nullable = false, updatable = false, name = "CREATED_AT")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    @CreatedDate
-    @Column(nullable = false, name = "MODIFIED_AT")
+    @LastModifiedDate
+    @Column(name = "MODIFIED_AT")
     private LocalDateTime modifiedAt = LocalDateTime.now();
 
 }
