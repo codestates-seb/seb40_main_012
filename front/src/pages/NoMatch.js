@@ -49,6 +49,9 @@ const PoemContainer = styled.div`
   border-radius: 5px;
   line-height: 30px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  .author {
+    font-weight: 700;
+  }
 `;
 
 const poems = [
@@ -149,7 +152,7 @@ const NoMatch = () => {
             <PoemContainer>
               <div>{poem.poem}</div>
               <br />
-              <div>{poem.author}</div>
+              <div className="author">{poem.author}</div>
             </PoemContainer>
           </ContentsBox>
         </Wrapper>
