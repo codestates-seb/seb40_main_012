@@ -34,7 +34,7 @@ mail:
     admin: admin@gmail.com
 jwt:
   secret-key: temporary1111potato1111temporary1111potato # ${JWT_SECRET_KEY}
-  access-token-expiration-minutes: 30
+  access-token-expiration-minutes: 120
   refresh-token-expiration-minutes: 1440
 aladin:
   url: http://www.aladin.co.kr/ttb/api/ItemSearch.aspx
