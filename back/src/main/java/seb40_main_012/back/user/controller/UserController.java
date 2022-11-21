@@ -103,7 +103,7 @@ public class UserController {
 //    @PatchMapping //프사 수정
 //    public UserDto.ResponseDto patchProfileImage(){}
 //
-    @DeleteMapping()
+    @DeleteMapping("/mypage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public boolean deleteUser(@RequestHeader("Authorization") Long userId){
         return userService.deleteUser(userId);
