@@ -73,7 +73,7 @@ const SignInPage = () => {
   };
 
   return (
-    <PageContainer footer>
+    <PageContainer footer option={false}>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
