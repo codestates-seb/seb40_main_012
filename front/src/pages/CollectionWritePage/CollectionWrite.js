@@ -1,18 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PageContainer from '../../components/PageContainer';
 import CollectionInfoInput from './CollectionInfoInput';
+import CollectionWriteBtns from './CollectionWriteBtns';
 
 const CollectionWritePage = () => {
   const [data, setData] = useState({
     title: '',
-    tags: ['태그1', '태그2'],
+    tags: [],
     content: '',
     bookIsbns: [],
   });
+  const [isFilled, setIsFilled] = useState(false);
+
+  useEffect(() => {
+    if (data.title !== '') setIsFilled(true);
+    else setIsFilled(false);
+  }, [data]);
+
+  const handleCollectionWrite = () => {
+    if (isFilled) {
+      console.log('컬렉션 작성 post');
+    }
+  };
 
   return (
     <PageContainer footer>
       <CollectionInfoInput data={data} setData={setData}></CollectionInfoInput>
+      <CollectionWriteBtns handleCollectionWrite={handleCollectionWrite} />
     </PageContainer>
   );
 };

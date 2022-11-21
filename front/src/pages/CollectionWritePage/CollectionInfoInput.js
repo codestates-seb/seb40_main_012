@@ -40,10 +40,38 @@ const Tags = styled.div`
   align-items: center;
 `;
 
+const TagContainer = styled.div`
+  div {
+    margin: 5px;
+    &:hover {
+      cursor: pointer;
+      border: none;
+      color: white;
+      border: 1px solid ${({ theme }) => theme.colors.mainColor};
+      background-color: ${({ theme }) => theme.colors.mainColor};
+    }
+  }
+`;
+
 const TagInput = styled.input`
-  border: 1px solid blue;
+  border: none;
+  margin-left: 10px;
   &:focus {
     outline: none;
+  }
+`;
+
+const TagInfo = styled.div`
+  font-size: 12px;
+  display: flex;
+  div {
+    padding: 10px;
+  }
+  &.hidden {
+    display: none;
+  }
+  &.show {
+    display: flex;
   }
 `;
 
@@ -59,6 +87,8 @@ const ContentInput = styled.textarea`
   border: none;
   font-size: 15px;
   font-weight: 400;
+  font-family: RobotoInCjk, 'Noto Sans KR', 'Apple SD Gothic Neo',
+    'Nanum Gothic', 'Malgun Gothic', sans-serif;
   color: ${({ theme }) => theme.colors.dark};
   line-height: 100%;
   &:focus {
@@ -68,6 +98,7 @@ const ContentInput = styled.textarea`
 
 const CollectionInfoInput = ({ data, setData }) => {
   const [newTag, setNewTag] = useState('');
+  const [isOnKeyUpTag, setIsOnKeyUp] = useState(false);
 
   const handleOnChangeNewTag = (e) => {
     setNewTag(e.target.value);
@@ -75,10 +106,18 @@ const CollectionInfoInput = ({ data, setData }) => {
 
   const handleOnKeyPressTag = (e) => {
     if (e.key === 'Enter') {
-      console.log('태그 입력');
       setData({ ...data, tags: [...data.tags, newTag] });
       setNewTag('');
     }
+  };
+
+  const handleOnFoucusUpTag = () => {
+    console.log('focus');
+    setIsOnKeyUp(true);
+  };
+  const handleOnBlurTag = () => {
+    console.log('down');
+    setIsOnKeyUp(false);
   };
 
   const handleOnChangeTitle = (e) => {
@@ -89,8 +128,8 @@ const CollectionInfoInput = ({ data, setData }) => {
     setData({ ...data, content: e.target.value });
   };
 
-  const handleDeleteTag = (idx) => {
-    console.log(idx);
+  const handleDeleteTag = (tagidx) => {
+    setData({ ...data, tags: data.tags.filter((el, idx) => idx !== tagidx) });
   };
 
   return (
@@ -106,7 +145,7 @@ const CollectionInfoInput = ({ data, setData }) => {
           <Tags>
             {data.tags.map((el, idx) => {
               return (
-                <div
+                <TagContainer
                   key={idx}
                   onClick={() => {
                     handleDeleteTag(idx);
@@ -114,7 +153,7 @@ const CollectionInfoInput = ({ data, setData }) => {
                   role="presentation"
                 >
                   <Tag>#{el}</Tag>
-                </div>
+                </TagContainer>
               );
             })}
           </Tags>
@@ -123,9 +162,18 @@ const CollectionInfoInput = ({ data, setData }) => {
             placeholder="태그를 입력하세요"
             onChange={handleOnChangeNewTag}
             onKeyPress={handleOnKeyPressTag}
+            onFocus={handleOnFoucusUpTag}
+            onBlur={handleOnBlurTag}
             value={newTag}
           />
         </TagInputContainer>
+        <TagInfo className={isOnKeyUpTag ? 'show' : 'hidden'}>
+          <div>
+            엔터를 입력하여 태그를 등록할 수 있습니다.
+            <br />
+            등록된 태그를 클릭하면 삭제됩니다.
+          </div>
+        </TagInfo>
         <ContentInputContainer>
           <ContentInput
             type="text"
