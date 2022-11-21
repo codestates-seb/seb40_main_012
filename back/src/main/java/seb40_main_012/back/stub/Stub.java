@@ -18,8 +18,8 @@ import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
-import seb40_main_012.back.follow.Follow;
-import seb40_main_012.back.follow.FollowRepository;
+//import seb40_main_012.back.follow.Follow;
+//import seb40_main_012.back.follow.FollowRepository;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.ParingCategory;
@@ -51,7 +51,7 @@ public class Stub {
                                BookCollectionRepository bookCollectionRepository, BookCollectionService bookCollectionService,
                                PairingRepository pairingRepository, PairingService pairingService,
                                CommentRepository commentRepository, CommentService commentService,
-                               CategoryRepository categoryRepository, FollowRepository followRepository,
+                               CategoryRepository categoryRepository,
                                BCryptPasswordEncoder encoder) {
 
         for (int i = 0; i < 9; i++) {

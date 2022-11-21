@@ -11,7 +11,7 @@ import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
-import seb40_main_012.back.notification.NotificationService;
+//import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.PairingService;
 
 import javax.validation.Valid;
@@ -32,7 +32,7 @@ public class CommentController {
     private final LikeService likeService;
 
 //    ------------------------------------------------------------
-    private final NotificationService noticeService;
+//    private final NotificationService noticeService;
 //    ------------------------------------------------------------
 
     @PostMapping("/books/{isbn13}/comments/add")
@@ -57,7 +57,7 @@ public class CommentController {
         CommentDto.Response response = commentMapper.pairingCommentToCommentResponse(createdComment);
 
 //        ------------------------------------------------------------
-        noticeService.notifyPostPairingCommentEvent(createdComment);
+//        noticeService.notifyPostPairingCommentEvent(createdComment);
 //        ------------------------------------------------------------
 
         return new ResponseEntity<>(
@@ -94,7 +94,7 @@ public class CommentController {
         CommentDto.Response response = commentMapper.commentToCommentResponse(updatedLikeComment);
 
 //        ------------------------------------------------------------
-        noticeService.notifyUpdateLikeCommentEvent(updatedLikeComment);
+//        noticeService.notifyUpdateLikeCommentEvent(updatedLikeComment);
 //        ------------------------------------------------------------
 
         return new ResponseEntity<>(

@@ -10,7 +10,7 @@ import seb40_main_012.back.user.entity.User;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-18T16:42:02+0900",
+    date = "2022-11-21T14:00:05+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.5 (Azul Systems, Inc.)"
 )
 @Component
@@ -41,6 +41,7 @@ public class UserMapperImpl implements UserMapper {
 
         responseDto.nickName( user.getNickName() );
         responseDto.email( user.getEmail() );
+        responseDto.bookTemp( user.getBookTemp() );
         List<String> list = user.getRoles();
         if ( list != null ) {
             responseDto.roles( new ArrayList<String>( list ) );
@@ -59,6 +60,7 @@ public class UserMapperImpl implements UserMapper {
 
         responseDto.firstLogin( user.isFirstLogin() );
         responseDto.nickName( user.getNickName() );
+        responseDto.bookTemp( user.getBookTemp() );
         responseDto.email( user.getEmail() );
         List<String> list = user.getRoles();
         if ( list != null ) {
