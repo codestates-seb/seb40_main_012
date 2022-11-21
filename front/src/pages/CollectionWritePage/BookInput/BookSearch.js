@@ -56,7 +56,7 @@ const SearchedBooks = styled.div`
   display: flex;
 `;
 
-const BookSearch = ({ newBooks, setNewBooks }) => {
+const BookSearch = () => {
   const [searchInput, setSearchInput] = useState('');
   const [searchedBooks, setSearchedBooks] = useState([
     {

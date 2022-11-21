@@ -23,7 +23,7 @@ const Books = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.gray};
 `;
 
-const NewBooks = ({ data }) => {
+const NewBooks = () => {
   return (
     <ThemeProvider theme={theme}>
       <NewBooksContainer>
