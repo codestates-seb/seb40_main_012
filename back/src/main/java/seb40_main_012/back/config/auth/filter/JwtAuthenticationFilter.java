@@ -51,13 +51,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         // refresh Token을 헤더에 Set-Cookie 해주기
         ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                .maxAge(7 * 24 * 60 * 60)
+                .maxAge(1 * 24 * 60 * 60) // 하루 설정
                 .path("/")
                 .secure(true)
                 .sameSite("None")
                 .httpOnly(true)
                 .build();
-        response.setHeader("Cookie", cookie.toString());
+        response.setHeader("Set-Cookie", cookie.toString());
 
         // 로그인 시 필요한 정보 담기
         LoginDto.ResponseDto responseDto = userMapper.userToLoginResponse(user);
