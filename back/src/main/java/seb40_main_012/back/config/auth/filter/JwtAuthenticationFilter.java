@@ -57,7 +57,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .sameSite("None")
                 .httpOnly(true)
                 .build();
-        response.setHeader("Cookie", cookie.toString());
+        response.setHeader("Set-Cookie", cookie.toString());
 
         // 로그인 시 필요한 정보 담기
         LoginDto.ResponseDto responseDto = userMapper.userToLoginResponse(user);

@@ -32,7 +32,7 @@ public class SecurityController {
             User user = userService.findUserByEmail(findRefreshToken.getEmail());
             String accessToken = jwtTokenizer.delegateAccessToken(user);
             response.setHeader("Authorization", "Bearer " + accessToken);
-            response.setHeader("Cookie", request.getHeader("Cookie"));
+            response.setHeader("Set-Cookie", request.getHeader("Cookie"));
         } catch (ExpiredJwtException ee) {
             jwtTokenizer.removeRefreshToken(refreshToken);
             response.sendError(401, "Refresh Token이 만료되었습니다");
