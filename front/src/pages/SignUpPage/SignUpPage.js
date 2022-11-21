@@ -63,7 +63,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <PageContainer footer option={false}>
+    <PageContainer footer>
       <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
