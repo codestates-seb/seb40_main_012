@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum GenderType {
     FEMALE,
     MALE,
+    MYSTIC,
     NOBODY;
 
 //    @Getter
