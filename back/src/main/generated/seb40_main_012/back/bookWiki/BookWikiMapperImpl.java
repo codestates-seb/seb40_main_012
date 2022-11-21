@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-14T16:13:12+0900",
+    date = "2022-11-18T09:28:49+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.5 (Azul Systems, Inc.)"
 )
 @Component
@@ -17,9 +17,17 @@ public class BookWikiMapperImpl implements BookWikiMapper {
             return null;
         }
 
-        BookWiki bookWiki = new BookWiki();
+        BookWiki.BookWikiBuilder bookWiki = BookWiki.builder();
 
-        return bookWiki;
+        bookWiki.imagePath( postBookWiki.getImagePath() );
+        bookWiki.spacetimeBackground( postBookWiki.getSpacetimeBackground() );
+        bookWiki.characterTree( postBookWiki.getCharacterTree() );
+        bookWiki.objectInside( postBookWiki.getObjectInside() );
+        bookWiki.trivia( postBookWiki.getTrivia() );
+        bookWiki.appendix( postBookWiki.getAppendix() );
+        bookWiki.objectOutside( postBookWiki.getObjectOutside() );
+
+        return bookWiki.build();
     }
 
     @Override
@@ -28,9 +36,17 @@ public class BookWikiMapperImpl implements BookWikiMapper {
             return null;
         }
 
-        BookWiki bookWiki = new BookWiki();
+        BookWiki.BookWikiBuilder bookWiki = BookWiki.builder();
 
-        return bookWiki;
+        bookWiki.imagePath( patchBookWiki.getImagePath() );
+        bookWiki.spacetimeBackground( patchBookWiki.getSpacetimeBackground() );
+        bookWiki.characterTree( patchBookWiki.getCharacterTree() );
+        bookWiki.objectInside( patchBookWiki.getObjectInside() );
+        bookWiki.trivia( patchBookWiki.getTrivia() );
+        bookWiki.appendix( patchBookWiki.getAppendix() );
+        bookWiki.objectOutside( patchBookWiki.getObjectOutside() );
+
+        return bookWiki.build();
     }
 
     @Override
@@ -39,9 +55,11 @@ public class BookWikiMapperImpl implements BookWikiMapper {
             return null;
         }
 
-        BookWiki bookWiki = new BookWiki();
+        BookWiki.BookWikiBuilder bookWiki = BookWiki.builder();
 
-        return bookWiki;
+        bookWiki.view( viewBookWiki.getView() );
+
+        return bookWiki.build();
     }
 
     @Override
@@ -50,8 +68,19 @@ public class BookWikiMapperImpl implements BookWikiMapper {
             return null;
         }
 
-        BookWikiDto.Response response = new BookWikiDto.Response();
+        BookWikiDto.Response.ResponseBuilder response = BookWikiDto.Response.builder();
 
-        return response;
+        response.bookWikiId( bookWiki.getBookWikiId() );
+        response.imagePath( bookWiki.getImagePath() );
+        response.spacetimeBackground( bookWiki.getSpacetimeBackground() );
+        response.characterTree( bookWiki.getCharacterTree() );
+        response.objectInside( bookWiki.getObjectInside() );
+        response.trivia( bookWiki.getTrivia() );
+        response.appendix( bookWiki.getAppendix() );
+        response.objectOutside( bookWiki.getObjectOutside() );
+        response.createdAt( bookWiki.getCreatedAt() );
+        response.modifiedAt( bookWiki.getModifiedAt() );
+
+        return response.build();
     }
 }

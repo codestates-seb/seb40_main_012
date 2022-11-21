@@ -314,4 +314,12 @@ public class PairingController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/pairings/{pairing-id}/bookmark")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean bookmarkPairing(@RequestHeader("Authorization") Long userId, @PathVariable("pairing-id") Long pairingId){
+        return pairingService.bookmarkPairing(userId,pairingId);
+    }
+
+
 }

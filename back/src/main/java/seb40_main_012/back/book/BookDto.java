@@ -1,5 +1,6 @@
 package seb40_main_012.back.book;
 
+import lombok.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -78,4 +79,5 @@ public class BookDto {
         private List<Book> similarBooks;
 
     }
+
 }

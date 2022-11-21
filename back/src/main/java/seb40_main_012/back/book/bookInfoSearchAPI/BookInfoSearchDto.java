@@ -1,9 +1,6 @@
 package seb40_main_012.back.book.bookInfoSearchAPI;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,4 +51,21 @@ public class BookInfoSearchDto {
             public Object subInfo;
         }
     }
-}
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CollectionBook {
+        List<Item> item = new ArrayList<>();
+        public static class Item {
+            public static String isbn13; // 책 식별자로 사용하기
+            public String cover;
+            public String title;
+            public String author;
+
+        }
+    }
+    }
+
+
