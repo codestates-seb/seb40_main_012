@@ -23,13 +23,13 @@ public class Like {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long likeId;
 
-    @Column
-    private long userId;
+//    @Column
+//    private long userId;
 
-//    @JsonBackReference
-//    @ManyToOne(fetch =  FetchType.LAZY)
-//    @JoinColumn(name = "user_id")
-//    private User user;
+    @JsonBackReference
+    @ManyToOne(fetch =  FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

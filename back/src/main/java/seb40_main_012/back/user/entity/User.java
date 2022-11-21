@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
 //import seb40_main_012.back.notification.Notification;
+import seb40_main_012.back.common.rating.Rating;
+//import seb40_main_012.back.notification.Notification;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
@@ -60,6 +62,14 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Pairing> pairings = new ArrayList<>();
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Rating> ratings = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Like> likes = new ArrayList<>();
+
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<BookCollection> collections = new ArrayList<>();
 
@@ -68,6 +78,7 @@ public class User {
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<BookCollectionBookmark> collectionBookmarks = new ArrayList<>();
+
 
 //    @JsonManagedReference
 //    @OneToMany(mappedBy = "user")
@@ -120,7 +131,6 @@ public class User {
     public void addCollectionLike(BookCollectionLike collectionLike) {
         this.collectionLikes.add(collectionLike);
     }
-
 
     //    ------------------------------------------------------------------------------------------
 //    ------------------------------------------------------------------------------------------

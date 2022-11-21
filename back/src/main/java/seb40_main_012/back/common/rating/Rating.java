@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.user.entity.User;
 
 import javax.persistence.*;
 
@@ -20,8 +21,8 @@ public class Rating {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long ratingId;
 
-    @Column
-    private long userId;
+//    @Column
+//    private long userId;
 
     @Column
     private double userBookRating;
@@ -30,4 +31,9 @@ public class Rating {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "book_id")
     private Book book;
+
+    @JsonBackReference
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
 }

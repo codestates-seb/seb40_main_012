@@ -3,6 +3,8 @@ package seb40_main_012.back.bookCollection.entity;
 import lombok.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import seb40_main_012.back.book.entity.Book;
@@ -35,6 +37,7 @@ public class BookCollection {
     private List<BookCollectionLike> collectionLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<BookCollectionBookmark> collectionBookmarks = new ArrayList<>();
 
     @ElementCollection

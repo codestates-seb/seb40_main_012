@@ -10,7 +10,8 @@ public enum AgeType {
     FORTIES(),
     FIFTIES(),
     SIXTIES(),
-    SEVENTIES();
+    SEVENTIES(),
+    OTHERS();
 
 //    @Getter
 //    private String value;
