@@ -61,6 +61,31 @@ public class LikeService {
         }
     }
 
+//    public void createPairingLike(long pairingId) {
+//
+//        Pairing findPairing = pairingService.findPairing(pairingId);
+//
+//        User findUser = userService.getLoginUser();
+//
+//        long userId = findUser.getUserId();
+//
+//        Like findPairingLike = likeRepository.findByPairingAndUser(findPairing, findUser);
+//
+//        if (findPairingLike == null) {
+//            findPairingLike =
+//                    Like.builder()
+//                            .likeType(LikeType.PAIRING)
+//                            .user(findUser)
+//                            .pairing(findPairing)
+//                            .build();
+//
+//            likeRepository.save(findPairingLike);
+//
+//        } else {
+//            throw new BusinessLogicException(ExceptionCode.LIKED);
+//        }
+//    }
+
     public void createBookCollectionLike(User user, BookCollection bookCollection) {
     }
 

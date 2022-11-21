@@ -11,15 +11,14 @@ import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
-import seb40_main_012.back.bookCollection.service.BookCollectionService;
-import seb40_main_012.back.common.comment.entity.Comment;
-import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.common.comment.CommentRepository;
+import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
-import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -30,6 +29,9 @@ public class BookService {
     private final BookInfoSearchController bookInfoSearchController;
     private final BookInfoSearchService bookInfoSearchService;
     private final BookRepository bookRepository;
+    private final CommentRepository commentRepository;
+    private final PairingRepository pairingRepository;
+    private final BookCollectionRepository bookCollectionRepository;
     private final UserService userService;
 
 
@@ -94,37 +96,59 @@ public class BookService {
 
         if (optionalBook.isEmpty()) {
 
-            String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
-            String title = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).title;
+            BookInfoSearchDto.BookInfo.Item bookItem = bookInfoSearchService.bookSearch(isbn13).getItem().get(0);
+
+            LinkedHashMap map = (LinkedHashMap<String ,String>)bookItem.subInfo;
+
+            String categoryName = bookItem.categoryName;
+
+            Genre genre = null;
+
+            if (categoryName.matches(".*소설/시/희곡>.*소설")) genre = Genre.NOVEL;
+            else if (categoryName.matches(".*에세이>.*에세이")) genre = Genre.ESSAY;
+            else if (categoryName.matches(".*소설/시/희곡>.*시")) genre = Genre.POEM;
+            else if (categoryName.matches(".*예술/대중문화>.*")) genre = Genre.ART;
+            else if (categoryName.matches(".*>인문학>.*")) genre = Genre.HUMANITIES;
+            else if (categoryName.matches(".*>사회과학>.*")) genre = Genre.SOCIAL;
+            else if (categoryName.matches(".*>과학>.*")) genre = Genre.NATURAL;
+            else if (categoryName.matches(".*>만화>.*")) genre = Genre.COMICS;
+            else genre = Genre.ETC;
 
             Book savedBook =
                     Book.builder()
-                            .title(title)
                             .isbn13(isbn13)
-                            .genre(null)
+                            .cover(bookItem.cover)
+                            .title(bookItem.title)
+                            .subTitle(map.get("subTitle").toString())
+                            .itemPage(map.get("itemPage").toString())
+                            .author(bookItem.author)
+                            .pubDate(bookItem.pubDate)
+                            .genre(genre)
+                            .adult(bookItem.adult)
+                            .description(bookItem.description)
                             .view(1)
                             .build();
 
-            if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
-            else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
-            else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
-            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
-            else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
-            else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
-            else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
-            else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
-            else savedBook.setGenre(Genre.ETC);
 
 
-
-
+            System.out.println(map.get("itemPage"));
+            
             return bookRepository.save(savedBook);
 
         } else {
 
             Book findBook = optionalBook.get();
 
+            long commentCount = findBook.getComments().size();
+
+            long pairingCount = findBook.getPairings().size();
+
+            long bookCollectionCount = findBook.getBookCollections().size();
+
             findBook.setView(findBook.getView() + 1); // 별점 업데이트
+            findBook.setCommentCount(commentCount);
+            findBook.setPairingCount(pairingCount);
+            findBook.setBookCollectionCount(bookCollectionCount);
 
             return bookRepository.save(findBook);
         }

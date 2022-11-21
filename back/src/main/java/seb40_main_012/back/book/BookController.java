@@ -10,6 +10,8 @@ import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.common.comment.CommentDto;
+import seb40_main_012.back.common.comment.CommentMapper;
+import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.rating.RatingService;
 import seb40_main_012.back.dto.SingleResponseDto;
@@ -32,20 +34,22 @@ import java.util.Random;
 @RequestMapping("/api/books")
 public class BookController {
 
+    private final CommentService commentService;
+    private final CommentMapper commentMapper;
     private final BookService bookService;
     private final BookMapper bookMapper;
     private final RatingService ratingService;
 
-    @PostMapping("/{add}")
-    public ResponseEntity postBook(@Valid @RequestBody BookDto.Post postBook) {
-
-        Book book = bookMapper.bookPostToBook(postBook);
-        Book createBook = bookService.createBook(book);
-        BookDto.Response response = bookMapper.bookToBookResponse(createBook);
-
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.CREATED);
-    }
+//    @PostMapping("/{add}")
+//    public ResponseEntity postBook(@Valid @RequestBody BookDto.Post postBook) {
+//
+//        Book book = bookMapper.bookPostToBook(postBook);
+//        Book createBook = bookService.createBook(book);
+//        BookDto.Response response = bookMapper.bookToBookResponse(createBook);
+//
+//        return new ResponseEntity<>(
+//                new SingleResponseDto<>(response), HttpStatus.CREATED);
+//    }
 
     @GetMapping("/{isbn13}")
     public ResponseEntity getBook(@PathVariable("isbn13") @Positive String isbn13) {
@@ -53,6 +57,17 @@ public class BookController {
         Book book = bookService.updateView(isbn13);
 
         BookDto.Response response = bookMapper.bookToBookResponse(book);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/{isbn13}/mycomment")
+    public ResponseEntity getMyBookComment(@PathVariable("isbn13") @Positive String isbn13) {
+
+        Comment myComment = commentService.findMyComment(isbn13);
+        CommentDto.Response response = commentMapper.myCommentToCommentResponse(myComment);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

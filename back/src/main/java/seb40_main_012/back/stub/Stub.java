@@ -246,6 +246,10 @@ public class Stub {
                     userRepository.save(user));
         }
 
+        // ------------------------------------------------------------------------------------------
+        // BOOK STUB
+        // ------------------------------------------------------------------------------------------
+
         for (long i = 1; i <= 50; i++) {
 
             log.info("BOOK STUB " +
@@ -316,7 +320,7 @@ public class Stub {
             log.info("PAIRING_COMMENT STUB " +
                     commentRepository.save(
                             Comment.builder()
-                                    .commentType(CommentType.values()[new Random().nextInt(CommentType.values().length)])
+                                    .commentType(CommentType.PAIRING)
                                     .view((int) (Math.random() * 150))
                                     .pairing(pairingService.findPairing(i))
                                     .user(userService.findUser(rand))
@@ -328,29 +332,98 @@ public class Stub {
             );
         }
 
-//        for (long i = 1; i <= 10; i++) {
-//
-//            log.info("Following " +
-//                    followRepository.save(
-//                            Follow.builder()
-//                                    .followingUser(User.builder().userId(i).build())
-//                                    .followedUser(User.builder().userId(22L).build())
-//                                    .createDate(new Timestamp(System.currentTimeMillis()))
-//                                    .build())
-//            );
-//        }
-//
-//        for (long i = 11; i <= 20; i++) {
-//
-//            log.info("Following " +
-//                    followRepository.save(
-//                            Follow.builder()
-//                                    .followingUser(User.builder().userId(22L).build())
-//                                    .followedUser(User.builder().userId(i).build())
-//                                    .createDate(new Timestamp(System.currentTimeMillis()))
-//                                    .build())
-//            );
-//        }
+        for (long i = 1; i <= 10; i++) {
+
+            log.info("Following " +
+                    followRepository.save(
+                            Follow.builder()
+                                    .followingUser(User.builder().userId(i).build())
+                                    .followedUser(User.builder().userId(22L).build())
+                                    .createDate(new Timestamp(System.currentTimeMillis()))
+                                    .build())
+            );
+        }
+
+        for (long i = 11; i <= 20; i++) {
+
+            log.info("Following " +
+                    followRepository.save(
+                            Follow.builder()
+                                    .followingUser(User.builder().userId(22L).build())
+                                    .followedUser(User.builder().userId(i).build())
+                                    .createDate(new Timestamp(System.currentTimeMillis()))
+                                    .build())
+            );
+        }
+
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
+        for (long i = 1; i <= 13; i++) {
+
+            long rand = (long) (Math.random() * 35) + 1;
+
+            log.info("PAIRING_COMMENT STUB " +
+                    commentRepository.save(
+                            Comment.builder()
+                                    .commentType(CommentType.BOOK)
+                                    .view((int) (Math.random() * 150))
+                                    .book(bookService.findBook("1"))
+                                    .user(userService.findUser(rand))
+                                    .body("Stub_Book_Comment_Body_" + i)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
+        }
+
+        for (long i = 1; i <= 15; i++) {
+
+            long rand = (long) (Math.random() * 15) + 1;
+
+            log.info("PAIRING STUB " +
+                    pairingRepository.save(
+                            Pairing.builder()
+                                    .pairingCategory(ParingCategory.values()[new Random().nextInt(ParingCategory.values().length)])
+                                    .view((int) (Math.random() * 150))
+                                    .imagePath("Stub_Image_Path_" + i)
+                                    .title("Stub_Pairing_Title_" + i)
+                                    .body("Stub_Pairing_Body_" + i)
+                                    .book(bookService.findVerifiedBook("1"))
+                                    .user(userService.findUser(rand))
+                                    .outLinkPath("Stub_Pairing_OutLink_Path" + i)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
+        }
+
+        for (long i = 1; i <= 17; i++) {
+
+            long rand = (long) (Math.random() * 50) + 1;
+
+            log.info("BOOK_COLLECTION STUB " +
+                    bookCollectionRepository.save(BookCollection.builder()
+                            .book(bookService.findBook("1"))
+                            .title("Stub_Book_Collection_" + i)
+                            .content("Stub_Book_Collection_Content" + i)
+                            .likeCount(rand)
+                            .collectionTags(null)
+                            .build()));
+        }
+
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
+
 
         return null;
     }

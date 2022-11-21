@@ -1,12 +1,15 @@
 package seb40_main_012.back.common.comment;
 
+import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.user.dto.UserDto;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -19,7 +22,22 @@ public interface CommentMapper {
     Comment commentLikeToComment(CommentDto.Like likeComment);
 
     //    Comment commentViewToComment(CommentDto.View viewComment);
-    default CommentDto.Response commentToCommentResponse(Comment comment) {
+    default CommentDto.Response myCommentToCommentResponse(Comment comment) {
+
+        return CommentDto.Response.builder()
+                .commentId(comment.getCommentId())
+                .bookTitle(comment.getBook().getTitle())
+                .commentType(CommentType.BOOK)
+                .body(comment.getBody())
+                .likeCount(comment.getLikeCount())
+                .view(comment.getView())
+                .createdAt(comment.getCreatedAt())
+                .modifiedAt(comment.getModifiedAt())
+                .build();
+    }
+
+    default CommentDto.Response commentToCommentResponse(Comment comment)
+    {
 
         return CommentDto.Response.builder()
                 .commentId(comment.getCommentId())
@@ -40,7 +58,51 @@ public interface CommentMapper {
                 .build();
     }
 
-    ;
+    default CommentDto.Response bookCommentToCommentResponse(Comment comment)
+    {
+
+        return CommentDto.Response.builder()
+                .commentId(comment.getCommentId())
+                .bookTitle(comment.getBook().getTitle())
+                .userInformation(
+                        UserDto.ResponseDto.builder()
+                                .email(comment.getUser().getEmail())
+                                .nickName(comment.getUser().getNickName())
+                                .bookTemp(comment.getUser().getBookTemp())
+                                .roles(comment.getUser().getRoles())
+                                .build()
+                )
+                .commentType(comment.getCommentType())
+                .body(comment.getBody())
+                .likeCount(comment.getLikeCount())
+                .view(comment.getView())
+                .createdAt(comment.getCreatedAt())
+                .modifiedAt(comment.getModifiedAt())
+                .build();
+    }
+
+    default CommentDto.Response pairingCommentToCommentResponse(Comment comment)
+    {
+
+        return CommentDto.Response.builder()
+                .commentId(comment.getCommentId())
+                .pairingId(comment.getPairing().getPairingId())
+                .userInformation(
+                        UserDto.ResponseDto.builder()
+                                .email(comment.getUser().getEmail())
+                                .nickName(comment.getUser().getNickName())
+                                .bookTemp(comment.getUser().getBookTemp())
+                                .roles(comment.getUser().getRoles())
+                                .build()
+                )
+                .commentType(comment.getCommentType())
+                .body(comment.getBody())
+                .likeCount(comment.getLikeCount())
+                .view(comment.getView())
+                .createdAt(comment.getCreatedAt())
+                .modifiedAt(comment.getModifiedAt())
+                .build();
+    }
 
     default SliceImpl<CommentDto.Response> commentsToCommentResponses(List<Comment> comments) {
 

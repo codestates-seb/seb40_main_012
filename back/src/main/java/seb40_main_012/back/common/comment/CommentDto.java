@@ -11,6 +11,7 @@ import javax.validation.constraints.Size;
 import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Getter
 public class CommentDto {
@@ -65,6 +66,8 @@ public class CommentDto {
     public static class Response {
 
         private long commentId;
+        private String bookTitle;
+        private long pairingId;
         private UserDto.ResponseDto userInformation;
         private CommentType commentType;
         private String body;
@@ -72,7 +75,6 @@ public class CommentDto {
         private long view;
         private LocalDateTime createdAt;
         private LocalDateTime modifiedAt;
-
 
     }
 
