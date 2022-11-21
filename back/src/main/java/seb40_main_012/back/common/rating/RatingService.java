@@ -116,7 +116,7 @@ public class RatingService {
 
                     return bookRepository.save(findBook);
 
-                } else { // 기존에 입력한 점수가 있을 경우
+                } else {
 
                     numerator = (averageRating * ratingCount) - findRating.getUserBookRating() + bookRating;
                     denominator = ratingCount;
