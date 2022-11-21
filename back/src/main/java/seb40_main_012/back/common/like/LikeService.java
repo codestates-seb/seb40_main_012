@@ -64,7 +64,7 @@ public class LikeService {
     public void createBookCollectionLike(User user, BookCollection bookCollection) {
     }
 
-    public void createCommentLike(long commentId) {
+    public void createCommentLike(long commentId) { // 책에 대한 코멘트 좋아요
 
         Comment findComment = commentService.findComment(commentId);
 

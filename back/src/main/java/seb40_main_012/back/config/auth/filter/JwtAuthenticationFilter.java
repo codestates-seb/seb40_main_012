@@ -15,7 +15,6 @@ import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.mapper.UserMapper;
-import seb40_main_012.back.user.service.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -69,9 +68,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .build();
         response.setHeader("Set-Cookie", cookie.toString());
         RefreshToken saveToken = RefreshToken.builder() // refresh token 저장
-                        .email(user.getEmail())
-                        .tokenValue(refreshToken)
-                        .build();
+                .email(user.getEmail())
+                .tokenValue(refreshToken)
+                .build();
         repository.save(saveToken);
 
         this.getSuccessHandler().onAuthenticationSuccess(request, response, authResult); // 핸들러 호출

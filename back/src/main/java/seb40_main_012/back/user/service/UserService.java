@@ -62,6 +62,7 @@ public class UserService {
 
         List<String> roles = authorityUtils.createRoles(user.getEmail());
         user.setRoles(roles);
+        user.setBookTemp(36.5);
         User savedUser = userRepository.save(user);
 
         publisher.publishEvent(new UserRegistrationApplicationEvent(this, savedUser));
@@ -75,6 +76,7 @@ public class UserService {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
         }
     }
+
     public void updateNickName(Long id, String nickName) {
         User findUser = findVerifiedUser(id);
         verifyNickName(nickName);
@@ -86,13 +88,13 @@ public class UserService {
         User findUser = findVerifiedUser(userId);
         return findUser.verifyPassword(passwordEncoder, password);
     }
-    public void updatePassword(Long id, String password){
+
+    public void updatePassword(Long id, String password) {
         User findUser = findVerifiedUser(id);
         if(verifyPassword(id,password)){
             throw new BusinessLogicException(ExceptionCode.PASSWORD_CANNOT_CHANGE);
-        }
-        else{
-            findUser.updatePassword(passwordEncoder,password);
+        } else {
+            findUser.updatePassword(passwordEncoder, password);
 //            userRepository.save(findUser);
         }
     }
@@ -132,13 +134,15 @@ public class UserService {
     }
 
     public List<BookCollection> getUserCollection(Long userId){
-        //findall 해서 userId만 비교?
         return collectionRepository.findByUserUserId(userId); //왜 안될까?
 
     }
 
     public User findUser(long userId) {
-        return findVerifiedUser(userId);
+        User findUser = findVerifiedUser(userId);
+//        findUser.setBookTemp(calcBookTemp(userId)); // 유저 테이블에 컬렉션 & 좋아요 추가된 후에 주석 풀기
+
+        return findUser;
     }
 
     public User findVerifiedUser(Long id) {
@@ -154,6 +158,26 @@ public class UserService {
         return collections;
     }
 
+//    public double calcBookTemp(long userId) {
+//
+//        User findUser = findVerifiedUser(userId);
+//
+//        double basicTemp = 36.5; // 기본 온기
+//
+//        long pairingCount = findUser.getPairings().stream().count(); // 작성 페어링 개수
+//        long collectionCount = findUser.getCollections().stream().count(); // 작성 컬렉션 개수
+//        long commentCount = findUser.getComments().stream().count(); // 작성 코멘트 개수
+//        long likeCount = findUser.getLikes.stream().count(); // 누른 좋아요 개수
+//
+//        double temperature =
+//                basicTemp +
+//                        (double) pairingCount / 10 +
+//                        (double) collectionCount / 100 +
+//                        (double) (commentCount + likeCount) / 1000;
+//
+//        return Math.round(temperature * 10) / 10.0;
+//    }
+
 //    public List<Pairing> getBookMarkByPairing(Long id){
 //    }
 
@@ -162,7 +186,6 @@ public class UserService {
 //    public boolean validPassword(String password) {
 //        Pattern pattern = Pattern.compile();
 //    }
-
     public User updateOnFirstLogin(LoginDto.PatchDto patchDto) {
         User loginUser = getLoginUser(); // 로그인 유저 가져오기
         loginUser.setGender(patchDto.getGenderType());
@@ -170,14 +193,14 @@ public class UserService {
         loginUser.setFirstLogin(false); // "나중에 하기" 또는 "확인" 버튼 클릭 시
 
         List<UserCategory> userCategories = patchDto.getGenres().stream()
-                        .map(genre -> {
-                            UserCategory userCategory = new UserCategory();
-                            Category category = new Category();
-                            category.setId((long) Genre.valueOf(genre).ordinal() + 1);
-                            userCategory.addUser(loginUser);
-                            userCategory.addCategory(category);
-                            return userCategory;
-                        }).collect(Collectors.toList());
+                .map(genre -> {
+                    UserCategory userCategory = new UserCategory();
+                    Category category = new Category();
+                    category.setId((long) Genre.valueOf(genre).ordinal() + 1);
+                    userCategory.addUser(loginUser);
+                    userCategory.addCategory(category);
+                    return userCategory;
+                }).collect(Collectors.toList());
         loginUser.setCategories(userCategories);
 
         return userRepository.save(loginUser);
@@ -186,7 +209,7 @@ public class UserService {
     public User getLoginUser() { // 로그인된 유저 가져오기
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if(authentication == null || authentication.getName() == null || authentication.getName().equals("anonymousUser"))
+        if (authentication == null || authentication.getName() == null || authentication.getName().equals("anonymousUser"))
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
 
         Optional<User> optionalUser = userRepository.findByEmail(authentication.getName());

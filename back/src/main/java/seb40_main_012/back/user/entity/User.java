@@ -13,6 +13,7 @@ import seb40_main_012.back.common.comment.entity.Comment;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
+import seb40_main_012.back.notification.Notification;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
@@ -34,6 +35,7 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
     private String email;
+    private double bookTemp;
     private String nickName;
     private String password;
     private String introduction;
@@ -51,10 +53,11 @@ public class User {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> roles = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Pairing> pairings = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
@@ -90,9 +93,10 @@ public class User {
     }
 
     public boolean verifyPassword(BCryptPasswordEncoder passwordEncoder, String password) {
-        return passwordEncoder.matches(password,this.password);
+        return passwordEncoder.matches(password, this.password);
     }
-    public void updatePassword(BCryptPasswordEncoder passwordEncoder, String password){
+
+    public void updatePassword(BCryptPasswordEncoder passwordEncoder, String password) {
         this.password = passwordEncoder.encode(password);
     }
 
@@ -104,7 +108,7 @@ public class User {
 
     public void addUserCategory(UserCategory userCategory) {
         this.categories.add(userCategory);
-        if(userCategory.getUser() != this) {
+        if (userCategory.getUser() != this) {
             userCategory.addUser(this);
         }
     }
@@ -116,5 +120,19 @@ public class User {
     public void addCollectionLike(BookCollectionLike collectionLike) {
         this.collectionLikes.add(collectionLike);
     }
+
+
+    //    ------------------------------------------------------------------------------------------
+//    ------------------------------------------------------------------------------------------
+//    ------------------------------------------------------------------------------------------
+    // 알림 테스트 용!
+//    ------------------------------------------------------------------------------------------
+//    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.REMOVE)
+    private List<Notification> notifications = new ArrayList<>();
+//    ------------------------------------------------------------------------------------------
+//    ------------------------------------------------------------------------------------------
+//    ------------------------------------------------------------------------------------------
+//    ------------------------------------------------------------------------------------------
 
 }

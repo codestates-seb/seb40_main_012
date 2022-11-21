@@ -32,7 +32,7 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         try {
             Map<String, Object> claims = verifyJws(request);
             RefreshToken findRefreshToken = refreshTokenRepository.findByEmail((String) claims.get("email"))
-                            .orElseThrow(() -> new NullPointerException());
+                    .orElseThrow(() -> new NullPointerException());
             setAuthenticationToContext(claims);
         } catch (SignatureException se) {
             request.setAttribute("exception", se);

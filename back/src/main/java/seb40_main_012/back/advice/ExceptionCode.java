@@ -4,9 +4,12 @@ import lombok.Getter;
 
 public enum ExceptionCode {
 
+    NOT_FOUND(404, "Not Found"),
+
     BOOK_NOT_FOUND(404,"Book Not Found"),
 
     BOOK_WIKI_NOT_FOUND(404,"Book Wiki Not Found"),
+    BOOK_WIKI_EXISTS(409, "Book Wiki Already Exists"),
 
     IMAGE_NOT_FOUND(404,"Image Not Found"),
 

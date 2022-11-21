@@ -39,6 +39,7 @@ public class LoginDto {
     public static class ResponseDto {
         private boolean firstLogin;
         private String nickName;
+        private double bookTemp;
         private String email;
         private List<String> roles;
     }
@@ -52,6 +53,7 @@ public class LoginDto {
         private boolean firstLogin;
         private String nickName;
         private String email;
+        private double bookTemp = 36.5;
         private List<String> roles;
         private GenderType genderType;
         private AgeType ageType;

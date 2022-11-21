@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import seb40_main_012.back.book.entity.Book;
 
 import javax.persistence.*;
@@ -48,11 +49,11 @@ public class BookWiki {
 
     @CreatedDate
     @Column(nullable = false, updatable = false, name = "CREATED_AT")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
-    @CreatedDate
-    @Column(nullable = false, name = "MODIFIED_AT")
-    private LocalDateTime modifiedAt = LocalDateTime.now();
+    @LastModifiedDate
+    @Column(name = "MODIFIED_AT")
+    private LocalDateTime modifiedAt;
 
     @JsonBackReference
     @OneToOne

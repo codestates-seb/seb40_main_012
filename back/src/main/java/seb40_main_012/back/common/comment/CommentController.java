@@ -11,6 +11,7 @@ import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
+import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.PairingService;
 
 import javax.validation.Valid;
@@ -29,6 +30,10 @@ public class CommentController {
     private final BookCollectionService bookCollectionService;
     private final CommentMapper commentMapper;
     private final LikeService likeService;
+
+//    ------------------------------------------------------------
+    private final NotificationService noticeService;
+//    ------------------------------------------------------------
 
     @PostMapping("/books/{isbn13}/comments/add")
     public ResponseEntity postBookComment(@PathVariable("isbn13") @Positive String isbn13,
@@ -50,6 +55,10 @@ public class CommentController {
         Comment comment = commentMapper.commentPostToComment(postComment);
         Comment createdComment = commentService.createPairingComment(comment, pairingId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
+
+//        ------------------------------------------------------------
+        noticeService.notifyPostPairingCommentEvent(createdComment);
+//        ------------------------------------------------------------
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED
@@ -83,6 +92,10 @@ public class CommentController {
         Comment comment = commentMapper.commentLikeToComment(likeComment);
         Comment updatedLikeComment = commentService.updateLike(comment, commentId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(updatedLikeComment);
+
+//        ------------------------------------------------------------
+        noticeService.notifyUpdateLikeCommentEvent(updatedLikeComment);
+//        ------------------------------------------------------------
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

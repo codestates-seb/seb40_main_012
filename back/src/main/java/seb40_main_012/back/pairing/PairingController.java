@@ -1,16 +1,15 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
-import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
+import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.Valid;
@@ -27,6 +26,9 @@ public class PairingController {
     private final PairingMapper pairingMapper;
     private final BookService bookService;
     private final LikeService likeService;
+//    ------------------------------------------------------------
+    private final NotificationService noticeService;
+//    ------------------------------------------------------------
 
     @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
@@ -78,6 +80,10 @@ public class PairingController {
         Pairing pairing = pairingMapper.pairingLikeToPairing(likePairing);
         Pairing updatedLikePairing = pairingService.updateLike(pairing, pairingId);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedLikePairing);
+
+//        ------------------------------------------------------------
+        noticeService.notifyUpdateLikePairingEvent(updatedLikePairing);
+//        ------------------------------------------------------------
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

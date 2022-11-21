@@ -11,6 +11,8 @@ public class BookWikiDto {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class Post{
 
         private String imagePath;
@@ -37,20 +39,12 @@ public class BookWikiDto {
     }
     @Data
     @Builder
-    public static class View{
-
-        private long commentId;
-        private long view;
-
-    }
-    @Data
-    @Builder
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Response{
 
-        private long bookId;
         private long bookWikiId;
+        private long view;
         private String imagePath;
         private String spacetimeBackground;
         private String characterTree;
