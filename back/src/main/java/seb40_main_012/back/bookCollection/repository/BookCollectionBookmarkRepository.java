@@ -11,5 +11,5 @@ import java.util.List;
 
 public interface BookCollectionBookmarkRepository extends JpaRepository<BookCollectionBookmark,Long> {
     BookCollectionBookmark findByUserAndBookCollection(User user, BookCollection collection);
-    List<BookCollectionBookmark> findByUser(User user);
+    List<BookCollectionBookmark> findByUserUserId(Long userId);
 }

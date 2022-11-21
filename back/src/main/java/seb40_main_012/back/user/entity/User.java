@@ -13,6 +13,7 @@ import seb40_main_012.back.common.comment.entity.Comment;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
+//import seb40_main_012.back.notification.Notification;
 import seb40_main_012.back.common.rating.Rating;
 //import seb40_main_012.back.notification.Notification;
 import seb40_main_012.back.pairing.entity.Pairing;
