@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
-import seb40_main_012.back.notification.NotificationService;
+//import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.Valid;
@@ -27,7 +27,7 @@ public class PairingController {
     private final BookService bookService;
     private final LikeService likeService;
 //    ------------------------------------------------------------
-    private final NotificationService noticeService;
+//    private final NotificationService noticeService;
 //    ------------------------------------------------------------
 
     @PostMapping("/{isbn13}/pairings/add")
@@ -82,7 +82,7 @@ public class PairingController {
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedLikePairing);
 
 //        ------------------------------------------------------------
-        noticeService.notifyUpdateLikePairingEvent(updatedLikePairing);
+//        noticeService.notifyUpdateLikePairingEvent(updatedLikePairing);
 //        ------------------------------------------------------------
 
         return new ResponseEntity<>(
@@ -150,7 +150,7 @@ public class PairingController {
 //        );
 //    }
 
-//    --------------------------------------------------------------------------------------------
+    //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
