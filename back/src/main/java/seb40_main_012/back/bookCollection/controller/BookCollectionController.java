@@ -39,22 +39,22 @@ public class BookCollectionController {
 
     @PatchMapping("/edit/{collection-id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookCollectionDto.Response patchCollection(@RequestHeader("Authorization") Long userId,@PathVariable("collection-id")Long collectionId, @RequestBody BookCollectionDto.Post request) {
-        BookCollection collection = collectionService.patchCollection(userId,collectionId, request.toEntity(), request.getTags());
+    public BookCollectionDto.Response patchCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id") Long collectionId, @RequestBody BookCollectionDto.Post request) {
+        BookCollection collection = collectionService.patchCollection(userId, collectionId, request.toEntity(), request.getTags());
         return BookCollectionDto.Response.of(collection);
     }
 
     @GetMapping("/{collection-id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookCollectionDto.CollectionDetails getCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id")Long collectionId) {
+    public BookCollectionDto.CollectionDetails getCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id") Long collectionId) {
         BookCollection collection = collectionService.getCollection(collectionId);
         List<String> isbns = collection.getIsbn13();
         List<BookInfoSearchDto.CollectionBook> books = new ArrayList<>();
         isbns.forEach(
-               x -> books.add(bookInfoSearchService.collectionBookSearch(x))
+                x -> books.add(bookInfoSearchService.collectionBookSearch(x))
         );
 
-        return BookCollectionDto.CollectionDetails.of(collection,books);
+        return BookCollectionDto.CollectionDetails.of(collection, books);
     }
 
 
@@ -66,14 +66,14 @@ public class BookCollectionController {
 
     @PostMapping("/{collection-id}/like")
     @ResponseStatus(HttpStatus.OK)
-    public boolean likeCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id") Long collectionId){
-        return collectionService.likeCollection(userId,collectionId);
+    public boolean likeCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id") Long collectionId) {
+        return collectionService.likeCollection(userId, collectionId);
     }
 
     @PostMapping("/{collection-id}/bookmark")
     @ResponseStatus(HttpStatus.OK)
-    public boolean bookmarkCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id") Long collectionId){
-        return collectionService.bookmarkCollection(userId,collectionId);
+    public boolean bookmarkCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id") Long collectionId) {
+        return collectionService.bookmarkCollection(userId, collectionId);
     }
 
 
@@ -99,7 +99,6 @@ public class BookCollectionController {
 //        BookCollection collection = collectionService.getCollectionByUserCategory();
 //        return ;
 //    }
-
 
 
 }

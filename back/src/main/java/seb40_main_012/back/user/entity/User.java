@@ -54,6 +54,7 @@ public class User {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> roles = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 

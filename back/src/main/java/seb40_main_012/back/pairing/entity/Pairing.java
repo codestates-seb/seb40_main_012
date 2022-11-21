@@ -79,6 +79,7 @@ public class Pairing {
     private List<Like> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "pairing")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<PairingBookmark> bookmarks = new ArrayList<>();
 
     @CreatedDate
