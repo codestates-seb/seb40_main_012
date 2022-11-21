@@ -4,7 +4,7 @@ import { TOKEN_REFRESH_URL, SIGN_IN_URL, LOGOUT_URL } from './requests';
 
 // 만료 시간 (밀리초)
 const ACCESS_EXPIRY_TIME = 30 * 60 * 1000; // 30분
-const REFRESH_EXPIRY_TIME = 7 * 60 * 60 * 1000; // 7시간(420분)
+const REFRESH_EXPIRY_TIME = 24 * 60 * 60 * 1000; // 24시간
 
 const setAxiosHeaderAuth = (value) =>
   (axios.defaults.headers.common['Authorization'] = value);
