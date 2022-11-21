@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import PageContainer from '../../components/PageContainer';
 import CollectionInfoInput from './CollectionInfoInput';
 import CollectionWriteBtns from './CollectionWriteBtns';
+import CollectionBookInput from './BookInput/CollectionBookInput';
 
 const CollectionWritePage = () => {
   const [data, setData] = useState({
@@ -26,6 +27,7 @@ const CollectionWritePage = () => {
   return (
     <PageContainer footer>
       <CollectionInfoInput data={data} setData={setData}></CollectionInfoInput>
+      <CollectionBookInput data={data} setData={setData} />
       <CollectionWriteBtns handleCollectionWrite={handleCollectionWrite} />
     </PageContainer>
   );

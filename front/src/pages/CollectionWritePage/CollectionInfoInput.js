@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 const CollectionInfoInputContainer = styled.div`
   width: 100%;
-  padding: 60px;
+  padding: 30px 60px;
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
@@ -112,11 +112,9 @@ const CollectionInfoInput = ({ data, setData }) => {
   };
 
   const handleOnFoucusUpTag = () => {
-    console.log('focus');
     setIsOnKeyUp(true);
   };
   const handleOnBlurTag = () => {
-    console.log('down');
     setIsOnKeyUp(false);
   };
 
