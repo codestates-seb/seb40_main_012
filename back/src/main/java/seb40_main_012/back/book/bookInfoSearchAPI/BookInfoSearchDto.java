@@ -65,7 +65,22 @@ public class BookInfoSearchDto {
             public String author;
 
         }
+     }
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MainCollectionBook {
+        List<Item> item = new ArrayList<>();
+        public static class Item {
+            public static String isbn13;
+            public String cover;
+            public String bookTitle;
+
+        }
     }
+
     }
+
 
 

@@ -8,6 +8,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.user.entity.User;
 
 import javax.persistence.*;
@@ -43,13 +44,13 @@ public class BookCollection {
     @ElementCollection
     private List<String> isbn13 = new ArrayList<>();
 
+    @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<BookCollectionBook> collectionBooks = new ArrayList<>();
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "book_id")
-    private Book book;
 
     @LastModifiedDate
     private LocalDate lastModifiedAt = LocalDate.now();

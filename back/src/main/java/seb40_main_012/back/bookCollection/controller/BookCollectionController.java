@@ -77,29 +77,44 @@ public class BookCollectionController {
     }
 
 
-//    @GetMapping("/userCollection")
-//    @ResponseStatus(HttpStatus.OK)
-//    public MultiResponseDto<BookCollectionDto.UserCollection> getUserBookCollection(@RequestHeader("Authorization") Long userId){
-//        List<BookCollection> collections = userService.getUserCollection(userId);
-//        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x-> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
-//        Long listCount = collectionRepository.countByUserUserId(userId);
-//        return new MultiResponseDto<>(collectionDto);
-//    }
-//
-//    @GetMapping("/category")
-//    @ResponseStatus(HttpStatus.OK)
-//    public BookCollectionDto.CategoryCollection getCollectionByUserCategory(@RequestHeader("Authorization") Long userId) {
-//        BookCollection collection = collectionService.getCollectionByUserCategory();
-//        return ;
-//    }
-//
-//    @GetMapping("/tag")
-//    @ResponseStatus(HttpStatus.OK)
-//    public BookCollectionDto.CategoryCollection getCollectionByUserCategory(@RequestHeader("Authorization") Long userId) {
-//        BookCollection collection = collectionService.getCollectionByUserCategory();
-//        return ;
-//    }
+    @GetMapping("/userCollection")
+    @ResponseStatus(HttpStatus.OK)
+    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection(@RequestHeader("Authorization") Long userId){
+        List<BookCollection> collections = userService.getUserCollection(userId);
+        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x-> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
+        Long listCount = collectionRepository.countByUserUserId(userId);
+        return new ListResponseDto<>(listCount,collectionDto);
+    }
 
+
+    @GetMapping("/category")
+    @ResponseStatus(HttpStatus.OK)
+    public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory(@RequestHeader("Authorization") Long userId) {
+        List<BookCollection> collections = collectionService.findCollectionByCollectionTag();
+        List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
+        return new ListResponseDto<>(tagCollectionDto);
+    }
+
+    @GetMapping("/tag")
+    @ResponseStatus(HttpStatus.OK)
+    public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByCollectionTag(@RequestHeader("Authorization") Long userId) {
+        List<BookCollection> collections = collectionService.findCollectionByCollectionTag();
+        List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
+        return new ListResponseDto<>(tagCollectionDto);
+    }
+
+    @GetMapping("/author")
+    @ResponseStatus(HttpStatus.OK)
+    //이게 맞냐고
+    public BookCollectionDto.AuthorCollection getCollectionByAuthor(@RequestHeader("Authorization") Long userId) {
+        BookCollection collection = collectionService.findCollectionByAuthor();
+        List<String> isbns = collection.getIsbn13();
+        List<BookInfoSearchDto.MainCollectionBook> books = new ArrayList<>();
+        isbns.forEach(
+                x -> books.add(bookInfoSearchService.MainCollectionBookSearch(x))
+        );
+        return BookCollectionDto.AuthorCollection.of(collection,books);
+    }
 
 
 }

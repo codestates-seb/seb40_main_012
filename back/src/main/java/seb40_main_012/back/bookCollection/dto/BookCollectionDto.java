@@ -82,6 +82,7 @@ public class BookCollectionDto {
         private List<String> tags;
         private List<BookInfoSearchDto.CollectionBook> books;
 
+
         //collection book
         public static CollectionDetails of(BookCollection collection,List<BookInfoSearchDto.CollectionBook> books ){
             return CollectionDetails.builder()
@@ -143,16 +144,50 @@ public class BookCollectionDto {
 //        private String cover;
 //        private String title;
 //        private String author;
-//        private Long collectionLike;
 //
 //        public static BookCollectionDto.CategoryCollection of(BookCollection collection){
 //            return BookCollectionDto.CategoryCollection.builder()
-//                    .cover(collection)
+////                    .cover(collection.getIsbn13().)
 //                    .title(collection.getTitle())
-//                    .collectionLike(collection.getCollectionLikes().stream().count())
 //                    .build();
 //        }
 //    }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class TagCollection{
+//        private List<BookInfoSearchDto.CollectionBook> books;
+        private String cover;
+        private String title;
+
+        public static BookCollectionDto.TagCollection of(BookCollection collection){
+            return TagCollection.builder()
+//                    .books(collection.getIsbn13().)
+                    .title(collection.getTitle())
+//                    .cover()
+//                    .author(collection.getUser().getNickName())
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class AuthorCollection{
+        private String title;
+        private List<BookInfoSearchDto.MainCollectionBook> books;
+
+
+        //collection book
+        public static AuthorCollection of(BookCollection collection,List<BookInfoSearchDto.MainCollectionBook> books ){
+            return AuthorCollection.builder()
+                    .title(collection.getTitle())
+                    .books(books)
+                    .build();
+        }
+    }
 
 }

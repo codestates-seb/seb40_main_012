@@ -6,7 +6,7 @@ import seb40_main_012.back.pairing.entity.Pairing;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-18T09:28:48+0900",
+    date = "2022-11-21T14:00:31+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.5 (Azul Systems, Inc.)"
 )
 @Component
