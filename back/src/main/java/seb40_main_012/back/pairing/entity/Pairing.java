@@ -8,8 +8,10 @@ import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.bookWiki.BookWiki;
 import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.image.Image;
 import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.user.entity.User;
 
@@ -63,9 +65,8 @@ public class Pairing {
     private Book book;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Comment> images;
+    @OneToOne(mappedBy = "pairing")
+    private Image image;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)

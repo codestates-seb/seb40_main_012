@@ -144,7 +144,7 @@ public class PairingService {
                         .outLinkPath(pairing.getOutLinkPath())
                         .likeCount(findPairing.getLikeCount())
                         .view(findPairing.getView())
-                        .images(findPairing.getImages())
+                        .image(findPairing.getImage())
                         .comments(findPairing.getComments())
                         .likes(findPairing.getLikes())
                         .createdAt(findPairing.getCreatedAt())
