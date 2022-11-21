@@ -192,16 +192,18 @@ public class UserService {
         loginUser.setAge(patchDto.getAge());
         loginUser.setFirstLogin(false); // "나중에 하기" 또는 "확인" 버튼 클릭 시
 
-        List<UserCategory> userCategories = patchDto.getGenres().stream()
-                .map(genre -> {
-                    UserCategory userCategory = new UserCategory();
-                    Category category = new Category();
-                    category.setId((long) Genre.valueOf(genre).ordinal() + 1);
-                    userCategory.addUser(loginUser);
-                    userCategory.addCategory(category);
-                    return userCategory;
-                }).collect(Collectors.toList());
-        loginUser.setCategories(userCategories);
+        if(patchDto.getGenres() != null) {
+            List<UserCategory> userCategories = patchDto.getGenres().stream()
+                    .map(genre -> {
+                        UserCategory userCategory = new UserCategory();
+                        Category category = new Category();
+                        category.setId((long) Genre.valueOf(genre).ordinal() + 1);
+                        userCategory.addUser(loginUser);
+                        userCategory.addCategory(category);
+                        return userCategory;
+                    }).collect(Collectors.toList());
+            loginUser.setCategories(userCategories);
+        }
 
         return userRepository.save(loginUser);
     }
