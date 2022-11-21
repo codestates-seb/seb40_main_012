@@ -7,8 +7,7 @@ import seb40_main_012.back.config.auth.entity.RefreshToken;
 import java.util.Optional;
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
-    Optional<RefreshToken> findByEmail(String email);
+    Optional<RefreshToken> findByTokenValue(String tokenValue);
 
-    //@Transactional
-    Optional<RefreshToken> deleteByEmail(String email);
+    Optional<RefreshToken> deleteByTokenValue(String tokenValue);
 }

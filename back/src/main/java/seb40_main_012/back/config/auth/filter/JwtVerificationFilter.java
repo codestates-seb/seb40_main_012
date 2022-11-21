@@ -30,14 +30,10 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         try {
-            Map<String, Object> claims = verifyJws(request);
-            RefreshToken findRefreshToken = refreshTokenRepository.findByEmail((String) claims.get("email"))
-                    .orElseThrow(() -> new NullPointerException());
+            Map<String, Object> claims = jwtTokenizer.verifyJws(request);
             setAuthenticationToContext(claims);
         } catch (SignatureException se) {
             request.setAttribute("exception", se);
-        } catch (NullPointerException ne) {
-            response.sendError(401, "로그아웃 한 사용자입니다");
         } catch (ExpiredJwtException ee) { // AccessToken 기간 만료
             request.setAttribute("exception", ee);
             response.sendError(401, "Access Token이 만료되었습니다");
@@ -53,13 +49,6 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
         String authorization = request.getHeader("Authorization");
 
         return authorization == null || !authorization.startsWith("Bearer");
-    }
-
-    private Map<String, Object> verifyJws(HttpServletRequest request) {
-        String jws = request.getHeader("Authorization").replace("Bearer ", "");
-        String base64EncodedSecretKey = jwtTokenizer.encodeBase64SecretKey(jwtTokenizer.getSecretKey());
-        Map<String, Object> claims = jwtTokenizer.getClaims(jws, base64EncodedSecretKey).getBody();
-        return claims;
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {
