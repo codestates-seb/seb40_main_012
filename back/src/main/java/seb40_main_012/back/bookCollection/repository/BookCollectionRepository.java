@@ -12,5 +12,7 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection,L
     List<BookCollection> findByUserUserId(Long userId);
     Long countByUserUserId(Long userId);
 
+//    List<BookCollection> findByU
+
 
 }

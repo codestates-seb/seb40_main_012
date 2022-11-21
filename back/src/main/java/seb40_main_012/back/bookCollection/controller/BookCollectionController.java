@@ -9,7 +9,11 @@ import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
+import seb40_main_012.back.dto.ListResponseDto;
+import seb40_main_012.back.dto.MultiResponseDto;
+import seb40_main_012.back.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,8 +25,10 @@ import java.util.stream.Collectors;
 public class BookCollectionController {
 
     private final BookCollectionService collectionService;
+    private final UserService userService;
     private final BookService bookService;
     private final BookInfoSearchService bookInfoSearchService;
+    private final BookCollectionRepository collectionRepository;
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
@@ -70,11 +76,30 @@ public class BookCollectionController {
         return collectionService.bookmarkCollection(userId,collectionId);
     }
 
-//    @GetMapping
+
+//    @GetMapping("/userCollection")
 //    @ResponseStatus(HttpStatus.OK)
-//    public BookCollectionDto getCollectionByUserCategory(@RequestHeader("Authorization") Long userId) {
+//    public MultiResponseDto<BookCollectionDto.UserCollection> getUserBookCollection(@RequestHeader("Authorization") Long userId){
+//        List<BookCollection> collections = userService.getUserCollection(userId);
+//        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x-> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
+//        Long listCount = collectionRepository.countByUserUserId(userId);
+//        return new MultiResponseDto<>(collectionDto);
+//    }
+//
+//    @GetMapping("/category")
+//    @ResponseStatus(HttpStatus.OK)
+//    public BookCollectionDto.CategoryCollection getCollectionByUserCategory(@RequestHeader("Authorization") Long userId) {
 //        BookCollection collection = collectionService.getCollectionByUserCategory();
 //        return ;
 //    }
+//
+//    @GetMapping("/tag")
+//    @ResponseStatus(HttpStatus.OK)
+//    public BookCollectionDto.CategoryCollection getCollectionByUserCategory(@RequestHeader("Authorization") Long userId) {
+//        BookCollection collection = collectionService.getCollectionByUserCategory();
+//        return ;
+//    }
+
+
 
 }

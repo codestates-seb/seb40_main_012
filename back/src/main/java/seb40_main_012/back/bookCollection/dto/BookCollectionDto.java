@@ -135,4 +135,24 @@ public class BookCollectionDto {
                     .build();
         }
     }
+//    @Getter
+//    @Builder
+//    @AllArgsConstructor
+//    @NoArgsConstructor
+//    public static class CategoryCollection{
+//        private String cover;
+//        private String title;
+//        private String author;
+//        private Long collectionLike;
+//
+//        public static BookCollectionDto.CategoryCollection of(BookCollection collection){
+//            return BookCollectionDto.CategoryCollection.builder()
+//                    .cover(collection)
+//                    .title(collection.getTitle())
+//                    .collectionLike(collection.getCollectionLikes().stream().count())
+//                    .build();
+//        }
+//    }
+
+
 }
