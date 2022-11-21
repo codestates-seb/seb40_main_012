@@ -13,7 +13,7 @@ import seb40_main_012.back.common.comment.entity.Comment;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
-import seb40_main_012.back.notification.Notification;
+//import seb40_main_012.back.notification.Notification;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
@@ -128,8 +128,8 @@ public class User {
     // 알림 테스트 용!
 //    ------------------------------------------------------------------------------------------
 //    @JsonManagedReference
-    @OneToMany(cascade = CascadeType.REMOVE)
-    private List<Notification> notifications = new ArrayList<>();
+//    @OneToMany(cascade = CascadeType.REMOVE)
+//    private List<Notification> notifications = new ArrayList<>();
 //    ------------------------------------------------------------------------------------------
 //    ------------------------------------------------------------------------------------------
 //    ------------------------------------------------------------------------------------------

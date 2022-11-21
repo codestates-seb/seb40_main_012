@@ -151,9 +151,7 @@ public class UserService {
     }
 
     public List<BookCollection> getBookMarkByBookCollection(Long userId){
-//        List<BookCollectionBookmark> bookmarks= collectionBookmarkRepository.findByUser_UserId(userId);
-        List<BookCollectionBookmark> bookmarks= collectionBookmarkRepository.findByUser(findVerifiedUser(userId));
-
+        List<BookCollectionBookmark> bookmarks= collectionBookmarkRepository.findByUserUserId(userId);
         List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
         return collections;
     }
