@@ -13,9 +13,13 @@ import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
+import seb40_main_012.back.bookCollection.repository.BookCollectionBookmarkRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.pairing.entity.PairingBookmark;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
@@ -30,6 +34,7 @@ import java.util.Optional;
 public class PairingService {
 
     private final PairingRepository pairingRepository;
+    private final PairingBookmarkRepository pairingBookmarkRepository;
     private final BookService bookService;
     private final BookRepository bookRepository;
     private final UserService userService;
@@ -304,6 +309,25 @@ public class PairingService {
         return optionalPairing.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.PAIRING_NOT_FOUND));
     }
+
+    public boolean bookmarkPairing(Long userId,Long pairingId){
+        User findUser = userService.findVerifiedUser(userId);
+        Pairing pairing = findVerifiedPairing(pairingId);
+        PairingBookmark bookmark = pairingBookmarkRepository.findByUserUserIdAndPairingPairingId(userId,pairingId);
+
+        try{
+            if(bookmark!=null){
+                pairingBookmarkRepository.delete(bookmark);
+            }else {
+                PairingBookmark pairingBookmark = new PairingBookmark(pairing,findUser);
+                pairingBookmarkRepository.save(pairingBookmark);
+            }
+        }
+        catch (BusinessLogicException e) {throw new BusinessLogicException(ExceptionCode.FAIL_TO_BOOKMARK);}
+        return true;
+    }
+
+
 }
 
 
