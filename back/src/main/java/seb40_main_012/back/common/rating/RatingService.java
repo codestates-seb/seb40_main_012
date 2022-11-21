@@ -30,29 +30,30 @@ public class RatingService {
 
         Book findBook = bookService.findVerifiedBook(isbn13);
 
-        double bookRating = bookRatingDto.getRating(); // 유저가 입력한 별점
+        double bookRating = bookRatingDto.getRating(); // 유저가 현재 입력한 별점
 
         long userId = findUser.getUserId();
 
-        Rating findRating = ratingRepository.findByBookAndUserId(findBook, userId); // 유저가 입력한 별점
+        Rating findRating = ratingRepository.findByBookAndUser(findBook, findUser); // 유저가 입력한 별점 내역
 
-        if (findRating == null) {
+        if (findRating == null) { // 별점을 매긴 적이 없을 경우
 
-            if (bookRating == 0) {
+            if (bookRating == 0) { // 별점을 0점을 매기면(즉, 아무 행동도 안 하면)
 
-                return findBook;
+                return findBook; // 책 정보 그대로 리턴
 
-            } else {
+            } else { // 별점을 매기면(즉, 0.0 ~ 5.0 사이의 별점을 매기면
 
-                findRating =
+                findRating = // 유저가 입력한 별점 정보 생성
                         Rating.builder()
-                                .userId(userId)
+                                .user(findUser)
                                 .book(findBook)
-                                .userBookRating(bookRating) // 유저가 입력한 별점
+                                .userBookRating(bookRating) // 입력한 별점
                                 .build();
 
                 ratingRepository.save(findRating);
 
+                // 평균 별점 업데이트 되는 로직
                 double averageRating = findBook.getAverageRating(); // 현재 평균 별점
                 long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
 
@@ -63,26 +64,28 @@ public class RatingService {
 
                 findBook.setAverageRating(newAverageRating); // 별점 업데이트
 
+                findBook.setRatingCount(findBook.getRatingCount() + 1); // 별점 인원 + 1
+
                 return bookRepository.save(findBook);
             }
 
-        } else {
+    } else { // 별점을 매긴 적이 있는 경우
 
             double averageRating = findBook.getAverageRating(); // 현재 평균 별점
             long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
-            double numerator; //분모
+            double numerator; // 분모
             long denominator; // 분자
 
-            if (bookRating == 0) {
+            if (bookRating == 0) { // 별점을 0점으로 되돌릴 경우
 
-                if (findRating.getUserBookRating() == 0) {
+                if (findRating.getUserBookRating() == 0) { // 기존에도 0점을 입력했을 경우
 
                     return findBook;
 
-                } else {
+                } else { // 기존에 0이 아닌 점수를 입력했을 경우
 
-                    numerator = (averageRating * ratingCount) - findRating.getUserBookRating();
-                    denominator = ratingCount - 1;
+                    numerator = (averageRating * ratingCount) - findRating.getUserBookRating() + bookRating;
+                    denominator = ratingCount;
 
                     double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
 
@@ -90,23 +93,43 @@ public class RatingService {
 
                     findRating.setUserBookRating(0); // 유저 별점 업데이트
 
+                    findBook.setRatingCount(findBook.getRatingCount() - 1); // 별점 인원 + 1
+
+                    return bookRepository.save(findBook);
+
                 }
 
-            } else {
+            } else { // 0이 아닌 점수로 수정할 경우
 
-                numerator = (averageRating * ratingCount) - findRating.getUserBookRating() + bookRating;
-                denominator = ratingCount;
+                if (findRating.getUserBookRating() == 0) { // 기존에 0점을 입력했을 경우
 
-                double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
+                    numerator = (averageRating * ratingCount) - findRating.getUserBookRating() + bookRating;
+                    denominator = ratingCount + 1;
 
-                findBook.setAverageRating(newAverageRating); // 별점 업데이트
+                    double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
 
-                findRating.setUserBookRating(bookRating); // 유저 별점 업데이트
+                    findBook.setAverageRating(newAverageRating); // 별점 업데이트
 
+                    findRating.setUserBookRating(bookRating); // 유저 별점 업데이트
+
+                    findBook.setRatingCount(findBook.getRatingCount() + 1);
+
+                    return bookRepository.save(findBook);
+
+                } else {
+
+                    numerator = (averageRating * ratingCount) - findRating.getUserBookRating() + bookRating;
+                    denominator = ratingCount;
+
+                    double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
+
+                    findBook.setAverageRating(newAverageRating); // 별점 업데이트
+
+                    findRating.setUserBookRating(bookRating); // 유저 별점 업데이트
+
+                    return bookRepository.save(findBook);
+                }
             }
-            return bookRepository.save(findBook);
-
         }
-
     }
 }

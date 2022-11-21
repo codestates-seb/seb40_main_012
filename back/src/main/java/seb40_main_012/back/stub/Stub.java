@@ -18,6 +18,8 @@ import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.follow.Follow;
+import seb40_main_012.back.follow.FollowRepository;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.ParingCategory;
@@ -30,6 +32,8 @@ import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
+import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +51,7 @@ public class Stub {
                                BookCollectionRepository bookCollectionRepository, BookCollectionService bookCollectionService,
                                PairingRepository pairingRepository, PairingService pairingService,
                                CommentRepository commentRepository, CommentService commentService,
-                               CategoryRepository categoryRepository,
+                               CategoryRepository categoryRepository, FollowRepository followRepository,
                                BCryptPasswordEncoder encoder) {
 
         for(int i = 0; i < 9; i++) {
@@ -206,7 +210,7 @@ public class Stub {
 
         user25.setEmail("lemonlime_serin@email.com");
         user25.setNickName("레몬세린");
-        user24.setBookTemp(99.9);
+        user25.setBookTemp(99.9);
         user25.setPassword(encoder.encode("1234"));
         user25.setRoles(List.of("사령탑", "텐션 담당", "상큼함 담당", "성질 담당"));
         user25.setCategories(List.of(userCategory25));
@@ -321,6 +325,31 @@ public class Stub {
                                     .build())
             );
         }
+
+        for (long i = 1; i <= 10; i++) {
+
+            log.info("Following " +
+                    followRepository.save(
+                            Follow.builder()
+                                    .followingUser(User.builder().userId(i).build())
+                                    .followedUser(User.builder().userId(22L).build())
+                                    .createDate(new Timestamp(System.currentTimeMillis()))
+                                    .build())
+            );
+        }
+
+        for (long i = 11; i <= 20; i++) {
+
+            log.info("Following " +
+                    followRepository.save(
+                            Follow.builder()
+                                    .followingUser(User.builder().userId(22L).build())
+                                    .followedUser(User.builder().userId(i).build())
+                                    .createDate(new Timestamp(System.currentTimeMillis()))
+                                    .build())
+            );
+        }
+
         return null;
     }
 

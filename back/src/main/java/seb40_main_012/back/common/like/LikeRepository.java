@@ -5,10 +5,11 @@ import org.springframework.stereotype.Repository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.entity.User;
 
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
-    Like findByPairingAndUserId(Pairing pairing, long userId);
-    Like findByCommentAndUserId(Comment comment, long userId);
+    Like findByPairingAndUser(Pairing pairing, User user);
+    Like findByCommentAndUser(Comment comment, User user);
 }

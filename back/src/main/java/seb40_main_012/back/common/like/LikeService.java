@@ -44,13 +44,13 @@ public class LikeService {
 
         long userId = findUser.getUserId();
 
-        Like findPairingLike = likeRepository.findByPairingAndUserId(findPairing, userId);
+        Like findPairingLike = likeRepository.findByPairingAndUser(findPairing, findUser);
 
         if (findPairingLike == null) {
             findPairingLike =
                     Like.builder()
                             .likeType(LikeType.PAIRING)
-                            .userId(userId)
+                            .user(findUser)
                             .pairing(findPairing)
                             .build();
 
@@ -72,13 +72,13 @@ public class LikeService {
 
         long userId = findUser.getUserId();
 
-        Like findCommentLike = likeRepository.findByCommentAndUserId(findComment, userId);
+        Like findCommentLike = likeRepository.findByCommentAndUser(findComment, findUser);
 
         if (findCommentLike == null) {
             findCommentLike =
                     Like.builder()
                             .likeType(LikeType.COMMENT)
-                            .userId(userId)
+                            .user(findUser)
                             .comment(findComment)
                             .build();
 
