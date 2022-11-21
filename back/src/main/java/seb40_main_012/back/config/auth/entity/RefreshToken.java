@@ -10,16 +10,18 @@ import javax.persistence.*;
 //@RedisHash(value = "refreshToken")
 public class RefreshToken {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tokenId;
 
     private String email;
 
     private String tokenValue;
 
+    private String session;
+
     @Builder
-    public RefreshToken(String email, String tokenValue) {
+    public RefreshToken(String email, String tokenValue, String session) {
         this.email = email;
         this.tokenValue = tokenValue;
+        this.session = session;
     }
 }
