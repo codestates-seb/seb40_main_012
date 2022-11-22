@@ -4,7 +4,8 @@ import { PAIRING_URL } from '../../api/requests';
 
 const initialState = {
   data: {
-    comments: [],
+    pairingRes: { comments: [] },
+    bookRes: { title: '' },
   },
   status: 'start',
 };
@@ -13,8 +14,10 @@ export const asyncGetOnePairing = createAsyncThunk(
   'pairingSlice/asyncGetOnePairing',
   async (pairingId) => {
     try {
-      const res = await axios.get(`${PAIRING_URL}/${pairingId}`);
-      return res.data.data;
+      const pairingRes = await axios.get(`${PAIRING_URL}/${pairingId}`);
+      const isbn = pairingRes.data.data.isbn13;
+      const bookRes = await axios.get(`api/books/${isbn}`);
+      return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
     } catch (error) {
       console.log(error);
     }

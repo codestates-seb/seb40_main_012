@@ -3,7 +3,6 @@ import theme from '../../../styles/theme';
 import PageContainer from '../../../components/PageContainer';
 import CollectionDetailHeader from '../../CollectionDetailPage/CollectionDetailHeader';
 import CollectionHeaderBtns from '../../CollectionDetailPage/CollectionHeaderBtns';
-import CollectionTags from '../../CollectionDetailPage/CollectionTags';
 import PairingOriginBook from './PairingOriginBook';
 
 import { useEffect } from 'react';
@@ -16,11 +15,10 @@ import {
 } from '../../../store/modules/pairingSlice';
 
 import Comments from '../../../components/Comments/Comments';
-import { getBookAsync } from '../../../store/modules/bookSlice';
 
 const TagBtn = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
 `;
 
@@ -57,25 +55,12 @@ const InfoContent = styled.div`
 const PairingDetail = () => {
   const dispatch = useDispatch();
   const { pairingId } = useParams();
-  const asyncCall = async () => {
-    try {
-      const pairingRes = await dispatch(asyncGetOnePairing(pairingId));
-      const bookRes = await dispatch(getBookAsync(pairingRes.isbn13));
-      console.log(bookRes);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  useEffect(() => {
-    asyncCall();
-    // dispatch(asyncGetOnePairing(pairingId));
-    // async () => await dispatch(getBookAsync(pairingData.isbn13));
-  }, [dispatch]);
-  const pairingData = useSelector((state) => state.pairing.data);
-  const bookData = useSelector((state) => state.book.data);
 
-  console.log(pairingData);
-  console.log(bookData);
+  useEffect(() => {
+    dispatch(asyncGetOnePairing(pairingId));
+  }, [dispatch]);
+  const pairingData = useSelector((state) => state.pairing.data.pairingRes);
+  const bookData = useSelector((state) => state.pairing.data.bookRes);
 
   const handleCommentAdd = (body) => {
     //dispatch - 코멘트 입력
@@ -98,16 +83,19 @@ const PairingDetail = () => {
           update={new Date(pairingData.modifiedAt).toLocaleDateString()}
         />
         <TagBtn>
-          <CollectionTags taglist={['소설', '시간여행', '선택']} />
           <CollectionHeaderBtns />
         </TagBtn>
         <OriginBookWrapper>
           <InfoTitle>How about pairing this book</InfoTitle>
           <PairingOriginBook
-            bookTitle="만약 엄청나게 긴 책제목이 있으먼 어쩌지? 이보다 긴 책제목이 사실 없을 것 간긴 한데 그래도 책제목에는 리밋이 있으면 안될텐데 말이야!!"
-            author="달리는 감자"
-            rating="4.9"
-            bookId={pairingData.bookId}
+            bookTitle={bookData.title}
+            author={bookData.author}
+            cover={bookData.cover}
+            publisher={bookData.publisher}
+            year={bookData.pubDate}
+            category={bookData.genre}
+            rating={bookData.averageRating}
+            bookId={pairingData.isbn13}
             disabled={false}
           ></PairingOriginBook>
         </OriginBookWrapper>
@@ -117,7 +105,13 @@ const PairingDetail = () => {
           </InfoTitle>
           <InfoContent>
             <p>{pairingData.body}</p>
-            <a href="/">{pairingData.outLinkPath}</a>
+            <a
+              href={pairingData.outLinkPath}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {pairingData.outLinkPath}
+            </a>
           </InfoContent>
         </MainBody>
         <Comments
