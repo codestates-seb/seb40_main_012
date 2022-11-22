@@ -20,11 +20,7 @@ public interface BookMapper {
 
     Book bookPatchToBook(BookDto.Patch patchBook);
 
-//    Book bookViewToBook(BookDto.View viewBook);
-
     Book bookRatingToBook(BookDto.Rating ratingBook);
-
-//    BookDto.Response bookToBookResponse(Book book);
 
     default BookDto.Response bookToBookResponse(Book book) {
 

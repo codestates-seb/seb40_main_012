@@ -146,8 +146,6 @@ public class PairingController {
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
         } else {
-//            return new ResponseEntity<>(
-//                    new SingleResponseDto<>(null), HttpStatus.I_AM_A_TEAPOT);
 
             Pairing pairing = pairingService.updateView(pairingId);
             Pairing isLikedComments = pairingService.isLikedComments(pairingId);
@@ -158,8 +156,6 @@ public class PairingController {
         }
     }
 
-//    --------------------------------------------------------------------------------------------
-//    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    조회 API 세분화
@@ -302,8 +298,6 @@ public class PairingController {
 
 //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
-//    --------------------------------------------------------------------------------------------
-//    --------------------------------------------------------------------------------------------
 
     @GetMapping("/pairing/best")
     public ResponseEntity bestTenPairings() {
@@ -325,7 +319,6 @@ public class PairingController {
 
     @PostMapping("/pairings/{pairing-id}/bookmark")
     @ResponseStatus(HttpStatus.OK)
-
     public boolean bookmarkPairing(@PathVariable("pairing-id") Long pairingId){
         return bookmarkService.bookmarkPairing(pairingId);
 
