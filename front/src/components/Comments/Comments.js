@@ -10,7 +10,7 @@ const CommentsContainer = styled.div`
   padding: 0 20px;
 `;
 
-const Comments = ({ commentsData, commentAdd, commentDelete }) => {
+const Comments = ({ commentsData, commentAdd, commentDelete, commentEdit }) => {
   const userEmail = useSelector(selectEmail);
 
   return (
@@ -24,6 +24,7 @@ const Comments = ({ commentsData, commentAdd, commentDelete }) => {
             data={el}
             commentDelete={commentDelete}
             userEmail={userEmail}
+            commentEdit={commentEdit}
           />
         );
       })}

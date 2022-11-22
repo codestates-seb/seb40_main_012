@@ -29,12 +29,12 @@ const BodyContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 3px 0;
   &.btns {
     margin-top: 8px;
   }
   .edit {
     display: flex;
+    margin-top: 3px;
   }
   div.hide {
     visibility: hidden;
@@ -42,7 +42,7 @@ const BodyContainer = styled.div`
   .content {
     display: flex;
     width: 100%;
-    margin-right: 8px;
+    margin: 3px 8px 0 0;
   }
 `;
 
@@ -59,12 +59,12 @@ const CreatedAt = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `;
 const CommentContent = styled.div`
-  font-size: 15px;
+  font-size: 13px;
   color: ${({ theme }) => theme.colors.darkgray};
   word-break: break-all;
 `;
 const CommentEditInput = styled.textarea`
-  font-size: 15px;
+  font-size: 13px;
   color: ${({ theme }) => theme.colors.dark};
   word-break: break-all;
   width: 100%;
@@ -131,7 +131,13 @@ const CheckBtn = styled.button`
 `;
 
 //TODO: 본인이 작성한 코멘트만 삭제 버튼 활성화되도록
-const Comment = ({ data, commentId, commentDelete, userEmail }) => {
+const Comment = ({
+  data,
+  commentId,
+  commentDelete,
+  userEmail,
+  commentEdit,
+}) => {
   const [isMyComment, setIsMyComment] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editContent, setEditContent] = useState(data.body);
@@ -145,7 +151,10 @@ const Comment = ({ data, commentId, commentDelete, userEmail }) => {
   };
 
   const handleClickEditBtn = () => setIsEditMode(true);
-  const handleClickCheckBtn = () => setIsEditMode(false);
+  const handleClickCheckBtn = () => {
+    setIsEditMode(false);
+    commentEdit(commentId, editContent);
+  };
 
   const handleOnChangeEditContent = (e) => setEditContent(e.target.value);
 

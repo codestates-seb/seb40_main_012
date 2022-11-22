@@ -13,6 +13,7 @@ import {
   asyncGetOnePairing,
   asyncPostPairingComment,
   asyncDeletePairingComment,
+  asyncEditPairingComment,
 } from '../../../store/modules/pairingSlice';
 
 import Comments from '../../../components/Comments/Comments';
@@ -61,8 +62,6 @@ const PairingDetail = () => {
   }, [dispatch]);
   const pairingData = useSelector((state) => state.pairing.data);
 
-  console.log(pairingData);
-
   const handleCommentAdd = (body) => {
     //dispatch - 코멘트 입력
     dispatch(asyncPostPairingComment({ pairingId, body }));
@@ -71,6 +70,10 @@ const PairingDetail = () => {
   const handleCommentDelete = (commentId) => {
     //dispatch - 코멘트 삭제
     dispatch(asyncDeletePairingComment(commentId));
+  };
+
+  const handleCommentEdit = (commentId, body) => {
+    dispatch(asyncEditPairingComment({ commentId, body }));
   };
 
   return (
@@ -110,6 +113,7 @@ const PairingDetail = () => {
           commentsData={pairingData.comments}
           commentAdd={handleCommentAdd}
           commentDelete={handleCommentDelete}
+          commentEdit={handleCommentEdit}
         />
       </ThemeProvider>
     </PageContainer>
