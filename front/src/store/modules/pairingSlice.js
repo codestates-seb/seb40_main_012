@@ -12,24 +12,26 @@ const initialState = {
 export const asyncGetOnePairing = createAsyncThunk(
   'pairingSlice/asyncGetOnePairing',
   async (pairingId) => {
-    return await axios.get(`${PAIRING_URL}/${pairingId}`).then((res) => {
+    try {
+      const res = await axios.get(`${PAIRING_URL}/${pairingId}`);
       return res.data.data;
-    });
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
 export const asyncPostPairing = createAsyncThunk(
   'pairingSlice/asyncPostPairing',
   async ({ pairingPostBody, isbn }) => {
-    console.log('axios.defaults.headers', axios.defaults.headers);
-    return await axios
-      .post(`/api/books/${isbn}/pairings/add`, pairingPostBody)
-      .then((res) => {
-        console.log('성공', res);
-      })
-      .catch((err) => {
-        console.log('post 실패', err);
-      });
+    try {
+      return await axios.post(
+        `/api/books/${isbn}/pairings/add`,
+        pairingPostBody
+      );
+    } catch (error) {
+      console.log('페어링 post 실패', error);
+    }
   }
 );
 
