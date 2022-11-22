@@ -55,6 +55,8 @@ const PairingWrite = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isLogin = useSelector(selectIsLogin);
+  const curBookData = useSelector((state) => state.book.data);
+  console.log('페어링 작성해야 해', curBookData);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -65,8 +67,9 @@ const PairingWrite = () => {
       imagePath: 'img',
       outLinkPath: outLink,
     };
-    dispatch(asyncPostPairing(pairingPostBody));
+    dispatch(asyncPostPairing({ pairingPostBody, isbn: curBookData.isbn13 }));
     console.log(pairingPostBody);
+    console.log('isbn', curBookData.isbn13);
     console.log(isLogin);
     navigate('/pairing', { replace: true });
     categoryReset();
@@ -88,11 +91,15 @@ const PairingWrite = () => {
           </TitleWrapper>
           <BookWrapperStyled>
             <PairingOriginBook
-              bookTitle="책 제목"
-              author="김뫄뫄"
-              rating="4.2"
-              bookId="7"
+              bookTitle={curBookData.title}
+              cover={curBookData.cover}
+              author={curBookData.author}
+              rating={curBookData.averageRating}
+              bookId={curBookData.isbn13}
               disabled={true}
+              publisher={curBookData.publisher}
+              year={curBookData.pubDate}
+              category={curBookData.genre}
             />
           </BookWrapperStyled>
           <BodyInput bodyBind={bodyBind} />
