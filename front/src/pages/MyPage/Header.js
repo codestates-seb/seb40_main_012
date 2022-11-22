@@ -73,6 +73,7 @@ const Header = () => {
                   }}
                 >
                   <Typography variant="h6">chichi</Typography>
+
                   <Typography variant="body1" gutterBottom>
                     책의 온기 37.5도
                   </Typography>
