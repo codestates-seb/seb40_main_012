@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
 import { logout, refreshToken } from './api/authApi';
 
@@ -65,10 +65,11 @@ const App = () => {
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/user/signin" element={<SignInPage />} />
         <Route path="/user/signup" element={<SignUpPage />} />
-        <Route
+        {/* <Route
           path="/mypage"
           element={<Navigate to="/mypage/mycomment"></Navigate>}
-        />
+        /> */}
+        <Route path="/mypage" element={<MyComment />} />
         <Route path="/mypage/mycomment" element={<MyComment />} />
         <Route path="/mypage/mypairing" element={<MyParing />} />
         <Route path="/mypage/mycollection" element={<MyCollection />} />

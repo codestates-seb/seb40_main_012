@@ -95,31 +95,14 @@ const ItemContainer = styled.div`
 `;
 
 const FixContentScroll = ({ commentData }) => {
-  // const [view, setView] = useState(1);
   const [editMode, setEditMode] = useState(false);
   console.log(commentData);
-  // const handleChangeView = (event) => {
-  //   setView(event.target.value);
-  // };
   const handleChangeEditMode = () => {
     setEditMode(!editMode);
   };
   const [data, setData] = useState({
-    // items: Array(10).fill({
-    //   content: CommentData,
-    // }),
     content: commentData,
-    // Array10은 10번 제한 거는 것 , 배열 10개짜리 길이 (반복횟수)
     hasMore: true,
-    // id: 1,
-    // src: [
-    //   {
-    //     src: 'https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300',
-    //   },
-    //   {
-    //     src: 'https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300',
-    //   },
-    // ],
   });
 
   console.log(data.content);
@@ -128,10 +111,8 @@ const FixContentScroll = ({ commentData }) => {
   const fetchMoreData = () => {
     if (data.content.length >= 100) {
       setData({
-        // items: data.items,
         content: data.content,
         hasMore: false,
-        // src: 'https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300',
       });
       return;
     }
@@ -139,7 +120,6 @@ const FixContentScroll = ({ commentData }) => {
       setData({
         content: data.content.concat(data.content),
         hasMore: true,
-        // src: 'https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300',
       });
       console.log(data.hasMore);
     }, 800);
@@ -157,12 +137,6 @@ const FixContentScroll = ({ commentData }) => {
       setData({ content: [], hasMore: false });
     }
   };
-
-  // const handleClickRemove = () => {
-  //   if (window.confirm(`${CommentData.commentId}번째 코멘트를 정말 삭제하시겠습니까?`)) {
-  //     onRemove(CommentData.commentId);
-  //   }
-  // };
 
   const [checkItems, setCheckItems] = useState([]);
   const handleSingleCheck = (checked, id) => {

@@ -4,7 +4,7 @@ import Nav from './Nav';
 
 import Container from '@mui/material/Container';
 
-import FixContentScroll from './FixContentScroll';
+// import FixContentScroll from './FixContentScroll';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
@@ -21,8 +21,8 @@ const Void = styled.div`
     align-items: center;
     justify-content: center;
     align-content: center;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
   }
 `;
 const MyComment = () => {
@@ -48,7 +48,7 @@ const MyComment = () => {
           <Header></Header>
           <Nav></Nav>
           <HoverDelete commentData={CommentData}></HoverDelete>
-          <FixContentScroll commentData={CommentData}></FixContentScroll>
+          {/* <FixContentScroll commentData={CommentData}></FixContentScroll> */}
         </Container>
       ) : (
         <Container maxWidth="md">

@@ -159,7 +159,7 @@ const EditProfileMain = () => {
               </div>
               <div className="gender-flex-box">
                 <input type="radio" name="gender"></input>
-                <GenderText>공개안함</GenderText>
+                <GenderText>공개 안 함</GenderText>
               </div>
             </GenderContainer>
           </Grid>
