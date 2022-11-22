@@ -116,4 +116,24 @@ public class BookDto {
         }
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CollectionBook{
+        private String title;
+        private String author;
+        private Long ratingCount;
+        private String bookCover;
+
+        public static CollectionBook of(Book book){
+            return CollectionBook.builder()
+                    .title(book.getTitle())
+                    .author(book.getAuthor())
+                    .ratingCount(book.getRatingCount())
+                    .bookCover(book.getCover())
+                    .build();
+        }
+    }
+//9788998441012","9788965880783","9788998441074","9788998441005","9788998441029","9788998441043
 }

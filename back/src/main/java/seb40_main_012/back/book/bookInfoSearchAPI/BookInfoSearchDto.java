@@ -77,6 +77,7 @@ public class BookInfoSearchDto {
             public static String isbn13;
             public String cover;
             public String bookTitle;
+            public String author;
 
         }
     }

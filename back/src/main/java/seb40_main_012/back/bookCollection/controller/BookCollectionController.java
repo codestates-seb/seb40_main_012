@@ -92,7 +92,7 @@ public class BookCollectionController {
     @GetMapping("/category")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory(@RequestHeader("Authorization") Long userId) {
-        List<BookCollection> collections = collectionService.findCollectionByCollectionTag();
+        List<BookCollection> collections = collectionService.findCollectionByUserCategory(userId);
         List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
         return new ListResponseDto<>(tagCollectionDto);
     }
@@ -110,12 +110,7 @@ public class BookCollectionController {
     //이게 맞냐고
     public BookCollectionDto.AuthorCollection getCollectionByAuthor(@RequestHeader("Authorization") Long userId) {
         BookCollection collection = collectionService.findCollectionByAuthor();
-        List<String> isbns = collection.getBookIsbn13();
-        List<BookInfoSearchDto.MainCollectionBook> books = new ArrayList<>();
-        isbns.forEach(
-                x -> books.add(bookInfoSearchService.MainCollectionBookSearch(x))
-        );
-        return BookCollectionDto.AuthorCollection.of(collection,books);
+        return BookCollectionDto.AuthorCollection.of(collection);
     }
 
 }
