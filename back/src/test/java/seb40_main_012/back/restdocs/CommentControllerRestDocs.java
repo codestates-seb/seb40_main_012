@@ -9,6 +9,8 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -29,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -99,7 +102,7 @@ public class CommentControllerRestDocs {
                         .build();
 
         given(commentMapper.commentPostToComment(Mockito.any(CommentDto.Post.class))).willReturn(new Comment());
-        given(commentService.createBookComment(Mockito.any(Comment.class), anyLong())).willReturn(new Comment());
+        given(commentService.createBookComment(Mockito.any(Comment.class), anyString())).willReturn(new Comment());
         given(commentMapper.commentToCommentResponse(Mockito.any(Comment.class))).willReturn(response);
 
 
@@ -138,6 +141,7 @@ public class CommentControllerRestDocs {
                                         fieldWithPath("data.commentType").type(JsonFieldType.STRING).description("코멘트 타입"),
                                         fieldWithPath("data.body").type(JsonFieldType.STRING).description("책에 대한 코멘트 내용"),
                                         fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER).description("코멘트 좋아요"),
+                                        fieldWithPath("data.view").type(JsonFieldType.NUMBER).description("코멘트 조회수"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("작성 날짜"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("마지막 수정 날짜")
                                 )
@@ -206,6 +210,7 @@ public class CommentControllerRestDocs {
                                         fieldWithPath("data.commentType").type(JsonFieldType.STRING).description("코멘트 타입"),
                                         fieldWithPath("data.body").type(JsonFieldType.STRING).description("페어링에 대한 코멘트 내용"),
                                         fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER).description("코멘트 좋아요"),
+                                        fieldWithPath("data.view").type(JsonFieldType.NUMBER).description("코멘트 조회수"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("작성 날짜"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("마지막 수정 날짜")
                                 )
@@ -280,6 +285,7 @@ public class CommentControllerRestDocs {
                                         fieldWithPath("data.commentType").type(JsonFieldType.STRING).description("코멘트 타입"),
                                         fieldWithPath("data.body").type(JsonFieldType.STRING).description("수정된 코멘트 내용"),
                                         fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER).description("코멘트 좋아요"),
+                                        fieldWithPath("data.view").type(JsonFieldType.NUMBER).description("코멘트 조회수"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("작성 날짜"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("마지막 수정 날짜")
                                 )
@@ -302,7 +308,7 @@ public class CommentControllerRestDocs {
                         .modifiedAt(LocalDateTime.now())
                         .build();
 
-        given(commentService.findComment(anyLong())).willReturn(new Comment());
+        given(commentService.updateView(anyLong())).willReturn(new Comment());
         given(commentMapper.commentToCommentResponse(Mockito.any(Comment.class))).willReturn(response);
 
         ResultActions actions =
@@ -337,6 +343,7 @@ public class CommentControllerRestDocs {
                                         fieldWithPath("data.commentType").type(JsonFieldType.STRING).description("코멘트 타입"),
                                         fieldWithPath("data.body").type(JsonFieldType.STRING).description("코멘트 내용"),
                                         fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER).description("코멘트 좋아요"),
+                                        fieldWithPath("data.view").type(JsonFieldType.NUMBER).description("코멘트 조회수"),
                                         fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("작성 날짜"),
                                         fieldWithPath("data.modifiedAt").type(JsonFieldType.STRING).description("마지막 수정 날짜")
                                 )
@@ -346,40 +353,42 @@ public class CommentControllerRestDocs {
     @Test
     void getCommentsTest() throws Exception {
 
-        List<CommentDto.Response> responses = List.of(
+        SliceImpl<CommentDto.Response> responses =
+                new SliceImpl<>(
+                        List.of(
+                                CommentDto.Response.builder()
+                                        .commentId(1)
+                                        .userInformation(
+                                                UserDto.ResponseDto.builder()
+                                                        .email("running_potato_1@email.com")
+                                                        .nickName("Running_Potato_1")
+                                                        .roles(List.of("USER"))
+                                                        .build()
+                                        )
+                                        .commentType(CommentType.BOOK)
+                                        .body("첫번째 코멘트 내용")
+                                        .likeCount(0)
+                                        .createdAt(LocalDateTime.now())
+                                        .modifiedAt(LocalDateTime.now())
+                                        .build(),
 
-                CommentDto.Response.builder()
-                        .commentId(1)
-                        .userInformation(
-                                UserDto.ResponseDto.builder()
-                                        .email("running_potato_1@email.com")
-                                        .nickName("Running_Potato_1")
-                                        .roles(List.of("USER"))
+                                CommentDto.Response.builder()
+                                        .commentId(1)
+                                        .userInformation(
+                                                UserDto.ResponseDto.builder()
+                                                        .email("running_potato_2@email.com")
+                                                        .nickName("Running_Potato_2")
+                                                        .roles(List.of("USER"))
+                                                        .build()
+                                        )
+                                        .commentType(CommentType.BOOK)
+                                        .body("두번째 코멘트 내용")
+                                        .likeCount(0)
+                                        .createdAt(LocalDateTime.now())
+                                        .modifiedAt(LocalDateTime.now())
                                         .build()
                         )
-                        .commentType(CommentType.BOOK)
-                        .body("첫번째 코멘트 내용")
-                        .likeCount(0)
-                        .createdAt(LocalDateTime.now())
-                        .modifiedAt(LocalDateTime.now())
-                        .build(),
-
-                CommentDto.Response.builder()
-                        .commentId(1)
-                        .userInformation(
-                                UserDto.ResponseDto.builder()
-                                        .email("running_potato_2@email.com")
-                                        .nickName("Running_Potato_2")
-                                        .roles(List.of("USER"))
-                                        .build()
-                        )
-                        .commentType(CommentType.BOOK)
-                        .body("두번째 코멘트 내용")
-                        .likeCount(0)
-                        .createdAt(LocalDateTime.now())
-                        .modifiedAt(LocalDateTime.now())
-                        .build()
-        );
+                );
 
         List<Comment> listComments = new ArrayList<>();
 
@@ -398,16 +407,27 @@ public class CommentControllerRestDocs {
                         getDocumentResponse(),
                         responseFields(
                                 List.of(
-                                        fieldWithPath("data.").type(JsonFieldType.ARRAY).description("결과 데이터"),
-                                        fieldWithPath("data[].commentId").type(JsonFieldType.NUMBER).description("코멘트 번호"),
-                                        fieldWithPath("data[].userInformation.email").type(JsonFieldType.STRING).description("작성자 이메일"),
-                                        fieldWithPath("data[].userInformation.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
-                                        fieldWithPath("data[].userInformation.roles[]").type(JsonFieldType.ARRAY).description("작성자 역할"),
-                                        fieldWithPath("data[].commentType").type(JsonFieldType.STRING).description("코멘트 타입"),
-                                        fieldWithPath("data[].body").type(JsonFieldType.STRING).description("코멘트 내용"),
-                                        fieldWithPath("data[].likeCount").type(JsonFieldType.NUMBER).description("코멘트 좋아요"),
-                                        fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("작성 날짜"),
-                                        fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("마지막 수정 날짜")
+                                        fieldWithPath("data.").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                        fieldWithPath("data.content[].commentId").type(JsonFieldType.NUMBER).description("코멘트 번호"),
+                                        fieldWithPath("data.content[].userInformation.email").type(JsonFieldType.STRING).description("작성자 이메일"),
+                                        fieldWithPath("data.content[].userInformation.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                                        fieldWithPath("data.content[].userInformation.roles[]").type(JsonFieldType.ARRAY).description("작성자 역할"),
+                                        fieldWithPath("data.content[].commentType").type(JsonFieldType.STRING).description("코멘트 타입"),
+                                        fieldWithPath("data.content[].body").type(JsonFieldType.STRING).description("코멘트 내용"),
+                                        fieldWithPath("data.content[].likeCount").type(JsonFieldType.NUMBER).description("코멘트 좋아요"),
+                                        fieldWithPath("data.content[].view").type(JsonFieldType.NUMBER).description("코멘트 조회수"),
+                                        fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("작성 날짜"),
+                                        fieldWithPath("data.content[].modifiedAt").type(JsonFieldType.STRING).description("마지막 수정 날짜"),
+                                        fieldWithPath("data.pageable").type(JsonFieldType.STRING).description("Pageble 설정"),
+                                        fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                                        fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("페이지 번호"),
+                                        fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("Pageble Empty"),
+                                        fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("Pageble Unsorted"),
+                                        fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("Pageble Sorted"),
+                                        fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("Pageble First"),
+                                        fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("Pageble Last"),
+                                        fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("페이지 요소 개수"),
+                                        fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("페이지 Empty 여부")
                                 )
                         )));
     }
