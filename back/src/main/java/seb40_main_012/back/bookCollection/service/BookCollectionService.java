@@ -7,12 +7,16 @@ import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.entity.Book;
-import seb40_main_012.back.book.entity.Genre;
-import seb40_main_012.back.bookCollection.entity.*;
-import seb40_main_012.back.bookCollection.repository.*;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
+import seb40_main_012.back.bookCollection.entity.BookCollectionTag;
+import seb40_main_012.back.bookCollection.entity.Tag;
+import seb40_main_012.back.bookCollection.repository.BookCollectionLikeRepository;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.bookCollection.repository.BookCollectionTagRepository;
+import seb40_main_012.back.bookCollection.repository.TagRepository;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
-import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.CategoryRepository;
@@ -166,14 +170,25 @@ public class BookCollectionService {
     }
 
     public BookCollection findCollectionByAuthor(){
-        String author = "양귀자";
+        String author = "양귀자 (지은이)";
         String title = "양귀자 모음";
         String content = "";
 
-        //1. 저자 이름으로 책 조회 > 해당 책이 포함된 컬렉션 조회(isbn 로 조회)
+        //저자 이름으로 조회한 책 isbn으로 updateView() 통해 책 db 저장
         List<Book> books = bookRepository.findWritersBooks(author);
-        List<String> isbns = books.stream().map(e -> e.getIsbn13()).collect(Collectors.toList());
-        return new BookCollection(title,content,isbns);
+        List<BookCollectionBook> collectionBooks = new ArrayList<>();
+        books.forEach(
+                x -> {
+                    BookCollectionBook collectionBook = BookCollectionBook.builder().book(x).build();
+                    collectionBookRepository.save(collectionBook);
+                    collectionBooks.add(collectionBook);
+                }
+        );
+        return BookCollection.builder()
+                .title(title)
+                .content(content)
+                .collectionBooks(collectionBooks)
+                .build();
     }
 
 

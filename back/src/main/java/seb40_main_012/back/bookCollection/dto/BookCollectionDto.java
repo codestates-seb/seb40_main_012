@@ -7,11 +7,6 @@ import lombok.NoArgsConstructor;
 import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
-import seb40_main_012.back.bookCollection.entity.BookCollectionTag;
-import seb40_main_012.back.pairing.PairingDto;
-import seb40_main_012.back.pairing.entity.Pairing;
-
-import java.awt.print.Book;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
