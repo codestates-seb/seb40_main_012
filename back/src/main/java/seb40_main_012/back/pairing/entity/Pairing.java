@@ -10,8 +10,7 @@ import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import seb40_main_012.back.book.entity.Book;
-import seb40_main_012.back.bookWiki.BookWiki;
-import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
+import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.image.Image;
 import seb40_main_012.back.common.like.entity.Like;
@@ -83,7 +82,7 @@ public class Pairing {
 
     @OneToMany(mappedBy = "pairing")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<PairingBookmark> bookmarks = new ArrayList<>();
+    private List<Bookmark> bookmarks = new ArrayList<>();
 
     @CreatedDate
     @Column(nullable = false, updatable = false, name = "CREATED_AT")

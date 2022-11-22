@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
+import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
 //import seb40_main_012.back.notification.NotificationService;
@@ -24,6 +25,7 @@ import java.util.List;
 public class PairingController {
 
     private final PairingService pairingService;
+    private final BookmarkService bookmarkService;
     private final PairingMapper pairingMapper;
     private final BookService bookService;
     private final LikeService likeService;
@@ -332,8 +334,8 @@ public class PairingController {
 
     @PostMapping("/pairings/{pairing-id}/bookmark")
     @ResponseStatus(HttpStatus.OK)
-    public boolean bookmarkPairing(@RequestHeader("Authorization") Long userId, @PathVariable("pairing-id") Long pairingId){
-        return pairingService.bookmarkPairing(userId,pairingId);
+    public boolean bookmarkPairing(@PathVariable("pairing-id") Long pairingId){
+        return bookmarkService.bookmarkPairing(pairingId);
     }
 
 

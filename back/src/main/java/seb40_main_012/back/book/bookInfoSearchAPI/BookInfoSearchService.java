@@ -86,4 +86,23 @@ public class BookInfoSearchService {
         return restTemplate.getForObject(targetUrl, BookInfoSearchDto.CollectionBook.class);
     }
 
+    public BookInfoSearchDto.MainCollectionBook MainCollectionBookSearch(String isbn13) {
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        URI targetUrl = UriComponentsBuilder
+                .fromUriString(itemLookUpUrl)
+                .queryParam("ttbkey", ttbkey)
+                .queryParam("itemIdType", "ISBN13")
+                .queryParam("ItemId", isbn13)
+                .queryParam("Cover", "Big")
+                .queryParam("Version", 20131101)
+                .queryParam("output", "JS")
+                .build()
+                .encode(StandardCharsets.UTF_8)
+                .toUri();
+
+        return restTemplate.getForObject(targetUrl, BookInfoSearchDto.MainCollectionBook.class);
+    }
+
 }

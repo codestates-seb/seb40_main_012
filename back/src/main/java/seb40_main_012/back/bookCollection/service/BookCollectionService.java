@@ -4,16 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
+import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.*;
 import seb40_main_012.back.bookCollection.repository.*;
+import seb40_main_012.back.common.bookmark.Bookmark;
+import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.repository.CategoryRepository;
+import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,7 +29,10 @@ public class BookCollectionService {
     private final BookCollectionRepository collectionRepository;
     private final BookCollectionTagRepository collectionTagRepository;
     private final BookCollectionLikeRepository collectionLikeRepository;
-    private final BookCollectionBookmarkRepository collectionBookmarkRepository;
+    private final BookmarkRepository collectionBookmarkRepository;
+    private final BookRepository bookRepository;
+    private final UserCategoryRepository userCategoryRepository;
+    private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
 
     public BookCollection postCollection(Long userId, BookCollection collection, List<String> tags){
@@ -104,28 +112,53 @@ public class BookCollectionService {
         collectionRepository.deleteById(collectionId);
     }
 
-    public boolean bookmarkCollection(Long userId,Long collectionId){
-        User findUser = userService.findVerifiedUser(userId);
-        BookCollection collection = findVerifiedCollection(collectionId);
-        BookCollectionBookmark collectionBookmark = collectionBookmarkRepository.findByUserAndBookCollection(findUser,collection);
-
-
-        try{
-            if(collectionBookmark!=null){
-                collectionBookmarkRepository.delete(collectionBookmark);
-            }else {
-                BookCollectionBookmark bookCollectionBookmark = new BookCollectionBookmark(collection,findUser);
-                collectionBookmarkRepository.save(bookCollectionBookmark);
-            }
-        }
-        catch (BusinessLogicException e) {throw new BusinessLogicException(ExceptionCode.FAIL_TO_BOOKMARK);}
-        return true;
-    }
 
     public BookCollection findVerifiedCollection(Long collectionId) {
         BookCollection collection = collectionRepository.findById(collectionId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
         return collection;
     }
+
+    public List<BookCollection> findCollectionByUserCategory(Long userId){
+        String userCategory = Genre.ART.name();
+//        Category category = categoryRepository.findByGenre(Genre.ART);
+
+        Tag tag = tagRepository.findByTagName(userCategory).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+        List<BookCollectionTag> collectionTag = collectionTagRepository.findByTag(tag);
+        List<BookCollection> collections = collectionTag.stream().map(BookCollectionTag::getBookCollection).collect(Collectors.toList());
+        return collections;
+    }
+
+    public List<BookCollection> findCollectionByCollectionTag(){
+        String tagName = "겨울";
+        Tag tag = tagRepository.findByTagName(tagName).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+        List<BookCollectionTag> collectionTag = collectionTagRepository.findByTag(tag);
+        List<BookCollection> collections = collectionTag.stream().map(BookCollectionTag::getBookCollection).collect(Collectors.toList());
+
+//        //tagId 로 해당 id가진 collectionTag의 collectionId 조회
+//        List<Tag> tags = List.of(new Tag("겨울"),new Tag("쓸쓸한"));
+//        List<Long> tagId = tags.stream().map(x -> x.getTagId()).collect(Collectors.toList());
+////        List<Long> tagId = List.of(1L, 2L);
+//        tagId.forEach(
+//               x -> collectionTagRepository.findByTagTagId(x)
+//        );
+//        List<BookCollectionTag> collectionTag = collectionTagRepository.findByTagTagId(tagId.get(0));
+//        List<Long> collectionTagId = collectionTag.stream().map(x -> x.getBookCollectionTagId()).collect(Collectors.toList());
+//        List<BookCollection> collections = collectionTagId.stream().map(e -> collectionRepository.findById(e).orElseThrow(()->new BusinessLogicException(ExceptionCode.NOT_FOUND))).collect(Collectors.toList());
+
+        return collections;
+    }
+
+    public BookCollection findCollectionByAuthor(){
+        String author = "양귀자";
+        String title = "양귀자 모음";
+        String content = "";
+
+        //1. 저자 이름으로 책 조회 > 해당 책이 포함된 컬렉션 조회(isbn 로 조회)
+        List<Book> books = bookRepository.findWritersBooks(author);
+        List<String> isbns = books.stream().map(e -> e.getIsbn13()).collect(Collectors.toList());
+        return new BookCollection(title,content,isbns);
+    }
+
 
     public List<Book> findBooks(List<String> isbn){
         List<Book> findBooks = new ArrayList<>();

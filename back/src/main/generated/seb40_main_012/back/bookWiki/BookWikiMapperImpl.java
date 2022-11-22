@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-18T09:28:49+0900",
+    date = "2022-11-21T14:00:02+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.5 (Azul Systems, Inc.)"
 )
 @Component
@@ -50,19 +50,6 @@ public class BookWikiMapperImpl implements BookWikiMapper {
     }
 
     @Override
-    public BookWiki bookWikiViewToBookWiki(BookWikiDto.View viewBookWiki) {
-        if ( viewBookWiki == null ) {
-            return null;
-        }
-
-        BookWiki.BookWikiBuilder bookWiki = BookWiki.builder();
-
-        bookWiki.view( viewBookWiki.getView() );
-
-        return bookWiki.build();
-    }
-
-    @Override
     public BookWikiDto.Response bookWikiToBookWikiResponse(BookWiki bookWiki) {
         if ( bookWiki == null ) {
             return null;
@@ -71,6 +58,7 @@ public class BookWikiMapperImpl implements BookWikiMapper {
         BookWikiDto.Response.ResponseBuilder response = BookWikiDto.Response.builder();
 
         response.bookWikiId( bookWiki.getBookWikiId() );
+        response.view( bookWiki.getView() );
         response.imagePath( bookWiki.getImagePath() );
         response.spacetimeBackground( bookWiki.getSpacetimeBackground() );
         response.characterTree( bookWiki.getCharacterTree() );
