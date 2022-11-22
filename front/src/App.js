@@ -1,41 +1,10 @@
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
 import { logout, refreshToken } from './api/authApi';
 import { selectIsLogin } from './store/modules/authSlice';
-
-import MainPage from './pages/MainPage/MainPage';
-import SignInPage from './pages/SignInPage/SignInPage';
-import SignUpPage from './pages/SignUpPage/SignUpPage';
-
-import BookDetail from './pages/BookDetailPage/BookDetail';
-
-import PairingPage from './pages/PairingPage/PairingAll';
-import PairingFilm from './pages/PairingPage/PairingFilm';
-import PairingCuisine from './pages/PairingPage/PairingCuisine';
-import PairingMusic from './pages/PairingPage/PairingMusic';
-import PairingBook from './pages/PairingPage/PairingBook';
-import PairingEtc from './pages/PairingPage/PairingEtc';
-import PairingWrite from './pages/PairingPage/PairingWrite/PairingWrite';
-import PairingDetail from './pages/PairingPage/PairingDetail/PairingDetail';
-
-import CollectionPage from './pages/CollectionPage/Collection';
-import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetail';
-import CollectionWritePage from './pages/CollectionWritePage/CollectionWrite';
-
-import MyComment from './pages/MyPage/MyComment/MyComment';
-import MyParing from './pages/MyPage/MyPairing/MyPairing';
-import MyPick from './pages/MyPage/MyPick/MyPick';
-import EditProfile from './pages/MyPage/EditProfile/EditProfile';
-import ChangePassWd from './pages/MyPage/EditProfile/ChangePassWd';
-import MyCollection from './pages/MyPage/MyCollection/MyCollection';
-
-import NoMatch from './pages/NoMatch';
-
-//임시 페이지!
-import ReduxPage from './pages/TestPage/Temp_Redux';
-import ButtonTest from './pages/TestPage/ButtonTest';
+import RoutesComponent from './components/RoutesComponent';
 
 const App = () => {
   const isLogin = useSelector(selectIsLogin);
@@ -57,39 +26,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <GlobalStyle />
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/user/signin" element={<SignInPage />} />
-        <Route path="/user/signup" element={<SignUpPage />} />
-        <Route path="/book/:isbn" element={<BookDetail />} />
-        <Route path="/pairing" element={<PairingPage />} />
-        <Route path="/pairing/film" element={<PairingFilm />} />
-        <Route path="/pairing/cuisine" element={<PairingCuisine />} />
-        <Route path="/pairing/music" element={<PairingMusic />} />
-        <Route path="/pairing/book" element={<PairingBook />} />
-        <Route path="/pairing/etc" element={<PairingEtc />} />
-        <Route path="/pairing/write" element={<PairingWrite />} />
-        <Route path="/pairing/:pairingId" element={<PairingDetail />} />
-        <Route path="/collection" element={<CollectionPage />} />
-        <Route
-          path="/collection/:collectionid"
-          element={<CollectionDetailPage />}
-        />
-        <Route path="/collection/write" element={<CollectionWritePage />} />
-        <Route path="/mypage" element={<MyComment />} />
-        <Route path="/mypage/mycomment" element={<MyComment />} />
-        <Route path="/mypage/mypairing" element={<MyParing />} />
-        <Route path="/mypage/mycollection" element={<MyCollection />} />
-        <Route path="/mypage/mypick" element={<MyPick />} />
-        <Route path="/settings/profile" element={<EditProfile />} />
-        <Route
-          path="/settings/profile/changepasswd"
-          element={<ChangePassWd />}
-        />
-        <Route path="/redux" element={<ReduxPage />} />
-        <Route path="/button-test" element={<ButtonTest />} />
-        <Route path="*" element={<NoMatch />} />
-      </Routes>
+      <RoutesComponent />
     </BrowserRouter>
   );
 };
