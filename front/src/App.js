@@ -54,7 +54,7 @@ const App = () => {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/book/:bookId" element={<BookDetail />} />
+        <Route path="/book/:isbn" element={<BookDetail />} />
         <Route path="/pairing" element={<PairingPage />} />
         <Route path="/pairing/film" element={<PairingFilm />} />
         <Route path="/pairing/cuisine" element={<PairingCuisine />} />
