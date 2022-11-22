@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import seb40_main_012.back.book.entity.Book;
@@ -60,7 +62,7 @@ public class Pairing {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "isbn13")
     private Book book;
 
     @JsonManagedReference
@@ -75,6 +77,7 @@ public class Pairing {
     @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
+    @NotFound(action = NotFoundAction.IGNORE)
     private List<Like> likes = new ArrayList<>();
 
     @OneToMany(mappedBy = "pairing")

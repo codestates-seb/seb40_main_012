@@ -44,6 +44,7 @@ public class BookCollectionDto {
     public static class Response{
         private String title;
         private String content;
+        private LocalDate createdAt;
         private LocalDate lastModifiedAt;
         private Long likeCount;
         private boolean userLike;
@@ -56,13 +57,14 @@ public class BookCollectionDto {
             return Response.builder()
                     .title(collection.getTitle())
                     .content(collection.getContent())
+                    .createdAt(LocalDate.now())
                     .lastModifiedAt(collection.getLastModifiedAt())
                     .likeCount(collection.getLikeCount())
                     .userLike(!collection.getUser().getCollectionLikes().isEmpty())
                     .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
                     .collectionAuthor(collection.getUser().getNickName())
                     .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
-                    .isbns(collection.getIsbn13())
+                    .isbns(collection.getBookIsbn13())
                     .build();
         }
     }
@@ -74,8 +76,10 @@ public class BookCollectionDto {
     public static class CollectionDetails{
         private String title;
         private String content;
+        private LocalDateTime createdAt;
         private LocalDate lastModifiedAt;
         private Long likeCount;
+        private Long View;
         private boolean userLike;
         private boolean userBookmark;
         private String collectionAuthor;
@@ -88,6 +92,7 @@ public class BookCollectionDto {
             return CollectionDetails.builder()
                     .title(collection.getTitle())
                     .content(collection.getContent())
+                    .createdAt(collection.getCreatedAt())
                     .lastModifiedAt(collection.getLastModifiedAt())
                     .likeCount(collection.getLikeCount())
                     .userLike(!collection.getUser().getCollectionLikes().isEmpty())

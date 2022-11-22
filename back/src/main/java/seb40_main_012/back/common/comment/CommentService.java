@@ -16,6 +16,7 @@ import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.common.like.LikeRepository;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -38,6 +39,7 @@ public class CommentService {
     private final BookService bookService;
     private final BookInfoSearchService bookInfoSearchService;
     private final BookRepository bookRepository;
+    private final LikeRepository likeRepository;
     private final PairingService pairingService;
     private final PairingRepository pairingRepository;
     private final BookCollectionService bookCollectionService;
@@ -51,81 +53,18 @@ public class CommentService {
 
         Book findBook = bookService.findVerifiedBook(isbn13);
 
-                    Comment savedBookComment =
-                            Comment.builder()
-                                    .commentType(CommentType.BOOK)
-                                    .book(findBook)
-                                    .user(findUser)
-                                    .body(comment.getBody())
-                                    .createdAt(LocalDateTime.now())
-                                    .modifiedAt(LocalDateTime.now())
-                                    .build();
-
+        Comment savedBookComment =
+                Comment.builder()
+                        .commentType(CommentType.BOOK)
+                        .book(findBook)
+                        .user(findUser)
+                        .body(comment.getBody())
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
+                        .build();
 
         findBook.getComments().add(savedBookComment);
-
         return commentRepository.save(savedBookComment);
-
-//        Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
-//
-//        if (optionalBook.isEmpty()) {
-//
-//            String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
-//
-//            Book savedBook =
-//                    Book.builder()
-//                            .isbn13(isbn13)
-//                            .comments(new ArrayList<>())
-//                            .build();
-//
-//            if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
-//            else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
-//            else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
-//            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
-//            else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
-//            else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
-//            else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
-//            else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
-//            else savedBook.setGenre(Genre.ETC);
-//
-//            bookRepository.save(savedBook);
-//
-//            Comment savedBookComment =
-//                    Comment.builder()
-//                            .commentType(CommentType.BOOK)
-//                            .book(savedBook)
-//                            .user(findUser)
-//                            .body(comment.getBody())
-//                            .createdAt(LocalDateTime.now())
-//                            .modifiedAt(LocalDateTime.now())
-//                            .build();
-//
-//            savedBook.getComments().add(savedBookComment);
-//
-//            return commentRepository.save(savedBookComment);
-//
-//        } else {
-//
-//            Book findBook = optionalBook.get();
-//
-//            System.out.println("Book Exists");
-//
-//            Comment savedBookComment =
-//                    Comment.builder()
-//                            .commentType(CommentType.BOOK)
-//                            .book(findBook)
-//                            .user(findUser)
-//                            .body(comment.getBody())
-//                            .createdAt(LocalDateTime.now())
-//                            .modifiedAt(LocalDateTime.now())
-//                            .build();
-//
-//
-//            findBook.getComments().add(savedBookComment);
-//
-//            return commentRepository.save(savedBookComment);
-//
-//        }
     }
 
     public Comment createPairingComment(Comment comment, long pairingId) {
@@ -162,13 +101,24 @@ public class CommentService {
         return commentRepository.save(findComment);
     }
 
-    public Comment updateLike(Comment comment, long commentId) { // Like Count 값만 변경
+    public Comment addLike(long commentId) {
 
         User findUser = userService.getLoginUser();
 
         Comment findComment = findVerifiedComment(commentId);
 
-        findComment.setLikeCount(comment.getLikeCount());
+        findComment.setLikeCount(findComment.getLikeCount() + 1);
+
+        return commentRepository.save(findComment);
+    }
+
+    public Comment removeLike(long commentId) {
+
+        User findUser = userService.getLoginUser();
+
+        Comment findComment = findVerifiedComment(commentId);
+
+        findComment.setLikeCount(findComment.getLikeCount() - 1);
 
         return commentRepository.save(findComment);
     }
@@ -177,6 +127,15 @@ public class CommentService {
 
         Comment findComment = findVerifiedComment(commentId);
 
+//        if (userService.getLoginUser() != null) { // 로그인 한 사용자의 경우
+//            User findUser = userService.getLoginUser();
+//            if (likeRepository.findByCommentAndUser(findComment, findUser) == null) { //좋아요 안 누른 경우
+//                findComment.setIsLiked(false);
+//            } else {
+//                findComment.setIsLiked(true);
+//            }
+//        }
+
         findComment.setView(findComment.getView() + 1); // View +1
 
         return commentRepository.save(findComment);
@@ -184,6 +143,13 @@ public class CommentService {
 
     public Comment findComment(long commentId) {
         return findVerifiedComment(commentId);
+    }
+
+    public Comment findMyComment(String isbn13) {
+
+        User findUser = userService.getLoginUser();
+
+        return commentRepository.findByIsbn13AndUserId(isbn13, findUser.getUserId());
     }
 
 //    public Page<Comment> findComments(int page, int size) { // 페이지네이션으로 받기
@@ -235,22 +201,13 @@ public class CommentService {
 }
 
 
-//    public Comment addLike(long commentId, long userId) {
+//    public Comment updateLike(Comment comment, long commentId) { // Like Count 값만 변경
+//
+//        User findUser = userService.getLoginUser();
+//
 //        Comment findComment = findVerifiedComment(commentId);
 //
-//        likeService.createCommentLike(commentId, userId);
-//
-//        findComment.setLikeCount(findComment.getLikeCount() + 1);
-//
-//        return commentRepository.save(findComment);
-//    }
-//
-//    public Comment cancelLike(long commentId, long userId) {
-//        Comment findComment = findVerifiedComment(commentId);
-//
-//        likeService.createCommentLike(commentId, userId);
-//
-//        findComment.setLikeCount(findComment.getLikeCount() - 1);
+//        findComment.setLikeCount(comment.getLikeCount());
 //
 //        return commentRepository.save(findComment);
 //    }

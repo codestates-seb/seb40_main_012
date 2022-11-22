@@ -31,8 +31,6 @@ public class BookInfoSearchController {
 
         BookInfoSearchDto.BookInfo response = bookInfoService.bookSearch(isbn13);
 
-        System.out.println(response.getItem().get(0).categoryName);
-
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

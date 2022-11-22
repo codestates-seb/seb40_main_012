@@ -25,21 +25,55 @@ public class Book {
     //    --------------------------------------------------------------------------------------------
     /*도서 상세 페이지 상단*/
     //    --------------------------------------------------------------------------------------------
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long bookId;
 
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private long bookId;
+
+    @Id
     @Column
     private String isbn13;
 
     @Column
+    private String cover;
+
+    @Column
+    private String author;
+
+    @Column(name = "Book_Title")
     private String title;
+
+    @Column
+    private String subTitle;
+
+    @Column
+    private String itemPage;
+
+    @Column
+    private String pubDate;
+
+    @Column
+    private String publisher;
+
+    @Column
+    private String adult;
+
+    @Column
+    private long commentCount;
+
+    @Column
+    private long pairingCount;
+
+    @Column
+    private long bookCollectionCount;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "genre")
     private Genre genre;
 
-    private String author;
+    @Column
+    private String description;
+
+
 
     @Column
     private long view;
@@ -89,6 +123,14 @@ public class Book {
     //    --------------------------------------------------------------------------------------------
 
     @JsonManagedReference
+    @OneToMany(mappedBy = "book")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<BookCollection> bookCollections = new ArrayList<>();
+
+
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "book") // 다대 다
+//    private List<BookCollectionBook> bookCollectionBooks;
     @OneToMany(mappedBy = "book") // 다대 다
     private List<BookCollectionBook> bookCollectionBooks = new ArrayList<>();
     //    --------------------------------------------------------------------------------------------

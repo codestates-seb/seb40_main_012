@@ -2,6 +2,8 @@ package seb40_main_012.back.bookCollection.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.entity.Tag;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -17,5 +19,12 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection,L
     //    @Query()
 //    List<BookCollection> findByTag(List<Tag> tags);
 
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM BOOK_COLLECTION " +
+                    "CROSS JOIN BOOK " +
+                    "WHERE LOWER(TITLE) LIKE %:queryParam% " +
+                    "OR LOWER(BOOK_TITLE) LIKE %:queryParam% " +
+                    "OR LOWER(CONTENT) LIKE %:queryParam%")
+    List<BookCollection> findBookCollectionsByQuery(@Param("queryParam") String queryParam);
 
 }

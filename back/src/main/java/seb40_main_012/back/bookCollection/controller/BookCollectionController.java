@@ -50,7 +50,7 @@ public class BookCollectionController {
     @ResponseStatus(HttpStatus.OK)
     public BookCollectionDto.CollectionDetails getCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id")Long collectionId) {
         BookCollection collection = collectionService.getCollection(collectionId);
-        List<String> isbns = collection.getIsbn13();
+        List<String> isbns = collection.getBookIsbn13();
         List<BookInfoSearchDto.CollectionBook> books = new ArrayList<>();
         isbns.forEach(
                x -> books.add(bookInfoSearchService.collectionBookSearch(x))
@@ -110,13 +110,12 @@ public class BookCollectionController {
     //이게 맞냐고
     public BookCollectionDto.AuthorCollection getCollectionByAuthor(@RequestHeader("Authorization") Long userId) {
         BookCollection collection = collectionService.findCollectionByAuthor();
-        List<String> isbns = collection.getIsbn13();
+        List<String> isbns = collection.getBookIsbn13();
         List<BookInfoSearchDto.MainCollectionBook> books = new ArrayList<>();
         isbns.forEach(
                 x -> books.add(bookInfoSearchService.MainCollectionBookSearch(x))
         );
         return BookCollectionDto.AuthorCollection.of(collection,books);
     }
-
 
 }

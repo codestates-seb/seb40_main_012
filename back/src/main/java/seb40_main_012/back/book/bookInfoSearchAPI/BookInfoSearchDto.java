@@ -14,11 +14,11 @@ public class BookInfoSearchDto {
     @NoArgsConstructor
     public static class BookList {
 
-        public int totalResult;
+//        public int totalResult;
 
         List<Item> item = new ArrayList<>();
 
-        static class Item {
+        public static class Item {
 
             public String isbn13; // 책 식별자로 사용하기
             public String cover; // 커버 사진 링크
@@ -44,6 +44,7 @@ public class BookInfoSearchDto {
             public String cover; // 커버 사진 링크
             public String title;
             public String author;
+            public String publisher;
             public String categoryName;
             public String adult;
             public String pubDate;

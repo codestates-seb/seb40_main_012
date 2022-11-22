@@ -2,14 +2,14 @@ package seb40_main_012.back.common.comment.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.stereotype.Service;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.common.like.entity.Like;
@@ -21,7 +21,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Builder
 @Entity
 @AllArgsConstructor
@@ -39,6 +40,8 @@ public class Comment {
     @Column
     private String body;
 
+    @Column Boolean isLiked = false;
+
     @Column(nullable = false)
     private long likeCount;
 
@@ -52,7 +55,7 @@ public class Comment {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "isbn13")
     private Book book;
 
     @JsonBackReference
@@ -68,6 +71,7 @@ public class Comment {
     @JsonManagedReference
     @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @NotFound(action = NotFoundAction.IGNORE)
     private final List<Like> likes = new ArrayList<>();
 
     @CreatedDate

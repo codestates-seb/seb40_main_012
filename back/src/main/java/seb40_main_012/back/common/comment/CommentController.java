@@ -11,7 +11,7 @@ import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
-//import seb40_main_012.back.notification.NotificationService;
+import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.PairingService;
 
 import javax.validation.Valid;
@@ -32,7 +32,7 @@ public class CommentController {
     private final LikeService likeService;
 
 //    ------------------------------------------------------------
-//    private final NotificationService noticeService;
+    private final NotificationService noticeService;
 //    ------------------------------------------------------------
 
     @PostMapping("/books/{isbn13}/comments/add")
@@ -41,7 +41,7 @@ public class CommentController {
 
         Comment comment = commentMapper.commentPostToComment(postComment);
         Comment createdComment = commentService.createBookComment(comment, isbn13);
-        CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
+        CommentDto.Response response = commentMapper.bookCommentToCommentResponse(createdComment);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED
@@ -54,10 +54,10 @@ public class CommentController {
 
         Comment comment = commentMapper.commentPostToComment(postComment);
         Comment createdComment = commentService.createPairingComment(comment, pairingId);
-        CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
+        CommentDto.Response response = commentMapper.pairingCommentToCommentResponse(createdComment);
 
 //        ------------------------------------------------------------
-//        noticeService.notifyPostPairingCommentEvent(createdComment);
+        noticeService.notifyPostPairingCommentEvent(createdComment);
 //        ------------------------------------------------------------
 
         return new ResponseEntity<>(
@@ -84,17 +84,34 @@ public class CommentController {
     }
 
     @PatchMapping("/comments/{comment_id}/like")
-    public ResponseEntity updateLikeComment(@PathVariable("comment_id") @Positive long commentId,
-                                            @Valid @RequestBody CommentDto.Like likeComment) {
+    public ResponseEntity createCommentLike(@PathVariable("comment_id") @Positive long commentId) {
 
         likeService.createCommentLike(commentId); // 좋아요 눌렀나 검증
 
-        Comment comment = commentMapper.commentLikeToComment(likeComment);
-        Comment updatedLikeComment = commentService.updateLike(comment, commentId);
+//        Comment comment = commentMapper.commentLikeToComment(likeComment);
+        Comment updatedLikeComment = commentService.addLike(commentId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(updatedLikeComment);
 
 //        ------------------------------------------------------------
-//        noticeService.notifyUpdateLikeCommentEvent(updatedLikeComment);
+        noticeService.notifyUpdateLikeCommentEvent(updatedLikeComment);
+//        ------------------------------------------------------------
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK
+        );
+    }
+
+    @PatchMapping("/comments/{comment_id}/dislike")
+    public ResponseEntity deleteCommentLike(@PathVariable("comment_id") @Positive long commentId) {
+
+        likeService.deleteCommentLike(commentId); // 좋아요 눌렀나 검증
+
+//        Comment comment = commentMapper.commentLikeToComment(likeComment);
+        Comment updatedLikeComment = commentService.removeLike(commentId);
+        CommentDto.Response response = commentMapper.commentToCommentResponse(updatedLikeComment);
+
+//        ------------------------------------------------------------
+        noticeService.notifyUpdateLikeCommentEvent(updatedLikeComment);
 //        ------------------------------------------------------------
 
         return new ResponseEntity<>(

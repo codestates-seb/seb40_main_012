@@ -84,7 +84,7 @@ public class PairingDto {
     @NoArgsConstructor
     public static class Response {
 
-        private long bookId;
+        private String  isbn13;
         private long pairingId;
         private UserDto.ResponseDto userInformation;
         private ParingCategory pairingCategory;

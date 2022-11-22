@@ -170,7 +170,7 @@ public class UserController {
 //    public UserDto.ResponseDto getBookMarkByBook(){}
 
     @PatchMapping("/users/firstLogin")
-    public ResponseEntity patchUserOnFirstLogin(@RequestBody LoginDto.PatchDto patchDto) {
+    public ResponseEntity patchUserOnFirstLogin(@Valid @RequestBody LoginDto.PatchDto patchDto) {
         User user = userService.updateOnFirstLogin(patchDto);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.userToFirstLoginResponse(user)), HttpStatus.OK);

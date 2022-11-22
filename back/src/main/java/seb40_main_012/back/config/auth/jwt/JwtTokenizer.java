@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -73,10 +74,11 @@ public class JwtTokenizer {
                 .orElse(null);
     }
 
-    public void addRefreshToken(String email, String jws) {
+    public void addRefreshToken(String email, String jws, String session) {
         repository.save(RefreshToken.builder()
                 .email(email)
                 .tokenValue(jws)
+                .session(session)
                 .build());
     }
 
@@ -87,10 +89,11 @@ public class JwtTokenizer {
 
     public String outCookie(HttpServletRequest request) {
         String[] cookies = request.getHeader("Cookie").split(";");
-        String refreshToken = Arrays.stream(cookies)
-                .filter(cookie -> cookie.startsWith("refreshToken"))
-                .findFirst()
-                .map(cookieString -> cookieString.replace("refreshToken=", ""))
+        Stream<String> stream = Arrays.stream(cookies)
+                .map(cookie -> cookie.replace(" ", ""))
+                .filter(value -> value.startsWith("refreshToken"));
+        String refreshToken = stream.reduce((first, second) -> second)
+                .map(token -> token.replace("refreshToken=", ""))
                 .orElse(null);
 
         return refreshToken;

@@ -68,7 +68,7 @@ public interface PairingMapper {
         }
 
         return PairingDto.Response.builder()
-                .bookId(pairing.getBook().getBookId())
+                .isbn13(pairing.getBook().getIsbn13())
                 .pairingId(pairing.getPairingId())
                 .userInformation(
                         UserDto.ResponseDto.builder()
@@ -102,7 +102,7 @@ public interface PairingMapper {
         return new SliceImpl<>(
                 pairings.stream()
                         .map(pairing -> PairingDto.Response.builder()
-                                .bookId(pairing.getBook().getBookId())
+                                .isbn13(pairing.getBook().getIsbn13())
                                 .pairingId(pairing.getPairingId())
                                 .userInformation(
                                         UserDto.ResponseDto.builder()
