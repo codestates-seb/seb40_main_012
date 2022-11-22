@@ -28,8 +28,8 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    logout: (state) => {
-      state.isLogin = false;
+    setUserDetail: (state, { payload }) => {
+      state.firstLogin = payload.firstLogin;
     },
   },
   extraReducers: (builder) => {
@@ -68,6 +68,8 @@ export const authSlice = createSlice({
       .addCase(PURGE, () => initialState);
   },
 });
+
+export const { setUserDetail } = authSlice.actions;
 
 export const selectIsLogin = (state) => state.auth.isLogin;
 export const selectFirstLogin = (state) =>

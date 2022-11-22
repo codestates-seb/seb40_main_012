@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -25,6 +24,9 @@ import PageContainer from '../../components/PageContainer';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
 import { genreData, ageGroupData, genderData } from '../../util/util';
+import { firstLogin } from '../../api/authApi';
+import { useDispatch } from 'react-redux';
+import { setUserDetail } from '../../store/modules/authSlice';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -63,10 +65,8 @@ const CheckboxFormGroupStyled = styled(FormGroup)`
 `;
 
 const FirstLoginPage = () => {
-  const location = useLocation();
-  console.log(location);
+  const dispatch = useDispatch();
 
-  const [open, setOpen] = React.useState(true);
   const [gender, setGender] = React.useState('');
   const [age, setAge] = React.useState('');
   const [checked, setChecked] = React.useState({
@@ -81,11 +81,29 @@ const FirstLoginPage = () => {
   });
 
   const handleClose = () => {
-    setOpen(false);
+    firstLoginApi({});
   };
 
   const handleClickSave = () => {
-    setOpen(false);
+    const params = {};
+    const genresArray = Object.entries(checked)
+      .filter((v) => v[1])
+      .map((v) => v[0]);
+
+    if (gender.length > 0) params.genderType = gender;
+    if (age.length > 0) params.age = age;
+    if (genresArray.length > 0) params.genres = genresArray;
+
+    firstLoginApi({ params });
+  };
+
+  const firstLoginApi = async (params) => {
+    try {
+      const response = await firstLogin(params);
+      dispatch(setUserDetail(response.firstLogin));
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChangeGender = (event) => {
@@ -118,7 +136,7 @@ const FirstLoginPage = () => {
             height: 'calc(100vh - 60px - 200px)', // header, footer
           }}
         >
-          <Dialog open={open} TransitionComponent={Transition}>
+          <Dialog open={true} TransitionComponent={Transition}>
             <AppBarStyled sx={{ position: 'relative' }}>
               <ToolbarStyled>
                 <IconButton
