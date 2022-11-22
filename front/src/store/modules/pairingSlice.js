@@ -20,10 +20,10 @@ export const asyncGetOnePairing = createAsyncThunk(
 
 export const asyncPostPairing = createAsyncThunk(
   'pairingSlice/asyncPostPairing',
-  async (pairingPostBody) => {
+  async ({ pairingPostBody, isbn }) => {
     console.log('axios.defaults.headers', axios.defaults.headers);
     return await axios
-      .post(`/api/books/1/pairings/add`, pairingPostBody)
+      .post(`/api/books/${isbn}/pairings/add`, pairingPostBody)
       .then((res) => {
         console.log('성공', res);
       })
