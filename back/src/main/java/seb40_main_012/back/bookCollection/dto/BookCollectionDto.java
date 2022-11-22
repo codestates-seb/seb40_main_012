@@ -79,6 +79,7 @@ public class BookCollectionDto {
         private LocalDateTime createdAt;
         private LocalDate lastModifiedAt;
         private Long likeCount;
+        private Long View;
         private boolean userLike;
         private boolean userBookmark;
         private String collectionAuthor;
