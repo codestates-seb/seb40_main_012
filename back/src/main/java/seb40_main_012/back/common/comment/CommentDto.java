@@ -68,6 +68,7 @@ public class CommentDto {
         private long commentId;
         private String bookTitle;
         private long pairingId;
+        private Boolean isLiked;
         private UserDto.ResponseDto userInformation;
         private CommentType commentType;
         private String body;

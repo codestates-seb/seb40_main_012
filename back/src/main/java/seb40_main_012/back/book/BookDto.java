@@ -78,6 +78,7 @@ public class BookDto {
         private String itemPage;
         private Genre genre;
         private String pubDate;
+        private String publisher;
         private String adult;
         private String description;
         private BookWiki bookWiki;

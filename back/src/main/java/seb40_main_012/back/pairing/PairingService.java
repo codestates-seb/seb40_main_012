@@ -18,6 +18,7 @@ import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
 import seb40_main_012.back.bookCollection.repository.BookCollectionBookmarkRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.pairing.entity.PairingBookmark;
 import seb40_main_012.back.user.entity.User;
@@ -63,68 +64,6 @@ public class PairingService {
         findBook.getPairings().add(savedPairing);
 
         return pairingRepository.save(savedPairing);
-
-//        Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
-//
-//        if (optionalBook.isEmpty()) {
-//
-//            String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
-//
-//            Book savedBook =
-//                    Book.builder()
-//                            .isbn13(isbn13)
-//                            .build();
-//
-//            if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
-//            else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
-//            else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
-//            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
-//            else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
-//            else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
-//            else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
-//            else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
-//            else savedBook.setGenre(Genre.ETC);
-//
-//            bookRepository.save(savedBook);
-//
-//            Pairing savedPairing =
-//                    Pairing.builder()
-//                            .book(savedBook)
-//                            .user(findUser)
-//                            .pairingCategory(pairing.getPairingCategory())
-//                            .imagePath(pairing.getImagePath())
-//                            .title(pairing.getTitle())
-//                            .body(pairing.getBody())
-//                            .outLinkPath(pairing.getOutLinkPath())
-//                            .createdAt(LocalDateTime.now())
-//                            .modifiedAt(LocalDateTime.now())
-//                            .build();
-//
-//            savedBook.getPairings().add(savedPairing);
-//
-//            return pairingRepository.save(savedPairing);
-//
-//        } else {
-//
-//            Book findBook = optionalBook.get();
-//
-//            Pairing savedPairing =
-//                    Pairing.builder()
-//                            .book(findBook)
-//                            .user(findUser)
-//                            .pairingCategory(pairing.getPairingCategory())
-//                            .imagePath(pairing.getImagePath())
-//                            .title(pairing.getTitle())
-//                            .body(pairing.getBody())
-//                            .outLinkPath(pairing.getOutLinkPath())
-//                            .createdAt(LocalDateTime.now())
-//                            .modifiedAt(LocalDateTime.now())
-//                            .build();
-//
-//            findBook.getPairings().add(savedPairing);
-//
-//            return pairingRepository.save(savedPairing);
-//        }
     }
 
     public Pairing updatePairing(Pairing pairing, long pairingId) {
@@ -154,14 +93,49 @@ public class PairingService {
         return pairingRepository.save(updatedPairing);
     }
 
-    public Pairing updateLike(Pairing pairing, long pairingId) { // Like Count 값만 변경
+    public Pairing addLike(long pairingId) {
+
+        User findUser = userService.getLoginUser();
 
         Pairing findPairing = findVerifiedPairing(pairingId);
 
-        findPairing.setLikeCount(pairing.getLikeCount());
+        findPairing.setLikeCount(findPairing.getLikeCount() + 1);
 
         return pairingRepository.save(findPairing);
     }
+
+    public Pairing removeLike(long pairingId) {
+
+        User findUser = userService.getLoginUser();
+
+        Pairing findPairing = findVerifiedPairing(pairingId);
+
+        findPairing.setLikeCount(findPairing.getLikeCount() - 1);
+
+        return pairingRepository.saveAndFlush(findPairing);
+    }
+
+//    public Pairing cancelLike(long pairingId, long userId) {
+//
+//        User findUser = userService.getLoginUser();
+//
+//        Pairing findPairing = findVerifiedPairing(pairingId);
+//
+//        likeService.createPairingLike(pairingId);
+//
+//        findPairing.setLikeCount(findPairing.getLikeCount() - 1);
+//
+//        return pairingRepository.save(findPairing);
+//    }
+
+//    public Pairing updateLike(Pairing pairing, long pairingId) { // Like Count 값만 변경
+//
+//        Pairing findPairing = findVerifiedPairing(pairingId);
+//
+//        findPairing.setLikeCount(pairing.getLikeCount());
+//
+//        return pairingRepository.save(findPairing);
+//    }
 
     public Pairing updateView(long pairingId) {
 
@@ -310,20 +284,21 @@ public class PairingService {
                 new BusinessLogicException(ExceptionCode.PAIRING_NOT_FOUND));
     }
 
-    public boolean bookmarkPairing(Long userId,Long pairingId){
+    public boolean bookmarkPairing(Long userId, Long pairingId) {
         User findUser = userService.findVerifiedUser(userId);
         Pairing pairing = findVerifiedPairing(pairingId);
-        PairingBookmark bookmark = pairingBookmarkRepository.findByUserUserIdAndPairingPairingId(userId,pairingId);
+        PairingBookmark bookmark = pairingBookmarkRepository.findByUserUserIdAndPairingPairingId(userId, pairingId);
 
-        try{
-            if(bookmark!=null){
+        try {
+            if (bookmark != null) {
                 pairingBookmarkRepository.delete(bookmark);
-            }else {
-                PairingBookmark pairingBookmark = new PairingBookmark(pairing,findUser);
+            } else {
+                PairingBookmark pairingBookmark = new PairingBookmark(pairing, findUser);
                 pairingBookmarkRepository.save(pairingBookmark);
             }
+        } catch (BusinessLogicException e) {
+            throw new BusinessLogicException(ExceptionCode.FAIL_TO_BOOKMARK);
         }
-        catch (BusinessLogicException e) {throw new BusinessLogicException(ExceptionCode.FAIL_TO_BOOKMARK);}
         return true;
     }
 

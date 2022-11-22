@@ -56,5 +56,13 @@ public interface PairingRepository extends JpaRepository<Pairing, Long> {
 
     List<Pairing> findByUser_UserId(Long userId);
 
+    @Query(nativeQuery = true,
+            value = "select * " +
+                    "from Pairing " +
+                    "where title like %:queryParam% " +
+                    "or " +
+                    "body like %:queryParam%")
+    List<Pairing> findPairingsByQuery(@Param("queryParam") String queryParam);
+
 }
 

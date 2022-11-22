@@ -16,6 +16,7 @@ import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.common.like.LikeRepository;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -38,6 +39,7 @@ public class CommentService {
     private final BookService bookService;
     private final BookInfoSearchService bookInfoSearchService;
     private final BookRepository bookRepository;
+    private final LikeRepository likeRepository;
     private final PairingService pairingService;
     private final PairingRepository pairingRepository;
     private final BookCollectionService bookCollectionService;
@@ -51,15 +53,15 @@ public class CommentService {
 
         Book findBook = bookService.findVerifiedBook(isbn13);
 
-                    Comment savedBookComment =
-                            Comment.builder()
-                                    .commentType(CommentType.BOOK)
-                                    .book(findBook)
-                                    .user(findUser)
-                                    .body(comment.getBody())
-                                    .createdAt(LocalDateTime.now())
-                                    .modifiedAt(LocalDateTime.now())
-                                    .build();
+        Comment savedBookComment =
+                Comment.builder()
+                        .commentType(CommentType.BOOK)
+                        .book(findBook)
+                        .user(findUser)
+                        .body(comment.getBody())
+                        .createdAt(LocalDateTime.now())
+                        .modifiedAt(LocalDateTime.now())
+                        .build();
 
         findBook.getComments().add(savedBookComment);
         return commentRepository.save(savedBookComment);
@@ -99,13 +101,24 @@ public class CommentService {
         return commentRepository.save(findComment);
     }
 
-    public Comment updateLike(Comment comment, long commentId) { // Like Count 값만 변경
+    public Comment addLike(long commentId) {
 
         User findUser = userService.getLoginUser();
 
         Comment findComment = findVerifiedComment(commentId);
 
-        findComment.setLikeCount(comment.getLikeCount());
+        findComment.setLikeCount(findComment.getLikeCount() + 1);
+
+        return commentRepository.save(findComment);
+    }
+
+    public Comment removeLike(long commentId) {
+
+        User findUser = userService.getLoginUser();
+
+        Comment findComment = findVerifiedComment(commentId);
+
+        findComment.setLikeCount(findComment.getLikeCount() - 1);
 
         return commentRepository.save(findComment);
     }
@@ -113,6 +126,15 @@ public class CommentService {
     public Comment updateView(long commentId) {
 
         Comment findComment = findVerifiedComment(commentId);
+
+//        if (userService.getLoginUser() != null) { // 로그인 한 사용자의 경우
+//            User findUser = userService.getLoginUser();
+//            if (likeRepository.findByCommentAndUser(findComment, findUser) == null) { //좋아요 안 누른 경우
+//                findComment.setIsLiked(false);
+//            } else {
+//                findComment.setIsLiked(true);
+//            }
+//        }
 
         findComment.setView(findComment.getView() + 1); // View +1
 
@@ -122,6 +144,7 @@ public class CommentService {
     public Comment findComment(long commentId) {
         return findVerifiedComment(commentId);
     }
+
     public Comment findMyComment(String isbn13) {
 
         User findUser = userService.getLoginUser();
@@ -178,22 +201,13 @@ public class CommentService {
 }
 
 
-//    public Comment addLike(long commentId, long userId) {
+//    public Comment updateLike(Comment comment, long commentId) { // Like Count 값만 변경
+//
+//        User findUser = userService.getLoginUser();
+//
 //        Comment findComment = findVerifiedComment(commentId);
 //
-//        likeService.createCommentLike(commentId, userId);
-//
-//        findComment.setLikeCount(findComment.getLikeCount() + 1);
-//
-//        return commentRepository.save(findComment);
-//    }
-//
-//    public Comment cancelLike(long commentId, long userId) {
-//        Comment findComment = findVerifiedComment(commentId);
-//
-//        likeService.createCommentLike(commentId, userId);
-//
-//        findComment.setLikeCount(findComment.getLikeCount() - 1);
+//        findComment.setLikeCount(comment.getLikeCount());
 //
 //        return commentRepository.save(findComment);
 //    }

@@ -123,9 +123,11 @@ public class BookService {
                             .itemPage(map.get("itemPage").toString())
                             .author(bookItem.author)
                             .pubDate(bookItem.pubDate)
+                            .publisher(bookItem.publisher)
                             .genre(genre)
                             .adult(bookItem.adult)
-                            .description(bookItem.description)
+                            .description(bookItem.description.replace("&lt;", "<")
+                                    .replace("&gt;", ">"))
                             .view(1)
                             .build();
 

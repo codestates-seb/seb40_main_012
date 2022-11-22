@@ -44,6 +44,7 @@ public class BookInfoSearchDto {
             public String cover; // 커버 사진 링크
             public String title;
             public String author;
+            public String publisher;
             public String categoryName;
             public String adult;
             public String pubDate;

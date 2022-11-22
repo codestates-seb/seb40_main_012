@@ -212,7 +212,7 @@ public class Stub {
         user25.setNickName("레몬세린");
         user25.setBookTemp(99.9);
         user25.setPassword(encoder.encode("1234"));
-        user25.setRoles(List.of("사령탑", "텐션 담당", "상큼함 담당", "성질 담당"));
+        user25.setRoles(List.of("방튼튼", "사령탑", "텐션 담당", "상큼함 담당", "성질 담당"));
         user25.setCategories(List.of(userCategory25));
 
         log.info("USER STUB " +
@@ -305,6 +305,8 @@ public class Stub {
                             .title("Stub_Book_Collection_" + i)
                             .content("Stub_Book_Collection_Content" + i)
                             .likeCount(rand)
+                            .createdAt(LocalDateTime.now())
+                            .lastModifiedAt(LocalDate.now())
                             .collectionTags(null)
                             .build()));
         }

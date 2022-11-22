@@ -57,6 +57,6 @@ public class BookWiki {
 
     @JsonBackReference
     @OneToOne
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "isbn13")
     private Book book;
 }

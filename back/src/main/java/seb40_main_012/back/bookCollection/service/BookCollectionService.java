@@ -31,6 +31,7 @@ public class BookCollectionService {
         User findUser = userService.findVerifiedUser(userId);
         collection.setCollectionTag();
 
+
         tags.forEach(
                 x -> {
                     Tag newTag = new Tag(x);

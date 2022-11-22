@@ -48,7 +48,7 @@ public class BookCollectionController {
     @ResponseStatus(HttpStatus.OK)
     public BookCollectionDto.CollectionDetails getCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id") Long collectionId) {
         BookCollection collection = collectionService.getCollection(collectionId);
-        List<String> isbns = collection.getIsbn13();
+        List<String> isbns = collection.getBookIsbn13();
         List<BookInfoSearchDto.CollectionBook> books = new ArrayList<>();
         isbns.forEach(
                 x -> books.add(bookInfoSearchService.collectionBookSearch(x))
