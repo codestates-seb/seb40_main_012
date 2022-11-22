@@ -8,9 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import seb40_main_012.back.config.auth.entity.RefreshToken;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
-import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 
 import javax.servlet.FilterChain;
@@ -24,7 +22,6 @@ import java.util.*;
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
@@ -48,7 +45,8 @@ public class JwtVerificationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String authorization = request.getHeader("Authorization");
 
-        return authorization == null || !authorization.startsWith("Bearer");
+        return authorization == null || !authorization.startsWith("Bearer")
+                || request.getRequestURI().equals("/api/token/refresh"); // 토큰 재발급일 경우 로직 건너뛰기
     }
 
     private void setAuthenticationToContext(Map<String, Object> claims) {

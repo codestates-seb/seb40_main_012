@@ -74,29 +74,16 @@ public class JwtTokenizer {
                 .orElse(null);
     }
 
-    public void addRefreshToken(String email, String jws, String session) {
+    public void addRefreshToken(String email, String jws) {
         repository.save(RefreshToken.builder()
                 .email(email)
                 .tokenValue(jws)
-                .session(session)
                 .build());
     }
 
     @Transactional
     public void removeRefreshToken(String tokenValue) {
         repository.deleteByTokenValue(tokenValue);
-    }
-
-    public String outCookie(HttpServletRequest request) {
-        String[] cookies = request.getHeader("Cookie").split(";");
-        Stream<String> stream = Arrays.stream(cookies)
-                .map(cookie -> cookie.replace(" ", ""))
-                .filter(value -> value.startsWith("refreshToken"));
-        String refreshToken = stream.reduce((first, second) -> second)
-                .map(token -> token.replace("refreshToken=", ""))
-                .orElse(null);
-
-        return refreshToken;
     }
 
     public Jws<Claims> getClaims(String jws, String base64EncodedSecretKey) {

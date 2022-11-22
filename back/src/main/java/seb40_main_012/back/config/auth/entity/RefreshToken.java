@@ -9,19 +9,14 @@ import javax.persistence.*;
 @Entity
 //@RedisHash(value = "refreshToken")
 public class RefreshToken {
-    @Id
-    private long tokenId;
-
     private String email;
 
+    @Id
     private String tokenValue;
 
-    private String session;
-
     @Builder
-    public RefreshToken(String email, String tokenValue, String session) {
+    public RefreshToken(String email, String tokenValue) {
         this.email = email;
         this.tokenValue = tokenValue;
-        this.session = session;
     }
 }
