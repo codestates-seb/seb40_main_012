@@ -298,14 +298,15 @@ public class Stub {
 
         for (long i = 1; i <= 35; i++) {
 
-            long rand = (long) (Math.random() * 50) + 1;
+            long rand1 = (long) (Math.random() * 100) + 1;
+            long rand2 = (long) (Math.random() * 100) + 1;
 
             log.info("BOOK_COLLECTION STUB " +
                     bookCollectionRepository.save(BookCollection.builder()
                             .title("Stub_Book_Collection_" + i)
                             .content("Stub_Book_Collection_Content" + i)
-                            .likeCount(rand)
-                            .view(rand)
+                            .likeCount(rand1)
+                            .view(rand2)
                             .createdAt(LocalDateTime.now())
                             .lastModifiedAt(LocalDate.now())
                             .collectionTags(null)
@@ -408,15 +409,16 @@ public class Stub {
 
         for (long i = 1; i <= 17; i++) {
 
-            long rand = (long) (Math.random() * 50) + 1;
+            long rand1 = (long) (Math.random() * 100) + 1;
+            long rand2 = (long) (Math.random() * 100) + 1;
 
             log.info("BOOK_COLLECTION STUB " +
                     bookCollectionRepository.save(BookCollection.builder()
                             .book(bookService.findBook("1"))
                             .title("Stub_Book_Collection_" + i)
                             .content("Stub_Book_Collection_Content" + i)
-                            .likeCount(rand)
-                            .view(rand)
+                            .likeCount(rand1)
+                            .view(rand2)
                             .createdAt(LocalDateTime.now())
                             .collectionTags(null)
                             .build()));
