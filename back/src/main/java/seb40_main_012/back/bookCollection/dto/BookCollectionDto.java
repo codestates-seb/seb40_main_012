@@ -190,4 +190,22 @@ public class BookCollectionDto {
         }
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CriticCollection{
+        private String title;
+        private List<BookDto.CollectionBook> books;
+
+
+        //collection book
+        public static CriticCollection of(BookCollection collection){
+            return CriticCollection.builder()
+                    .title("00 평론가가 평가한 그 책")
+                    .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
+                    .build();
+        }
+    }
+
 }

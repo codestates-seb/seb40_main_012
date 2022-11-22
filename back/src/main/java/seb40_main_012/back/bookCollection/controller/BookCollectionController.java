@@ -107,10 +107,17 @@ public class BookCollectionController {
 
     @GetMapping("/author")
     @ResponseStatus(HttpStatus.OK)
-    //이게 맞냐고
     public BookCollectionDto.AuthorCollection getCollectionByAuthor() {
         BookCollection collection = collectionService.findCollectionByAuthor();
         return BookCollectionDto.AuthorCollection.of(collection);
+    }
+
+    @GetMapping("/critic")
+    @ResponseStatus(HttpStatus.OK)
+    //이게 맞냐고
+    public BookCollectionDto.CriticCollection getCollectionByCritic() {
+        BookCollection collection = collectionService.findCollectionByCritic();
+        return BookCollectionDto.CriticCollection.of(collection);
     }
 
 }
