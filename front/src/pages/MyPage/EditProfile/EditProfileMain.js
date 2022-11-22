@@ -4,6 +4,7 @@ import Container from '@mui/material/Container';
 import { BasicButton } from '../../../components/Buttons';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
 import WithDrawal from './WithDrawal';
 import FavoriteGenre from './FavoriteGenre';
@@ -82,6 +83,23 @@ const Btn = styled(BasicButton)`
 `;
 
 const EditProfileMain = () => {
+  // 닉네임은 따로
+  // 소개글, 성별, 연령대, 선호 장르
+  const [state, setState] = useState({
+    introduction: '',
+    gender: '',
+    age: '',
+    category: [],
+  });
+
+  // 입력 값에 따라 상태 변경으로 저장
+  const handleChangeState = (e) => {
+    return setState((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
+  console.log(state);
   return (
     <>
       {/* xs , sm, md, lg, xl 사이즈 */}
@@ -122,6 +140,23 @@ const EditProfileMain = () => {
             </Btn>
           </Grid>
         </Grid>
+        <Grid
+          container
+          xs={12}
+          align="left"
+          alignItems="center"
+          justifyContent="left"
+        >
+          <Grid item xs={4} align="left" justifyContent="left">
+            <ItemText>한 줄 소개</ItemText>
+          </Grid>
+          <Grid item xs={4.5} align="left" justifyContent="left">
+            <NickNameInput
+              className="nickname-border"
+              onChange={handleChangeState}
+            ></NickNameInput>
+          </Grid>
+        </Grid>
         <ItemText>
           <Link to="/settings/profile/changepasswd" variant="body2">
             비밀번호 변경
@@ -146,7 +181,7 @@ const EditProfileMain = () => {
           >
             <GenderContainer>
               <div className="gender-flex-box">
-                <input type="radio" className="gender" name="gender"></input>
+                <input type="radio" name="gender"></input>
                 <GenderText>여성</GenderText>
               </div>
               <div className="gender-flex-box">
