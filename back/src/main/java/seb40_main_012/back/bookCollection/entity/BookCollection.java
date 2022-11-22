@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 @Builder
 @Entity
@@ -30,6 +31,8 @@ public class BookCollection {
     private String title;
     private String content;
     private Long likeCount;
+
+    private Long view;
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
     private List<BookCollectionTag> collectionTags = new ArrayList<>();
