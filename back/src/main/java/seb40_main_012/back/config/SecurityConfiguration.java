@@ -28,7 +28,6 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final RefreshTokenRepository repository;
     private final UserMapper userMapper;
-    private final UserLogoutHandler logoutHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -51,7 +50,7 @@ public class SecurityConfiguration {
                 .logoutUrl("/api/logout")
                 .addLogoutHandler(new UserLogoutHandler(jwtTokenizer))
                 .logoutSuccessHandler(new UserLogoutSuccessHandler())
-                .deleteCookies("Cookie")
+                .deleteCookies("refreshToken")
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
 //                        .antMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("USER", "ADMIN") // 회원 탈퇴, 강제 탈퇴
