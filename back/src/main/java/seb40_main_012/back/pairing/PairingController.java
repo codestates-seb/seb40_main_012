@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
@@ -29,7 +30,7 @@ public class PairingController {
     private final PairingMapper pairingMapper;
     private final BookService bookService;
     private final LikeService likeService;
-//    ------------------------------------------------------------
+    //    ------------------------------------------------------------
     private final NotificationService noticeService;
 //    ------------------------------------------------------------
 
@@ -133,42 +134,28 @@ public class PairingController {
 //    }
 
     @GetMapping("/pairings/{pairing_id}")
-    public ResponseEntity getPairing(@PathVariable("pairing_id") @Positive long pairingId) {
+    public ResponseEntity getPairing(
+            @RequestHeader("Authorization") @Valid @Nullable String token,
+            @PathVariable("pairing_id") @Positive long pairingId) {
 
-        Pairing pairing = pairingService.updateView(pairingId);
-        PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
+        if (token == null) {
 
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.OK
-        );
+            Pairing pairing = pairingService.updateView(pairingId);
+            PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.OK);
+        } else {
+
+            Pairing pairing = pairingService.updateView(pairingId);
+            Pairing isLikedComments = pairingService.isLikedComments(pairingId);
+            PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.OK);
+        }
     }
 
-//    @GetMapping("/pairings") // 페이지네이션으로 받기
-//    public ResponseEntity getPairings(@Positive @RequestParam int page,
-//                                      @Positive @RequestParam(required = false, defaultValue = "15") int size) {
-//
-//        Page<Pairing> pagePairings = pairingService.findPairings(page - 1, size);
-//        List<Pairing> pairings = pagePairings.getContent();
-//        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairings);
-//
-//        return new ResponseEntity<>(
-//                new MultiResponseDto<>(responses, pagePairings), HttpStatus.OK
-//        );
-//    }
-
-//    @GetMapping("/pairings") // 리스트로 받기
-//    public ResponseEntity getPairings() {
-//
-//        List<Pairing> listPairings = pairingService.findPairings();
-//        List<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(listPairings);
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(responses), HttpStatus.OK
-//        );
-//    }
-
-    //    --------------------------------------------------------------------------------------------
-//    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    조회 API 세분화
@@ -311,8 +298,6 @@ public class PairingController {
 
 //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
-//    --------------------------------------------------------------------------------------------
-//    --------------------------------------------------------------------------------------------
 
     @GetMapping("/pairing/best")
     public ResponseEntity bestTenPairings() {
@@ -336,6 +321,7 @@ public class PairingController {
     @ResponseStatus(HttpStatus.OK)
     public boolean bookmarkPairing(@PathVariable("pairing-id") Long pairingId){
         return bookmarkService.bookmarkPairing(pairingId);
+
     }
 
 

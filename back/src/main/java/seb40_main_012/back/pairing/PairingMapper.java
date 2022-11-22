@@ -33,8 +33,6 @@ public interface PairingMapper {
 
     Pairing pairingLikeToPairing(PairingDto.Like likePairing);
 
-//    Pairing pairingViewToPairing(PairingDto.View viewPairing);
-
     default PairingDto.Response pairingToPairingResponse(Pairing pairing) {
 
         User user = pairing.getUser();
@@ -58,6 +56,7 @@ public interface PairingMapper {
                                                             .build()
                                             )
                                             .commentType(comment.getCommentType())
+                                            .isLiked(comment.getIsLiked())
                                             .body(comment.getBody())
                                             .likeCount(comment.getLikeCount())
                                             .view(comment.getView())
@@ -81,6 +80,7 @@ public interface PairingMapper {
                 .pairingCategory(pairing.getPairingCategory())
                 .title(pairing.getTitle())
                 .body(pairing.getBody())
+                .isLiked(pairing.getIsLiked())
                 .likeCount(pairing.getLikeCount())
                 .view(pairing.getView())
                 .imagePath(pairing.getImagePath())
@@ -91,9 +91,6 @@ public interface PairingMapper {
                 .build();
 
     }
-
-    ;
-
 
     default SliceImpl<PairingDto.Response> pairingsToPairingResponses(List<Pairing> pairings) {
 
@@ -142,8 +139,6 @@ public interface PairingMapper {
                                 .modifiedAt(pairing.getModifiedAt())
                                 .build()
                         ).collect(Collectors.toList())
-
         );
-
     }
 }

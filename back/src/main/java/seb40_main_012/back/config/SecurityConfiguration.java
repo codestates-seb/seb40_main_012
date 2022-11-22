@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import seb40_main_012.back.config.auth.cookie.CookieManager;
 import seb40_main_012.back.config.auth.filter.JwtAuthenticationFilter;
 import seb40_main_012.back.config.auth.filter.JwtVerificationFilter;
 import seb40_main_012.back.config.auth.handler.*;
@@ -28,6 +29,7 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final RefreshTokenRepository repository;
     private final UserMapper userMapper;
+    private final CookieManager cookieManager;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,7 +50,7 @@ public class SecurityConfiguration {
                 .and()
                 .logout()
                 .logoutUrl("/api/logout")
-                .addLogoutHandler(new UserLogoutHandler(jwtTokenizer))
+                .addLogoutHandler(new UserLogoutHandler(jwtTokenizer, cookieManager))
                 .logoutSuccessHandler(new UserLogoutSuccessHandler())
                 .deleteCookies("refreshToken")
                 .and()
@@ -72,12 +74,12 @@ public class SecurityConfiguration {
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter =
-                    new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, userMapper);
+                    new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, userMapper, cookieManager);
             jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
             jwtAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler());
             jwtAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler());
 
-            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils, repository);
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
 
             builder.addFilter(jwtAuthenticationFilter)
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);

@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import seb40_main_012.back.config.auth.cookie.CookieManager;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.user.entity.User;
@@ -25,10 +26,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     private final AuthenticationManager authenticationManager;
     private final JwtTokenizer jwtTokenizer;
     private final UserMapper userMapper;
+    private final CookieManager cookieManager;
 
     @SneakyThrows
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
+        System.out.println("attemp URI:"+request.getRequestURI());
         ObjectMapper objectMapper = new ObjectMapper();
         LoginDto.PostDto loginDto = objectMapper.readValue(request.getInputStream(), LoginDto.PostDto.class);
 
@@ -47,16 +50,10 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Authorization", "Bearer " + accessToken);
 
         String refreshToken = jwtTokenizer.delegateRefreshToken(user);
-        jwtTokenizer.addRefreshToken(user.getEmail(), refreshToken, null);
+        jwtTokenizer.addRefreshToken(user.getEmail(), refreshToken);
 
         // refresh Token을 헤더에 Set-Cookie 해주기
-        ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken)
-                .maxAge(1 * 24 * 60 * 60) // 하루 설정
-                .path("/")
-                .secure(true)
-                .sameSite("None")
-                .httpOnly(true)
-                .build();
+        ResponseCookie cookie = cookieManager.createCookie("refreshToken", refreshToken);
         response.setHeader("Set-Cookie", cookie.toString());
 
         // 로그인 시 필요한 정보 담기
