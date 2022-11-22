@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
+import seb40_main_012.back.book.BookService;
+import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.pairing.PairingService;
@@ -21,6 +23,7 @@ public class BookmarkService {
     private final UserService userService;
     private final BookCollectionService collectionService;
     private final PairingService pairingService;
+    private final BookService bookService;
     private final BookmarkRepository bookmarkRepository;
 
 
@@ -59,6 +62,28 @@ public class BookmarkService {
                 Bookmark bookmark = Bookmark.builder()
                         .bookmarkType(BookmarkType.PAIRING)
                         .pairing(pairing)
+                        .user(findUser)
+                        .build();
+                bookmarkRepository.save(bookmark);
+            }
+        }
+        catch (BusinessLogicException e) {throw new BusinessLogicException(ExceptionCode.FAIL_TO_BOOKMARK);}
+        return true;
+    }
+
+    public boolean bookmarkBook(String bookIsbn13){
+        User findUser = userService.getLoginUser();
+        Book book = bookService.findVerifiedBook(bookIsbn13);
+        Bookmark findBookmark = bookmarkRepository.findByUserAndBook(findUser,book);
+
+
+        try{
+            if(findBookmark!=null){
+                bookmarkRepository.delete(findBookmark);
+            }else {
+                Bookmark bookmark = Bookmark.builder()
+                        .bookmarkType(BookmarkType.BOOK)
+                        .book(book)
                         .user(findUser)
                         .build();
                 bookmarkRepository.save(bookmark);

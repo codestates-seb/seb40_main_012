@@ -9,6 +9,7 @@ import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
+import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.CommentMapper;
 import seb40_main_012.back.common.comment.CommentService;
@@ -37,6 +38,7 @@ public class BookController {
     private final CommentService commentService;
     private final CommentMapper commentMapper;
     private final BookService bookService;
+    private final BookmarkService bookmarkService;
     private final BookMapper bookMapper;
     private final RatingService ratingService;
 
@@ -133,4 +135,10 @@ public class BookController {
                 new SingleResponseDto<>(response), HttpStatus.OK
         );
     }
+    @PostMapping("/{isbn13}/bookmark")
+    @ResponseStatus(HttpStatus.OK)
+    public boolean bookmarkBook(@PathVariable("isbn13") String isbn13){
+        return bookmarkService.bookmarkBook(isbn13);
+    }
+
 }
