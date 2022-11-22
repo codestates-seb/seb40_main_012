@@ -5,13 +5,11 @@ import java.util.List;
 import javax.annotation.processing.Generated;
 import org.springframework.stereotype.Component;
 import seb40_main_012.back.book.entity.Book;
-import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.common.comment.entity.Comment;
-import seb40_main_012.back.pairing.entity.Pairing;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-21T14:00:04+0900",
+    date = "2022-11-22T11:54:39+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.5 (Azul Systems, Inc.)"
 )
 @Component
@@ -55,37 +53,6 @@ public class BookMapperImpl implements BookMapper {
         Book.BookBuilder book = Book.builder();
 
         return book.build();
-    }
-
-    @Override
-    public BookDto.Response bookToBookResponse(Book book) {
-        if ( book == null ) {
-            return null;
-        }
-
-        BookDto.Response.ResponseBuilder response = BookDto.Response.builder();
-
-        response.bookId( book.getBookId() );
-        response.isbn13( book.getIsbn13() );
-        response.title( book.getTitle() );
-        response.genre( book.getGenre() );
-        response.bookWiki( book.getBookWiki() );
-        response.averageRating( book.getAverageRating() );
-        response.view( book.getView() );
-        List<Comment> list = book.getComments();
-        if ( list != null ) {
-            response.comments( new ArrayList<Comment>( list ) );
-        }
-        List<Pairing> list1 = book.getPairings();
-        if ( list1 != null ) {
-            response.pairings( new ArrayList<Pairing>( list1 ) );
-        }
-        List<BookCollection> list2 = book.getBookCollections();
-        if ( list2 != null ) {
-            response.bookCollections( new ArrayList<BookCollection>( list2 ) );
-        }
-
-        return response.build();
     }
 
     @Override
