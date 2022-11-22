@@ -9,6 +9,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -108,7 +110,7 @@ public class PairingControllerRestDocs {
                         .build();
 
         given(pairingMapper.pairingPostToPairing(Mockito.any(PairingDto.Post.class))).willReturn(new Pairing());
-        given(pairingService.createPairing(Mockito.any(Pairing.class), anyLong())).willReturn(new Pairing());
+        given(pairingService.createPairing(Mockito.any(Pairing.class), anyString())).willReturn(new Pairing());
         given(pairingMapper.pairingToPairingResponse(Mockito.any(Pairing.class))).willReturn(response);
 
         ResultActions actions =
@@ -155,6 +157,7 @@ public class PairingControllerRestDocs {
                                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("페어링 제목"),
                                         fieldWithPath("data.body").type(JsonFieldType.STRING).description("페어링 내용"),
                                         fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER).description("페어링 좋아요"),
+                                        fieldWithPath("data.view").type(JsonFieldType.NUMBER).description("페어링 조회수"),
                                         fieldWithPath("data.imagePath").type(JsonFieldType.STRING).description("이미지 주소"),
                                         fieldWithPath("data.outLinkPath").type(JsonFieldType.STRING).description("외부 링크"),
                                         fieldWithPath("data.comments").type(JsonFieldType.ARRAY).description("댓글"),
@@ -243,6 +246,7 @@ public class PairingControllerRestDocs {
                                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("수정된 페어링 제목"),
                                         fieldWithPath("data.body").type(JsonFieldType.STRING).description("수정된 페어링 내용"),
                                         fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER).description("페어링 좋아요"),
+                                        fieldWithPath("data.view").type(JsonFieldType.NUMBER).description("페어링 조회수"),
                                         fieldWithPath("data.imagePath").type(JsonFieldType.STRING).description("수정된 이미지 주소"),
                                         fieldWithPath("data.outLinkPath").type(JsonFieldType.STRING).description("수정된 외부 링크"),
                                         fieldWithPath("data.comments").type(JsonFieldType.ARRAY).description("댓글"),
@@ -273,7 +277,7 @@ public class PairingControllerRestDocs {
                         .modifiedAt(LocalDateTime.now())
                         .build();
 
-        given(pairingService.findPairing(anyLong())).willReturn(new Pairing());
+        given(pairingService.updateView(anyLong())).willReturn(new Pairing());
         given(pairingMapper.pairingToPairingResponse(Mockito.any(Pairing.class))).willReturn(response);
 
         ResultActions actions =
@@ -315,6 +319,7 @@ public class PairingControllerRestDocs {
                                         fieldWithPath("data.title").type(JsonFieldType.STRING).description("페어링 제목"),
                                         fieldWithPath("data.body").type(JsonFieldType.STRING).description("페어링 내용"),
                                         fieldWithPath("data.likeCount").type(JsonFieldType.NUMBER).description("페어링 좋아요"),
+                                        fieldWithPath("data.view").type(JsonFieldType.NUMBER).description("페어링 조회수"),
                                         fieldWithPath("data.imagePath").type(JsonFieldType.STRING).description("이미지 주소"),
                                         fieldWithPath("data.outLinkPath").type(JsonFieldType.STRING).description("외부 링크"),
                                         fieldWithPath("data.comments").type(JsonFieldType.ARRAY).description("댓글"),
@@ -327,50 +332,53 @@ public class PairingControllerRestDocs {
     @Test
     void getPairingsTest() throws Exception {
 
-        List<PairingDto.Response> responses = List.of(
+        SliceImpl<PairingDto.Response> responses =
+                new SliceImpl<>(List.of(
 
-                PairingDto.Response.builder()
-                        .bookId(1)
-                        .pairingId(1)
-                        .userInformation(
-                                UserDto.ResponseDto.builder()
-                                        .email("running_potato_1@email.com")
-                                        .nickName("Running_Potato_1")
-                                        .roles(List.of("USER"))
-                                        .build()
-                        )
-                        .pairingCategory(ParingCategory.FILM)
-                        .title("페어링 제목_1")
-                        .body("페어링 내용_1")
-                        .likeCount(0)
-                        .imagePath("이미지 주소_1")
-                        .outLinkPath("외부 링크_1")
-                        .comments(new ArrayList<>())
-                        .createdAt(LocalDateTime.now())
-                        .modifiedAt(LocalDateTime.now())
-                        .build(),
+                        PairingDto.Response.builder()
+                                .bookId(1)
+                                .pairingId(1)
+                                .userInformation(
+                                        UserDto.ResponseDto.builder()
+                                                .email("running_potato_1@email.com")
+                                                .nickName("Running_Potato_1")
+                                                .roles(List.of("USER"))
+                                                .build()
+                                )
+                                .pairingCategory(ParingCategory.FILM)
+                                .title("페어링 제목_1")
+                                .body("페어링 내용_1")
+                                .likeCount(0)
+                                .view(0)
+                                .imagePath("이미지 주소_1")
+                                .outLinkPath("외부 링크_1")
+                                .comments(new ArrayList<>())
+                                .createdAt(LocalDateTime.now())
+                                .modifiedAt(LocalDateTime.now())
+                                .build(),
 
-                PairingDto.Response.builder()
-                        .bookId(1)
-                        .pairingId(2)
-                        .userInformation(
-                                UserDto.ResponseDto.builder()
-                                        .email("running_potato_2@email.com")
-                                        .nickName("Running_Potato_2")
-                                        .roles(List.of("USER"))
-                                        .build()
-                        )
-                        .pairingCategory(ParingCategory.MUSIC)
-                        .title("페어링 제목_2")
-                        .body("페어링 내용_2")
-                        .likeCount(0)
-                        .imagePath("이미지 주소_2")
-                        .outLinkPath("외부 링크_2")
-                        .comments(new ArrayList<>())
-                        .createdAt(LocalDateTime.now())
-                        .modifiedAt(LocalDateTime.now())
-                        .build()
-        );
+                        PairingDto.Response.builder()
+                                .bookId(1)
+                                .pairingId(2)
+                                .userInformation(
+                                        UserDto.ResponseDto.builder()
+                                                .email("running_potato_2@email.com")
+                                                .nickName("Running_Potato_2")
+                                                .roles(List.of("USER"))
+                                                .build()
+                                )
+                                .pairingCategory(ParingCategory.MUSIC)
+                                .title("페어링 제목_2")
+                                .body("페어링 내용_2")
+                                .likeCount(0)
+                                .view(0)
+                                .imagePath("이미지 주소_2")
+                                .outLinkPath("외부 링크_2")
+                                .comments(new ArrayList<>())
+                                .createdAt(LocalDateTime.now())
+                                .modifiedAt(LocalDateTime.now())
+                                .build()
+                ));
 
         List<Pairing> listPairings = new ArrayList<>();
 
@@ -379,7 +387,7 @@ public class PairingControllerRestDocs {
 
         ResultActions actions =
                 mockMvc.perform(
-                        RestDocumentationRequestBuilders.get("/api/books/pairings")
+                        RestDocumentationRequestBuilders.get("/api/books/pairings/likes")
                                 .accept(MediaType.APPLICATION_JSON)
                 );
 
@@ -389,21 +397,32 @@ public class PairingControllerRestDocs {
                         getDocumentResponse(),
                         responseFields(
                                 List.of(
-                                        fieldWithPath("data.").type(JsonFieldType.ARRAY).description("결과 데이터"),
-                                        fieldWithPath("data[].bookId").type(JsonFieldType.NUMBER).description("책 번호"),
-                                        fieldWithPath("data[].pairingId").type(JsonFieldType.NUMBER).description("페어링 번호"),
-                                        fieldWithPath("data[].userInformation.email").type(JsonFieldType.STRING).description("작성자 이메일"),
-                                        fieldWithPath("data[].userInformation.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
-                                        fieldWithPath("data[].userInformation.roles[]").type(JsonFieldType.ARRAY).description("작성자 역할"),
-                                        fieldWithPath("data[].pairingCategory").type(JsonFieldType.STRING).description("카테고리"),
-                                        fieldWithPath("data[].title").type(JsonFieldType.STRING).description("페어링 제목"),
-                                        fieldWithPath("data[].body").type(JsonFieldType.STRING).description("페어링 내용"),
-                                        fieldWithPath("data[].likeCount").type(JsonFieldType.NUMBER).description("페어링 좋아요"),
-                                        fieldWithPath("data[].imagePath").type(JsonFieldType.STRING).description("이미지 주소"),
-                                        fieldWithPath("data[].outLinkPath").type(JsonFieldType.STRING).description("외부 링크"),
-                                        fieldWithPath("data[].comments").type(JsonFieldType.ARRAY).description("댓글"),
-                                        fieldWithPath("data[].createdAt").type(JsonFieldType.STRING).description("작성 날짜"),
-                                        fieldWithPath("data[].modifiedAt").type(JsonFieldType.STRING).description("마지막 수정 날짜")
+                                        fieldWithPath("data.").type(JsonFieldType.OBJECT).description("결과 데이터"),
+                                        fieldWithPath("data.content[].bookId").type(JsonFieldType.NUMBER).description("책 번호"),
+                                        fieldWithPath("data.content[].pairingId").type(JsonFieldType.NUMBER).description("페어링 번호"),
+                                        fieldWithPath("data.content[].userInformation.email").type(JsonFieldType.STRING).description("작성자 이메일"),
+                                        fieldWithPath("data.content[].userInformation.nickName").type(JsonFieldType.STRING).description("작성자 닉네임"),
+                                        fieldWithPath("data.content[].userInformation.roles[]").type(JsonFieldType.ARRAY).description("작성자 역할"),
+                                        fieldWithPath("data.content[].pairingCategory").type(JsonFieldType.STRING).description("카테고리"),
+                                        fieldWithPath("data.content[].title").type(JsonFieldType.STRING).description("페어링 제목"),
+                                        fieldWithPath("data.content[].body").type(JsonFieldType.STRING).description("페어링 내용"),
+                                        fieldWithPath("data.content[].likeCount").type(JsonFieldType.NUMBER).description("페어링 좋아요"),
+                                        fieldWithPath("data.content[].view").type(JsonFieldType.NUMBER).description("페어링 조회수"),
+                                        fieldWithPath("data.content[].imagePath").type(JsonFieldType.STRING).description("이미지 주소"),
+                                        fieldWithPath("data.content[].outLinkPath").type(JsonFieldType.STRING).description("외부 링크"),
+                                        fieldWithPath("data.content[].comments").type(JsonFieldType.ARRAY).description("댓글"),
+                                        fieldWithPath("data.content[].createdAt").type(JsonFieldType.STRING).description("작성 날짜"),
+                                        fieldWithPath("data.content[].modifiedAt").type(JsonFieldType.STRING).description("마지막 수정 날짜"),
+                                        fieldWithPath("data.pageable").type(JsonFieldType.STRING).description("Pageble 설정"),
+                                        fieldWithPath("data.size").type(JsonFieldType.NUMBER).description("페이지 크기"),
+                                        fieldWithPath("data.number").type(JsonFieldType.NUMBER).description("페이지 번호"),
+                                        fieldWithPath("data.sort.empty").type(JsonFieldType.BOOLEAN).description("Pageble Empty"),
+                                        fieldWithPath("data.sort.unsorted").type(JsonFieldType.BOOLEAN).description("Pageble Unsorted"),
+                                        fieldWithPath("data.sort.sorted").type(JsonFieldType.BOOLEAN).description("Pageble Sorted"),
+                                        fieldWithPath("data.first").type(JsonFieldType.BOOLEAN).description("Pageble First"),
+                                        fieldWithPath("data.last").type(JsonFieldType.BOOLEAN).description("Pageble Last"),
+                                        fieldWithPath("data.numberOfElements").type(JsonFieldType.NUMBER).description("페이지 요소 개수"),
+                                        fieldWithPath("data.empty").type(JsonFieldType.BOOLEAN).description("페이지 Empty 여부")
                                 )
                         )));
 

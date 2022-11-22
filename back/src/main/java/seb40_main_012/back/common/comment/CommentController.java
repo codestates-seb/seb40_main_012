@@ -11,7 +11,6 @@ import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
-import seb40_main_012.back.dto.IsLikedReponseDto;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.PairingService;

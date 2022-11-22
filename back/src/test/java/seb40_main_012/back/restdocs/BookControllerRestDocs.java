@@ -24,6 +24,7 @@ import seb40_main_012.back.pairing.entity.Pairing;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
@@ -64,35 +65,39 @@ public class BookControllerRestDocs {
     @Test
     void getBookTest() throws Exception {
 
-        long bookId = 1;
+        String isbn13 = "1";
 
         BookDto.Response response =
                 BookDto.Response.builder()
                         .bookId(1)
-                        .genre(Genre.NOVEL)
+                        .isbn13("1234567890123")
+                        .genre(Genre.POEM)
                         .bookWiki(null)
                         .averageRating(3.5)
+                        .view(0)
                         .comments(null)
                         .pairings(null)
                         .bookCollections(null)
                         .similarBooks(null)
                         .build();
 
-        given(bookService.findBook(anyLong())).willReturn(new Book());
+        given(bookService.updateView(anyString())).willReturn(new Book());
         given(bookMapper.bookToBookResponse(Mockito.any(Book.class))).willReturn(response);
 
         ResultActions actions =
                 mockMvc.perform(
-                        RestDocumentationRequestBuilders.get("/api/books/{bookId}", bookId)
+                        RestDocumentationRequestBuilders.get("/api/books/{isbn13}", isbn13)
                                 .accept(MediaType.APPLICATION_JSON)
                 );
 
         actions
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.bookId").value(response.getBookId()))
+                .andExpect(jsonPath("$.data.isbn13").value(response.getIsbn13()))
                 .andExpect(jsonPath("$.data.genre").value(response.getGenre().toString()))
                 .andExpect(jsonPath("$.data.bookWiki").value(response.getBookWiki()))
                 .andExpect(jsonPath("$.data.averageRating").value(response.getAverageRating()))
+                .andExpect(jsonPath("$.data.view").value(response.getView()))
                 .andExpect(jsonPath("$.data.comments").value(response.getComments()))
                 .andExpect(jsonPath("$.data.bookCollections").value(response.getBookCollections()))
                 .andDo(document(
@@ -100,15 +105,17 @@ public class BookControllerRestDocs {
                         getDocumentRequest(),
                         getDocumentResponse(),
                         pathParameters(
-                                parameterWithName("bookId").description("책 번호")
+                                parameterWithName("isbn13").description("책 isbn13")
                         ),
                         responseFields(
                                 List.of(
                                         fieldWithPath("data.").type(JsonFieldType.OBJECT).description("결과 데이터"),
                                         fieldWithPath("data.bookId").type(JsonFieldType.NUMBER).description("책 번호"),
+                                        fieldWithPath("data.isbn13").type(JsonFieldType.STRING).description("책 ISBN13"),
                                         fieldWithPath("data.genre").type(JsonFieldType.STRING).description("장르"),
                                         fieldWithPath("data.bookWiki").type(JsonFieldType.NULL).description("파고들기"),
                                         fieldWithPath("data.averageRating").type(JsonFieldType.NUMBER).description("평균 별점"),
+                                        fieldWithPath("data.view").type(JsonFieldType.NUMBER).description("조회수"),
                                         fieldWithPath("data.comments").type(JsonFieldType.NULL).description("댓글"),
                                         fieldWithPath("data.pairings").type(JsonFieldType.NULL).description("페어링"),
                                         fieldWithPath("data.bookCollections").type(JsonFieldType.NULL).description("책이 포함된 컬렉션"),

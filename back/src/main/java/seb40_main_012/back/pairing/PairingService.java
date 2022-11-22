@@ -11,18 +11,9 @@ import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
-import seb40_main_012.back.book.entity.Genre;
-import seb40_main_012.back.bookCollection.entity.BookCollection;
-import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
-import seb40_main_012.back.bookCollection.repository.BookCollectionBookmarkRepository;
-import seb40_main_012.back.common.comment.CommentService;
-
 import seb40_main_012.back.common.comment.entity.Comment;
-import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.common.like.LikeRepository;
-import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.pairing.entity.Pairing;
-import seb40_main_012.back.pairing.entity.PairingBookmark;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
