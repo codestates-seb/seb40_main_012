@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -24,9 +25,7 @@ import PageContainer from '../../components/PageContainer';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
 import { genreData, ageGroupData, genderData } from '../../util/util';
-import { firstLogin } from '../../api/authApi';
-import { useDispatch } from 'react-redux';
-import { setUserDetail } from '../../store/modules/authSlice';
+import { firstLoginAsync } from '../../store/modules/authSlice';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -81,7 +80,7 @@ const FirstLoginPage = () => {
   });
 
   const handleClose = () => {
-    firstLoginApi({});
+    dispatch(firstLoginAsync({}));
   };
 
   const handleClickSave = () => {
@@ -94,16 +93,7 @@ const FirstLoginPage = () => {
     if (age.length > 0) params.age = age;
     if (genresArray.length > 0) params.genres = genresArray;
 
-    firstLoginApi({ params });
-  };
-
-  const firstLoginApi = async (params) => {
-    try {
-      const response = await firstLogin(params);
-      dispatch(setUserDetail(response.firstLogin));
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(firstLoginAsync(params));
   };
 
   const handleChangeGender = (event) => {
