@@ -5,6 +5,7 @@ import GlobalStyle from './GlobalStyle';
 import { logout, refreshToken } from './api/authApi';
 import { selectIsLogin } from './store/modules/authSlice';
 import RoutesComponent from './components/RoutesComponent';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
   const isLogin = useSelector(selectIsLogin);
@@ -25,6 +26,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <GlobalStyle />
       <RoutesComponent />
     </BrowserRouter>
