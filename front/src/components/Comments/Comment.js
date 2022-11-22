@@ -29,9 +29,20 @@ const BodyContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 2px 0;
   &.btns {
     margin-top: 8px;
+  }
+  .edit {
+    display: flex;
+    margin-top: 3px;
+  }
+  div.hide {
+    visibility: hidden;
+  }
+  .content {
+    display: flex;
+    width: 100%;
+    margin: 3px 8px 0 0;
   }
 `;
 
@@ -48,9 +59,21 @@ const CreatedAt = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `;
 const CommentContent = styled.div`
-  font-size: 15px;
+  font-size: 13px;
   color: ${({ theme }) => theme.colors.darkgray};
   word-break: break-all;
+`;
+const CommentEditInput = styled.textarea`
+  font-size: 13px;
+  color: ${({ theme }) => theme.colors.dark};
+  word-break: break-all;
+  width: 100%;
+  border: 1px solid ${({ theme }) => theme.colors.gray};
+  font-family: RobotoInCjk, 'Noto Sans KR', 'Apple SD Gothic Neo',
+    'Nanum Gothic', 'Malgun Gothic', sans-serif;
+  &:focus {
+    outline: none;
+  }
 `;
 const LikeBtn = styled.div`
   display: flex;
@@ -90,10 +113,35 @@ const DeleteBtn = styled.div`
     display: none;
   }
 `;
+const EditBtn = styled.button`
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const CheckBtn = styled.button`
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 //TODO: 본인이 작성한 코멘트만 삭제 버튼 활성화되도록
-const Comment = ({ data, commentId, commentDelete, userEmail }) => {
+const Comment = ({
+  data,
+  commentId,
+  commentDelete,
+  userEmail,
+  commentEdit,
+  commentLike,
+}) => {
   const [isMyComment, setIsMyComment] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editContent, setEditContent] = useState(data.body);
 
   useEffect(() => {
     setIsMyComment(userEmail === data.userInformation.email);
@@ -101,6 +149,22 @@ const Comment = ({ data, commentId, commentDelete, userEmail }) => {
 
   const handleDeleteComment = () => {
     if (isMyComment) commentDelete(commentId);
+  };
+
+  const handleClickEditBtn = () => setIsEditMode(true);
+  const handleClickCheckBtn = () => {
+    setIsEditMode(false);
+    if (editContent.length >= 5) {
+      commentEdit(commentId, editContent);
+    } else {
+      setEditContent(data.body);
+    }
+  };
+
+  const handleOnChangeEditContent = (e) => setEditContent(e.target.value);
+
+  const handleOnClickLikeBtn = () => {
+    commentLike(commentId);
   };
 
   return (
@@ -120,10 +184,40 @@ const Comment = ({ data, commentId, commentDelete, userEmail }) => {
             <CreatedAt>{ToDateString(data.createdAt)}</CreatedAt>
           </BodyContainer>
           <BodyContainer>
-            <CommentContent>{data.body}</CommentContent>
+            <div className="content">
+              {isEditMode ? (
+                <CommentEditInput
+                  value={editContent}
+                  onChange={handleOnChangeEditContent}
+                ></CommentEditInput>
+              ) : (
+                <CommentContent>{data.body}</CommentContent>
+              )}
+            </div>
+            <div className={`edit ${isMyComment ? 'show' : 'hide'}`}>
+              {isEditMode ? (
+                <CheckBtn onClick={handleClickCheckBtn}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M8.33268 11.3333L13.2493 6.41667C13.4021 6.26389 13.5966 6.1875 13.8327 6.1875C14.0688 6.1875 14.2632 6.26389 14.416 6.41667C14.5688 6.56944 14.6452 6.76389 14.6452 7C14.6452 7.23611 14.5688 7.43056 14.416 7.58333L8.91602 13.0833C8.74935 13.25 8.5549 13.3333 8.33268 13.3333C8.11046 13.3333 7.91602 13.25 7.74935 13.0833L5.58268 10.9167C5.4299 10.7639 5.35352 10.5694 5.35352 10.3333C5.35352 10.0972 5.4299 9.90278 5.58268 9.75C5.73546 9.59722 5.9299 9.52083 6.16602 9.52083C6.40213 9.52083 6.59657 9.59722 6.74935 9.75L8.33268 11.3333Z"
+                      fill="#737373"
+                    />
+                  </svg>
+                </CheckBtn>
+              ) : (
+                <EditBtn onClick={handleClickEditBtn}>
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path
+                      d="M4.16667 15.8333H5.33333L12.5208 8.64579L11.3542 7.47913L4.16667 14.6666V15.8333ZM16.0833 7.43746L12.5417 3.93746L13.7083 2.77079C14.0278 2.45135 14.4203 2.29163 14.8858 2.29163C15.3508 2.29163 15.7431 2.45135 16.0625 2.77079L17.2292 3.93746C17.5486 4.2569 17.7153 4.64246 17.7292 5.09413C17.7431 5.54524 17.5903 5.93051 17.2708 6.24996L16.0833 7.43746ZM14.875 8.66663L6.04167 17.5H2.5V13.9583L11.3333 5.12496L14.875 8.66663ZM11.9375 8.06246L11.3542 7.47913L12.5208 8.64579L11.9375 8.06246Z"
+                      fill="#737373"
+                    />
+                  </svg>
+                </EditBtn>
+              )}
+            </div>
           </BodyContainer>
           <BodyContainer className="btns">
-            <LikeBtn>
+            <LikeBtn onClick={handleOnClickLikeBtn}>
               <svg
                 width="25"
                 height="25"

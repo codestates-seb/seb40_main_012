@@ -10,7 +10,14 @@ const CommentsContainer = styled.div`
   padding: 0 20px;
 `;
 
-const Comments = ({ commentsData, commentAdd, commentDelete }) => {
+//TODO: comment dislike 기능 추가
+const Comments = ({
+  commentsData,
+  commentAdd,
+  commentDelete,
+  commentEdit,
+  commentLike,
+}) => {
   const userEmail = useSelector(selectEmail);
 
   return (
@@ -24,6 +31,8 @@ const Comments = ({ commentsData, commentAdd, commentDelete }) => {
             data={el}
             commentDelete={commentDelete}
             userEmail={userEmail}
+            commentEdit={commentEdit}
+            commentLike={commentLike}
           />
         );
       })}
