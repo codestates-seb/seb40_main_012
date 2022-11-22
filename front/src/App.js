@@ -14,6 +14,7 @@ import MyCollection from './pages/MyPage/MyCollection/MyCollection';
 import MyPick from './pages/MyPage/MyPick/MyPick';
 import EditProfile from './pages/MyPage/EditProfile/EditProfile';
 import CollectionDetailPage from './pages/CollectionDetailPage/CollectionDetail';
+import CollectionWritePage from './pages/CollectionWritePage/CollectionWrite';
 import ChangePassWd from './pages/MyPage/EditProfile/ChangePassWd';
 import BookDetail from './pages/BookDetailPage/BookDetail';
 
@@ -53,7 +54,7 @@ const App = () => {
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/book/:bookId" element={<BookDetail />} />
+        <Route path="/book/:isbn" element={<BookDetail />} />
         <Route path="/pairing" element={<PairingPage />} />
         <Route path="/pairing/film" element={<PairingFilm />} />
         <Route path="/pairing/cuisine" element={<PairingCuisine />} />
@@ -79,6 +80,7 @@ const App = () => {
           path="/collection/:collectionid"
           element={<CollectionDetailPage />}
         ></Route>
+        <Route path="/collection/write" element={<CollectionWritePage />} />
         <Route path="/redux" element={<ReduxPage />} />
         <Route path="/button-test" element={<ButtonTest />} />
         <Route path="*" element={<NoMatch />} />

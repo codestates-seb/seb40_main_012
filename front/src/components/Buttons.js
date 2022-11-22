@@ -30,6 +30,7 @@ export const BasicButton = ({
   borderRadius,
   fontSize,
   fontWeight,
+  onClick,
 }) => {
   return (
     <ThemeProvider theme={theme}>
@@ -39,6 +40,7 @@ export const BasicButton = ({
         borderRadius={borderRadius}
         fontSize={fontSize}
         fontWeight={fontWeight}
+        onClick={onClick}
       >
         {children}
       </BasicBtn>
@@ -71,10 +73,12 @@ export const FillButton = ({
   borderRadius,
   fontSize,
   fontWeight,
+  onClick,
 }) => {
   return (
     <ThemeProvider theme={theme}>
       <FillBtn
+        onClick={onClick}
         width={width}
         height={height}
         borderRadius={borderRadius}
@@ -147,10 +151,12 @@ export const TransparButton = ({
   borderRadius,
   fontSize,
   fontWeight,
+  onClick,
 }) => {
   return (
     <ThemeProvider theme={theme}>
       <TransparBtn
+        onClick={onClick}
         color={color}
         width={width}
         height={height}
@@ -185,10 +191,12 @@ export const MoreButton = ({
   height,
   fontSize,
   fontWeight,
+  onClick,
 }) => {
   return (
     <ThemeProvider theme={theme}>
       <MoreBtn
+        onClick={onClick}
         width={width}
         height={height}
         fontSize={fontSize}
