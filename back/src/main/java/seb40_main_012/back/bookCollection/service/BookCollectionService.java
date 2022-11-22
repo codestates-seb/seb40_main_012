@@ -191,6 +191,10 @@ public class BookCollectionService {
                 .build();
     }
 
+    public BookCollection findCollectionByCritic(){
+        return findVerifiedCollection(3L);
+    }
+
 
     public List<Book> findBooks(List<String> isbn){
         List<Book> findBooks = new ArrayList<>();
