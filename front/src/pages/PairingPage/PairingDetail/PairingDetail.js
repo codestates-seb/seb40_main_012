@@ -14,6 +14,7 @@ import {
   asyncPostPairingComment,
   asyncDeletePairingComment,
   asyncEditPairingComment,
+  asyncLikePairingComment,
 } from '../../../store/modules/pairingSlice';
 
 import Comments from '../../../components/Comments/Comments';
@@ -76,6 +77,10 @@ const PairingDetail = () => {
     dispatch(asyncEditPairingComment({ commentId, body }));
   };
 
+  const handleCommentLike = (commentId) => {
+    dispatch(asyncLikePairingComment(commentId));
+  };
+
   return (
     <PageContainer footer>
       <ThemeProvider theme={theme}>
@@ -114,6 +119,7 @@ const PairingDetail = () => {
           commentAdd={handleCommentAdd}
           commentDelete={handleCommentDelete}
           commentEdit={handleCommentEdit}
+          commentLike={handleCommentLike}
         />
       </ThemeProvider>
     </PageContainer>

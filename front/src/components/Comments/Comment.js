@@ -137,6 +137,7 @@ const Comment = ({
   commentDelete,
   userEmail,
   commentEdit,
+  commentLike,
 }) => {
   const [isMyComment, setIsMyComment] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -159,6 +160,10 @@ const Comment = ({
   };
 
   const handleOnChangeEditContent = (e) => setEditContent(e.target.value);
+
+  const handleOnClickLikeBtn = () => {
+    commentLike(commentId);
+  };
 
   return (
     <ThemeProvider theme={theme}>
@@ -210,7 +215,7 @@ const Comment = ({
             </div>
           </BodyContainer>
           <BodyContainer className="btns">
-            <LikeBtn>
+            <LikeBtn onClick={handleOnClickLikeBtn}>
               <svg
                 width="25"
                 height="25"

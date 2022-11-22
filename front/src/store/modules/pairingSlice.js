@@ -68,6 +68,15 @@ export const asyncEditPairingComment = createAsyncThunk(
   }
 );
 
+export const asyncLikePairingComment = createAsyncThunk(
+  'pairingSlice/asyncLikePairingComment',
+  async (commentId) => {
+    return await axios.patch(`api/comments/${commentId}/like`).then((res) => {
+      return res.data.data;
+    });
+  }
+);
+
 export const pairingSlice = createSlice({
   name: 'pairing',
   initialState,
@@ -131,6 +140,21 @@ export const pairingSlice = createSlice({
       state.status = 'fulfilled';
     });
     builder.addCase(asyncEditPairingComment.rejected, (state) => {
+      state.status = 'rejected';
+    });
+    //comment 좋아요
+    builder.addCase(asyncLikePairingComment.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(asyncLikePairingComment.fulfilled, (state, action) => {
+      state.data.comments = state.data.comments.map((el) => {
+        if (el.commentId === action.payload.commentId) {
+          return action.payload;
+        } else return el;
+      });
+      state.status = 'fulfilled';
+    });
+    builder.addCase(asyncLikePairingComment.rejected, (state) => {
       state.status = 'rejected';
     });
   },
