@@ -114,6 +114,8 @@ const Header = () => {
   const handleClickMypageBtn = () => {
     if (isLogin) {
       navigate('/mypage');
+    } else {
+      navigate('/user/signin');
     }
   };
 
