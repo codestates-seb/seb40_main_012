@@ -22,6 +22,7 @@ import cuisinePairingReducer from './modules/cuisinePairingSlice';
 import musicPairingReducer from './modules/musicPairingSlice';
 import bookPairingReducer from './modules/bookPairingSlice';
 import etcPairingReducer from './modules/etcPairingSlice';
+import myCommentReducer from './modules/commentSlice';
 
 const persistConfig = {
   key: 'root',
@@ -42,6 +43,7 @@ export const rootReducer = combineReducers({
   bookPairing: bookPairingReducer,
   etcPairing: etcPairingReducer,
   pairing: pairingReducer,
+  myComment: myCommentReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

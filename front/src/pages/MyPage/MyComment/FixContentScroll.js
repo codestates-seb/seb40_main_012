@@ -29,8 +29,6 @@ const ContentContainer = styled.div`
     align-items: center;
     justify-content: center;
     align-content: center;
-    width: 200px;
-    height: 200px;
   }
   .fixed {
     position: fixed;
@@ -76,43 +74,42 @@ const ButtonCSS = styled.button`
   background: transparent;
 `;
 
-const Remove = styled.div`
-  color: #dee2e6;
-  font-size: 24px;
-  cursor: pointer;
-  opacity: 0;
-  &:hover {
-    color: #6741ff;
-  }
-`;
-
-const ItemContainer = styled.div`
-  &:hover {
-    ${Remove} {
-      opacity: 1;
-    }
-  }
-`;
-
 const FixContentScroll = ({ commentData }) => {
+  // const [view, setView] = useState(1);
   const [editMode, setEditMode] = useState(false);
   console.log(commentData);
+  // const handleChangeView = (event) => {
+  //   setView(event.target.value);
+  // };
   const handleChangeEditMode = () => {
     setEditMode(!editMode);
   };
   const [data, setData] = useState({
+    // items: Array(10).fill({
+    //   content: CommentData,
+    // }),
     content: commentData,
+    // Array10은 10번 제한 거는 것 , 배열 10개짜리 길이 (반복횟수)
     hasMore: true,
+    // id: 1,
+    // src: [
+    //   {
+    //     src: 'https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300',
+    //   },
+    //   {
+    //     src: 'https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300',
+    //   },
+    // ],
   });
-
-  console.log(data.content);
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
     if (data.content.length >= 100) {
       setData({
+        // items: data.items,
         content: data.content,
         hasMore: false,
+        // src: 'https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300',
       });
       return;
     }
@@ -120,6 +117,7 @@ const FixContentScroll = ({ commentData }) => {
       setData({
         content: data.content.concat(data.content),
         hasMore: true,
+        // src: 'https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300',
       });
       console.log(data.hasMore);
     }, 800);
@@ -129,14 +127,14 @@ const FixContentScroll = ({ commentData }) => {
     const newCommentList = data.content.filter(
       (el) => el.commentId !== targetId
     );
-    setData({ content: newCommentList, hasMore: true });
+    setData(newCommentList);
   };
 
-  const removeAll = () => {
-    if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      setData({ content: [], hasMore: false });
-    }
-  };
+  // const handleClickRemove = () => {
+  //   if (window.confirm(`${CommentData.commentId}번째 코멘트를 정말 삭제하시겠습니까?`)) {
+  //     onRemove(CommentData.commentId);
+  //   }
+  // };
 
   const [checkItems, setCheckItems] = useState([]);
   const handleSingleCheck = (checked, id) => {
@@ -216,7 +214,7 @@ const FixContentScroll = ({ commentData }) => {
                 </ButtonCSS>
               </>
             ) : (
-              <ButtonCSS onClick={removeAll}>
+              <ButtonCSS onClick={handleChangeEditMode}>
                 <Typography
                   color="#737373"
                   sx={{
@@ -228,7 +226,7 @@ const FixContentScroll = ({ commentData }) => {
                   variant="body2"
                   gutterBottom
                 >
-                  전체 삭제
+                  목록 편집
                 </Typography>
               </ButtonCSS>
             )}
@@ -241,16 +239,16 @@ const FixContentScroll = ({ commentData }) => {
           next={data.content && fetchMoreData}
           hasMore={data.hasMore} // 스크롤 막을지 말지 결정
           loader={
-            <p
+            <img
               style={{
-                textAlign: 'center',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignContent: 'center',
               }}
-            >
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-            </p>
+              src={'/images/cherrypick_loading.gif'}
+              alt="loading cherrypick"
+            ></img>
           }
           height={400}
           endMessage={
@@ -261,7 +259,7 @@ const FixContentScroll = ({ commentData }) => {
         >
           <div>
             {data.content.map((data, key) => (
-              <ItemContainer key={key}>
+              <div key={key}>
                 <Grid
                   container
                   xs={12}
@@ -352,27 +350,29 @@ const FixContentScroll = ({ commentData }) => {
                   </Grid>
                   <Grid
                     item
+                    xs={0.5}
                     sx={{
                       display: 'flex',
                       flexDirection: 'row-reverse',
                     }}
                   >
-                    <Remove
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            `${data.commentId}번째 코멘트를 삭제하시겠습니까?`
-                          )
-                        ) {
-                          onRemove(data.commentId);
-                        }
-                      }}
-                    >
-                      <DeleteOutlinedIcon />
-                    </Remove>
+                    {editMode ? (
+                      <DeleteOutlinedIcon
+                        color="disabled"
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              `${data.commentId}번째 코멘트를 삭제하시겠습니까?`
+                            )
+                          ) {
+                            onRemove(data.commentId);
+                          }
+                        }}
+                      />
+                    ) : null}
                   </Grid>
                 </Grid>
-              </ItemContainer>
+              </div>
             ))}
           </div>
         </InfiniteScroll>

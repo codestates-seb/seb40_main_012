@@ -6,6 +6,8 @@ export const LOGOUT_URL = '/api/logout';
 export const MY_PAGE_URL = '/api/mypage';
 export const DUPLICATION_CHECK_NICKNAME_URL = `${MY_PAGE_URL}/verify/nickName`;
 export const DUPLICATION_CHECK_EMAIL_URL = `${MY_PAGE_URL}/verify/email`;
+// export const COMMENT_URL = '/api/mypage/userComment';
+export const EDIT_USER_INFO = '/api/mypage/userInfo';
 
 // 책
 export const BOOKS_URL = '/api/books';
@@ -24,3 +26,6 @@ export const PAIRING_BOOK_LIKE_URL = `${PAIRING_URL}/book/likes`;
 export const PAIRING_BOOK_NEWEST_URL = `${PAIRING_URL}/book/newest`;
 export const PAIRING_ETC_LIKE_URL = `${PAIRING_URL}/etc/likes`;
 export const PAIRING_ETC_NEWEST_URL = `${PAIRING_URL}/etc/newest`;
+
+// 마이페이지 테스트용
+export const COMMENT_URL = '/api/comments';

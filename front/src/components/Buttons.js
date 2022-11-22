@@ -261,3 +261,46 @@ export const OutlinedButton = styled(TextButton)`
     box-shadow: none;
   }
 `;
+
+export const MoveBorderButton = styled.button`
+  outline: none;
+  display: inline-block;
+  margin: 0;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  background: transparent;
+
+  :after {
+    display: block;
+    content: '';
+    border-bottom: solid 3px #6741ff;
+    transform: scaleX(0);
+    transition: transform 250ms ease-in-out;
+    text-decoration: none;
+  }
+  :hover:after {
+    transform: scaleX(1);
+  }
+  .fromRight:after {
+    transform-origin: 100% 50%;
+  }
+  .fromLeft:after {
+    transform-origin: 0% 50%;
+  }
+`;
+
+export const FixedBorderButton = styled.button`
+  outline: none;
+  display: inline-block;
+  margin: 0;
+  cursor: pointer;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  display: block;
+  content: '';
+  border-bottom: solid 3px #6741ff;
+  align-items: center;
+`;
