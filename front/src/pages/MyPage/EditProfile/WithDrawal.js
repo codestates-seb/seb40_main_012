@@ -7,7 +7,6 @@ import CloseIcon from '@mui/icons-material/Close';
 const Container = styled.div`
   color: ${({ theme }) => theme.colors.gray};
   display: flex;
-  /* align-items: center; */
   margin-top: 2rem;
   margin-bottom: 4rem;
   .with-drawal-text {
@@ -65,7 +64,6 @@ const ModalBox = styled.div`
   .close-icon {
     width: 100%;
     display: flex;
-    /* display: flex !important; */
     flex-direction: row-reverse !important;
     cursor: pointer;
   }
@@ -74,7 +72,6 @@ const ModalBox = styled.div`
   }
 `;
 
-//TODO: 페어링, 컬렉션 안내 메시지 추가
 const Guide = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
