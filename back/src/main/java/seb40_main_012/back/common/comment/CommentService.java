@@ -109,6 +109,8 @@ public class CommentService {
 
         findComment.setLikeCount(findComment.getLikeCount() + 1);
 
+        findComment.setIsLiked(true);
+
         return commentRepository.save(findComment);
     }
 
@@ -120,6 +122,8 @@ public class CommentService {
 
         findComment.setLikeCount(findComment.getLikeCount() - 1);
 
+        findComment.setIsLiked(false);
+
         return commentRepository.save(findComment);
     }
 
@@ -127,18 +131,28 @@ public class CommentService {
 
         Comment findComment = findVerifiedComment(commentId);
 
-//        if (userService.getLoginUser() != null) { // 로그인 한 사용자의 경우
-//            User findUser = userService.getLoginUser();
-//            if (likeRepository.findByCommentAndUser(findComment, findUser) == null) { //좋아요 안 누른 경우
-//                findComment.setIsLiked(false);
-//            } else {
-//                findComment.setIsLiked(true);
-//            }
-//        }
-
         findComment.setView(findComment.getView() + 1); // View +1
 
         return commentRepository.save(findComment);
+    }
+
+    public Comment isLikedComment(long commentId) {
+
+        User findUser = userService.getLoginUser();
+
+        Comment findComment = findVerifiedComment(commentId);
+
+        Boolean isLiked;
+
+        if (likeRepository.findByCommentAndUser(findComment, findUser) == null) { //좋아요 안 누른 경우
+            isLiked = false;
+        } else {
+            isLiked = true;
+        }
+
+        findComment.setIsLiked(isLiked);
+
+        return findComment;
     }
 
     public Comment findComment(long commentId) {

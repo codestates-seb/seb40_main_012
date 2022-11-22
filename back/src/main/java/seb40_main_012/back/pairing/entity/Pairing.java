@@ -48,6 +48,9 @@ public class Pairing {
     private String body;
 
     @Column
+    private Boolean isLiked;
+
+    @Column
     private String outLinkPath;
 
     @Column(nullable = false)
@@ -92,5 +95,7 @@ public class Pairing {
     @LastModifiedDate
     @Column(nullable = false, name = "MODIFIED_AT")
     private LocalDateTime modifiedAt = LocalDateTime.now();
+
+
 
 }

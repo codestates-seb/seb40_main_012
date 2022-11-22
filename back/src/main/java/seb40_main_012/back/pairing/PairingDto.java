@@ -90,6 +90,7 @@ public class PairingDto {
         private ParingCategory pairingCategory;
         private String title;
         private String body;
+        private Boolean isLiked;
         private long likeCount;
         private long view;
         private String imagePath;
