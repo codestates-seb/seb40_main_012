@@ -1,12 +1,9 @@
 import Header from '../Header';
 import PageContainer from '../../../components/PageContainer';
-import Nav from './Nav';
-
+import Nav from '../Nav';
 import Container from '@mui/material/Container';
-
-// import FixContentScroll from './FixContentScroll';
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import styled from 'styled-components';
 import Content from './Content';
@@ -17,7 +14,7 @@ const Void = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  .img {
+  img {
     align-items: center;
     justify-content: center;
     align-content: center;
@@ -26,6 +23,7 @@ const Void = styled.div`
   }
 `;
 const MyComment = () => {
+  const [view, setView] = useState(1);
   const CommentData = useSelector((state) =>
     state.myComment.data.length !== 0
       ? state.myComment.data.data.content
@@ -46,9 +44,12 @@ const MyComment = () => {
       {CommentData ? (
         <Container maxWidth="md">
           <Header></Header>
-          <Nav></Nav>
-          <Content commentData={CommentData}></Content>
-          {/* <FixContentScroll commentData={CommentData}></FixContentScroll> */}
+          <Nav view={view} setView={setView} CommentData={CommentData}></Nav>
+          <Content
+            view={view}
+            setView={setView}
+            commentData={CommentData}
+          ></Content>
         </Container>
       ) : (
         <Container maxWidth="md">
