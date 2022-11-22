@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 // import FormControlLabel from '@mui/material/FormControlLabel';
 // import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -24,13 +23,13 @@ import {
 import { signInAsync } from '../../store/modules/authSlice';
 import SignInTextFields from './SignInTextFields';
 
-const LoginErrorMsg = styled.div`
+const LoginErrorMsgStyled = styled.div`
   font-size: 0.75rem;
   color: #d32f2f;
   margin-bottom: 16px;
 `;
 
-const SignUpLink = styled(Link)`
+const SignUpLinkStyled = styled(Link)`
   font-size: 1rem;
 `;
 
@@ -115,23 +114,23 @@ const SignInPage = () => {
                 로그인
               </ContainedButton>
               {showLoginError ? (
-                <LoginErrorMsg>
+                <LoginErrorMsgStyled>
                   아이디(로그인 전용 아이디) 또는 비밀번호를 잘못 입력했습니다.
                   입력하신 내용을 다시 확인해주세요.
-                </LoginErrorMsg>
+                </LoginErrorMsgStyled>
               ) : null}
               <Grid container justifyContent="flex-end">
                 {/* <Grid container> */}
                 {/* <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link to="#" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid> */}
                 <Grid item>
                   계정이 없으신가요?{' '}
-                  <SignUpLink href="/user/signup" variant="body2">
+                  <SignUpLinkStyled to="/user/signup" variant="body2">
                     회원가입
-                  </SignUpLink>
+                  </SignUpLinkStyled>
                 </Grid>
               </Grid>
             </Box>
