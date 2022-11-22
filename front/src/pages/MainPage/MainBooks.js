@@ -68,7 +68,7 @@ const MainBooks = () => {
             {mainBooks.map((el, idx) => {
               return (
                 <MainBook
-                  key={el.bookId}
+                  key={el.isbn13}
                   ranking={idx + 1}
                   bookId={el.bookId}
                   bookTitle={el.title}

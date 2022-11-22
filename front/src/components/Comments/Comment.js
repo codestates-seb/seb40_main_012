@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import theme from '../../styles/theme';
 import { ToDateString } from '../../util/ToDateString';
@@ -5,7 +6,10 @@ import { ToDateString } from '../../util/ToDateString';
 const CommentContainer = styled.div`
   display: flex;
   padding: 10px 20px;
-  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray}; ;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
+  &.mine {
+    background-color: #f5f5f5;
+  }
 `;
 
 const UserImgContainer = styled.div`
@@ -35,6 +39,9 @@ const UserNickname = styled.div`
   font-size: 14px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.dark};
+  &.my {
+    color: ${({ theme }) => theme.colors.mainColor};
+  }
 `;
 const CreatedAt = styled.div`
   font-size: 14px;
@@ -79,17 +86,26 @@ const DeleteBtn = styled.div`
       }
     }
   }
+  &.notmine {
+    display: none;
+  }
 `;
 
 //TODO: 본인이 작성한 코멘트만 삭제 버튼 활성화되도록
-const Comment = ({ data, commentId, commentDelete }) => {
+const Comment = ({ data, commentId, commentDelete, userEmail }) => {
+  const [isMyComment, setIsMyComment] = useState(false);
+
+  useEffect(() => {
+    setIsMyComment(userEmail === data.userInformation.email);
+  }, []);
+
   const handleDeleteComment = () => {
-    commentDelete(commentId);
+    if (isMyComment) commentDelete(commentId);
   };
 
   return (
     <ThemeProvider theme={theme}>
-      <CommentContainer>
+      <CommentContainer className={isMyComment ? 'mine' : null}>
         <UserImgContainer>
           <img
             src={process.env.PUBLIC_URL + '/images/mypage_icon.svg'}
@@ -98,7 +114,9 @@ const Comment = ({ data, commentId, commentDelete }) => {
         </UserImgContainer>
         <CommentBodyContainer>
           <BodyContainer>
-            <UserNickname>{data.userInformation.nickName}</UserNickname>
+            <UserNickname className={isMyComment ? 'my' : null}>
+              {data.userInformation.nickName}
+            </UserNickname>
             <CreatedAt>{ToDateString(data.createdAt)}</CreatedAt>
           </BodyContainer>
           <BodyContainer>
@@ -120,7 +138,10 @@ const Comment = ({ data, commentId, commentDelete }) => {
               </svg>
               <div>{data.likeCount}</div>
             </LikeBtn>
-            <DeleteBtn onClick={handleDeleteComment}>
+            <DeleteBtn
+              className={isMyComment ? null : 'notmine'}
+              onClick={handleDeleteComment}
+            >
               <svg
                 width="20"
                 height="20"
