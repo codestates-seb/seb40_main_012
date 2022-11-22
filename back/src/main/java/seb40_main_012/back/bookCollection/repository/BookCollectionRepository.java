@@ -17,9 +17,9 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection,L
     @Query(nativeQuery = true,
             value = "SELECT * FROM BOOK_COLLECTION " +
                     "CROSS JOIN BOOK " +
-                    "WHERE TITLE LIKE %:queryParam% " +
-                    "OR BOOK_TITLE LIKE %:queryParam% " +
-                    "OR CONTENT LIKE %:queryParam%")
+                    "WHERE LOWER(TITLE) LIKE %:queryParam% " +
+                    "OR LOWER(BOOK_TITLE) LIKE %:queryParam% " +
+                    "OR LOWER(CONTENT) LIKE %:queryParam%")
     List<BookCollection> findBookCollectionsByQuery(@Param("queryParam") String queryParam);
 
 }
