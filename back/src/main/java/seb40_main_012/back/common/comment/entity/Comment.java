@@ -40,7 +40,8 @@ public class Comment {
     @Column
     private String body;
 
-    @Column Boolean isLiked = false;
+    @Column
+    Boolean isLiked = false;
 
     @Column(nullable = false)
     private long likeCount;

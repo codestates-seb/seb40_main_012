@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
+import seb40_main_012.back.dto.IsLikedReponseDto;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.PairingService;
@@ -31,7 +33,7 @@ public class CommentController {
     private final CommentMapper commentMapper;
     private final LikeService likeService;
 
-//    ------------------------------------------------------------
+    //    ------------------------------------------------------------
     private final NotificationService noticeService;
 //    ------------------------------------------------------------
 
@@ -119,73 +121,46 @@ public class CommentController {
         );
     }
 
-//    @PatchMapping("/comments/{comment_id}/like")
-//    public ResponseEntity updateLikeComment(@RequestHeader("Authorization") long userId,
-//                                            @PathVariable("comment_id") @Positive long commentId,
-//                                            @Valid @RequestBody CommentDto.Like likeComment) {
-//
-//        likeService.createCommentLike(likeComment);
-//
-//        Comment comment = commentService.updateLike(commentMapper.commentLikeToComment(likeComment), commentId);
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(commentMapper.commentToCommentResponse(comment)), HttpStatus.OK
-//        );
-//    }
-
-//    @PatchMapping("/comments/{comment_id}") // 조회 기능에 통합
-//    public ResponseEntity updateViewPairing(@RequestBody CommentDto.View viewComment,
-//                                            @PathVariable("comment_id") @Positive long commentId) {
-////        Comment comment = commentMapper.commentViewToComment(viewComment);
-//        Comment viewedComment = commentService.updateView(commentId);
-//        CommentDto.Response response = commentMapper.commentToCommentResponse(viewedComment);
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(response), HttpStatus.OK
-//        );
-//    }
-
-
     @GetMapping("/comments/{comment_id}")
-    public ResponseEntity getComment(@PathVariable("comment_id") @Positive long commentId) {
+    public ResponseEntity getComment(
+            @RequestHeader("Authorization") @Valid @Nullable String token,
+            @PathVariable("comment_id") @Positive long commentId) {
 
-        Comment comment = commentService.updateView(commentId);
-        CommentDto.Response response = commentMapper.commentToCommentResponse(comment);
+        if (token == null) {
 
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.OK
-        );
+            Comment comment = commentService.updateView(commentId);
+            CommentDto.Response response = commentMapper.commentToCommentResponse(comment);
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.OK);
+        } else {
+
+            Comment comment = commentService.updateView(commentId);
+            Comment isLiked = commentService.isLikedComment(commentId);
+            CommentDto.Response response = commentMapper.commentToCommentResponse(comment);
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.OK);
+        }
+
+        }
+
+        @GetMapping("/comments")
+        public ResponseEntity getComments () {
+
+            List<Comment> sliceComments = commentService.findComments();
+            Slice<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(sliceComments);
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(responses), HttpStatus.OK
+            );
+        }
+
+        @DeleteMapping("/comments/{comment_id}/delete")
+        public ResponseEntity deleteComment ( @PathVariable("comment_id") @Positive long commentId){
+
+            commentService.deleteComment(commentId);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
     }
-
-//    @GetMapping("/comments") // 페이지네이션으로 조회
-//    public ResponseEntity getComments(@Positive @RequestParam int page,
-//                                      @Positive @RequestParam(required = false, defaultValue = "15") int size) {
-//
-//        Page<Comment> pageComments = commentService.findComments(page - 1, size);
-//        List<Comment> comments = pageComments.getContent();
-//        List<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(comments);
-//
-//        return new ResponseEntity<>(
-//                new MultiResponseDto<>(responses, pageComments), HttpStatus.OK
-//        );
-//    }
-
-    @GetMapping("/comments") // 슬라이스로 조회
-    public ResponseEntity getComments() {
-
-        List<Comment> sliceComments = commentService.findComments();
-        Slice<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(sliceComments);
-
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(responses), HttpStatus.OK
-        );
-    }
-
-    @DeleteMapping("/comments/{comment_id}/delete")
-    public ResponseEntity deleteComment(@PathVariable("comment_id") @Positive long commentId) {
-
-        commentService.deleteComment(commentId);
-
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-}

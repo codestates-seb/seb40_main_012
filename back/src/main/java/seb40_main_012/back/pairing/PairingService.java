@@ -13,8 +13,13 @@ import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
+import seb40_main_012.back.bookCollection.repository.BookCollectionBookmarkRepository;
+import seb40_main_012.back.common.comment.CommentService;
+
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.common.like.LikeRepository;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.pairing.entity.PairingBookmark;
@@ -25,6 +30,7 @@ import seb40_main_012.back.user.service.UserService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -33,6 +39,7 @@ public class PairingService {
 
     private final PairingRepository pairingRepository;
     private final PairingBookmarkRepository pairingBookmarkRepository;
+    private final LikeRepository likeRepository;
     private final BookService bookService;
     private final BookRepository bookRepository;
     private final UserService userService;
@@ -98,6 +105,8 @@ public class PairingService {
 
         findPairing.setLikeCount(findPairing.getLikeCount() + 1);
 
+        findPairing.setIsLiked(true);
+
         return pairingRepository.save(findPairing);
     }
 
@@ -109,30 +118,10 @@ public class PairingService {
 
         findPairing.setLikeCount(findPairing.getLikeCount() - 1);
 
+        findPairing.setIsLiked(false);
+
         return pairingRepository.saveAndFlush(findPairing);
     }
-
-//    public Pairing cancelLike(long pairingId, long userId) {
-//
-//        User findUser = userService.getLoginUser();
-//
-//        Pairing findPairing = findVerifiedPairing(pairingId);
-//
-//        likeService.createPairingLike(pairingId);
-//
-//        findPairing.setLikeCount(findPairing.getLikeCount() - 1);
-//
-//        return pairingRepository.save(findPairing);
-//    }
-
-//    public Pairing updateLike(Pairing pairing, long pairingId) { // Like Count 값만 변경
-//
-//        Pairing findPairing = findVerifiedPairing(pairingId);
-//
-//        findPairing.setLikeCount(pairing.getLikeCount());
-//
-//        return pairingRepository.save(findPairing);
-//    }
 
     public Pairing updateView(long pairingId) {
 
@@ -143,19 +132,62 @@ public class PairingService {
         return pairingRepository.save(findPairing);
     }
 
+    public Pairing isLikedComments(long pairingId) {
+
+        User findUser = userService.getLoginUser();
+
+        Pairing findPairing = findVerifiedPairing(pairingId);
+
+        Pairing isLikedPairing = isLikedPairing(findPairing, findUser);
+
+//        findPairing.setView(findPairing.getView() + 1); // View +1
+
+        List<Comment> isLikedComments = isLikedPairing.getComments().stream()
+                .map(comment -> isLikedComment(comment, findUser))
+                .collect(Collectors.toList());
+
+        isLikedPairing.setComments(isLikedComments);
+
+        return pairingRepository.save(isLikedPairing);
+    }
+
+    public Pairing isLikedPairing(Pairing pairing, User user) {
+
+        Boolean isLiked;
+
+        if (likeRepository.findByPairingAndUser(pairing, user) == null) { //좋아요 안 누른 경우
+            isLiked = false;
+        } else {
+            isLiked = true;
+        }
+
+        pairing.setIsLiked(isLiked);
+
+        return pairing;
+    }
+
+    public Comment isLikedComment(Comment comment, User user) {
+
+
+        Boolean isLiked;
+
+        if (likeRepository.findByCommentAndUser(comment, user) == null) { //좋아요 안 누른 경우
+            isLiked = false;
+        } else {
+            isLiked = true;
+        }
+
+        comment.setIsLiked(isLiked);
+
+        return comment;
+    }
+
+
     public Pairing findPairing(long pairingId) {
         return findVerifiedPairing(pairingId);
     }
 
-//    public Page<Pairing> findPairings(int page, int size) { // 페이징 처리 및 좋아요 내림차순 정렬
-//
-//        return pairingRepository.findAll(
-//
-//                PageRequest.of(page, size, Sort.by("likeCount").descending())
-//        );
-//    }
-
-    //    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    조회 API 세분화
 //    --------------------------------------------------------------------------------------------
