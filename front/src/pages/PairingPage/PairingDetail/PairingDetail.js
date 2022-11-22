@@ -16,6 +16,7 @@ import {
 } from '../../../store/modules/pairingSlice';
 
 import Comments from '../../../components/Comments/Comments';
+import { getBookAsync } from '../../../store/modules/bookSlice';
 
 const TagBtn = styled.div`
   display: flex;
@@ -56,12 +57,25 @@ const InfoContent = styled.div`
 const PairingDetail = () => {
   const dispatch = useDispatch();
   const { pairingId } = useParams();
+  const asyncCall = async () => {
+    try {
+      const pairingRes = await dispatch(asyncGetOnePairing(pairingId));
+      const bookRes = await dispatch(getBookAsync(pairingRes.isbn13));
+      console.log(bookRes);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   useEffect(() => {
-    dispatch(asyncGetOnePairing(pairingId));
+    asyncCall();
+    // dispatch(asyncGetOnePairing(pairingId));
+    // async () => await dispatch(getBookAsync(pairingData.isbn13));
   }, [dispatch]);
   const pairingData = useSelector((state) => state.pairing.data);
+  const bookData = useSelector((state) => state.book.data);
 
   console.log(pairingData);
+  console.log(bookData);
 
   const handleCommentAdd = (body) => {
     //dispatch - 코멘트 입력
