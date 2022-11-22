@@ -24,6 +24,7 @@ import Checkbox from '@mui/material/Checkbox';
 import PageContainer from '../../components/PageContainer';
 import theme from '../../styles/theme';
 import styled from 'styled-components';
+import { genreData, ageGroupData, genderData } from '../../util/util';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -66,30 +67,43 @@ const FirstLoginPage = () => {
   console.log(location);
 
   const [open, setOpen] = React.useState(true);
+  const [gender, setGender] = React.useState('');
   const [age, setAge] = React.useState('');
-  const [state, setState] = React.useState({
-    gilad: true,
-    jason: false,
-    antoine: false,
+  const [checked, setChecked] = React.useState({
+    NOVEL: false,
+    ESSAY: false,
+    POEM: false,
+    HUMANITIES: false,
+    SOCIAL: false,
+    NATURAL: false,
+    COMICS: false,
+    ETC: false,
   });
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
 
   const handleClose = () => {
     setOpen(false);
   };
 
+  const handleClickSave = () => {
+    setOpen(false);
+  };
+
+  const handleChangeGender = (event) => {
+    setGender(event.target.value);
+  };
+
+  const handleChangeAge = (event) => {
+    setAge(event.target.value);
+  };
+
   const handleChangeCheckBox = (event) => {
-    setState({
-      ...state,
+    setChecked({
+      ...checked,
       [event.target.name]: event.target.checked,
     });
   };
 
-  const { gilad, jason, antoine } = state;
-  const error = Object.values(state).filter((v) => v).length <= 3;
+  const checkCount = Object.values(checked).filter((v) => v).length >= 3;
 
   return (
     <PageContainer footer>
@@ -115,7 +129,7 @@ const FirstLoginPage = () => {
                 >
                   <CloseIcon />
                 </IconButton>
-                <SaveButtonStyled color="inherit" onClick={handleClose}>
+                <SaveButtonStyled color="inherit" onClick={handleClickSave}>
                   저장
                 </SaveButtonStyled>
               </ToolbarStyled>
@@ -128,17 +142,19 @@ const FirstLoginPage = () => {
                   <Select
                     labelId="gender-select-label"
                     id="gender-select"
-                    value={age}
-                    onChange={handleChange}
+                    value={gender}
+                    onChange={handleChangeGender}
                     autoWidth
                     label="성별"
                   >
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    <MenuItem value={10}>Twenty</MenuItem>
-                    <MenuItem value={21}>Twenty one</MenuItem>
-                    <MenuItem value={22}>Twenty one and a half</MenuItem>
+                    {Object.entries(genderData).map(([key, value]) => (
+                      <MenuItem key={key} value={key}>
+                        {value}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </ListItemStyled>
@@ -151,62 +167,48 @@ const FirstLoginPage = () => {
                     labelId="age-select-label"
                     id="age-select"
                     value={age}
-                    onChange={handleChange}
+                    onChange={handleChangeAge}
                     autoWidth
                     label="연령대"
                   >
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    <MenuItem value={10}>Twenty</MenuItem>
-                    <MenuItem value={21}>Twenty one</MenuItem>
-                    <MenuItem value={22}>Twenty one and a half</MenuItem>
+                    {Object.entries(ageGroupData).map(([key, value]) => (
+                      <MenuItem key={key} value={key}>
+                        {value}
+                      </MenuItem>
+                    ))}
                   </Select>
                 </FormControl>
               </ListItemStyled>
               <Divider />
               <ListItemStyled>
-                <ListItemTextStyled primary="선호장르" />
+                <ListItemTextStyled primary="선호 장르" />
                 <CheckboxFormControlStyled
-                  error={error}
                   component="fieldset"
                   variant="standard"
                   sx={{ m: 1 }}
                 >
                   <CheckboxFormGroupStyled>
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          onChange={handleChangeCheckBox}
-                          name="gilad"
-                        />
-                      }
-                      checked={gilad}
-                      disabled={true}
-                      label="Gilad Gray"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={jason}
-                          onChange={handleChangeCheckBox}
-                          name="jason"
-                        />
-                      }
-                      label="Jason Killian"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          checked={antoine}
-                          onChange={handleChangeCheckBox}
-                          name="antoine"
-                        />
-                      }
-                      label="Antoine Llorca"
-                    />
+                    {Object.entries(genreData).map(([key, value]) => (
+                      <FormControlLabel
+                        key={key}
+                        control={
+                          <Checkbox
+                            onChange={handleChangeCheckBox}
+                            name={key}
+                          />
+                        }
+                        checked={checked[key]}
+                        disabled={checkCount && !checked[key]}
+                        label={value}
+                      />
+                    ))}
                   </CheckboxFormGroupStyled>
-                  <FormHelperText>You can display an error</FormHelperText>
+                  <FormHelperText>
+                    선호 장르는 최대 3개까지 선택할 수 있습니다.
+                  </FormHelperText>
                 </CheckboxFormControlStyled>
               </ListItemStyled>
             </List>
