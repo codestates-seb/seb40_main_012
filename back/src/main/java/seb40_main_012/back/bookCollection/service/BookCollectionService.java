@@ -10,17 +10,15 @@ import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.*;
 import seb40_main_012.back.bookCollection.repository.*;
-import seb40_main_012.back.user.entity.Category;
+import seb40_main_012.back.common.bookmark.Bookmark;
+import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.user.entity.User;
-import seb40_main_012.back.user.entity.UserCategory;
 import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,7 +29,7 @@ public class BookCollectionService {
     private final BookCollectionRepository collectionRepository;
     private final BookCollectionTagRepository collectionTagRepository;
     private final BookCollectionLikeRepository collectionLikeRepository;
-    private final BookCollectionBookmarkRepository collectionBookmarkRepository;
+    private final BookmarkRepository collectionBookmarkRepository;
     private final BookRepository bookRepository;
     private final UserCategoryRepository userCategoryRepository;
     private final CategoryRepository categoryRepository;
@@ -110,23 +108,6 @@ public class BookCollectionService {
         collectionRepository.deleteById(collectionId);
     }
 
-    public boolean bookmarkCollection(Long userId,Long collectionId){
-        User findUser = userService.findVerifiedUser(userId);
-        BookCollection collection = findVerifiedCollection(collectionId);
-        BookCollectionBookmark collectionBookmark = collectionBookmarkRepository.findByUserAndBookCollection(findUser,collection);
-
-
-        try{
-            if(collectionBookmark!=null){
-                collectionBookmarkRepository.delete(collectionBookmark);
-            }else {
-                BookCollectionBookmark bookCollectionBookmark = new BookCollectionBookmark(collection,findUser);
-                collectionBookmarkRepository.save(bookCollectionBookmark);
-            }
-        }
-        catch (BusinessLogicException e) {throw new BusinessLogicException(ExceptionCode.FAIL_TO_BOOKMARK);}
-        return true;
-    }
 
     public BookCollection findVerifiedCollection(Long collectionId) {
         BookCollection collection = collectionRepository.findById(collectionId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));

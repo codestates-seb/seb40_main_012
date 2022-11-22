@@ -11,6 +11,7 @@ import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
+import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.dto.ListResponseDto;
 import seb40_main_012.back.dto.MultiResponseDto;
 import seb40_main_012.back.user.service.UserService;
@@ -28,6 +29,7 @@ public class BookCollectionController {
     private final UserService userService;
     private final BookService bookService;
     private final BookInfoSearchService bookInfoSearchService;
+    private final BookmarkService bookmarkService;
     private final BookCollectionRepository collectionRepository;
 
     @PostMapping("/new")
@@ -73,7 +75,7 @@ public class BookCollectionController {
     @PostMapping("/{collection-id}/bookmark")
     @ResponseStatus(HttpStatus.OK)
     public boolean bookmarkCollection(@RequestHeader("Authorization") Long userId, @PathVariable("collection-id") Long collectionId){
-        return collectionService.bookmarkCollection(userId,collectionId);
+        return bookmarkService.bookmarkCollection(userId,collectionId);
     }
 
 
