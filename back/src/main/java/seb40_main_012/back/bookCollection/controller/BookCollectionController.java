@@ -108,7 +108,7 @@ public class BookCollectionController {
     @GetMapping("/author")
     @ResponseStatus(HttpStatus.OK)
     //이게 맞냐고
-    public BookCollectionDto.AuthorCollection getCollectionByAuthor(@RequestHeader("Authorization") Long userId) {
+    public BookCollectionDto.AuthorCollection getCollectionByAuthor() {
         BookCollection collection = collectionService.findCollectionByAuthor();
         return BookCollectionDto.AuthorCollection.of(collection);
     }
