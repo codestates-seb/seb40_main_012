@@ -43,7 +43,7 @@ public class CommentController {
 
         Comment comment = commentMapper.commentPostToComment(postComment);
         Comment createdComment = commentService.createBookComment(comment, isbn13);
-        CommentDto.Response response = commentMapper.bookCommentToCommentResponse(createdComment);
+        CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED
@@ -56,7 +56,7 @@ public class CommentController {
 
         Comment comment = commentMapper.commentPostToComment(postComment);
         Comment createdComment = commentService.createPairingComment(comment, pairingId);
-        CommentDto.Response response = commentMapper.pairingCommentToCommentResponse(createdComment);
+        CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
 
 //        ------------------------------------------------------------
         noticeService.notifyPostPairingCommentEvent(createdComment);

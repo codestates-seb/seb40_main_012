@@ -33,8 +33,6 @@ public interface PairingMapper {
 
     Pairing pairingLikeToPairing(PairingDto.Like likePairing);
 
-//    Pairing pairingViewToPairing(PairingDto.View viewPairing);
-
     default PairingDto.Response pairingToPairingResponse(Pairing pairing) {
 
         User user = pairing.getUser();
@@ -94,9 +92,6 @@ public interface PairingMapper {
 
     }
 
-    ;
-
-
     default SliceImpl<PairingDto.Response> pairingsToPairingResponses(List<Pairing> pairings) {
 
         if (pairings == null) return null;
@@ -144,8 +139,6 @@ public interface PairingMapper {
                                 .modifiedAt(pairing.getModifiedAt())
                                 .build()
                         ).collect(Collectors.toList())
-
         );
-
     }
 }

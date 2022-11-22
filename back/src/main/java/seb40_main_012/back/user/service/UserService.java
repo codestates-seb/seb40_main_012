@@ -65,8 +65,8 @@ public class UserService {
         return savedUser;
     }
 
-    public boolean verifyNickName(String nickName){
-        if(userRepository.findByNickName(nickName)==null)
+    public boolean verifyNickName(String nickName) {
+        if (userRepository.findByNickName(nickName) == null)
             return true;
         else {
             throw new BusinessLogicException(ExceptionCode.NICKNAME_EXISTS);
@@ -80,14 +80,14 @@ public class UserService {
         userRepository.save(findUser);
     }
 
-    public boolean verifyPassword(Long userId, String password){
+    public boolean verifyPassword(Long userId, String password) {
         User findUser = findVerifiedUser(userId);
         return findUser.verifyPassword(passwordEncoder, password);
     }
 
     public void updatePassword(Long id, String password) {
         User findUser = findVerifiedUser(id);
-        if(verifyPassword(id,password)){
+        if (verifyPassword(id, password)) {
             throw new BusinessLogicException(ExceptionCode.PASSWORD_CANNOT_CHANGE);
         } else {
             findUser.updatePassword(passwordEncoder, password);
@@ -95,15 +95,17 @@ public class UserService {
         }
     }
 
-    /** 리팩토링 필요 */
-    public User editUserInfo(Long id,User user, List<Genre> categoryValue){
+    /**
+     * 리팩토링 필요
+     */
+    public User editUserInfo(Long id, User user, List<Genre> categoryValue) {
         User findUser = findVerifiedUser(id);
 //        Category findCategory = categoryRepository.findByName(categoryValue);
 
         categoryValue.forEach(
                 value -> {
                     Category category = categoryRepository.save(new Category(value));
-                    UserCategory userCategory = new UserCategory(category,findUser);
+                    UserCategory userCategory = new UserCategory(category, findUser);
                     userCategoryRepository.save(userCategory);
                     findUser.addUserCategory(userCategory);
                     userRepository.save(findUser);
@@ -113,30 +115,30 @@ public class UserService {
         return findUser;
     }
 
-    public boolean deleteUser(Long userId){
+    public boolean deleteUser(Long userId) {
         findVerifiedUser(userId);
         userRepository.deleteById(userId);
         return true;
     }
 
-    public List<Comment> getUserComment(Long userId){
+    public List<Comment> getUserComment(Long userId) {
         User findUser = findVerifiedUser(userId);
         List<Comment> comments = findUser.getComments();
         return comments;
     }
 
-    public List<Pairing> getUserPairing(Long userId){
+    public List<Pairing> getUserPairing(Long userId) {
         return pairingRepository.findByUser_UserId(userId);
     }
 
-    public List<BookCollection> getUserCollection(Long userId){
+    public List<BookCollection> getUserCollection(Long userId) {
         return collectionRepository.findByUserUserId(userId); //왜 안될까?
 
     }
 
     public User findUser(long userId) {
         User findUser = findVerifiedUser(userId);
-//        findUser.setBookTemp(calcBookTemp(userId)); // 유저 테이블에 컬렉션 & 좋아요 추가된 후에 주석 풀기
+        findUser.setBookTemp(calcBookTemp(userId)); // 유저 테이블에 컬렉션 & 좋아요 추가된 후에 주석 풀기
 
         return findUser;
     }
@@ -146,53 +148,56 @@ public class UserService {
         return findUser;
     }
 
-    public List<BookCollection> getBookmarkByBookCollection(Long userId){
+    public List<BookCollection> getBookmarkByBookCollection(Long userId) {
         User findUser = findVerifiedUser(userId);
-        List<Bookmark> bookmarks= bookmarkRepository.findByUser(findUser);
+        List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
         List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
         return collections;
     }
 
-    public List<Pairing> getBookmarkByPairing(Long userId){
+    public List<Pairing> getBookmarkByPairing(Long userId) {
         User findUser = findVerifiedUser(userId);
-        List<Bookmark> bookmarks= bookmarkRepository.findByUser(findUser);
+        List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
         List<Pairing> pairings = bookmarks.stream().map(x -> x.getPairing()).collect(Collectors.toList());
         return pairings;
     }
 
-    public List<Book> getBookmarkByBook(Long userId){
+    public List<Book> getBookmarkByBook(Long userId) {
         User findUser = findVerifiedUser(userId);
-        List<Bookmark> bookmarks= bookmarkRepository.findByUser(findUser);
+        List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
         List<Book> books = bookmarks.stream().map(x -> x.getBook()).collect(Collectors.toList());
         return books;
     }
 
 
-//    public double calcBookTemp(long userId) {
-//
-//        User findUser = findVerifiedUser(userId);
-//
-//        double basicTemp = 36.5; // 기본 온기
-//
-//        long pairingCount = findUser.getPairings().stream().count(); // 작성 페어링 개수
-//        long collectionCount = findUser.getCollections().stream().count(); // 작성 컬렉션 개수
-//        long commentCount = findUser.getComments().stream().count(); // 작성 코멘트 개수
-//        long likeCount = findUser.getLikes.stream().count(); // 누른 좋아요 개수
-//
-//        double temperature =
-//                basicTemp +
-//                        (double) pairingCount / 10 +
-//                        (double) collectionCount / 100 +
-//                        (double) (commentCount + likeCount) / 1000;
-//
-//        return Math.round(temperature * 10) / 10.0;
-//    }
+    public double calcBookTemp(long userId) {
+
+        User findUser = findVerifiedUser(userId);
+
+        double basicTemp = 36.5; // 기본 온기
+
+        long pairingCount = findUser.getPairings().size(); // 작성 페어링 개수
+        long collectionCount = findUser.getCollections().size(); // 작성 컬렉션 개수
+        long commentCount = findUser.getComments().size(); // 작성 코멘트 개수
+        long likeCount = findUser.getLikes().size(); // 누른 좋아요 개수
+
+        double temperature =
+                basicTemp +
+                        (double) pairingCount / 10 +
+                        (double) collectionCount / 100 +
+                        (double) (commentCount + likeCount) / 1000;
+
+        if (findUser.getBookTemp() == 99.9) return findUser.getBookTemp();
+        else return Math.round(temperature * 10) / 10.0;
+    }
 
 //    public List<Pairing> getBookMarkByPairing(Long id){
 //    }
 
 
-    /** @Valid 와 차이 확인*/
+    /**
+     * @Valid 와 차이 확인
+     */
 //    public boolean validPassword(String password) {
 //        Pattern pattern = Pattern.compile();
 //    }
@@ -202,7 +207,7 @@ public class UserService {
         loginUser.setAge(patchDto.getAge());
         loginUser.setFirstLogin(false); // "나중에 하기" 또는 "확인" 버튼 클릭 시
 
-        if(patchDto.getGenres() != null) {
+        if (patchDto.getGenres() != null) {
             List<UserCategory> userCategories = patchDto.getGenres().stream()
                     .map(genre -> {
                         UserCategory userCategory = new UserCategory();
