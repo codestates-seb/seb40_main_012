@@ -8,6 +8,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookWiki.BookWiki;
+import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.entity.Pairing;
 
@@ -86,10 +87,6 @@ public class Book {
     /*관련 컬렉션 목록*/
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "book")
-//    private List<BookCollection> bookCollections = new ArrayList<>();
-
 
     @JsonManagedReference
     @OneToMany(mappedBy = "book") // 다대 다
@@ -101,4 +98,9 @@ public class Book {
 //    @JsonManagedReference
 //    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
 //    private List<Book> similarBooks;
+
+    @OneToMany(mappedBy = "book")
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Bookmark> bookmarks = new ArrayList<>();
+
 }
