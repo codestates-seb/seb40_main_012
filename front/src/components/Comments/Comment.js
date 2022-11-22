@@ -156,6 +156,8 @@ const Comment = ({
     setIsEditMode(false);
     if (editContent.length >= 5) {
       commentEdit(commentId, editContent);
+    } else {
+      setEditContent(data.body);
     }
   };
 
