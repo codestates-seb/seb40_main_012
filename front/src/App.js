@@ -65,10 +65,6 @@ const App = () => {
         <Route path="/collection" element={<CollectionPage />} />
         <Route path="/user/signin" element={<SignInPage />} />
         <Route path="/user/signup" element={<SignUpPage />} />
-        {/* <Route
-          path="/mypage"
-          element={<Navigate to="/mypage/mycomment"></Navigate>}
-        /> */}
         <Route path="/mypage" element={<MyComment />} />
         <Route path="/mypage/mycomment" element={<MyComment />} />
         <Route path="/mypage/mypairing" element={<MyParing />} />
