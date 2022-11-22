@@ -31,6 +31,7 @@ import ReduxPage from './pages/TestPage/Temp_Redux';
 import ButtonTest from './pages/TestPage/ButtonTest';
 import { useSelector } from 'react-redux';
 import { selectIsLogin } from './store/modules/authSlice';
+import ScrollToTop from './components/ScrollToTop';
 
 const App = () => {
   const isLogin = useSelector(selectIsLogin);
@@ -51,6 +52,7 @@ const App = () => {
 
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <GlobalStyle />
       <Routes>
         <Route path="/" element={<MainPage />} />
