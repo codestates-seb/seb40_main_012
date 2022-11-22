@@ -13,6 +13,7 @@ import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookWiki.BookWiki;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.pairing.PairingDto;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.persistence.Column;
@@ -93,6 +94,26 @@ public class BookDto {
         private SliceImpl<BookCollection> bookCollections;
         private List<Book> similarBooks;
 
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class BookmarkedBook{
+        private String title;
+        private String author;
+        private Long ratingCount;
+        private String bookCover;
+
+        public static BookmarkedBook of(Book book){
+            return BookmarkedBook.builder()
+                    .title(book.getTitle())
+                    .author(book.getAuthor())
+                    .ratingCount(book.getRatingCount())
+                    .bookCover(book.getCover())
+                    .build();
+        }
     }
 
 }
