@@ -33,7 +33,7 @@ const BestBooks = () => {
         {bestBooks.map((el, idx) => {
           return (
             <Book
-              key={el.bookId}
+              key={el.isbn13}
               bookTitle={el.title}
               bookId={el.bookId}
               isBest={true}

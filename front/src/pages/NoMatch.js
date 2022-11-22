@@ -9,13 +9,28 @@ const Wrapper = styled.div`
   align-items: center;
 `;
 
+const ImgContainer = styled.div`
+  width: 450px;
+  img {
+    width: 450px;
+    object-fit: cover;
+  }
+`;
+
 const ContentsBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 80px;
-  h1 {
+  margin: 40px;
+  margin-top: 0;
+  .notfound {
+    font-size: 24px;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.dark};
+    margin-bottom: 30px;
+  }
+  .info {
     color: ${({ theme }) => theme.colors.gray};
     text-align: center;
     font-size: 16;
@@ -24,14 +39,19 @@ const ContentsBox = styled.div`
 `;
 
 const PoemContainer = styled.div`
-  margin: 30px;
+  margin-top: 10px;
   padding: 20px;
   width: 80vw;
+  font-size: 14px;
+  color: ${({ theme }) => theme.colors.dark};
   max-width: 820px;
   background-color: ${({ theme }) => theme.colors.purple_3};
   border-radius: 5px;
   line-height: 30px;
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  .author {
+    font-weight: 700;
+  }
 `;
 
 const poems = [
@@ -119,17 +139,20 @@ const NoMatch = () => {
       <PageContainer footer>
         <Wrapper>
           <ContentsBox>
-            <h1>
-              존재하지 않는 주소를 입력하셨거나 <br />
-              요청하신 페이지의 주소가 변경, 삭제되어 찾을 수 없습니다.
-              <br />
-              <hr />
+            <ImgContainer>
+              <img
+                src={process.env.PUBLIC_URL + '/images/404_image.png'}
+                alt="404 error"
+              />
+            </ImgContainer>
+            <div className="notfound">페이지를 찾을 수 없습니다.</div>
+            <div className="info">
               예상치 못한 곳에 도달한 당신을 위해 시 한 구절을 준비했어요.
-            </h1>
+            </div>
             <PoemContainer>
               <div>{poem.poem}</div>
               <br />
-              <div>{poem.author}</div>
+              <div className="author">{poem.author}</div>
             </PoemContainer>
           </ContentsBox>
         </Wrapper>

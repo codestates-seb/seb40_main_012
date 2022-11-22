@@ -33,7 +33,7 @@ const UserBooks = ({ nickname }) => {
       <BooksContainer>
         {userBooks.map((el) => {
           return (
-            <Book key={el.bookId} bookTitle={el.title} bookId={el.bookId} />
+            <Book key={el.isbn13} bookTitle={el.title} bookId={el.bookId} />
           );
         })}
       </BooksContainer>
