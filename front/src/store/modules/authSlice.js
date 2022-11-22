@@ -70,6 +70,8 @@ export const authSlice = createSlice({
 });
 
 export const selectIsLogin = (state) => state.auth.isLogin;
+export const selectFirstLogin = (state) =>
+  state.auth.firstLogin && state.auth.isLogin;
 export const selectEmail = (state) => state.auth.email;
 
 export default authSlice.reducer;
