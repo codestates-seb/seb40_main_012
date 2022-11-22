@@ -37,7 +37,7 @@ public class SearchController {
 
         BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT));
         List<Pairing> pairingsResult = searchService.findAllPairingByQuery(queryParam.toLowerCase());
-        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(Locale.ROOT));
+        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase());
 
         if (category.equals("books")) {
             SliceImpl<BookInfoSearchDto.BookList.Item> bookSlice = new SliceImpl<>(bookResult.getItem());
@@ -90,13 +90,13 @@ public class SearchController {
         }
     }
 
-//    @GetMapping
-//    public ResponseEntity getBookSearchRequests(@RequestParam("Query") @Valid String queryParam) {
-//
-//        BookInfoSearchDto.BookList result = bookInfoSearchService.listSearch(queryParam);
-//
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
+    @GetMapping("/test")
+    public ResponseEntity getBookSearchRequests(@RequestParam("Query") String queryParam) {
+
+        List<BookCollection> result = searchService.findTest(queryParam);
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
 //    @GetMapping("/pairing")
 //    public ResponseEntity getPairingSearchRequests(

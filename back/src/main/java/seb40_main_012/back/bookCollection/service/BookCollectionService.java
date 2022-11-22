@@ -82,9 +82,12 @@ public class BookCollectionService {
     //상세 조회 -> ISBN13 으로 db에서 책 별점 조회,없으면 알라딘 api에서 책 정보만 조회
     public BookCollection getCollection(Long collectionId) {
 
-
-        return collectionRepository.findById(collectionId)
+        BookCollection findBookCollection = collectionRepository.findById(collectionId)
                 .orElseThrow( () -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
+
+        findBookCollection.setView(findBookCollection.getView() + 1);
+
+        return findBookCollection;
     }
 
     public boolean likeCollection(Long userId,Long collectionId){
