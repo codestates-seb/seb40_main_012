@@ -153,7 +153,9 @@ const Comment = ({
   const handleClickEditBtn = () => setIsEditMode(true);
   const handleClickCheckBtn = () => {
     setIsEditMode(false);
-    commentEdit(commentId, editContent);
+    if (editContent.length >= 5) {
+      commentEdit(commentId, editContent);
+    }
   };
 
   const handleOnChangeEditContent = (e) => setEditContent(e.target.value);
