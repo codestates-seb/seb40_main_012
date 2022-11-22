@@ -50,7 +50,7 @@ const RoutesComponent = () => {
     if (option === null) return <Component />;
 
     if ((isLogin && !option) || (!isLogin && option))
-      return <Navigate to={-1} replace={true}></Navigate>;
+      return <Navigate to="/" replace={true}></Navigate>;
 
     if (firstLogin) return getFirstLoginElement();
     return <Component />;
