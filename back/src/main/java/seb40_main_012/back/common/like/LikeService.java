@@ -38,11 +38,11 @@ public class LikeService {
 
     public void createPairingLike(long pairingId) {
 
-        Pairing findPairing = pairingService.findPairing(pairingId);
-
         User findUser = userService.getLoginUser();
 
         long userId = findUser.getUserId();
+
+        Pairing findPairing = pairingService.findPairing(pairingId);
 
         Like findPairingLike = likeRepository.findByPairingAndUser(findPairing, findUser);
 
@@ -61,41 +61,35 @@ public class LikeService {
         }
     }
 
-//    public void createPairingLike(long pairingId) {
-//
-//        Pairing findPairing = pairingService.findPairing(pairingId);
-//
-//        User findUser = userService.getLoginUser();
-//
-//        long userId = findUser.getUserId();
-//
-//        Like findPairingLike = likeRepository.findByPairingAndUser(findPairing, findUser);
-//
-//        if (findPairingLike == null) {
-//            findPairingLike =
-//                    Like.builder()
-//                            .likeType(LikeType.PAIRING)
-//                            .user(findUser)
-//                            .pairing(findPairing)
-//                            .build();
-//
-//            likeRepository.save(findPairingLike);
-//
-//        } else {
-//            throw new BusinessLogicException(ExceptionCode.LIKED);
-//        }
-//    }
-
-    public void createBookCollectionLike(User user, BookCollection bookCollection) {
-    }
-
-    public void createCommentLike(long commentId) { // 책에 대한 코멘트 좋아요
-
-        Comment findComment = commentService.findComment(commentId);
+    public void deletePairingLike(long pairingId) {
 
         User findUser = userService.getLoginUser();
 
         long userId = findUser.getUserId();
+
+        Pairing findPairing = pairingService.findPairing(pairingId);
+
+        Like findPairingLike = likeRepository.findByPairingAndUser(findPairing, findUser);
+
+        if (findPairingLike == null) {
+
+            throw new BusinessLogicException(ExceptionCode.UNLIKED);
+
+        } else {
+
+            likeRepository.delete(findPairingLike);
+
+        }
+    }
+
+
+    public void createCommentLike(long commentId) { // 책에 대한 코멘트 좋아요
+
+        User findUser = userService.getLoginUser();
+
+        long userId = findUser.getUserId();
+
+        Comment findComment = commentService.findComment(commentId);
 
         Like findCommentLike = likeRepository.findByCommentAndUser(findComment, findUser);
 
@@ -113,7 +107,34 @@ public class LikeService {
             throw new BusinessLogicException(ExceptionCode.LIKED);
         }
     }
+
+    public void deleteCommentLike(long commentId) { // 책에 대한 코멘트 좋아요
+
+        User findUser = userService.getLoginUser();
+
+        long userId = findUser.getUserId();
+
+        Comment findComment = commentService.findComment(commentId);
+
+        Like findCommentLike = likeRepository.findByCommentAndUser(findComment, findUser);
+
+        if (findCommentLike == null) {
+
+            throw new BusinessLogicException(ExceptionCode.UNLIKED);
+
+        } else {
+
+            likeRepository.delete(findCommentLike);
+
+        }
+    }
+
+    public void createBookCollectionLike(User user, BookCollection bookCollection) {
+    }
+
 }
+
+
 
 
 //    public void createCommentLike(long commentId, long userId) {

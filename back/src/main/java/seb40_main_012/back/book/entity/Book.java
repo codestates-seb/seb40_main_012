@@ -37,7 +37,7 @@ public class Book {
     @Column
     private String author;
 
-    @Column
+    @Column(name = "Book_Title")
     private String title;
 
     @Column
@@ -48,6 +48,9 @@ public class Book {
 
     @Column
     private String pubDate;
+
+    @Column
+    private String publisher;
 
     @Column
     private String adult;

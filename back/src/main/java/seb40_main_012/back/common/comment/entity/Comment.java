@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.stereotype.Service;
@@ -38,6 +40,8 @@ public class Comment {
     @Column
     private String body;
 
+    @Column Boolean isLiked = false;
+
     @Column(nullable = false)
     private long likeCount;
 
@@ -67,6 +71,7 @@ public class Comment {
     @JsonManagedReference
     @OneToMany(mappedBy = "comment", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @NotFound(action = NotFoundAction.IGNORE)
     private final List<Like> likes = new ArrayList<>();
 
     @CreatedDate

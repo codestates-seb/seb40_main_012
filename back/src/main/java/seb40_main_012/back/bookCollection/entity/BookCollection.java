@@ -42,7 +42,7 @@ public class BookCollection {
     private List<BookCollectionBookmark> collectionBookmarks = new ArrayList<>();
 
     @ElementCollection
-    private List<String> isbn13 = new ArrayList<>();
+    private List<String> bookIsbn13 = new ArrayList<>();
 
     @JsonBackReference
     @ManyToOne
@@ -51,23 +51,28 @@ public class BookCollection {
 
     @JsonBackReference
     @ManyToOne
-    @JoinColumn(name = "book_id")
+    @JoinColumn(name = "isbn13")
     private Book book;
+
+    @CreatedDate
+    @Column(updatable = false)
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     @LastModifiedDate
     private LocalDate lastModifiedAt = LocalDate.now();
 
-    public BookCollection(String title, String content,List<String> isbn13) {
+    public BookCollection(String title, String content,List<String> bookIsbn13) {
         this.title = title;
         this.content= content;
-        this.isbn13 = isbn13;
+        this.bookIsbn13 = bookIsbn13;
         this.likeCount = 0L;
+        this.createdAt = LocalDateTime.now();
         this.lastModifiedAt = LocalDate.now();
     }
     public void editCollection(BookCollection collection){
         this.title = collection.getTitle();
         this.content= collection.getContent();
-        this.isbn13 = collection.getIsbn13();
+        this.bookIsbn13 = collection.getBookIsbn13();
         this.lastModifiedAt = LocalDate.now();
     }
 
@@ -80,7 +85,7 @@ public class BookCollection {
     }
 
     public void addISBN(String isbn){
-        this.isbn13.add(isbn);
+        this.bookIsbn13.add(isbn);
     }
     public void addUser(User user){
         this.user= user;

@@ -10,6 +10,7 @@ import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
 //import seb40_main_012.back.notification.NotificationService;
+import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.Valid;
@@ -27,7 +28,7 @@ public class PairingController {
     private final BookService bookService;
     private final LikeService likeService;
 //    ------------------------------------------------------------
-//    private final NotificationService noticeService;
+    private final NotificationService noticeService;
 //    ------------------------------------------------------------
 
     @PostMapping("/{isbn13}/pairings/add")
@@ -71,19 +72,33 @@ public class PairingController {
     }
 
     @PatchMapping("/pairings/{pairing_id}/like")
-    public ResponseEntity updateLikePairing(@PathVariable("pairing_id") @Positive long pairingId,
-                                            @Valid @RequestBody PairingDto.Like likePairing) {
+    public ResponseEntity createPairingLike(@PathVariable("pairing_id") @Positive long pairingId) {
 
 
         likeService.createPairingLike(pairingId); // 좋아요 눌렀는지 검증
 
-        Pairing pairing = pairingMapper.pairingLikeToPairing(likePairing);
-        Pairing updatedLikePairing = pairingService.updateLike(pairing, pairingId);
+//        Pairing pairing = pairingMapper.pairingLikeToPairing(likePairing);
+        Pairing updatedLikePairing = pairingService.addLike(pairingId);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedLikePairing);
 
 //        ------------------------------------------------------------
-//        noticeService.notifyUpdateLikePairingEvent(updatedLikePairing);
+        noticeService.notifyUpdateLikePairingEvent(updatedLikePairing);
 //        ------------------------------------------------------------
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK
+        );
+    }
+
+    @PatchMapping("/pairings/{pairing_id}/dislike")
+    public ResponseEntity deletePairingLike(@PathVariable("pairing_id") @Positive long pairingId) {
+
+
+        likeService.deletePairingLike(pairingId); // 싫어요 눌렀는지 검증
+
+//        Pairing pairing = pairingMapper.pairingLikeToPairing(likePairing);
+        Pairing updatedLikePairing = pairingService.removeLike(pairingId);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedLikePairing);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

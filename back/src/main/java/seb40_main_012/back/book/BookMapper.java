@@ -42,6 +42,7 @@ public interface BookMapper {
         response.itemPage( book.getItemPage() );
         response.genre( book.getGenre() );
         response.pubDate( book.getPubDate() );
+        response.publisher( book.getPublisher() );
         response.adult( book.getAdult() );
         response.description( book.getDescription() );
         response.bookWiki( book.getBookWiki() );

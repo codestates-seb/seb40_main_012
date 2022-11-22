@@ -28,6 +28,7 @@ public enum ExceptionCode {
 
     RATED(409, "Already Rated"),
     LIKED(409, "Already Liked"),
+    UNLIKED(409, "Already Unliked"),
     FAIL_TO_LIKE(409, "Fail To Like"),
     FAIL_TO_BOOKMARK(409, "Fail To Bookmark"),
 
