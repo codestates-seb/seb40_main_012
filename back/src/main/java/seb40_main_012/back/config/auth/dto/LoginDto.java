@@ -6,6 +6,7 @@ import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class LoginDto {
@@ -28,6 +29,8 @@ public class LoginDto {
     public static class PatchDto {
         private GenderType genderType;
         private AgeType age;
+
+        @Size(max = 3, message = "장르는 최대 3개까지 선택 가능합니다")
         private List<String> genres;
     }
 

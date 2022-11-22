@@ -4,9 +4,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.config.auth.entity.RefreshToken;
 
+import java.util.List;
 import java.util.Optional;
 
+@Transactional
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long> {
+    List<RefreshToken> findAllByEmail(String email);
     Optional<RefreshToken> findByTokenValue(String tokenValue);
 
     Optional<RefreshToken> deleteByTokenValue(String tokenValue);

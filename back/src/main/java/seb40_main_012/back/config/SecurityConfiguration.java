@@ -3,16 +3,13 @@ package seb40_main_012.back.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import seb40_main_012.back.config.auth.filter.JwtAuthenticationFilter;
 import seb40_main_012.back.config.auth.filter.JwtVerificationFilter;
 import seb40_main_012.back.config.auth.handler.*;
@@ -31,7 +28,6 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final RefreshTokenRepository repository;
     private final UserMapper userMapper;
-    private final UserLogoutHandler logoutHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,6 +50,7 @@ public class SecurityConfiguration {
                 .logoutUrl("/api/logout")
                 .addLogoutHandler(new UserLogoutHandler(jwtTokenizer))
                 .logoutSuccessHandler(new UserLogoutSuccessHandler())
+                .deleteCookies("refreshToken")
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
 //                        .antMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("USER", "ADMIN") // 회원 탈퇴, 강제 탈퇴

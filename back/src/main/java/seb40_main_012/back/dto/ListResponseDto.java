@@ -10,4 +10,8 @@ import java.util.List;
 public class ListResponseDto<T> {
     private Long listCount;
     private List<T> data;
+
+    public ListResponseDto(List<T> data){
+        this.data = data;
+    }
 }

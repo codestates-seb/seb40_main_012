@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
-import seb40_main_012.back.bookCollection.repository.BookCollectionBookmarkRepository;
+import seb40_main_012.back.book.BookDto;
+import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
@@ -14,14 +14,12 @@ import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.dto.ListResponseDto;
-import seb40_main_012.back.dto.MultiResponseDto;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.pairing.PairingDto;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.dto.UserInfoDto;
-import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.mapper.UserMapper;
 import seb40_main_012.back.user.service.UserService;
@@ -103,7 +101,7 @@ public class UserController {
 //    @PatchMapping //프사 수정
 //    public UserDto.ResponseDto patchProfileImage(){}
 //
-    @DeleteMapping()
+    @DeleteMapping("/mypage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public boolean deleteUser(@RequestHeader("Authorization") Long userId){
         return userService.deleteUser(userId);
@@ -153,28 +151,37 @@ public class UserController {
     }
 
 
-    @GetMapping("/mypage/bookMark/collection")
+    @GetMapping("/mypage/bookmark/collection")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<BookCollectionDto.BookmarkedCollection> getBookMarkByBookCollection(@RequestHeader("Authorization") Long userId){
-        List<BookCollection> collections = userService.getBookMarkByBookCollection(userId);
+    public ListResponseDto<BookCollectionDto.BookmarkedCollection> getBookmarkByBookCollection(@RequestHeader("Authorization") Long userId){
+        List<BookCollection> collections = userService.getBookmarkByBookCollection(userId);
         List<BookCollectionDto.BookmarkedCollection> bookmarkedCollectionDto = collections.stream().map(x -> BookCollectionDto.BookmarkedCollection.of(x)).collect(Collectors.toList());
         Long listCount = collectionRepository.countByUserUserId(userId);
         return new ListResponseDto<>(listCount,bookmarkedCollectionDto);
     }
 
-//    @GetMapping("/bookMark/pairing")
-//    @ResponseStatus(HttpStatus.OK)
-//    public ListResponseDto<PairingDto.BookmarkedPairing> getBookMarkByPairing(@RequestHeader("Authorization") Long userId){
-//        List<Pairing> pairings = userService.getBookMarkByPairing(userId);
-//        List<PairingDto.UserPairing> pairingDto = pairings.stream().map(x -> PairingDto.UserPairing.of(x)).collect(Collectors.toList());
-//        Long listCount = pairingRepository.countBy();
-//    }
-//
-//    @GetMapping
-//    public UserDto.ResponseDto getBookMarkByBook(){}
+    @GetMapping("/mypage/bookmark/pairing")
+    @ResponseStatus(HttpStatus.OK)
+    public ListResponseDto<PairingDto.BookmarkedPairing> getBookMarkByPairing(@RequestHeader("Authorization") Long userId){
+        List<Pairing> pairings = userService.getBookmarkByPairing(userId);
+        List<PairingDto.BookmarkedPairing> pairingDto = pairings.stream().map(x -> PairingDto.BookmarkedPairing.of(x)).collect(Collectors.toList());
+        Long listCount = pairingRepository.countBy();
+        return new ListResponseDto<>(listCount,pairingDto);
+    }
+
+    @GetMapping("/mypage/bookmark/book")
+    @ResponseStatus(HttpStatus.OK)
+    public ListResponseDto<BookDto.BookmarkedBook> getBookMarkByBook(@RequestHeader("Authorization") Long userId){
+        List<Book> books = userService.getBookmarkByBook(userId);
+        List<BookDto.BookmarkedBook> bookDto = books.stream().map(x -> BookDto.BookmarkedBook.of(x)).collect(Collectors.toList());
+        Long listCount = pairingRepository.countBy();
+        return new ListResponseDto<>(listCount,bookDto);
+    }
+
+
 
     @PatchMapping("/users/firstLogin")
-    public ResponseEntity patchUserOnFirstLogin(@RequestBody LoginDto.PatchDto patchDto) {
+    public ResponseEntity patchUserOnFirstLogin(@Valid @RequestBody LoginDto.PatchDto patchDto) {
         User user = userService.updateOnFirstLogin(patchDto);
         return new ResponseEntity<>(
                 new SingleResponseDto<>(mapper.userToFirstLoginResponse(user)), HttpStatus.OK);

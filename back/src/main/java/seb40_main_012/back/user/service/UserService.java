@@ -1,21 +1,19 @@
 package seb40_main_012.back.user.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
+import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
-import seb40_main_012.back.bookCollection.entity.BookCollectionBookmark;
-import seb40_main_012.back.bookCollection.repository.BookCollectionBookmarkRepository;
+import seb40_main_012.back.common.bookmark.Bookmark;
+import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
@@ -32,8 +30,6 @@ import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 
 import java.util.List;
-import java.util.regex.Pattern;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -47,7 +43,7 @@ public class UserService {
     private final CommentRepository commentRepository;
     private final PairingRepository pairingRepository;
     private final BookCollectionRepository collectionRepository;
-    private final BookCollectionBookmarkRepository collectionBookmarkRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final ApplicationEventPublisher publisher;
     private final CustomAuthorityUtils authorityUtils;
 
@@ -150,11 +146,27 @@ public class UserService {
         return findUser;
     }
 
-    public List<BookCollection> getBookMarkByBookCollection(Long userId){
-        List<BookCollectionBookmark> bookmarks= collectionBookmarkRepository.findByUserUserId(userId);
+    public List<BookCollection> getBookmarkByBookCollection(Long userId){
+        User findUser = findVerifiedUser(userId);
+        List<Bookmark> bookmarks= bookmarkRepository.findByUser(findUser);
         List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
         return collections;
     }
+
+    public List<Pairing> getBookmarkByPairing(Long userId){
+        User findUser = findVerifiedUser(userId);
+        List<Bookmark> bookmarks= bookmarkRepository.findByUser(findUser);
+        List<Pairing> pairings = bookmarks.stream().map(x -> x.getPairing()).collect(Collectors.toList());
+        return pairings;
+    }
+
+    public List<Book> getBookmarkByBook(Long userId){
+        User findUser = findVerifiedUser(userId);
+        List<Bookmark> bookmarks= bookmarkRepository.findByUser(findUser);
+        List<Book> books = bookmarks.stream().map(x -> x.getBook()).collect(Collectors.toList());
+        return books;
+    }
+
 
 //    public double calcBookTemp(long userId) {
 //
