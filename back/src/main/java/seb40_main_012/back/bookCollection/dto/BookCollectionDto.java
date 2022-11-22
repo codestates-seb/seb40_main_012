@@ -79,7 +79,7 @@ public class BookCollectionDto {
         private LocalDateTime createdAt;
         private LocalDate lastModifiedAt;
         private Long likeCount;
-        private Long View;
+        private Long view;
         private boolean userLike;
         private boolean userBookmark;
         private String collectionAuthor;
@@ -94,6 +94,7 @@ public class BookCollectionDto {
                     .createdAt(collection.getCreatedAt())
                     .lastModifiedAt(collection.getLastModifiedAt())
                     .likeCount(collection.getLikeCount())
+                    .view(collection.getView())
                     .userLike(!collection.getUser().getCollectionLikes().isEmpty())
                     .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
                     .collectionAuthor(collection.getUser().getNickName())

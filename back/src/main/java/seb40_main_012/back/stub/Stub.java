@@ -305,6 +305,7 @@ public class Stub {
                             .title("Stub_Book_Collection_" + i)
                             .content("Stub_Book_Collection_Content" + i)
                             .likeCount(rand)
+                            .view(rand)
                             .createdAt(LocalDateTime.now())
                             .lastModifiedAt(LocalDate.now())
                             .collectionTags(null)
@@ -415,6 +416,8 @@ public class Stub {
                             .title("Stub_Book_Collection_" + i)
                             .content("Stub_Book_Collection_Content" + i)
                             .likeCount(rand)
+                            .view(rand)
+                            .createdAt(LocalDateTime.now())
                             .collectionTags(null)
                             .build()));
         }

@@ -32,7 +32,7 @@ public class BookCollection {
     private String content;
     private Long likeCount;
 
-    private Long view = 0L;
+    private Long view;
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
     private List<BookCollectionTag> collectionTags = new ArrayList<>();

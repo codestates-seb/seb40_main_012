@@ -9,9 +9,11 @@ import seb40_main_012.back.user.entity.User;
 
 import java.util.List;
 
-public interface BookCollectionRepository extends JpaRepository<BookCollection,Long> {
+public interface BookCollectionRepository extends JpaRepository<BookCollection, Long> {
     Long countBy();
+
     List<BookCollection> findByUserUserId(Long userId);
+
     Long countByUserUserId(Long userId);
 
     @Query(nativeQuery = true,
@@ -21,5 +23,13 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection,L
                     "OR LOWER(BOOK_TITLE) LIKE %:queryParam% " +
                     "OR LOWER(CONTENT) LIKE %:queryParam%")
     List<BookCollection> findBookCollectionsByQuery(@Param("queryParam") String queryParam);
+
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM BOOK_COLLECTION " +
+                    "CROSS JOIN BOOK " +
+                    "WHERE LOWER(TITLE) LIKE %:queryParam% " +
+                    "OR LOWER(BOOK_TITLE) LIKE %:queryParam% " +
+                    "OR LOWER(CONTENT) LIKE %:queryParam%")
+    List<BookCollection> findTest(@Param("queryParam") String queryParam);
 
 }
