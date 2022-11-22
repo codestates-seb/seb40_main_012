@@ -4,23 +4,21 @@ import styled from 'styled-components';
 import Container from '@mui/material/Container';
 import PageContainer from '../../../components/PageContainer';
 import {
-  signUpAsync,
   selectValidCheckArray,
   setIsValid,
-  setInputValue,
-} from '../../../store/modules/signUpSlice';
+} from '../../../store/modules/changePassWdSlice';
 
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import ValidationTextFields from '../../../components/ValidationTextFields';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
+import ChangePassWdTextFields from './ChangePassWdTextFields';
 
 const TitleText = styled.div`
   width: 100%;
-  font-size: 16px;
-  font-weight: 400;
-  margin-top: 30px;
+  font-size: 15px;
+  font-weight: 300;
+  margin-top: 10px;
 `;
 
 const LoginErrorMsg = styled.div`
@@ -42,16 +40,6 @@ const PassWdInput = styled.input`
   }
   width: 100%;
 `;
-// const ItemText = styled.div`
-//   width: 100%;
-//   font-size: 15px;
-//   font-weight: 300;
-//   margin-top: 10px;
-//   a {
-//     text-decoration: none !important;
-//     color: inherit !important;
-//   }
-// `;
 
 const ForgotPassWd = styled.div`
   width: 100%;
@@ -73,47 +61,12 @@ const Btn = styled(BasicButton)`
     cursor: pointer;
   }
 `;
-const inputInfo = [
-  {
-    label: '현재 비밀번호',
-    id: 'currentPassword',
-    autoComplete: 'password',
-    type: 'password',
-  },
-  {
-    label: '새 비밀번호',
-    id: 'password',
-    autoComplete: 'new-password',
-    type: 'password',
-  },
-  {
-    label: '비밀번호 확인',
-    id: 'passwordCheck',
-    autoComplete: 'new-password',
-    type: 'password',
-  },
-];
 
 const ChangePassWd = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const inputRef = useRef([]);
-  const selectSignUp = useSelector((state) => state.signUp, shallowEqual);
-  const { inputValue, inputStatus, inputHelperText } = selectSignUp;
   const validCheckArray = useSelector(selectValidCheckArray, shallowEqual);
   const [showLoginError, setShowLoginError] = useState(false);
-
-  useEffect(() => {
-    inputRef.current[0].focus();
-  }, []);
-
-  const handleChangeInput = useCallback((id, value) => {
-    dispatch(setInputValue({ id, value }));
-  });
-
-  const handleBlur = useCallback((id, value, required) => {
-    dispatch(setIsValid(id, value, required));
-  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -127,13 +80,11 @@ const ChangePassWd = () => {
     }
 
     const params = {
-      // nickName: data.get('nickName'),
-      // email: data.get('email'),
       currentPassword: data.get('currentPassword'),
       password: data.get('password'),
     };
 
-    dispatch(signUpAsync(params))
+    dispatch(setIsValid(params))
       .then((response) => {
         if (response.payload?.data) {
           navigate('/settings/profile', { replace: true });
@@ -156,28 +107,6 @@ const ChangePassWd = () => {
             onSubmit={handleSubmit}
             sx={{ mt: 3 }}
           >
-            <Grid container spacing={2}>
-              {inputInfo.map((v, i) => (
-                <Grid key={v.id} item xs={12}>
-                  <ValidationTextFields
-                    inputRef={inputRef}
-                    refIndex={i}
-                    label={v.label}
-                    id={v.id}
-                    autoComplete={v.autoComplete}
-                    type={v.type}
-                    required
-                    fullWidth
-                    setInputValue={handleChangeInput}
-                    setIsValid={handleBlur}
-                    inputValue={inputValue[v.id]}
-                    inputStatus={inputStatus[v.id]}
-                    inputHelperText={inputHelperText[v.id]}
-                    submit={inputInfo.length - 1 === i ? true : false}
-                  />
-                </Grid>
-              ))}
-            </Grid>
             {showLoginError ? (
               <LoginErrorMsg>
                 현재 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시
@@ -185,44 +114,12 @@ const ChangePassWd = () => {
               </LoginErrorMsg>
             ) : null}
 
-            <TitleText>현재 비밀번호</TitleText>
-            <Grid
-              container
-              xs={12}
-              align="left"
-              alignItems="center"
-              justifyContent="left"
-            >
-              <Grid item align="left" xs={12} justifyContent="left">
-                <PassWdInput className="nickname-border"></PassWdInput>
-              </Grid>
-            </Grid>
-
-            <TitleText>새 비밀번호</TitleText>
-            <Grid
-              container
-              xs={12}
-              align="left"
-              alignItems="center"
-              justifyContent="left"
-            >
-              <Grid item align="left" xs={12} justifyContent="left">
-                <PassWdInput className="nickname-border"></PassWdInput>
-              </Grid>
-            </Grid>
-
+            <ChangePassWdTextFields />
             <TitleText>비밀번호 확인</TitleText>
-            <Grid
-              container
-              xs={12}
-              align="left"
-              alignItems="center"
-              justifyContent="left"
-            >
-              <Grid item align="left" xs={12} justifyContent="left">
-                <PassWdInput className="nickname-border"></PassWdInput>
-              </Grid>
+            <Grid item align="left" xs={12} justifyContent="left">
+              <PassWdInput className="nickname-border"></PassWdInput>
             </Grid>
+
             <Grid
               item
               align="center"

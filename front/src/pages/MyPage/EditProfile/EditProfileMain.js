@@ -102,8 +102,6 @@ const EditProfileMain = () => {
   console.log(state);
   return (
     <>
-      {/* xs , sm, md, lg, xl 사이즈 */}
-
       <Container component="main" maxWidth="sm">
         <Grid item xs={12} align="center" justifyContent="center">
           <Avatar
