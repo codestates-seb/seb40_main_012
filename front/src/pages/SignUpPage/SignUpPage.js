@@ -1,9 +1,8 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -21,7 +20,7 @@ import {
 } from '../../store/modules/signUpSlice';
 import SignUpTextFields from './SignUpTextFields';
 
-const SignInLink = styled(Link)`
+const SignInLinkStyled = styled(Link)`
   font-size: 1rem;
 `;
 
@@ -99,9 +98,9 @@ const SignUpPage = () => {
               <Grid container justifyContent="flex-end">
                 <Grid item>
                   이미 가입하셨나요?{' '}
-                  <SignInLink href="/user/signin" variant="body2">
+                  <SignInLinkStyled to="/user/signin" variant="body2">
                     로그인
-                  </SignInLink>
+                  </SignInLinkStyled>
                 </Grid>
               </Grid>
             </Box>
