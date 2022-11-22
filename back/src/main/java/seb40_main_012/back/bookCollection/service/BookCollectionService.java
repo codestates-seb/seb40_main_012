@@ -10,6 +10,8 @@ import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.*;
 import seb40_main_012.back.bookCollection.repository.*;
+import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
+import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
 import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.user.entity.User;
@@ -30,6 +32,7 @@ public class BookCollectionService {
     private final BookCollectionTagRepository collectionTagRepository;
     private final BookCollectionLikeRepository collectionLikeRepository;
     private final BookmarkRepository collectionBookmarkRepository;
+    private final BookCollectionBookRepository collectionBookRepository;
     private final BookRepository bookRepository;
     private final UserCategoryRepository userCategoryRepository;
     private final CategoryRepository categoryRepository;
@@ -52,6 +55,28 @@ public class BookCollectionService {
                     collection.addUser(findUser);
                 }
         );
+        List<String> isbn = collection.getBookIsbn13();
+        isbn.forEach(
+                x -> {
+                    Book newBook = bookService.updateView(x);
+                    BookCollectionBook findCollectionBook = new BookCollectionBook(newBook,collection);
+                    collectionBookRepository.save(findCollectionBook);
+                    collection.addCollectionBook(findCollectionBook);
+//                    if(bookRepository.findByIsbn13(x)!=null){
+//                        Book findBook = bookRepository.findByIsbn13(x).orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
+//                        BookCollectionBook findCollectionBook = new BookCollectionBook(findBook,collection);
+//                        collectionBookRepository.save(findCollectionBook);
+//                        collection.addCollectionBook(findCollectionBook);
+//                    }else {
+//                        Book newBook = bookService.updateView(x);
+//                        BookCollectionBook findCollectionBook = new BookCollectionBook(newBook,collection);
+//                        collectionBookRepository.save(findCollectionBook);
+//                        collection.addCollectionBook(findCollectionBook);
+//                    }
+
+                }
+        );
+
         return collection;
     }
 
@@ -119,7 +144,8 @@ public class BookCollectionService {
     }
 
     public List<BookCollection> findCollectionByUserCategory(Long userId){
-        String userCategory = Genre.ART.name();
+        User findUser = userService.findVerifiedUser(userId);
+        String userCategory = findUser.getCategories().get(0).getCategory().getGenre().getValue();
 //        Category category = categoryRepository.findByGenre(Genre.ART);
 
         Tag tag = tagRepository.findByTagName(userCategory).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_FOUND));
@@ -133,18 +159,6 @@ public class BookCollectionService {
         Tag tag = tagRepository.findByTagName(tagName).orElseThrow(()-> new BusinessLogicException(ExceptionCode.NOT_FOUND));
         List<BookCollectionTag> collectionTag = collectionTagRepository.findByTag(tag);
         List<BookCollection> collections = collectionTag.stream().map(BookCollectionTag::getBookCollection).collect(Collectors.toList());
-
-//        //tagId 로 해당 id가진 collectionTag의 collectionId 조회
-//        List<Tag> tags = List.of(new Tag("겨울"),new Tag("쓸쓸한"));
-//        List<Long> tagId = tags.stream().map(x -> x.getTagId()).collect(Collectors.toList());
-////        List<Long> tagId = List.of(1L, 2L);
-//        tagId.forEach(
-//               x -> collectionTagRepository.findByTagTagId(x)
-//        );
-//        List<BookCollectionTag> collectionTag = collectionTagRepository.findByTagTagId(tagId.get(0));
-//        List<Long> collectionTagId = collectionTag.stream().map(x -> x.getBookCollectionTagId()).collect(Collectors.toList());
-//        List<BookCollection> collections = collectionTagId.stream().map(e -> collectionRepository.findById(e).orElseThrow(()->new BusinessLogicException(ExceptionCode.NOT_FOUND))).collect(Collectors.toList());
-
         return collections;
     }
 

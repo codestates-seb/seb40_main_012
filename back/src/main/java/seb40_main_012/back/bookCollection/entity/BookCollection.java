@@ -89,6 +89,9 @@ public class BookCollection {
     public void addCollectionTag(BookCollectionTag collectionTag) {
         collectionTags.add(collectionTag);
     }
+    public void addCollectionBook(BookCollectionBook collectionBook) {
+        collectionBooks.add(collectionBook);
+    }
     public void setCollectionTag() {
         this.collectionTags = new ArrayList<>();
     }
