@@ -14,6 +14,7 @@ import counterReducer from './modules/counterSlice';
 import signUpReducer from './modules/signUpSlice';
 import signInReducer from './modules/signInSlice';
 import authReducer from './modules/authSlice';
+import bookReducer from './modules/bookSlice';
 import allPairingReducer from './modules/allPairingSlice';
 import pairingReducer from './modules/pairingSlice';
 import filmPairingReducer from './modules/filmPairingSlice';
@@ -33,6 +34,7 @@ export const rootReducer = combineReducers({
   signUp: signUpReducer,
   signIn: signInReducer,
   auth: authReducer,
+  book: bookReducer,
   allPairing: allPairingReducer,
   filmPairing: filmPairingReducer,
   cuisinePairing: cuisinePairingReducer,
