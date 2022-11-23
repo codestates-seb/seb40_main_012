@@ -94,6 +94,7 @@ public class PairingDto {
         private String title;
         private String body;
         private Boolean isLiked;
+        private Boolean isBookmarked;
         private long likeCount;
         private long view;
         private String imagePath;

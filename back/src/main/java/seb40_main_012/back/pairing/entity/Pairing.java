@@ -49,6 +49,8 @@ public class Pairing {
     @Column
     private Boolean isLiked;
 
+    private Boolean isBookmarked;
+
     @Column
     private String outLinkPath;
 
