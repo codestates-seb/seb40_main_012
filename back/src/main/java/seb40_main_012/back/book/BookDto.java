@@ -121,6 +121,7 @@ public class BookDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CollectionBook{
+        private String isbn13;
         private String title;
         private String author;
         private Long ratingCount;
@@ -128,6 +129,7 @@ public class BookDto {
 
         public static CollectionBook of(Book book){
             return CollectionBook.builder()
+                    .isbn13(book.getIsbn13())
                     .title(book.getTitle())
                     .author(book.getAuthor())
                     .ratingCount(book.getRatingCount())
