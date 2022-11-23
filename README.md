@@ -1,6 +1,6 @@
 # seb40_main_012
 
-![Main-Project--9_2](https://user-images.githubusercontent.com/70098708/201463341-052e7be2-619a-4ef0-9769-be23dc0dc19d.png)
+![Main-Project-페이지-9 (1)](https://user-images.githubusercontent.com/13742045/203527798-844b9a71-ecb5-441d-a52f-4abb337f07f3.png)
 
 
 📄 **Commit Messeage Rules**
