@@ -75,6 +75,7 @@ public class PairingService {
                         .imagePath(pairing.getImagePath())
                         .title(pairing.getTitle())
                         .body(pairing.getBody())
+                        .pairingCategory(pairing.getPairingCategory())
                         .outLinkPath(pairing.getOutLinkPath())
                         .likeCount(findPairing.getLikeCount())
                         .view(findPairing.getView())
