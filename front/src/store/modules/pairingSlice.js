@@ -49,6 +49,23 @@ export const asyncDeletePairing = createAsyncThunk(
   }
 );
 
+export const asyncPatchPairing = createAsyncThunk(
+  'pairingSlice/asyncPatchPairing',
+  async ({ pairingPatchBody, pairingId }) => {
+    try {
+      const pairingRes = await axios.patch(
+        `${PAIRING_URL}/${pairingId}/edit`,
+        pairingPatchBody
+      );
+      const isbn = pairingRes.data.data.isbn13;
+      const bookRes = await axios.get(`api/books/${isbn}`);
+      return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const asyncPostPairingComment = createAsyncThunk(
   'pairingSlice/asyncPostPairngComment',
   async ({ pairingId, body }) => {
@@ -128,6 +145,17 @@ export const pairingSlice = createSlice({
       state.status = 'fulfilled';
     });
     builder.addCase(asyncDeletePairing.rejected, (state) => {
+      state.status = 'rejected';
+    });
+    //페어링 수정
+    builder.addCase(asyncPatchPairing.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(asyncPatchPairing.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.status = 'fulfilled';
+    });
+    builder.addCase(asyncPatchPairing.rejected, (state) => {
       state.status = 'rejected';
     });
     //comment 추가

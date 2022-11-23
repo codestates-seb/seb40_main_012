@@ -65,6 +65,7 @@ export const store = configureStore({
           'auth/getTokens/fulfilled',
           'pairingSlice/asyncPostPairing/fulfilled',
           'pairingSlice/asyncDeletePairing/fulfilled',
+          'pairingSlice/asyncPatchPairing/fulfilled',
         ],
       },
     }),
