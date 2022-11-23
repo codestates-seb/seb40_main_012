@@ -6,7 +6,14 @@ import theme from '../styles/theme';
 import Header from './Header';
 import Footer from './Footer';
 
-const PageContainer = ({ children, header, footer, center, maxWidth }) => {
+const PageContainer = ({
+  children,
+  header,
+  footer,
+  center,
+  maxWidth,
+  height,
+}) => {
   if (center) {
     return (
       <ThemeProvider theme={theme}>
@@ -15,12 +22,16 @@ const PageContainer = ({ children, header, footer, center, maxWidth }) => {
         <Container component="main" maxWidth={maxWidth}>
           <Box
             sx={{
-              marginTop: 0,
+              marginTop: height ? '60px' : 0,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              height: !footer ? '100vh' : 'calc(100vh - 200px)', // footer
+              height: height
+                ? 'auto'
+                : !footer
+                ? '100vh'
+                : 'calc(100vh - 200px)', // footer
             }}
           >
             {children}
