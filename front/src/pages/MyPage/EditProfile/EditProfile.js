@@ -2,11 +2,20 @@ import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import styled from 'styled-components';
 import PageContainer from '../../../components/PageContainer';
 import { OutlinedButton } from '../../../components/Buttons';
 import ValidationTextFields from '../../../components/ValidationTextFields';
-import { validationCheck, duplicationCheck } from '../../../util/util';
+import {
+  validationCheck,
+  duplicationCheck,
+  genderData,
+  ageGroupData,
+} from '../../../util/util';
 
 const WrapperStyled = styled.div`
   display: flex;
@@ -51,6 +60,8 @@ const EditProfile = () => {
     nickName: '',
     introduction: '',
   });
+  const [gender, setGender] = useState('');
+  const [age, setAge] = useState('');
 
   useEffect(() => {
     inputRef.current[0].focus();
@@ -109,6 +120,14 @@ const EditProfile = () => {
         [id]: message,
       });
     }
+  };
+
+  const handleChangeGender = (event) => {
+    setGender(event.target.value);
+  };
+
+  const handleChangeAge = (event) => {
+    setAge(event.target.value);
   };
 
   return (
@@ -175,9 +194,47 @@ const EditProfile = () => {
         </TitleTextStyled>
         <ItemWrapperStyled>
           <ItemTextStyled component="h4">성별</ItemTextStyled>
+          <FormControl sx={{ m: 1, minWidth: 80, width: 200 }} size="small">
+            <InputLabel id="gender-select-label"></InputLabel>
+            <Select
+              labelId="gender-select-label"
+              id="gender-select"
+              value={gender}
+              onChange={handleChangeGender}
+              label=""
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {Object.entries(genderData).map(([key, value]) => (
+                <MenuItem key={key} value={key}>
+                  {value}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </ItemWrapperStyled>
         <ItemWrapperStyled>
           <ItemTextStyled component="h4">연령대</ItemTextStyled>
+          <FormControl sx={{ m: 1, minWidth: 80, width: 200 }} size="small">
+            <InputLabel id="age-select-label"></InputLabel>
+            <Select
+              labelId="age-select-label"
+              id="age-select"
+              value={age}
+              onChange={handleChangeAge}
+              label=""
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {Object.entries(ageGroupData).map(([key, value]) => (
+                <MenuItem key={key} value={key}>
+                  {value}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </ItemWrapperStyled>
         <ItemWrapperStyled>
           <ItemTextStyled component="h4">선호 장르</ItemTextStyled>
