@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
 public class PairingService {
 
     private final PairingRepository pairingRepository;
-    private final PairingBookmarkRepository pairingBookmarkRepository;
     private final LikeRepository likeRepository;
     private final BookService bookService;
     private final BookRepository bookRepository;

@@ -84,12 +84,13 @@ public class CommentDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class UserComment{
+        private Long commentLike;
         private String content;
         private String bookName;
         private String author;
-//        private Image  bookCover;
+        private String cover;
         private Long rating;
-        private Long commentLike;
+
 
         public static UserComment of(Comment comment){
             return UserComment.builder()
