@@ -87,6 +87,9 @@ export const authSlice = createSlice({
         state.error = null;
         state.isLogin = true;
         state.firstLogin = payload.firstLogin;
+        state.nickName = payload.nickName;
+        state.email = payload.email;
+        state.roles = payload.roles;
       })
       .addCase(firstLoginAsync.rejected, (state, action) => {
         state.loading = false;
@@ -109,6 +112,6 @@ export const selectIsLogin = (state) => state.auth.isLogin;
 export const selectFirstLogin = (state) =>
   state.auth.firstLogin && state.auth.isLogin;
 export const selectEmail = (state) => state.auth.email;
-export const selectNickname = (state) => state.auth.nickName;
+export const selectnickName = (state) => state.auth.nickName;
 
 export default authSlice.reducer;
