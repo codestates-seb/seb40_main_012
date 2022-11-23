@@ -1,5 +1,6 @@
 package seb40_main_012.back.bookCollection.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.Query;
@@ -27,7 +28,7 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection, 
                     "WHERE LOWER(TITLE) LIKE %:queryParam% " +
                     "OR LOWER(BOOK_TITLE) LIKE %:queryParam% " +
                     "OR LOWER(CONTENT) LIKE %:queryParam%")
-    List<BookCollection> findBookCollectionsByQuery(@Param("queryParam") String queryParam);
+    List<BookCollection> findBookCollectionsByQuery(@Param("queryParam") String queryParam, Pageable pageable);
 
     @Query(nativeQuery = true,
             value = "SELECT * FROM BOOK_COLLECTION " +
