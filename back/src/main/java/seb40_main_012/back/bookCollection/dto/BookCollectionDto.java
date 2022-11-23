@@ -10,6 +10,7 @@ import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.user.dto.UserDto;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -98,7 +99,7 @@ public class BookCollectionDto {
                     .content(collection.getContent())
                     .createdAt(collection.getCreatedAt())
                     .lastModifiedAt(collection.getLastModifiedAt())
-                    .likeCount(collection.getLikeCount())
+                    .likeCount(collection.getCollectionLikes().stream().count())
                     .view(collection.getView())
                     .userLike(!collection.getUser().getCollectionLikes().isEmpty())
                     .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
@@ -118,6 +119,7 @@ public class BookCollectionDto {
                                             .commentType(comment.getCommentType())
                                             .body(comment.getBody())
                                             .likeCount(comment.getLikeCount())
+                                            .isLiked(comment.getIsLiked())
                                             .view(comment.getView())
                                             .createdAt(comment.getCreatedAt())
                                             .modifiedAt(comment.getModifiedAt())

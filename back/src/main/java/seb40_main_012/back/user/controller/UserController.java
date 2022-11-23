@@ -58,11 +58,11 @@ public class UserController {
         return userService.verifyEmail(emailDto.getEmail());
     }
 
-    @PatchMapping("/mypage/nickname")
-    @ResponseStatus(HttpStatus.OK)
-    public void patchNickName(@RequestBody UserDto.Profile request) {
-        userService.updateNickName(request.getNickName());
-    }
+//    @PatchMapping("/mypage/nickname")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void patchNickName(@RequestBody UserDto.Profile request) {
+//        userService.updateNickName(request.getNickName());
+//    }
 
     @PostMapping("/mypage/password/current")
     @ResponseStatus(HttpStatus.OK)
@@ -80,6 +80,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserInfoDto.Response patchUserInfo( @RequestBody UserInfoDto.Post request){
         User editedUser = userService.editUserInfo(request.toEntity(),request.getCategory());
+        userService.updateNickName(request.getNickname());
         return UserInfoDto.Response.of(editedUser);
     }
     @GetMapping("/users/{user_id}")

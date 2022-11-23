@@ -128,7 +128,6 @@ public class BookCollectionService {
 
     public boolean likeCollection(Long collectionId) {
         User findUser = userService.getLoginUser();
-
         Long userId = findUser.getUserId();
 
         BookCollection findCollection = findVerifiedCollection(collectionId);
@@ -138,12 +137,15 @@ public class BookCollectionService {
             if (collectionLike != null) {
                 collectionLikeRepository.delete(collectionLike);
                 count -= 1L;
+                findCollection.setLikeCount(count);
             } else {
-                BookCollectionLike bookCollectionLike = new BookCollectionLike(findUser, findCollection);    //repo 저장 왜 안해도 돼?
+                BookCollectionLike bookCollectionLike = new BookCollectionLike(findUser, findCollection);
+                collectionLikeRepository.save(bookCollectionLike);
                 findUser.addCollectionLike(bookCollectionLike);
                 count += 1L;
+                findCollection.setLikeCount(count);
             }
-            findCollection.setLikeCount(count);
+
             return true;
         } catch (BusinessLogicException e) {
             throw new BusinessLogicException(ExceptionCode.FAIL_TO_LIKE);
