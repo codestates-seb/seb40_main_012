@@ -17,6 +17,7 @@ import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.config.auth.event.UserRegistrationApplicationEvent;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
@@ -125,6 +126,15 @@ public class UserService {
     public List<Comment> getUserComment() {
         User findUser = getLoginUser();
         List<Comment> comments = findUser.getComments();
+        comments.forEach(
+                x ->{
+                    if(x.getCommentType()== CommentType.BOOK) {
+
+                    }
+                    else if(x.getCommentType()==CommentType.PAIRING);
+                    else if(x.getCommentType()==CommentType.BOOK_COLLECTION);
+                }
+        );
         return comments;
     }
 
