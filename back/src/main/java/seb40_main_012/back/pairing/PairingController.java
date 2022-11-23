@@ -141,6 +141,7 @@ public class PairingController {
         if (token == null) {
 
             Pairing pairing = pairingService.updateView(pairingId);
+            pairing.setIsLiked(null);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
             return new ResponseEntity<>(
