@@ -63,6 +63,8 @@ export const store = configureStore({
           PURGE,
           REGISTER,
           'auth/getTokens/fulfilled',
+          'pairingSlice/asyncPostPairing/fulfilled',
+          'pairingSlice/asyncDeletePairing/fulfilled',
         ],
       },
     }),

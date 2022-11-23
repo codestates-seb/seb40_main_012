@@ -38,6 +38,17 @@ export const asyncPostPairing = createAsyncThunk(
   }
 );
 
+export const asyncDeletePairing = createAsyncThunk(
+  'pairingSlice/asyncDeletePairing',
+  async ({ deleteId }) => {
+    try {
+      return await axios.delete(`${PAIRING_URL}/${deleteId}/delete`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const asyncPostPairingComment = createAsyncThunk(
   'pairingSlice/asyncPostPairngComment',
   async ({ pairingId, body }) => {
@@ -87,6 +98,7 @@ export const pairingSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    //페이링 상세 조회
     builder.addCase(asyncGetOnePairing.pending, (state) => {
       state.status = 'pending';
     });
@@ -98,6 +110,7 @@ export const pairingSlice = createSlice({
       state.data = [];
       state.status = 'rejected';
     });
+    //페어링 작성
     builder.addCase(asyncPostPairing.pending, (state) => {
       state.status = 'pending';
     });
@@ -105,7 +118,16 @@ export const pairingSlice = createSlice({
       state.status = 'fulfilled';
     });
     builder.addCase(asyncPostPairing.rejected, (state) => {
-      state.data = [];
+      state.status = 'rejected';
+    });
+    //페어링 삭제
+    builder.addCase(asyncDeletePairing.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(asyncDeletePairing.fulfilled, (state) => {
+      state.status = 'fulfilled';
+    });
+    builder.addCase(asyncDeletePairing.rejected, (state) => {
       state.status = 'rejected';
     });
     //comment 추가
