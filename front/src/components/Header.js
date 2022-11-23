@@ -145,20 +145,24 @@ const Header = () => {
       <div className="header_right">
         <Searchbar />
         {isLogin ? (
-          <LoginOutBtn onClick={handleClickLogoutButton}>로그아웃</LoginOutBtn>
+          <>
+            <LoginOutBtn onClick={handleClickLogoutButton}>
+              로그아웃
+            </LoginOutBtn>
+            <Link to="/mypage">
+              <MyPageIconContainer>
+                <img
+                  src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
+                  alt="Mypage Icon"
+                />
+              </MyPageIconContainer>
+            </Link>
+          </>
         ) : (
           <Link to="/user/signin">
             <LoginOutBtn>로그인</LoginOutBtn>
           </Link>
         )}
-        <Link to="/mypage">
-          <MyPageIconContainer>
-            <img
-              src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
-              alt="Mypage Icon"
-            />
-          </MyPageIconContainer>
-        </Link>
       </div>
     </HeaderContainer>
   );
