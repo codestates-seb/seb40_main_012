@@ -82,7 +82,7 @@ const RankInfo = styled.div`
 
 const MainBook = ({
   ranking,
-  bookId,
+  isbn,
   bookTitle,
   author,
   publish,
@@ -95,7 +95,7 @@ const MainBook = ({
   const navigate = useNavigate();
 
   const onClickMainBook = () => {
-    navigate(`/book/${bookId}`);
+    navigate(`/book/${isbn}`);
   };
 
   return (
