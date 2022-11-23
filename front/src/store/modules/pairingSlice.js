@@ -66,6 +66,35 @@ export const asyncPatchPairing = createAsyncThunk(
   }
 );
 
+export const asyncPairingLike = createAsyncThunk(
+  'pairingSlice/asyncPairingLike',
+  async (pairingId) => {
+    try {
+      const pairingRes = await axios.patch(`${PAIRING_URL}/${pairingId}/like`);
+      const isbn = pairingRes.data.data.isbn13;
+      const bookRes = await axios.get(`api/books/${isbn}`);
+      return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const asyncPairingDislike = createAsyncThunk(
+  'pairingSlice/asyncPairingDislike',
+  async (pairingId) => {
+    try {
+      const pairingRes = await axios.patch(
+        `${PAIRING_URL}/${pairingId}/dislike`
+      );
+      const isbn = pairingRes.data.data.isbn13;
+      const bookRes = await axios.get(`api/books/${isbn}`);
+      return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const asyncPostPairingComment = createAsyncThunk(
   'pairingSlice/asyncPostPairngComment',
   async ({ pairingId, body }) => {
@@ -167,6 +196,28 @@ export const pairingSlice = createSlice({
       state.status = 'fulfilled';
     });
     builder.addCase(asyncPatchPairing.rejected, (state) => {
+      state.status = 'rejected';
+    });
+    //페어링 좋아요
+    builder.addCase(asyncPairingLike.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(asyncPairingLike.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.status = 'fulfilled';
+    });
+    builder.addCase(asyncPairingLike.rejected, (state) => {
+      state.status = 'rejected';
+    });
+    //페어링 좋아요 취소
+    builder.addCase(asyncPairingDislike.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(asyncPairingDislike.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.status = 'fulfilled';
+    });
+    builder.addCase(asyncPairingDislike.rejected, (state) => {
       state.status = 'rejected';
     });
     //comment 추가

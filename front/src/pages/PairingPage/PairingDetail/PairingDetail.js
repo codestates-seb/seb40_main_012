@@ -9,6 +9,8 @@ import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   asyncGetOnePairing,
+  asyncPairingLike,
+  asyncPairingDislike,
   asyncPostPairingComment,
   asyncDeletePairingComment,
   asyncEditPairingComment,
@@ -20,6 +22,7 @@ import Comments from '../../../components/Comments/Comments';
 import PatchModal from './PatchModal';
 import DeleteModal from './DeleteModal';
 import { GenterMatcherToKor } from '../../../util/GenreMatcher';
+import LikeButton from './LikeButton';
 
 const BtnStyleBox = styled.div`
   display: flex;
@@ -87,6 +90,14 @@ const PairingDetail = () => {
 
   const userEmail = useSelector(selectEmail);
 
+  const handlePairingLike = () => {
+    dispatch(asyncPairingLike(pairingId));
+  };
+
+  const handlePairingDislike = () => {
+    dispatch(asyncPairingDislike(pairingId));
+  };
+
   const handleCommentAdd = (body) => {
     //dispatch - 코멘트 입력
     dispatch(asyncPostPairingComment({ pairingId, body }));
@@ -127,8 +138,20 @@ const PairingDetail = () => {
         ) : (
           <div></div>
         )}
-
-        <CollectionHeaderBtns />
+        <LikeButton
+          isLiked={pairingData.isLiked}
+          LikePlus={handlePairingLike}
+          LikeMinus={handlePairingDislike}
+        >
+          {pairingData.likeCount}
+        </LikeButton>
+        <CollectionHeaderBtns
+          likeCount={pairingData.likeCount}
+          userLike={pairingData.isLiked}
+          handleCollectionLike={() => {
+            console.log('하트 올려!!');
+          }}
+        />
       </BtnStyleBox>
       <OriginBookWrapper>
         <InfoTitle>How about pairing this book</InfoTitle>
