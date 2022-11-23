@@ -29,7 +29,8 @@ public interface BookRepository extends JpaRepository<Book, Long> {
     @Query(nativeQuery = true, value = "select * " +
             "from book " +
             "where genre = :name " +
-            "order by " + "view " + "desc")
+            "order by " + "view " + "desc " +
+            "limit 5")
     List<Book> findRecommendedBooks(@Param("name") String name);
 
     @Query(nativeQuery = true, value = "select *" +

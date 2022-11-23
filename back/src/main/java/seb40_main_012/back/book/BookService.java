@@ -17,9 +17,8 @@ import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -241,9 +240,19 @@ public class BookService {
 
         User findUser = userService.getLoginUser();
 
-        String favoriteGenre = findUser.getCategories().get(0).getCategory().getGenre().toString();
+        // 유저 선호 장르 리스트로 받기
+        List<String> genreList = findUser.getCategories().stream()
+                .map(userCategory -> userCategory.getCategory().getGenre().toString())
+                .collect(Collectors.toList());
 
-        return bookRepository.findRecommendedBooks(favoriteGenre);
+        // 각각 5권씩 조회수대로 불러온 후 다시 조회수 순으로 5권 정렬 후 반환
+        return genreList.stream()
+                .map(bookRepository::findRecommendedBooks)
+                .flatMap(Collection::stream)
+                .sorted(Comparator.comparing(Book::getView).reversed())
+                .limit(5)
+                .collect(Collectors.toList());
+
     }
 
     public void deleteBook(long bookId) {
