@@ -14,19 +14,19 @@ import Box from '@mui/material/Box';
 import { useState } from 'react';
 import ChangePassWdTextFields from './ChangePassWdTextFields';
 
-const TitleText = styled.div`
+const TitleTextStyled = styled.div`
   width: 100%;
   font-size: 15px;
   font-weight: 300;
   margin-top: 10px;
 `;
 
-const LoginErrorMsg = styled.div`
+const LoginErrorMsgStyled = styled.div`
   font-size: 0.75rem;
   color: #d32f2f;
   margin-bottom: 16px;
 `;
-const PassWdInput = styled.input`
+const PassWdInputStyled = styled.input`
   border-bottom: solid 1px white;
   appearance: none;
   height: 20px;
@@ -41,7 +41,7 @@ const PassWdInput = styled.input`
   width: 100%;
 `;
 
-const ForgotPassWd = styled.div`
+const ForgotPassWdStyled = styled.div`
   width: 100%;
   font-size: 13px;
   font-weight: 300;
@@ -53,7 +53,7 @@ const ForgotPassWd = styled.div`
   }
 `;
 
-const Btn = styled(BasicButton)`
+const BtnStyled = styled(BasicButton)`
   align-items: center;
   justify-content: center;
   margin-top: 100px;
@@ -108,16 +108,16 @@ const ChangePassWd = () => {
             sx={{ mt: 3 }}
           >
             {showLoginError ? (
-              <LoginErrorMsg>
+              <LoginErrorMsgStyled>
                 현재 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시
                 확인해주세요.
-              </LoginErrorMsg>
+              </LoginErrorMsgStyled>
             ) : null}
 
             <ChangePassWdTextFields />
-            <TitleText>비밀번호 확인</TitleText>
+            <TitleTextStyled>비밀번호 확인</TitleTextStyled>
             <Grid item align="left" xs={12} justifyContent="left">
-              <PassWdInput className="nickname-border"></PassWdInput>
+              <PassWdInputStyled className="nickname-border"></PassWdInputStyled>
             </Grid>
 
             <Grid
@@ -127,8 +127,8 @@ const ChangePassWd = () => {
               sx={{ mt: 7 }}
               justifyContent="center"
             >
-              <Btn type="submit">비밀번호 변경</Btn>
-              <ForgotPassWd>비밀번호를 잊으셨나요?</ForgotPassWd>
+              <BtnStyled type="submit">비밀번호 변경</BtnStyled>
+              <ForgotPassWdStyled>비밀번호를 잊으셨나요?</ForgotPassWdStyled>
             </Grid>
           </Box>
         </Container>
