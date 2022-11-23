@@ -215,7 +215,7 @@ public class BookCollectionService {
     }
 
     public BookCollection findCollectionByCritic(){
-        return findVerifiedCollection(3L);
+        return findVerifiedCollection(53L);
 
     }
 

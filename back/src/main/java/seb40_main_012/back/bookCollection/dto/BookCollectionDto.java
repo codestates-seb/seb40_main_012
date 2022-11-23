@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.common.comment.CommentDto;
+import seb40_main_012.back.user.dto.UserDto;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -80,6 +83,8 @@ public class BookCollectionDto {
         private String collectionAuthor;
         private List<String> tags;
         private List<BookInfoSearchDto.CollectionBook> books;
+        private List<CommentDto.Response> comments;
+
 
 
         //collection book
@@ -96,6 +101,24 @@ public class BookCollectionDto {
                     .collectionAuthor(collection.getUser().getNickName())
                     .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
                     .books(books)
+                    .comments(collection.getComments().stream()
+                            .map(comment ->
+                                    CommentDto.Response.builder()
+                                            .commentId(comment.getCommentId())
+                                            .userInformation(
+                                                    UserDto.ResponseDto.builder()
+                                                            .email(comment.getUser().getEmail())
+                                                            .nickName(comment.getUser().getNickName())
+                                                            .build()
+                                            )
+                                            .commentType(comment.getCommentType())
+                                            .body(comment.getBody())
+                                            .likeCount(comment.getLikeCount())
+                                            .view(comment.getView())
+                                            .createdAt(comment.getCreatedAt())
+                                            .modifiedAt(comment.getModifiedAt())
+                                            .build()
+                            ).collect(Collectors.toList()))
                     .build();
         }
     }

@@ -11,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.common.bookmark.Bookmark;
+import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.user.entity.User;
 
 import javax.persistence.*;
@@ -53,6 +54,10 @@ public class BookCollection {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<BookCollectionBook> collectionBooks = new ArrayList<>();
 
+    @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Comment> comments = new ArrayList<>();
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -75,6 +80,7 @@ public class BookCollection {
         this.content= content;
         this.bookIsbn13 = bookIsbn13;
         this.likeCount = 0L;
+        this.view = 0L;
         this.createdAt = LocalDateTime.now();
         this.lastModifiedAt = LocalDate.now();
     }

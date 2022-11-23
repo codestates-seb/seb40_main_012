@@ -91,7 +91,7 @@ public class CommentService {
     public Comment createBookCollectionComment(Comment comment,Long collectionId) {
         User findUser = userService.getLoginUser();
         BookCollection collection = collectionService.findVerifiedCollection(collectionId);
-        return Comment.builder()
+        Comment savedComment = Comment.builder()
                 .commentType(CommentType.BOOK_COLLECTION)
                 .user(findUser)
                 .body(comment.getBody())
@@ -99,6 +99,7 @@ public class CommentService {
                 .createdAt(LocalDateTime.now())
                 .modifiedAt(LocalDateTime.now())
                 .build();
+        return commentRepository.save(savedComment);
     }
 
     public Comment updateComment(Comment comment, long commentId) {
