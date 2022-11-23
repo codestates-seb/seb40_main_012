@@ -31,18 +31,16 @@ const CollectionDetailBooks = ({ books }) => {
       <CollectionBooksTitle>책</CollectionBooksTitle>
       <BooksContainer>
         {booksData.map((el, idx) => {
-          if (el.item.length !== 0) {
-            return (
-              <CollectionDetailBook
-                key={idx}
-                bookTitle={el.item[0].title}
-                rating="1.0"
-                bookId="1"
-                cover={el.item[0].cover}
-                author={el.item[0].author}
-              />
-            );
-          }
+          return (
+            <CollectionDetailBook
+              key={idx}
+              bookTitle={el.title}
+              rating={el.ratingCount}
+              bookId={el.isbn13}
+              cover={el.bookCover}
+              author={el.author}
+            />
+          );
         })}
         {/* <CollectionDetailBook
           bookTitle={booksData.length === 0 ? '' : booksData[0].item[0].title}
