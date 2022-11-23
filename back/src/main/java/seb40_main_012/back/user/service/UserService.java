@@ -59,6 +59,7 @@ public class UserService {
         List<String> roles = authorityUtils.createRoles(user.getEmail());
         user.setRoles(roles);
         user.setBookTemp(36.5);
+        user.setFirstLogin(true);
         User savedUser = userRepository.save(user);
 
         publisher.publishEvent(new UserRegistrationApplicationEvent(this, savedUser));

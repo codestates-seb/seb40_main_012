@@ -6,12 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
-import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
-import seb40_main_012.back.bookCollection.entity.BookCollectionTag;
-import seb40_main_012.back.pairing.PairingDto;
-import seb40_main_012.back.pairing.entity.Pairing;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -164,16 +159,15 @@ public class BookCollectionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class TagCollection{
-//        private List<BookInfoSearchDto.CollectionBook> books;
-        private String cover;
+        private List<BookDto.CollectionBook> books;
         private String title;
+        private String author;
 
         public static BookCollectionDto.TagCollection of(BookCollection collection){
             return TagCollection.builder()
-//                    .books(collection.getIsbn13().)
+                    .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .title(collection.getTitle())
-//                    .cover()
-//                    .author(collection.getUser().getNickName())
+                    .author(collection.getUser().getNickName())
                     .build();
         }
     }
@@ -184,14 +178,32 @@ public class BookCollectionDto {
     @NoArgsConstructor
     public static class AuthorCollection{
         private String title;
-        private List<BookInfoSearchDto.MainCollectionBook> books;
+        private List<BookDto.CollectionBook> books;
 
 
         //collection book
-        public static AuthorCollection of(BookCollection collection,List<BookInfoSearchDto.MainCollectionBook> books ){
+        public static AuthorCollection of(BookCollection collection){
             return AuthorCollection.builder()
                     .title(collection.getTitle())
-                    .books(books)
+                    .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CriticCollection{
+        private String title;
+        private List<BookDto.CollectionBook> books;
+
+
+        //collection book
+        public static CriticCollection of(BookCollection collection){
+            return CriticCollection.builder()
+                    .title("00 평론가가 평가한 그 책")
+                    .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .build();
         }
     }

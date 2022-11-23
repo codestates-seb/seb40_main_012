@@ -7,10 +7,16 @@ import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.entity.Book;
-import seb40_main_012.back.book.entity.Genre;
-import seb40_main_012.back.bookCollection.entity.*;
-import seb40_main_012.back.bookCollection.repository.*;
-import seb40_main_012.back.common.bookmark.Bookmark;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
+import seb40_main_012.back.bookCollection.entity.BookCollectionTag;
+import seb40_main_012.back.bookCollection.entity.Tag;
+import seb40_main_012.back.bookCollection.repository.BookCollectionLikeRepository;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.bookCollection.repository.BookCollectionTagRepository;
+import seb40_main_012.back.bookCollection.repository.TagRepository;
+import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
+import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.CategoryRepository;
@@ -30,6 +36,7 @@ public class BookCollectionService {
     private final BookCollectionTagRepository collectionTagRepository;
     private final BookCollectionLikeRepository collectionLikeRepository;
     private final BookmarkRepository collectionBookmarkRepository;
+    private final BookCollectionBookRepository collectionBookRepository;
     private final BookRepository bookRepository;
     private final UserCategoryRepository userCategoryRepository;
     private final CategoryRepository categoryRepository;
@@ -56,6 +63,28 @@ public class BookCollectionService {
                     collection.addUser(findUser);
                 }
         );
+        List<String> isbn = collection.getBookIsbn13();
+        isbn.forEach(
+                x -> {
+                    Book newBook = bookService.updateView(x);
+                    BookCollectionBook findCollectionBook = new BookCollectionBook(newBook,collection);
+                    collectionBookRepository.save(findCollectionBook);
+                    collection.addCollectionBook(findCollectionBook);
+//                    if(bookRepository.findByIsbn13(x)!=null){
+//                        Book findBook = bookRepository.findByIsbn13(x).orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
+//                        BookCollectionBook findCollectionBook = new BookCollectionBook(findBook,collection);
+//                        collectionBookRepository.save(findCollectionBook);
+//                        collection.addCollectionBook(findCollectionBook);
+//                    }else {
+//                        Book newBook = bookService.updateView(x);
+//                        BookCollectionBook findCollectionBook = new BookCollectionBook(newBook,collection);
+//                        collectionBookRepository.save(findCollectionBook);
+//                        collection.addCollectionBook(findCollectionBook);
+//                    }
+
+                }
+        );
+
         return collection;
     }
 
@@ -135,8 +164,10 @@ public class BookCollectionService {
         return collection;
     }
 
-    public List<BookCollection> findCollectionByUserCategory(Long userId) {
-        String userCategory = Genre.ART.name();
+    public List<BookCollection> findCollectionByUserCategory(Long userId){
+        User findUser = userService.findVerifiedUser(userId);
+        String userCategory = findUser.getCategories().get(0).getCategory().getGenre().getValue();
+
 //        Category category = categoryRepository.findByGenre(Genre.ART);
 
         Tag tag = tagRepository.findByTagName(userCategory).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
@@ -150,30 +181,37 @@ public class BookCollectionService {
         Tag tag = tagRepository.findByTagName(tagName).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
         List<BookCollectionTag> collectionTag = collectionTagRepository.findByTag(tag);
         List<BookCollection> collections = collectionTag.stream().map(BookCollectionTag::getBookCollection).collect(Collectors.toList());
-
-//        //tagId 로 해당 id가진 collectionTag의 collectionId 조회
-//        List<Tag> tags = List.of(new Tag("겨울"),new Tag("쓸쓸한"));
-//        List<Long> tagId = tags.stream().map(x -> x.getTagId()).collect(Collectors.toList());
-////        List<Long> tagId = List.of(1L, 2L);
-//        tagId.forEach(
-//               x -> collectionTagRepository.findByTagTagId(x)
-//        );
-//        List<BookCollectionTag> collectionTag = collectionTagRepository.findByTagTagId(tagId.get(0));
-//        List<Long> collectionTagId = collectionTag.stream().map(x -> x.getBookCollectionTagId()).collect(Collectors.toList());
-//        List<BookCollection> collections = collectionTagId.stream().map(e -> collectionRepository.findById(e).orElseThrow(()->new BusinessLogicException(ExceptionCode.NOT_FOUND))).collect(Collectors.toList());
-
         return collections;
     }
 
-    public BookCollection findCollectionByAuthor() {
-        String author = "양귀자";
+
+    public BookCollection findCollectionByAuthor(){
+        String author = "양귀자 (지은이)";
+
         String title = "양귀자 모음";
         String content = "";
 
-        //1. 저자 이름으로 책 조회 > 해당 책이 포함된 컬렉션 조회(isbn 로 조회)
+        //저자 이름으로 조회한 책 isbn으로 updateView() 통해 책 db 저장
         List<Book> books = bookRepository.findWritersBooks(author);
-        List<String> isbns = books.stream().map(e -> e.getIsbn13()).collect(Collectors.toList());
-        return new BookCollection(title, content, isbns);
+
+        List<BookCollectionBook> collectionBooks = new ArrayList<>();
+        books.forEach(
+                x -> {
+                    BookCollectionBook collectionBook = BookCollectionBook.builder().book(x).build();
+                    collectionBookRepository.save(collectionBook);
+                    collectionBooks.add(collectionBook);
+                }
+        );
+        return BookCollection.builder()
+                .title(title)
+                .content(content)
+                .collectionBooks(collectionBooks)
+                .build();
+    }
+
+    public BookCollection findCollectionByCritic(){
+        return findVerifiedCollection(3L);
+
     }
 
 

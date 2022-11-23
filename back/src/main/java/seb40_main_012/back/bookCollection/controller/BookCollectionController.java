@@ -108,12 +108,14 @@ public class BookCollectionController {
 
     @GetMapping("/category")
     @ResponseStatus(HttpStatus.OK)
+
     public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory(
 //            @RequestHeader("Authorization") Long userId
     ) {
         User findUser = userService.getLoginUser();
         Long userId = findUser.getUserId();
         List<BookCollection> collections = collectionService.findCollectionByCollectionTag();
+
         List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
         return new ListResponseDto<>(tagCollectionDto);
     }
@@ -130,6 +132,7 @@ public class BookCollectionController {
 
     @GetMapping("/author")
     @ResponseStatus(HttpStatus.OK)
+
     //이게 맞냐고
     public BookCollectionDto.AuthorCollection getCollectionByAuthor(
 //            @RequestHeader("Authorization") Long userId
@@ -141,6 +144,19 @@ public class BookCollectionController {
                 x -> books.add(bookInfoSearchService.MainCollectionBookSearch(x))
         );
         return BookCollectionDto.AuthorCollection.of(collection, books);
+
+    public BookCollectionDto.AuthorCollection getCollectionByAuthor() {
+        BookCollection collection = collectionService.findCollectionByAuthor();
+        return BookCollectionDto.AuthorCollection.of(collection);
+    }
+
+    @GetMapping("/critic")
+    @ResponseStatus(HttpStatus.OK)
+    //이게 맞냐고
+    public BookCollectionDto.CriticCollection getCollectionByCritic() {
+        BookCollection collection = collectionService.findCollectionByCritic();
+        return BookCollectionDto.CriticCollection.of(collection);
+
     }
 
 }
