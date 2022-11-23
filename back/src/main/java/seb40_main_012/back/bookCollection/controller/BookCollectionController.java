@@ -132,8 +132,8 @@ public class BookCollectionController {
 
 //    @GetMapping("/author")
 //    @ResponseStatus(HttpStatus.OK)
-
-    //이게 맞냐고
+//
+////    이게 맞냐고
 //    public BookCollectionDto.AuthorCollection getCollectionByAuthor(
 ////            @RequestHeader("Authorization") Long userId
 //    ) {
