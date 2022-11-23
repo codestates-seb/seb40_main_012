@@ -62,7 +62,7 @@ public interface PairingRepository extends JpaRepository<Pairing, Long> {
                     "where lower(title) like %:queryParam% " +
                     "or " +
                     "lower(body) like %:queryParam%")
-    List<Pairing> findPairingsByQuery(@Param("queryParam") String queryParam);
+    List<Pairing> findPairingsByQuery(@Param("queryParam") String queryParam, Pageable pageable);
 
 }
 

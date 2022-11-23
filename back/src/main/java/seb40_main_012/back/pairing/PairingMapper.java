@@ -27,8 +27,6 @@ public interface PairingMapper {
 
     }
 
-    ;
-
     Pairing pairingPatchToPairing(PairingDto.Patch patchPairing);
 
     Pairing pairingLikeToPairing(PairingDto.Like likePairing);
