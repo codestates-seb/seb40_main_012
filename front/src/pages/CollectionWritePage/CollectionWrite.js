@@ -3,6 +3,16 @@ import PageContainer from '../../components/PageContainer';
 import CollectionInfoInput from './CollectionInfoInput';
 import CollectionWriteBtns from './CollectionWriteBtns';
 import CollectionBookInput from './BookInput/CollectionBookInput';
+import styled from 'styled-components';
+
+const CollectionWritePageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+`;
 
 const CollectionWritePage = () => {
   const [data, setData] = useState({
@@ -26,9 +36,16 @@ const CollectionWritePage = () => {
 
   return (
     <PageContainer footer>
-      <CollectionInfoInput data={data} setData={setData}></CollectionInfoInput>
-      <CollectionBookInput data={data} setData={setData} />
-      <CollectionWriteBtns handleCollectionWrite={handleCollectionWrite} />
+      <CollectionWritePageContainer>
+        <div className="content">
+          <CollectionInfoInput
+            data={data}
+            setData={setData}
+          ></CollectionInfoInput>
+          <CollectionBookInput data={data} setData={setData} />
+        </div>
+        <CollectionWriteBtns handleCollectionWrite={handleCollectionWrite} />
+      </CollectionWritePageContainer>
     </PageContainer>
   );
 };

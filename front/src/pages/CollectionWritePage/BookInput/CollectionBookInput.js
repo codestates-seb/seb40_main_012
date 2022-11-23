@@ -18,9 +18,9 @@ const CollectionBookInput = ({ data, setData }) => {
 
   return (
     <CollectionBookInputContainer>
-      <NewBooks newBooks={newBooks} setNewBooks={setNewBooks} />
       <MyBooks newBooks={newBooks} setNewBooks={setNewBooks} />
       <BookSearch newBooks={newBooks} setNewBooks={setNewBooks} />
+      <NewBooks newBooks={newBooks} setNewBooks={setNewBooks} />
     </CollectionBookInputContainer>
   );
 };

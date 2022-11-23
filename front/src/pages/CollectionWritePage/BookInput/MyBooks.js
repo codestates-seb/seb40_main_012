@@ -43,6 +43,7 @@ const ShowBtn = styled(MyBooksBtn)``;
 
 const MyBooks = () => {
   const [isOpen, setIsOpen] = useState(false);
+  //const [myBooks, setMyBooks] = useState([]);
 
   return (
     <MyBooksContainer>
