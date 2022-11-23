@@ -1,6 +1,5 @@
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import Box from '@mui/material/Box';
-import theme from '../../styles/theme';
 import PageContainer from '../../components/PageContainer';
 import { Counter } from '../../components/Counter/Counter';
 import BasicModalTest from '../../components/TestComponent/BasicModalTest';
@@ -26,10 +25,8 @@ const ReduxPage = () => {
       >
         <Counter />
         <BasicModalTest />
-        <ThemeProvider theme={theme}>
-          <Btn>click</Btn>
-          <BasicSelectTest />
-        </ThemeProvider>
+        <Btn>click</Btn>
+        <BasicSelectTest />
       </Box>
     </PageContainer>
   );

@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../styles/theme';
+import styled from 'styled-components';
 
 const TagContainer = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.purple_1};
@@ -14,15 +13,13 @@ const TagContainer = styled.div`
 
 export const Tag = ({ children, width, height, fontSize, fontWeight }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <TagContainer
-        width={width}
-        height={height}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-      >
-        {children}
-      </TagContainer>
-    </ThemeProvider>
+    <TagContainer
+      width={width}
+      height={height}
+      fontSize={fontSize}
+      fontWeight={fontWeight}
+    >
+      {children}
+    </TagContainer>
   );
 };

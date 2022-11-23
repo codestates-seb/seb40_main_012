@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const TabBar = styled.ul`
@@ -64,7 +63,7 @@ const navObj = {
 
 const PairingTab = ({ pathname = navObj.all }) => {
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <HeadContainer>
         <HeadTitle>
           깊고 넓은 즐거움, <span>Cherry Pick</span> 페어링
@@ -114,7 +113,7 @@ const PairingTab = ({ pathname = navObj.all }) => {
           </TabElement>
         </StyledLink>
       </TabBar>
-    </ThemeProvider>
+    </>
   );
 };
 

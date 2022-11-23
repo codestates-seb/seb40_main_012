@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const CommentsHeaderContainer = styled.div`
   display: flex;
@@ -21,12 +20,10 @@ const CommentsHeaderContainer = styled.div`
 
 const CommentsHeader = ({ cnt = 0 }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <CommentsHeaderContainer>
-        <div className="comment">댓글</div>
-        <div className="cnt">{cnt}</div>
-      </CommentsHeaderContainer>
-    </ThemeProvider>
+    <CommentsHeaderContainer>
+      <div className="comment">댓글</div>
+      <div className="cnt">{cnt}</div>
+    </CommentsHeaderContainer>
   );
 };
 

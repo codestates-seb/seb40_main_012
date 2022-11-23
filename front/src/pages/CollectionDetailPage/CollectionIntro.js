@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const CollectionIntroContainer = styled.div`
   padding: 25px 20px;
@@ -18,12 +17,10 @@ const CollectionIntroContent = styled.div`
 `;
 const CollectionIntro = ({ intro }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionIntroContainer>
-        <CollectionIntroTitle>컬렉션 소개</CollectionIntroTitle>
-        <CollectionIntroContent>{intro}</CollectionIntroContent>
-      </CollectionIntroContainer>
-    </ThemeProvider>
+    <CollectionIntroContainer>
+      <CollectionIntroTitle>컬렉션 소개</CollectionIntroTitle>
+      <CollectionIntroContent>{intro}</CollectionIntroContent>
+    </CollectionIntroContainer>
   );
 };
 

@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 
@@ -78,52 +77,50 @@ const Guide = () => {
   const handleClose = () => setOpen(false);
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container>
-        <div
-          className="with-drawal-text"
-          onClick={handleOpen}
-          role="presentation"
-        >
-          <div>회원 탈퇴</div>
-        </div>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox>
-            <div className="close-icon">
-              <CloseIcon
-                width="100%"
-                style={{ textAlign: 'right' }}
-                sx={{
-                  align: 'right',
-                  alignItems: 'right',
-                  flexDirection: 'row-reverse',
-                }}
-                align="right"
-                alignItems="right"
-                onClick={handleClose}
-                color="disabled"
-              ></CloseIcon>
-            </div>
-            <div className="title">회원 탈퇴</div>
+    <Container>
+      <div
+        className="with-drawal-text"
+        onClick={handleOpen}
+        role="presentation"
+      >
+        <div>회원 탈퇴</div>
+      </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalBox>
+          <div className="close-icon">
+            <CloseIcon
+              width="100%"
+              style={{ textAlign: 'right' }}
+              sx={{
+                align: 'right',
+                alignItems: 'right',
+                flexDirection: 'row-reverse',
+              }}
+              align="right"
+              alignItems="right"
+              onClick={handleClose}
+              color="disabled"
+            ></CloseIcon>
+          </div>
+          <div className="title">회원 탈퇴</div>
 
-            <div className="info">
-              정말로 회원을 탈퇴 하시겠어요? <br />
-              즉시 로그아웃 되며
-              <br />
-              다시 로그인 하실 수 없어요.
-              <br />
-            </div>
-            <div className="password-check">비밀번호</div>
-            <PasswordCheck></PasswordCheck>
-          </ModalBox>
-        </Modal>
-      </Container>
-    </ThemeProvider>
+          <div className="info">
+            정말로 회원을 탈퇴 하시겠어요? <br />
+            즉시 로그아웃 되며
+            <br />
+            다시 로그인 하실 수 없어요.
+            <br />
+          </div>
+          <div className="password-check">비밀번호</div>
+          <PasswordCheck></PasswordCheck>
+        </ModalBox>
+      </Modal>
+    </Container>
   );
 };
 

@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const randomColor = () => {
   //130 ~ 200
@@ -51,11 +50,9 @@ const BestPairing = ({ pairingTitle, pairingId }) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <BestPairingContainer bgcolor={randomRGB} onClick={onClickPairing}>
-        <PairingTitle>{pairingTitle}</PairingTitle>
-      </BestPairingContainer>
-    </ThemeProvider>
+    <BestPairingContainer bgcolor={randomRGB} onClick={onClickPairing}>
+      <PairingTitle>{pairingTitle}</PairingTitle>
+    </BestPairingContainer>
   );
 };
 

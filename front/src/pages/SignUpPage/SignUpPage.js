@@ -2,15 +2,12 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
-import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { ThemeProvider } from '@mui/material/styles';
 import PageContainer from '../../components/PageContainer';
-import theme from '../../styles/theme';
 import { ContainedButton } from '../../components/Buttons';
 
 import {
@@ -63,50 +60,47 @@ const SignUpPage = () => {
 
   return (
     <PageContainer footer>
-      <ThemeProvider theme={theme}>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 'calc(100vh - 60px - 200px)', // header, footer
+            minHeight: '500px',
+          }}
+        >
+          <AvatarStyled sx={{ m: 1 }}>
+            <LockOutlinedIcon />
+          </AvatarStyled>
+          <Typography component="h1" variant="h5">
+            회원가입
+          </Typography>
           <Box
-            sx={{
-              marginTop: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 'calc(100vh - 60px - 200px)', // header, footer
-              minHeight: '500px',
-            }}
+            component="form"
+            noValidate
+            onSubmit={handleSubmit}
+            sx={{ mt: 3 }}
           >
-            <AvatarStyled sx={{ m: 1 }}>
-              <LockOutlinedIcon />
-            </AvatarStyled>
-            <Typography component="h1" variant="h5">
-              회원가입
-            </Typography>
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 3 }}
-            >
-              <Grid container spacing={2}>
-                <SignUpTextFields />
+            <Grid container spacing={2}>
+              <SignUpTextFields />
+            </Grid>
+            <ContainedButton type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
+              가입하기
+            </ContainedButton>
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                이미 가입하셨나요?{' '}
+                <SignInLinkStyled to="/user/signin" variant="body2">
+                  로그인
+                </SignInLinkStyled>
               </Grid>
-              <ContainedButton type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
-                가입하기
-              </ContainedButton>
-              <Grid container justifyContent="flex-end">
-                <Grid item>
-                  이미 가입하셨나요?{' '}
-                  <SignInLinkStyled to="/user/signin" variant="body2">
-                    로그인
-                  </SignInLinkStyled>
-                </Grid>
-              </Grid>
-            </Box>
+            </Grid>
           </Box>
-        </Container>
-      </ThemeProvider>
+        </Box>
+      </Container>
     </PageContainer>
   );
 };
