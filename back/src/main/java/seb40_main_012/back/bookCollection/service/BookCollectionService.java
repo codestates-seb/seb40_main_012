@@ -164,8 +164,10 @@ public class BookCollectionService {
         return collection;
     }
 
-    public List<BookCollection> findCollectionByUserCategory(Long userId){
-        User findUser = userService.findVerifiedUser(userId);
+    public List<BookCollection> findCollectionByUserCategory(){
+        User findUser = userService.getLoginUser();
+
+        Long userId = findUser.getUserId();
         String userCategory = findUser.getCategories().get(0).getCategory().getGenre().getValue();
 
 //        Category category = categoryRepository.findByGenre(Genre.ART);
@@ -177,6 +179,9 @@ public class BookCollectionService {
     }
 
     public List<BookCollection> findCollectionByCollectionTag() {
+        User findUser = userService.getLoginUser();
+
+        Long userId = findUser.getUserId();
         String tagName = "겨울";
         Tag tag = tagRepository.findByTagName(tagName).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
         List<BookCollectionTag> collectionTag = collectionTagRepository.findByTag(tag);
