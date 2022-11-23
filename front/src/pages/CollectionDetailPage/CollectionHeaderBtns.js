@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const CollectionHeaderBtnsContainer = styled.div`
   display: flex;
@@ -28,31 +27,29 @@ const CollectionShare = styled(CollectionBtns)``;
 
 const CollectionHeaderBtns = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionHeaderBtnsContainer>
-        <CollectionBookmark>
-          <img
-            src={process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'}
-            alt="bookmark icon"
-          />
-          북마크
-        </CollectionBookmark>
-        <CollectionHeart>
-          <img
-            src={process.env.PUBLIC_URL + '/images/heart_filled_icon.svg'}
-            alt="heart icon"
-          />
-          {'123'}
-        </CollectionHeart>
-        <CollectionShare>
-          <img
-            src={process.env.PUBLIC_URL + '/images/share_icon.svg'}
-            alt="share icon"
-          />
-          공유하기
-        </CollectionShare>
-      </CollectionHeaderBtnsContainer>
-    </ThemeProvider>
+    <CollectionHeaderBtnsContainer>
+      <CollectionBookmark>
+        <img
+          src={process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'}
+          alt="bookmark icon"
+        />
+        북마크
+      </CollectionBookmark>
+      <CollectionHeart>
+        <img
+          src={process.env.PUBLIC_URL + '/images/heart_filled_icon.svg'}
+          alt="heart icon"
+        />
+        {'123'}
+      </CollectionHeart>
+      <CollectionShare>
+        <img
+          src={process.env.PUBLIC_URL + '/images/share_icon.svg'}
+          alt="share icon"
+        />
+        공유하기
+      </CollectionShare>
+    </CollectionHeaderBtnsContainer>
   );
 };
 

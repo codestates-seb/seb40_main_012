@@ -19,7 +19,6 @@ const ValidationTextFields = ({
   const handleChangeInput = (event) => {
     const { id, value } = event.target;
     setInputValue(id, value);
-    console.log(event.target.id, event.target.value);
   };
 
   const handleBlur = (event) => {

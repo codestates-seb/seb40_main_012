@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 
 const CollectionTagsContainer = styled.div`
   display: flex;
@@ -15,13 +14,11 @@ const CollectionTag = styled.div`
 
 const CollectionTags = ({ tagList }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionTagsContainer>
-        {tagList.map((tag, idx) => {
-          return <CollectionTag key={idx}>#{tag}</CollectionTag>;
-        })}
-      </CollectionTagsContainer>
-    </ThemeProvider>
+    <CollectionTagsContainer>
+      {tagList.map((tag, idx) => {
+        return <CollectionTag key={idx}>#{tag}</CollectionTag>;
+      })}
+    </CollectionTagsContainer>
   );
 };
 

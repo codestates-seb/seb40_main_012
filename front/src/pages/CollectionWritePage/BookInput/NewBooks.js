@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 import NewBook from './NewBook';
 
 const NewBooksContainer = styled.div`
@@ -25,16 +24,14 @@ const Books = styled.div`
 
 const NewBooks = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <NewBooksContainer>
-        <NewBooksTitle>나의 새로운 컬렉션</NewBooksTitle>
-        <Books>
-          <NewBook />
-          <NewBook />
-          <NewBook />
-        </Books>
-      </NewBooksContainer>
-    </ThemeProvider>
+    <NewBooksContainer>
+      <NewBooksTitle>나의 새로운 컬렉션</NewBooksTitle>
+      <Books>
+        <NewBook />
+        <NewBook />
+        <NewBook />
+      </Books>
+    </NewBooksContainer>
   );
 };
 

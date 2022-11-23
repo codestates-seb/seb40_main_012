@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 import PageContainer from '../../../components/PageContainer';
 import CollectionDetailHeader from '../../CollectionDetailPage/CollectionDetailHeader';
 import CollectionHeaderBtns from '../../CollectionDetailPage/CollectionHeaderBtns';
@@ -15,6 +14,7 @@ import {
   asyncDeletePairingComment,
   asyncEditPairingComment,
   asyncLikePairingComment,
+  asyncDisikePairingComment,
 } from '../../../store/modules/pairingSlice';
 
 import Comments from '../../../components/Comments/Comments';
@@ -81,47 +81,50 @@ const PairingDetail = () => {
     dispatch(asyncLikePairingComment(commentId));
   };
 
+  const handleCommentDislike = (commentId) => {
+    dispatch(asyncDisikePairingComment(commentId));
+  };
+
   return (
     <PageContainer footer>
-      <ThemeProvider theme={theme}>
-        <CollectionDetailHeader
-          title={pairingData.title}
-          writer={
-            pairingData.userInformation && pairingData.userInformation.nickName
-          }
-          update={new Date(pairingData.modifiedAt).toLocaleDateString()}
-        />
-        <TagBtn>
-          <CollectionTags taglist={['소설', '시간여행', '선택']} />
-          <CollectionHeaderBtns />
-        </TagBtn>
-        <OriginBookWrapper>
-          <InfoTitle>How about pairing this book</InfoTitle>
-          <PairingOriginBook
-            bookTitle="만약 엄청나게 긴 책제목이 있으먼 어쩌지? 이보다 긴 책제목이 사실 없을 것 간긴 한데 그래도 책제목에는 리밋이 있으면 안될텐데 말이야!!"
-            author="달리는 감자"
-            rating="4.9"
-            bookId={pairingData.bookId}
-            disabled={false}
-          ></PairingOriginBook>
-        </OriginBookWrapper>
-        <MainBody>
-          <InfoTitle>
-            With this&nbsp; <p>{pairingData.pairingCategory}</p>
-          </InfoTitle>
-          <InfoContent>
-            <p>{pairingData.body}</p>
-            <a href="/">{pairingData.outLinkPath}</a>
-          </InfoContent>
-        </MainBody>
-        <Comments
+      <CollectionDetailHeader
+        title={pairingData.title}
+        writer={
+          pairingData.userInformation && pairingData.userInformation.nickName
+        }
+        update={new Date(pairingData.modifiedAt).toLocaleDateString()}
+      />
+      <TagBtn>
+        <CollectionTags taglist={['소설', '시간여행', '선택']} />
+        <CollectionHeaderBtns />
+      </TagBtn>
+      <OriginBookWrapper>
+        <InfoTitle>How about pairing this book</InfoTitle>
+        <PairingOriginBook
+          bookTitle="만약 엄청나게 긴 책제목이 있으먼 어쩌지? 이보다 긴 책제목이 사실 없을 것 간긴 한데 그래도 책제목에는 리밋이 있으면 안될텐데 말이야!!"
+          author="달리는 감자"
+          rating="4.9"
+          bookId={pairingData.bookId}
+          disabled={false}
+        ></PairingOriginBook>
+      </OriginBookWrapper>
+      <MainBody>
+        <InfoTitle>
+          With this&nbsp; <p>{pairingData.pairingCategory}</p>
+        </InfoTitle>
+        <InfoContent>
+          <p>{pairingData.body}</p>
+          <a href="/">{pairingData.outLinkPath}</a>
+        </InfoContent>
+      </MainBody>
+      <Comments
           commentsData={pairingData.comments}
           commentAdd={handleCommentAdd}
           commentDelete={handleCommentDelete}
           commentEdit={handleCommentEdit}
           commentLike={handleCommentLike}
+          commentDislike={handleCommentDislike}
         />
-      </ThemeProvider>
     </PageContainer>
   );
 };

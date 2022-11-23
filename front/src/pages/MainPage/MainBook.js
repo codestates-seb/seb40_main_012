@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 import { GenterMatcherToKor } from '../../util/GenreMatcher';
 
 const randomColor = () => {
@@ -99,21 +98,19 @@ const MainBook = ({
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <MainBookContainer bgcolor={randomRGB} onClick={onClickMainBook}>
-        <RankInfo>{ranking}</RankInfo>
-        <img
-          src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-          alt="book cover"
-        />
-        <MainBookInfo>
-          <div className="title">{bookTitle}</div>
-          <div className="author">{`${author} ·${publish}`}</div>
-          <div className="genre">{GenterMatcherToKor(genre)}</div>
-          <div className="rating">★ {rating}</div>
-        </MainBookInfo>
-      </MainBookContainer>
-    </ThemeProvider>
+    <MainBookContainer bgcolor={randomRGB} onClick={onClickMainBook}>
+      <RankInfo>{ranking}</RankInfo>
+      <img
+        src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
+        alt="book cover"
+      />
+      <MainBookInfo>
+        <div className="title">{bookTitle}</div>
+        <div className="author">{`${author} ·${publish}`}</div>
+        <div className="genre">{GenterMatcherToKor(genre)}</div>
+        <div className="rating">★ {rating}</div>
+      </MainBookInfo>
+    </MainBookContainer>
   );
 };
 
