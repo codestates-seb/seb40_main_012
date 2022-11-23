@@ -82,7 +82,7 @@ const RoutesComponent = () => {
       />
       <Route path="/collection" element={getElement(CollectionPage, null)} />
       <Route
-        path="/collection/:collectionid"
+        path="/collection/:collectionId"
         element={getElement(CollectionDetailPage, null)}
       />
       <Route
