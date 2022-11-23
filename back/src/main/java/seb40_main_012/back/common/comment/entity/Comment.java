@@ -41,7 +41,7 @@ public class Comment {
     private String body;
 
     @Column
-    Boolean isLiked = false;
+    private Boolean isLiked = false;
 
     @Column(nullable = false)
     private long likeCount;
