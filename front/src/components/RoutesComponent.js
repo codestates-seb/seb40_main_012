@@ -89,18 +89,18 @@ const RoutesComponent = () => {
         path="/collection/write"
         element={getElement(CollectionWritePage, null)}
       />
-      <Route path="/mypage" element={getElement(MyComment, null)} />
-      <Route path="/mypage/mycomment" element={getElement(MyComment, null)} />
-      <Route path="/mypage/mypairing" element={getElement(MyParing, null)} />
+      <Route path="/mypage" element={getElement(MyComment, true)} />
+      <Route path="/mypage/mycomment" element={getElement(MyComment, true)} />
+      <Route path="/mypage/mypairing" element={getElement(MyParing, true)} />
       <Route
         path="/mypage/mycollection"
-        element={getElement(MyCollection, null)}
+        element={getElement(MyCollection, true)}
       />
-      <Route path="/mypage/mypick" element={getElement(MyPick, null)} />
-      <Route path="/settings/profile" element={getElement(EditProfile, null)} />
+      <Route path="/mypage/mypick" element={getElement(MyPick, true)} />
+      <Route path="/mypage/profile" element={getElement(EditProfile, true)} />
       <Route
-        path="/settings/profile/changepasswd"
-        element={getElement(ChangePassWd, null)}
+        path="/mypage/profile/changepasswd"
+        element={getElement(ChangePassWd, true)}
       />
       <Route path="/redux" element={<ReduxPage />} />
       <Route path="/button-test" element={<ButtonTest />} />

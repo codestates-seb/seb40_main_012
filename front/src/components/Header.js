@@ -111,11 +111,7 @@ const Header = () => {
   };
 
   const handleClickMypageBtn = () => {
-    if (isLogin) {
-      navigate('/mypage');
-    } else {
-      navigate('/user/signin');
-    }
+    navigate('/mypage');
   };
 
   return (
@@ -155,18 +151,22 @@ const Header = () => {
       <div className="header_right">
         <Searchbar />
         {isLogin ? (
-          <LoginOutBtn onClick={handleClickLogoutButton}>로그아웃</LoginOutBtn>
+          <>
+            <LoginOutBtn onClick={handleClickLogoutButton}>
+              로그아웃
+            </LoginOutBtn>
+            <MyPageIconContainer onClick={handleClickMypageBtn}>
+              <img
+                src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
+                alt="Mypage Icon"
+              />
+            </MyPageIconContainer>
+          </>
         ) : (
           <Link to="/user/signin">
             <LoginOutBtn>로그인</LoginOutBtn>
           </Link>
         )}
-        <MyPageIconContainer onClick={handleClickMypageBtn}>
-          <img
-            src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
-            alt="Mypage Icon"
-          />
-        </MyPageIconContainer>
       </div>
     </HeaderContainer>
   );

@@ -10,13 +10,13 @@ import WithDrawal from './WithDrawal';
 import FavoriteGenre from './FavoriteGenre';
 import AgeGroup from './AgeGroup';
 
-const TitleText = styled.div`
+const TitleTextStyled = styled.div`
   width: 100%;
   font-size: 20px;
   font-weight: 400;
   margin-top: 30px;
 `;
-const NickNameInput = styled.input`
+const NickNameInputStyled = styled.input`
   border-bottom: solid 1px white;
   appearance: none;
   height: 20px;
@@ -28,7 +28,7 @@ const NickNameInput = styled.input`
   }
   width: 90%;
 `;
-const ItemText = styled.div`
+const ItemTextStyled = styled.div`
   width: 100%;
   font-size: 15px;
   font-weight: 300;
@@ -44,13 +44,13 @@ const ItemText = styled.div`
   }
 `;
 
-const GenderText = styled.div`
+const GenderTextStyled = styled.div`
   width: 100%;
   font-size: 14px;
   font-weight: 300;
 `;
 
-const GenderContainer = styled.div`
+const GenderContainerStyled = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -65,7 +65,7 @@ const GenderContainer = styled.div`
   }
 `;
 
-const WithDrawalBox = styled.div`
+const WithDrawalBoxStyled = styled.div`
   width: 100%;
   font-size: 13px;
   font-weight: 300;
@@ -74,7 +74,7 @@ const WithDrawalBox = styled.div`
   color: #737373;
 `;
 
-const Btn = styled(BasicButton)`
+const BtnStyled = styled(BasicButton)`
   margin-left: 20px;
 
   &:hover {
@@ -118,7 +118,7 @@ const EditProfileMain = () => {
             ></img>
           </Avatar>
         </Grid>
-        <TitleText>기본 정보</TitleText>
+        <TitleTextStyled>기본 정보</TitleTextStyled>
         <Grid
           container
           xs={12}
@@ -127,15 +127,15 @@ const EditProfileMain = () => {
           justifyContent="left"
         >
           <Grid item xs={4} align="left" justifyContent="left">
-            <ItemText>닉네임</ItemText>
+            <ItemTextStyled>닉네임</ItemTextStyled>
           </Grid>
           <Grid item xs={4.5} align="left" justifyContent="left">
-            <NickNameInput className="nickname-border"></NickNameInput>
+            <NickNameInputStyled className="nickname-border"></NickNameInputStyled>
           </Grid>
           <Grid item xs={3.5} align="left" justifyContent="left">
-            <Btn width="65px" height="30px" fontSize="12px">
+            <BtnStyled width="65px" height="30px" fontSize="12px">
               중복 확인
-            </Btn>
+            </BtnStyled>
           </Grid>
         </Grid>
         <Grid
@@ -146,21 +146,21 @@ const EditProfileMain = () => {
           justifyContent="left"
         >
           <Grid item xs={4} align="left" justifyContent="left">
-            <ItemText>한 줄 소개</ItemText>
+            <ItemTextStyled>한 줄 소개</ItemTextStyled>
           </Grid>
           <Grid item xs={4.5} align="left" justifyContent="left">
-            <NickNameInput
+            <NickNameInputStyled
               className="nickname-border"
               onChange={handleChangeState}
-            ></NickNameInput>
+            ></NickNameInputStyled>
           </Grid>
         </Grid>
-        <ItemText>
-          <Link to="/settings/profile/changepasswd" variant="body2">
+        <ItemTextStyled>
+          <Link to="/mypage/profile/changepasswd" variant="body2">
             비밀번호 변경
           </Link>
-        </ItemText>
-        <TitleText>상세 정보</TitleText>
+        </ItemTextStyled>
+        <TitleTextStyled>상세 정보</TitleTextStyled>
         <Grid
           container
           xs={12}
@@ -169,7 +169,7 @@ const EditProfileMain = () => {
           alignItems="center"
         >
           <Grid item xs={4} align="left" justifyContent="left">
-            <ItemText>성별</ItemText>
+            <ItemTextStyled>성별</ItemTextStyled>
           </Grid>
           <Grid
             item
@@ -177,24 +177,24 @@ const EditProfileMain = () => {
             justifyContent="left"
             sx={{ display: 'flex', alignItems: 'center' }}
           >
-            <GenderContainer>
+            <GenderContainerStyled>
               <div className="gender-flex-box">
                 <input type="radio" name="gender"></input>
-                <GenderText>여성</GenderText>
+                <GenderTextStyled>여성</GenderTextStyled>
               </div>
               <div className="gender-flex-box">
                 <input type="radio" name="gender"></input>
-                <GenderText>남성</GenderText>
+                <GenderTextStyled>남성</GenderTextStyled>
               </div>
               <div className="gender-flex-box">
                 <input type="radio" name="gender"></input>
-                <GenderText>둘 다 아님</GenderText>
+                <GenderTextStyled>둘 다 아님</GenderTextStyled>
               </div>
               <div className="gender-flex-box">
                 <input type="radio" name="gender"></input>
-                <GenderText>공개 안 함</GenderText>
+                <GenderTextStyled>공개 안 함</GenderTextStyled>
               </div>
-            </GenderContainer>
+            </GenderContainerStyled>
           </Grid>
         </Grid>
 
@@ -207,11 +207,11 @@ const EditProfileMain = () => {
           justifyContent="left"
         >
           <Grid item xs={4} align="left" justifyContent="left">
-            <ItemText>연령대</ItemText>
+            <ItemTextStyled>연령대</ItemTextStyled>
           </Grid>
           <AgeGroup />
         </Grid>
-        <ItemText>
+        <ItemTextStyled>
           <Grid
             container
             xs={12}
@@ -221,14 +221,14 @@ const EditProfileMain = () => {
             justifyContent="left"
           >
             <Grid item xs={4} align="left" justifyContent="left">
-              <ItemText>선호 장르</ItemText>
+              <ItemTextStyled>선호 장르</ItemTextStyled>
             </Grid>
 
             <FavoriteGenre />
           </Grid>
-        </ItemText>
+        </ItemTextStyled>
         <WithDrawal>
-          <WithDrawalBox>회원 탈퇴</WithDrawalBox>
+          <WithDrawalBoxStyled>회원 탈퇴</WithDrawalBoxStyled>
         </WithDrawal>
         <div
           style={{
@@ -238,9 +238,9 @@ const EditProfileMain = () => {
             marginBottom: '4rem',
           }}
         >
-          <Btn width="65px" height="30px" fontSize="12px">
+          <BtnStyled width="65px" height="30px" fontSize="12px">
             저장하기
-          </Btn>
+          </BtnStyled>
         </div>
       </Container>
     </>

@@ -77,7 +77,7 @@ const Header = () => {
             <Grid item xs={2.4}>
               <ButtonCSS>
                 <Grid item>
-                  <Link to="/settings/profile" variant="body2">
+                  <Link to="/mypage/profile" variant="body2">
                     <Typography
                       sx={{ mt: 4 }}
                       variant="body2"
