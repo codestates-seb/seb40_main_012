@@ -34,7 +34,6 @@ public class BookCollection {
     private String title;
     private String content;
     private Long likeCount;
-
     private Long view;
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)

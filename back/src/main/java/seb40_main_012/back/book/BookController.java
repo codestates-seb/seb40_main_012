@@ -6,12 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import seb40_main_012.back.advice.BusinessLogicException;
-import seb40_main_012.back.advice.ExceptionCode;
-import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
-import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
-import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.CommentMapper;
@@ -19,18 +14,10 @@ import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.rating.RatingService;
 import seb40_main_012.back.dto.SingleResponseDto;
-import seb40_main_012.back.pairing.PairingDto;
-import seb40_main_012.back.pairing.entity.Pairing;
-import seb40_main_012.back.user.entity.Category;
-import seb40_main_012.back.user.entity.User;
-import seb40_main_012.back.user.entity.UserCategory;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Validated

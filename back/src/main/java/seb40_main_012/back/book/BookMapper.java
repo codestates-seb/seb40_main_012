@@ -7,10 +7,8 @@ import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.entity.Pairing;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
