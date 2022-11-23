@@ -1,9 +1,7 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../styles/theme';
+import styled from 'styled-components';
 import PageContainer from '../components/PageContainer';
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
 
 const ImgContainer = styled.div`
   width: 450px;
@@ -131,42 +129,39 @@ const NoMatch = () => {
   const poem = randomPoem();
 
   return (
-    <ThemeProvider theme={theme}>
-      <PageContainer footer>
-        <Container component="main" maxWidth="xs">
-          <CssBaseline />
-          <Box
-            sx={{
-              marginTop: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: 'calc(100vh - 60px - 200px)', // header, footer
-              minHeight: '410px',
-            }}
-          >
-            <ContentsBox>
-              <ImgContainer>
-                <img
-                  src={process.env.PUBLIC_URL + '/images/404_image.png'}
-                  alt="404 error"
-                />
-              </ImgContainer>
-              <div className="notfound">페이지를 찾을 수 없습니다.</div>
-              <div className="info">
-                예상치 못한 곳에 도달한 당신을 위해 시 한 구절을 준비했어요.
-              </div>
-              <PoemContainer>
-                <div>{poem.poem}</div>
-                <br />
-                <div className="author">{poem.author}</div>
-              </PoemContainer>
-            </ContentsBox>
-          </Box>
-        </Container>
-      </PageContainer>
-    </ThemeProvider>
+    <PageContainer footer>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 'calc(100vh - 60px - 200px)', // header, footer
+            minHeight: '410px',
+          }}
+        >
+          <ContentsBox>
+            <ImgContainer>
+              <img
+                src={process.env.PUBLIC_URL + '/images/404_image.png'}
+                alt="404 error"
+              />
+            </ImgContainer>
+            <div className="notfound">페이지를 찾을 수 없습니다.</div>
+            <div className="info">
+              예상치 못한 곳에 도달한 당신을 위해 시 한 구절을 준비했어요.
+            </div>
+            <PoemContainer>
+              <div>{poem.poem}</div>
+              <br />
+              <div className="author">{poem.author}</div>
+            </PoemContainer>
+          </ContentsBox>
+        </Box>
+      </Container>
+    </PageContainer>
   );
 };
 

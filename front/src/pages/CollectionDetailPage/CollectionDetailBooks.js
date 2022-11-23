@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 import CollectionDetailBook from './CollectionDetailBook';
 
 const CollectionDetailBooksContainer = styled.div`
@@ -21,27 +20,25 @@ const BooksContainer = styled.div`
 
 const CollectionDetailBooks = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionDetailBooksContainer>
-        <CollectionBooksTitle>책</CollectionBooksTitle>
-        <BooksContainer>
-          <CollectionDetailBook
-            bookTitle="책 제목하하하하하하하하핳하하하하하하하하"
-            rating="4.3"
-            bookId="1"
-          />
-          <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
-          <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
-          <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
-          <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
-          <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
-          <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
-          <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
-          <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
-          <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
-        </BooksContainer>
-      </CollectionDetailBooksContainer>
-    </ThemeProvider>
+    <CollectionDetailBooksContainer>
+      <CollectionBooksTitle>책</CollectionBooksTitle>
+      <BooksContainer>
+        <CollectionDetailBook
+          bookTitle="책 제목하하하하하하하하핳하하하하하하하하"
+          rating="4.3"
+          bookId="1"
+        />
+        <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
+        <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
+        <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
+        <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
+        <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
+        <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
+        <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
+        <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
+        <CollectionDetailBook bookTitle="책 제목" rating="4.3" bookId="1" />
+      </BooksContainer>
+    </CollectionDetailBooksContainer>
   );
 };
 

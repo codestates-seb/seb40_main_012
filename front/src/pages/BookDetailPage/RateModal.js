@@ -1,6 +1,4 @@
 import * as React from 'react';
-import { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -25,7 +23,7 @@ export default function RateModal() {
   const handleClose = () => setOpen(false);
 
   return (
-    <ThemeProvider theme={theme}>
+    <>
       <FillButton onClick={handleOpen}>평가하기</FillButton>
       <Modal
         open={open}
@@ -41,6 +39,6 @@ export default function RateModal() {
           <CommentAdd />
         </Box>
       </Modal>
-    </ThemeProvider>
+    </>
   );
 }

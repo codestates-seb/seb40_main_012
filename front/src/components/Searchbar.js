@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../styles/theme';
+import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -50,22 +49,20 @@ const Searchbar = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <SearchbarContainer>
-        <SearchIconContainer>
-          <img
-            src={process.env.PUBLIC_URL + '/images/Search_Icon.svg'}
-            alt="Search Icon"
-          />
-        </SearchIconContainer>
-        <SearchbarInput
-          type="text"
-          placeholder="책, 페어링, 컬렉션을 검색해보세요"
-          onChange={handleChangeInput}
-          onKeyPress={handleOnKeyPressEnter}
+    <SearchbarContainer>
+      <SearchIconContainer>
+        <img
+          src={process.env.PUBLIC_URL + '/images/Search_Icon.svg'}
+          alt="Search Icon"
         />
-      </SearchbarContainer>
-    </ThemeProvider>
+      </SearchIconContainer>
+      <SearchbarInput
+        type="text"
+        placeholder="책, 페어링, 컬렉션을 검색해보세요"
+        onChange={handleChangeInput}
+        onKeyPress={handleOnKeyPressEnter}
+      />
+    </SearchbarContainer>
   );
 };
 

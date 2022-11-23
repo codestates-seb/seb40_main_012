@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 import PageContainer from '../../components/PageContainer';
 import CollectionDetailHeader from './CollectionDetailHeader';
 import CollectionTags from './CollectionTags';
@@ -67,20 +66,18 @@ const commentAdd = (content) => {
 const CollectionDetailPage = () => {
   return (
     <PageContainer footer>
-      <ThemeProvider theme={theme}>
-        <CollectionDetailHeader
-          title="재밌는 책 컬렉션"
-          writer="김뫄뫄"
-          update="2022.11.15"
-        />
-        <CollectionTagBtn>
-          <CollectionTags taglist={['소설', 'sf', '시리즈물']} />
-          <CollectionHeaderBtns />
-        </CollectionTagBtn>
-        <CollectionIntro intro="뫄뫄하고 재밌는 컬렉션입니다!" />
-        <CollectionDetailBooks />
-        <Comments commentsData={commentsData} commentAdd={commentAdd} />
-      </ThemeProvider>
+      <CollectionDetailHeader
+        title="재밌는 책 컬렉션"
+        writer="김뫄뫄"
+        update="2022.11.15"
+      />
+      <CollectionTagBtn>
+        <CollectionTags taglist={['소설', 'sf', '시리즈물']} />
+        <CollectionHeaderBtns />
+      </CollectionTagBtn>
+      <CollectionIntro intro="뫄뫄하고 재밌는 컬렉션입니다!" />
+      <CollectionDetailBooks />
+      <Comments commentsData={commentsData} commentAdd={commentAdd} />
     </PageContainer>
   );
 };

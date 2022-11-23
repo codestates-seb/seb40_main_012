@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 
 const BookWrapper = styled.div`
   display: flex;
@@ -74,21 +73,19 @@ const PairingOriginBook = ({
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <BookWrapper>
-        <PairingOriginBookContainer onClick={disabled ? null : handleBookClick}>
-          <img src={cover} alt="book cover" />
-        </PairingOriginBookContainer>
-        <BookInfo>
-          <div className="title">{bookTitle}</div>
-          <div className="author">저자: {author}</div>
-          <div className="publisher">출판사: {publisher}</div>
-          <div className="year">출판년도: {year}</div>
-          <div className="category">분류: {category}</div>
-          <div className="rating">★ {rating}</div>
-        </BookInfo>
-      </BookWrapper>
-    </ThemeProvider>
+    <BookWrapper>
+      <PairingOriginBookContainer onClick={disabled ? null : handleBookClick}>
+        <img src={cover} alt="book cover" />
+      </PairingOriginBookContainer>
+      <BookInfo>
+        <div className="title">{bookTitle}</div>
+        <div className="author">저자: {author}</div>
+        <div className="publisher">출판사: {publisher}</div>
+        <div className="year">출판년도: {year}</div>
+        <div className="category">분류: {category}</div>
+        <div className="rating">★ {rating}</div>
+      </BookInfo>
+    </BookWrapper>
   );
 };
 

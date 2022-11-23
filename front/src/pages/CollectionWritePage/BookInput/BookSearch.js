@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 import NewBook from './NewBook';
 
 const BookSearchContainer = styled.div`
@@ -82,31 +81,29 @@ const BookSearch = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <BookSearchContainer>
-        <BookSearchTitle>책 검색</BookSearchTitle>
-        <Books>
-          <SearchContainer>
-            <BookSearchbar
-              type="text"
-              placeholder="컬렉션에 추가할 책을 검색해보세요"
-              value={searchInput}
-              onChange={handleOnChangeInput}
-              onKeyPress={handleSearchBook}
-            ></BookSearchbar>
-            <img
-              src={process.env.PUBLIC_URL + '/images/Search_Icon.svg'}
-              alt="search"
-            />
-          </SearchContainer>
-          <SearchedBooks>
-            {searchedBooks.map((el, idx) => {
-              return <NewBook key={idx} title={el.title} author={el.author} />;
-            })}
-          </SearchedBooks>
-        </Books>
-      </BookSearchContainer>
-    </ThemeProvider>
+    <BookSearchContainer>
+      <BookSearchTitle>책 검색</BookSearchTitle>
+      <Books>
+        <SearchContainer>
+          <BookSearchbar
+            type="text"
+            placeholder="컬렉션에 추가할 책을 검색해보세요"
+            value={searchInput}
+            onChange={handleOnChangeInput}
+            onKeyPress={handleSearchBook}
+          ></BookSearchbar>
+          <img
+            src={process.env.PUBLIC_URL + '/images/Search_Icon.svg'}
+            alt="search"
+          />
+        </SearchContainer>
+        <SearchedBooks>
+          {searchedBooks.map((el, idx) => {
+            return <NewBook key={idx} title={el.title} author={el.author} />;
+          })}
+        </SearchedBooks>
+      </Books>
+    </BookSearchContainer>
   );
 };
 

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 import NewBooks from './NewBooks';
 import MyBooks from './MyBooks';
 import BookSearch from './BookSearch';
@@ -18,13 +17,11 @@ const CollectionBookInput = ({ data, setData }) => {
   }, [newBooks]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionBookInputContainer>
-        <NewBooks newBooks={newBooks} setNewBooks={setNewBooks} />
-        <MyBooks newBooks={newBooks} setNewBooks={setNewBooks} />
-        <BookSearch newBooks={newBooks} setNewBooks={setNewBooks} />
-      </CollectionBookInputContainer>
-    </ThemeProvider>
+    <CollectionBookInputContainer>
+      <NewBooks newBooks={newBooks} setNewBooks={setNewBooks} />
+      <MyBooks newBooks={newBooks} setNewBooks={setNewBooks} />
+      <BookSearch newBooks={newBooks} setNewBooks={setNewBooks} />
+    </CollectionBookInputContainer>
   );
 };
 

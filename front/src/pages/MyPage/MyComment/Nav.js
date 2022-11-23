@@ -1,8 +1,7 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import theme from '../../../styles/theme';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
@@ -83,51 +82,49 @@ const Nav = () => {
 
   return (
     <div>
-      <ThemeProvider theme={theme}>
-        <Grid container>
-          <Grid
-            item
-            xs={3.3}
-            align="center"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <CommentBorderCSS>
-              <Typography variant="h6">나의 코멘트</Typography>
-            </CommentBorderCSS>
-            <Circle className="circle">
-              <Typography variant="h6" style={{ color: 'white' }}>
-                {CommentData.length}
-              </Typography>
-            </Circle>
-          </Grid>
-          <Grid item xs={2.9} align="center">
-            <Link to="/mypage/mypairing">
-              <BorderCSS>
-                <Typography variant="h6">나의 페어링</Typography>
-              </BorderCSS>
-            </Link>
-          </Grid>
-          <Grid item xs={2.9} align="center">
-            <Link to="/mypage/mycollection">
-              <BorderCSS>
-                <Typography variant="h6">나의 컬렉션</Typography>
-              </BorderCSS>
-            </Link>
-          </Grid>
-          <Grid item xs={2.9} align="center">
-            <Link to="/mypage/mypick">
-              <BorderCSS>
-                <Typography variant="h6">나의 픽</Typography>
-              </BorderCSS>
-            </Link>
-          </Grid>
+      <Grid container>
+        <Grid
+          item
+          xs={3.3}
+          align="center"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CommentBorderCSS>
+            <Typography variant="h6">나의 코멘트</Typography>
+          </CommentBorderCSS>
+          <Circle className="circle">
+            <Typography variant="h6" style={{ color: 'white' }}>
+              {CommentData.length}
+            </Typography>
+          </Circle>
         </Grid>
-        <BottomBorder />
-      </ThemeProvider>
+        <Grid item xs={2.9} align="center">
+          <Link to="/mypage/mypairing">
+            <BorderCSS>
+              <Typography variant="h6">나의 페어링</Typography>
+            </BorderCSS>
+          </Link>
+        </Grid>
+        <Grid item xs={2.9} align="center">
+          <Link to="/mypage/mycollection">
+            <BorderCSS>
+              <Typography variant="h6">나의 컬렉션</Typography>
+            </BorderCSS>
+          </Link>
+        </Grid>
+        <Grid item xs={2.9} align="center">
+          <Link to="/mypage/mypick">
+            <BorderCSS>
+              <Typography variant="h6">나의 픽</Typography>
+            </BorderCSS>
+          </Link>
+        </Grid>
+      </Grid>
+      <BottomBorder />
     </div>
   );
 };

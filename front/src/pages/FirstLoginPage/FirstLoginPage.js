@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -12,7 +13,6 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Slide from '@mui/material/Slide';
 import Box from '@mui/material/Box';
-import { ThemeProvider } from '@mui/material/styles';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -22,7 +22,6 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import PageContainer from '../../components/PageContainer';
-import theme from '../../styles/theme';
 import styled from 'styled-components';
 import { genreData, ageGroupData, genderData } from '../../util/util';
 import { firstLoginAsync } from '../../store/modules/authSlice';
@@ -65,6 +64,8 @@ const CheckboxFormGroupStyled = styled(FormGroup)`
 
 const FirstLoginPage = () => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  console.log(location);
 
   const [gender, setGender] = React.useState('');
   const [age, setAge] = React.useState('');
@@ -115,114 +116,109 @@ const FirstLoginPage = () => {
 
   return (
     <PageContainer footer>
-      <ThemeProvider theme={theme}>
-        <Box
-          sx={{
-            marginTop: 0,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: 'calc(100vh - 60px - 200px)', // header, footer
-          }}
-        >
-          <Dialog open={true} TransitionComponent={Transition}>
-            <AppBarStyled sx={{ position: 'relative' }}>
-              <ToolbarStyled>
-                <IconButton
-                  edge="start"
-                  color="inherit"
-                  onClick={handleClose}
-                  aria-label="close"
+      <Box
+        sx={{
+          marginTop: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: 'calc(100vh - 60px - 200px)', // header, footer
+        }}
+      >
+        <Dialog open={true} TransitionComponent={Transition}>
+          <AppBarStyled sx={{ position: 'relative' }}>
+            <ToolbarStyled>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={handleClose}
+                aria-label="close"
+              >
+                <CloseIcon />
+              </IconButton>
+              <SaveButtonStyled color="inherit" onClick={handleClickSave}>
+                저장
+              </SaveButtonStyled>
+            </ToolbarStyled>
+          </AppBarStyled>
+          <List>
+            <ListItemStyled>
+              <ListItemTextStyled primary="성별" />
+              <FormControl sx={{ m: 1, minWidth: 80 }}>
+                <InputLabel id="gender-select-label">성별</InputLabel>
+                <Select
+                  labelId="gender-select-label"
+                  id="gender-select"
+                  value={gender}
+                  onChange={handleChangeGender}
+                  autoWidth
+                  label="성별"
                 >
-                  <CloseIcon />
-                </IconButton>
-                <SaveButtonStyled color="inherit" onClick={handleClickSave}>
-                  저장
-                </SaveButtonStyled>
-              </ToolbarStyled>
-            </AppBarStyled>
-            <List>
-              <ListItemStyled>
-                <ListItemTextStyled primary="성별" />
-                <FormControl sx={{ m: 1, minWidth: 80 }}>
-                  <InputLabel id="gender-select-label">성별</InputLabel>
-                  <Select
-                    labelId="gender-select-label"
-                    id="gender-select"
-                    value={gender}
-                    onChange={handleChangeGender}
-                    autoWidth
-                    label="성별"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {Object.entries(genderData).map(([key, value]) => (
+                    <MenuItem key={key} value={key}>
+                      {value}
                     </MenuItem>
-                    {Object.entries(genderData).map(([key, value]) => (
-                      <MenuItem key={key} value={key}>
-                        {value}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </ListItemStyled>
-              <Divider />
-              <ListItemStyled>
-                <ListItemTextStyled primary="연령대" />
-                <FormControl sx={{ m: 1, minWidth: 80 }}>
-                  <InputLabel id="age-select-label">연령대</InputLabel>
-                  <Select
-                    labelId="age-select-label"
-                    id="age-select"
-                    value={age}
-                    onChange={handleChangeAge}
-                    autoWidth
-                    label="연령대"
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {Object.entries(ageGroupData).map(([key, value]) => (
-                      <MenuItem key={key} value={key}>
-                        {value}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </ListItemStyled>
-              <Divider />
-              <ListItemStyled>
-                <ListItemTextStyled primary="선호 장르" />
-                <CheckboxFormControlStyled
-                  component="fieldset"
-                  variant="standard"
-                  sx={{ m: 1 }}
+                  ))}
+                </Select>
+              </FormControl>
+            </ListItemStyled>
+            <Divider />
+            <ListItemStyled>
+              <ListItemTextStyled primary="연령대" />
+              <FormControl sx={{ m: 1, minWidth: 80 }}>
+                <InputLabel id="age-select-label">연령대</InputLabel>
+                <Select
+                  labelId="age-select-label"
+                  id="age-select"
+                  value={age}
+                  onChange={handleChangeAge}
+                  autoWidth
+                  label="연령대"
                 >
-                  <CheckboxFormGroupStyled>
-                    {Object.entries(genreData).map(([key, value]) => (
-                      <FormControlLabel
-                        key={key}
-                        control={
-                          <Checkbox
-                            onChange={handleChangeCheckBox}
-                            name={key}
-                          />
-                        }
-                        checked={checked[key]}
-                        disabled={checkCount && !checked[key]}
-                        label={value}
-                      />
-                    ))}
-                  </CheckboxFormGroupStyled>
-                  <FormHelperText>
-                    선호 장르는 최대 3개까지 선택할 수 있습니다.
-                  </FormHelperText>
-                </CheckboxFormControlStyled>
-              </ListItemStyled>
-            </List>
-          </Dialog>
-        </Box>
-      </ThemeProvider>
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {Object.entries(ageGroupData).map(([key, value]) => (
+                    <MenuItem key={key} value={key}>
+                      {value}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </ListItemStyled>
+            <Divider />
+            <ListItemStyled>
+              <ListItemTextStyled primary="선호 장르" />
+              <CheckboxFormControlStyled
+                component="fieldset"
+                variant="standard"
+                sx={{ m: 1 }}
+              >
+                <CheckboxFormGroupStyled>
+                  {Object.entries(genreData).map(([key, value]) => (
+                    <FormControlLabel
+                      key={key}
+                      control={
+                        <Checkbox onChange={handleChangeCheckBox} name={key} />
+                      }
+                      checked={checked[key]}
+                      disabled={checkCount && !checked[key]}
+                      label={value}
+                    />
+                  ))}
+                </CheckboxFormGroupStyled>
+                <FormHelperText>
+                  선호 장르는 최대 3개까지 선택할 수 있습니다.
+                </FormHelperText>
+              </CheckboxFormControlStyled>
+            </ListItemStyled>
+          </List>
+        </Dialog>
+      </Box>
     </PageContainer>
   );
 };
