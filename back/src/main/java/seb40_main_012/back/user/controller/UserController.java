@@ -60,33 +60,33 @@ public class UserController {
 
     @PatchMapping("/mypage/nickname")
     @ResponseStatus(HttpStatus.OK)
-    public void patchNickName(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Profile request) {
-        userService.updateNickName(userId,request.getNickName());
+    public void patchNickName(@RequestBody UserDto.Profile request) {
+        userService.updateNickName(request.getNickName());
     }
 
     @PostMapping("/mypage/password/current")
     @ResponseStatus(HttpStatus.OK)
-    public boolean verifyPassword(@RequestHeader("Authorization") Long userId,@RequestBody String currentPassword){
-        return userService.verifyPassword(userId,currentPassword);
+    public boolean verifyPassword(@RequestBody String currentPassword){
+        return userService.verifyPassword(currentPassword);
     }
 
     @PatchMapping("/mypage/password/update")
     @ResponseStatus(HttpStatus.OK)
-    public void patchPassword(@RequestHeader("Authorization") Long userId, @RequestBody UserDto.Password request){
-        userService.updatePassword(userId,request.getPassword());
+    public void patchPassword( @RequestBody UserDto.Password request){
+        userService.updatePassword(request.getPassword());
     }
 
     @PatchMapping("/mypage/userInfo")
     @ResponseStatus(HttpStatus.OK)
-    public UserInfoDto.Response patchUserInfo(@RequestHeader("Authorization") Long userId, @RequestBody UserInfoDto.Post request){
-        User editedUser = userService.editUserInfo(userId,request.toEntity(),request.getCategory());
+    public UserInfoDto.Response patchUserInfo( @RequestBody UserInfoDto.Post request){
+        User editedUser = userService.editUserInfo(request.toEntity(),request.getCategory());
         return UserInfoDto.Response.of(editedUser);
     }
     @GetMapping("/users/{user_id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity getUser(@PathVariable("user_id") @Positive Long userId){
 
-        User user = userService.findUser(userId);
+        User user = userService.findUser();
 
         UserDto.ResponseDto response = mapper.userToUserResponse(user);
 
@@ -103,30 +103,32 @@ public class UserController {
 //
     @DeleteMapping("/mypage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public boolean deleteUser(@RequestHeader("Authorization") Long userId){
-        return userService.deleteUser(userId);
+    public boolean deleteUser(){
+        return userService.deleteUser();
     }
 
 
     /** 조회 API */
     @GetMapping("/mypage/nickName")
     @ResponseStatus(HttpStatus.OK)
-    public UserDto.ProfileResponse getNickName(@RequestHeader("Authorization") Long userId){
-        User user = userService.findVerifiedUser(userId);
+    public UserDto.ProfileResponse getNickName(){
+        User findUser = userService.getLoginUser();
+        User user = userService.findVerifiedUser(findUser.getUserId());
         return new UserDto.ProfileResponse(user.getNickName());
     }
 
     @GetMapping("/mypage/userInfo")
     @ResponseStatus(HttpStatus.OK)
-    public UserInfoDto.Response getUserInfo(@RequestHeader("Authorization") Long userId){
-        User user = userService.findVerifiedUser(userId);
+    public UserInfoDto.Response getUserInfo(){
+        User findUser = userService.getLoginUser();
+        User user = userService.findVerifiedUser(findUser.getUserId());
         return UserInfoDto.Response.of(user);
     }
 
     @GetMapping("/mypage/userComment")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<CommentDto.UserComment> getUserComment(@RequestHeader("Authorization") Long userId){
-        List<Comment> comments = userService.getUserComment(userId);
+    public ListResponseDto<CommentDto.UserComment> getUserComment(){
+        List<Comment> comments = userService.getUserComment();
         List<CommentDto.UserComment> commentDto = comments.stream().map(x -> CommentDto.UserComment.of(x)).collect(Collectors.toList());
         Long listCount = commentRepository.countBy();
         return new ListResponseDto<>(listCount,commentDto);
@@ -134,8 +136,8 @@ public class UserController {
 
     @GetMapping("/mypage/userPairing")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<PairingDto.UserPairing> getUserPairing(@RequestHeader("Authorization") Long userId){
-        List<Pairing> pairings = userService.getUserPairing(userId);
+    public ListResponseDto<PairingDto.UserPairing> getUserPairing(){
+        List<Pairing> pairings = userService.getUserPairing();
         List<PairingDto.UserPairing> pairingDto = pairings.stream().map(x -> PairingDto.UserPairing.of(x)).collect(Collectors.toList());
         Long listCount = pairingRepository.countBy();
         return new ListResponseDto<>(listCount,pairingDto);
@@ -143,27 +145,29 @@ public class UserController {
 
     @GetMapping("/mypage/userCollection")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection(@RequestHeader("Authorization") Long userId){
-        List<BookCollection> collections = userService.getUserCollection(userId);
+    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection(){
+        List<BookCollection> collections = userService.getUserCollection();
         List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x-> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
-        Long listCount = collectionRepository.countByUserUserId(userId);
+        User findUser = userService.getLoginUser();
+        Long listCount = collectionRepository.countByUserUserId(findUser.getUserId());
         return new ListResponseDto<>(listCount,collectionDto);
     }
 
 
     @GetMapping("/mypage/bookmark/collection")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<BookCollectionDto.BookmarkedCollection> getBookmarkByBookCollection(@RequestHeader("Authorization") Long userId){
-        List<BookCollection> collections = userService.getBookmarkByBookCollection(userId);
+    public ListResponseDto<BookCollectionDto.BookmarkedCollection> getBookmarkByBookCollection(){
+        List<BookCollection> collections = userService.getBookmarkByBookCollection();
         List<BookCollectionDto.BookmarkedCollection> bookmarkedCollectionDto = collections.stream().map(x -> BookCollectionDto.BookmarkedCollection.of(x)).collect(Collectors.toList());
-        Long listCount = collectionRepository.countByUserUserId(userId);
+        User findUser = userService.getLoginUser();
+        Long listCount = collectionRepository.countByUserUserId(findUser.getUserId());
         return new ListResponseDto<>(listCount,bookmarkedCollectionDto);
     }
 
     @GetMapping("/mypage/bookmark/pairing")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<PairingDto.BookmarkedPairing> getBookMarkByPairing(@RequestHeader("Authorization") Long userId){
-        List<Pairing> pairings = userService.getBookmarkByPairing(userId);
+    public ListResponseDto<PairingDto.BookmarkedPairing> getBookMarkByPairing(){
+        List<Pairing> pairings = userService.getBookmarkByPairing();
         List<PairingDto.BookmarkedPairing> pairingDto = pairings.stream().map(x -> PairingDto.BookmarkedPairing.of(x)).collect(Collectors.toList());
         Long listCount = pairingRepository.countBy();
         return new ListResponseDto<>(listCount,pairingDto);
@@ -171,8 +175,8 @@ public class UserController {
 
     @GetMapping("/mypage/bookmark/book")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<BookDto.BookmarkedBook> getBookMarkByBook(@RequestHeader("Authorization") Long userId){
-        List<Book> books = userService.getBookmarkByBook(userId);
+    public ListResponseDto<BookDto.BookmarkedBook> getBookMarkByBook(){
+        List<Book> books = userService.getBookmarkByBook();
         List<BookDto.BookmarkedBook> bookDto = books.stream().map(x -> BookDto.BookmarkedBook.of(x)).collect(Collectors.toList());
         Long listCount = pairingRepository.countBy();
         return new ListResponseDto<>(listCount,bookDto);
