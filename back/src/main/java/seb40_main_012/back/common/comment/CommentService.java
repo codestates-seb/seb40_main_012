@@ -165,6 +165,15 @@ public class CommentService {
         return findComment;
     }
 
+    public Comment isLikedNull(long commentId) {
+
+        Comment findComment = findVerifiedComment(commentId);
+
+        findComment.setIsLiked(null);
+
+        return findComment;
+    }
+
     public Comment findComment(long commentId) {
         return findVerifiedComment(commentId);
     }

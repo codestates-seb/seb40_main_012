@@ -134,10 +134,12 @@ public class CommentController {
         if (token == null) {
 
             Comment comment = commentService.updateView(commentId);
+            comment.setIsLiked(null);
             CommentDto.Response response = commentMapper.commentToCommentResponse(comment);
 
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
+
         } else {
 
             Comment comment = commentService.updateView(commentId);
