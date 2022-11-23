@@ -9,7 +9,7 @@ const randomColor = () => {
 const MainBookContainer = styled.div`
   position: relative;
   background-color: ${(props) => props.bgcolor};
-  border-radius: 30px;
+  border-radius: 20px;
   height: 400px;
   img {
     height: 90%;
@@ -37,7 +37,7 @@ const MainBookInfo = styled.div`
   margin: 0 30px;
   background-color: #f5f5f5;
   min-width: 120px;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 20px;
 
   .title {
@@ -88,6 +88,7 @@ const MainBook = ({
   publish,
   genre,
   rating,
+  cover,
 }) => {
   const randomRGB = `rgb(${randomColor()}, ${randomColor()}, ${randomColor()})`;
 
@@ -100,10 +101,7 @@ const MainBook = ({
   return (
     <MainBookContainer bgcolor={randomRGB} onClick={onClickMainBook}>
       <RankInfo>{ranking}</RankInfo>
-      <img
-        src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-        alt="book cover"
-      />
+      <img src={cover} alt="book cover" />
       <MainBookInfo>
         <div className="title">{bookTitle}</div>
         <div className="author">{`${author} ·${publish}`}</div>

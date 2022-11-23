@@ -39,20 +39,17 @@ const RankInfo = styled.div`
   font-size: 15px;
 `;
 
-const Book = ({ bookTitle, bookId, ranking = 0, isBest = false }) => {
+const Book = ({ bookTitle, isbn, ranking = 0, isBest = false, cover }) => {
   const navigate = useNavigate();
 
   const onClickBook = () => {
-    navigate(`/book/${bookId}`);
+    navigate(`/book/${isbn}`);
   };
 
   return (
     <BookContainer onClick={onClickBook}>
       {isBest ? <RankInfo>{ranking}</RankInfo> : null}
-      <img
-        src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-        alt="book cover"
-      />
+      <img src={cover} alt="book cover" />
       <BookTitle>{bookTitle}</BookTitle>
     </BookContainer>
   );
