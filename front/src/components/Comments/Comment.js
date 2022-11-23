@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 import { ToDateString } from '../../util/ToDateString';
 
 const CommentContainer = styled.div`
@@ -184,7 +183,6 @@ const Comment = ({
   };
 
   return (
-    <ThemeProvider theme={theme}>
       <CommentContainer className={isMyComment ? 'mine' : null}>
         <UserImgContainer>
           <img
@@ -271,7 +269,6 @@ const Comment = ({
           </BodyContainer>
         </CommentBodyContainer>
       </CommentContainer>
-    </ThemeProvider>
   );
 };
 

@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const MainBooksTitleContainer = styled.div`
   width: 100%;
@@ -11,11 +10,7 @@ const MainBooksTitleContainer = styled.div`
 `;
 
 const MainBooksTitle = ({ title }) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <MainBooksTitleContainer>{title}</MainBooksTitleContainer>
-    </ThemeProvider>
-  );
+  return <MainBooksTitleContainer>{title}</MainBooksTitleContainer>;
 };
 
 export default MainBooksTitle;

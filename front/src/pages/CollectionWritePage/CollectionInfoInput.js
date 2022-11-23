@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 import { Tag } from '../../components/tag';
 import { useState } from 'react';
 
@@ -131,57 +130,55 @@ const CollectionInfoInput = ({ data, setData }) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionInfoInputContainer>
-        <TitleInput
+    <CollectionInfoInputContainer>
+      <TitleInput
+        type="text"
+        placeholder="컬렉션 제목"
+        maxLength="30"
+        onChange={handleOnChangeTitle}
+      ></TitleInput>
+      <TagInputContainer>
+        <Tags>
+          {data.tags.map((el, idx) => {
+            return (
+              <TagContainer
+                key={idx}
+                onClick={() => {
+                  handleDeleteTag(idx);
+                }}
+                role="presentation"
+              >
+                <Tag>#{el}</Tag>
+              </TagContainer>
+            );
+          })}
+        </Tags>
+        <TagInput
           type="text"
-          placeholder="컬렉션 제목"
-          maxLength="30"
-          onChange={handleOnChangeTitle}
-        ></TitleInput>
-        <TagInputContainer>
-          <Tags>
-            {data.tags.map((el, idx) => {
-              return (
-                <TagContainer
-                  key={idx}
-                  onClick={() => {
-                    handleDeleteTag(idx);
-                  }}
-                  role="presentation"
-                >
-                  <Tag>#{el}</Tag>
-                </TagContainer>
-              );
-            })}
-          </Tags>
-          <TagInput
-            type="text"
-            placeholder="태그를 입력하세요"
-            onChange={handleOnChangeNewTag}
-            onKeyPress={handleOnKeyPressTag}
-            onFocus={handleOnFoucusUpTag}
-            onBlur={handleOnBlurTag}
-            value={newTag}
-          />
-        </TagInputContainer>
-        <TagInfo className={isOnKeyUpTag ? 'show' : 'hidden'}>
-          <div>
-            엔터를 입력하여 태그를 등록할 수 있습니다.
-            <br />
-            등록된 태그를 클릭하면 삭제됩니다.
-          </div>
-        </TagInfo>
-        <ContentInputContainer>
-          <ContentInput
-            type="text"
-            placeholder="컬렉션을 소개해 보세요."
-            maxLength="250"
-            onChange={handleOnChangeContent}
-          />
-        </ContentInputContainer>
-      </CollectionInfoInputContainer>
-    </ThemeProvider>
+          placeholder="태그를 입력하세요"
+          onChange={handleOnChangeNewTag}
+          onKeyPress={handleOnKeyPressTag}
+          onFocus={handleOnFoucusUpTag}
+          onBlur={handleOnBlurTag}
+          value={newTag}
+        />
+      </TagInputContainer>
+      <TagInfo className={isOnKeyUpTag ? 'show' : 'hidden'}>
+        <div>
+          엔터를 입력하여 태그를 등록할 수 있습니다.
+          <br />
+          등록된 태그를 클릭하면 삭제됩니다.
+        </div>
+      </TagInfo>
+      <ContentInputContainer>
+        <ContentInput
+          type="text"
+          placeholder="컬렉션을 소개해 보세요."
+          maxLength="250"
+          onChange={handleOnChangeContent}
+        />
+      </ContentInputContainer>
+    </CollectionInfoInputContainer>
   );
 };
 

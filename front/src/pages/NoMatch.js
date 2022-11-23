@@ -1,13 +1,7 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../styles/theme';
+import styled from 'styled-components';
 import PageContainer from '../components/PageContainer';
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
+import Container from '@mui/material/Container';
+import Box from '@mui/material/Box';
 
 const ImgContainer = styled.div`
   width: 450px;
@@ -135,9 +129,19 @@ const NoMatch = () => {
   const poem = randomPoem();
 
   return (
-    <ThemeProvider theme={theme}>
-      <PageContainer footer>
-        <Wrapper>
+    <PageContainer footer>
+      <Container component="main" maxWidth="xs">
+        <Box
+          sx={{
+            marginTop: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: 'calc(100vh - 60px - 200px)', // header, footer
+            minHeight: '410px',
+          }}
+        >
           <ContentsBox>
             <ImgContainer>
               <img
@@ -155,9 +159,9 @@ const NoMatch = () => {
               <div className="author">{poem.author}</div>
             </PoemContainer>
           </ContentsBox>
-        </Wrapper>
-      </PageContainer>
-    </ThemeProvider>
+        </Box>
+      </Container>
+    </PageContainer>
   );
 };
 

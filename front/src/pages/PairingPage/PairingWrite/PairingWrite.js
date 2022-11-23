@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 import PageContainer from '../../../components/PageContainer';
 import PairingOriginBook from '../PairingDetail/PairingOriginBook';
 import BasicSelect from './Select';
@@ -80,33 +79,31 @@ const PairingWrite = () => {
 
   return (
     <PageContainer footer>
-      <ThemeProvider theme={theme}>
-        <Wrapper>
-          <h1>Write your own Pairing</h1>
-          <TitleWrapper>
-            <MarginStyled>
-              <BasicSelect categoryBind={categoryBind} />
-            </MarginStyled>
-            <TitleInput titleBind={titleBind} />
-          </TitleWrapper>
-          <BookWrapperStyled>
-            <PairingOriginBook
-              bookTitle={curBookData.title}
-              cover={curBookData.cover}
-              author={curBookData.author}
-              rating={curBookData.averageRating}
-              bookId={curBookData.isbn13}
-              disabled={true}
-              publisher={curBookData.publisher}
-              year={curBookData.pubDate}
-              category={curBookData.genre}
-            />
-          </BookWrapperStyled>
-          <BodyInput bodyBind={bodyBind} />
-          <OutLinkInput outLinkBind={outLinkBind} />
-          <button onClick={handleSubmit}>등록</button>
-        </Wrapper>
-      </ThemeProvider>
+      <Wrapper>
+        <h1>Write your own Pairing</h1>
+        <TitleWrapper>
+          <MarginStyled>
+            <BasicSelect categoryBind={categoryBind} />
+          </MarginStyled>
+          <TitleInput titleBind={titleBind} />
+        </TitleWrapper>
+        <BookWrapperStyled>
+          <PairingOriginBook
+            bookTitle={curBookData.title}
+            cover={curBookData.cover}
+            author={curBookData.author}
+            rating={curBookData.averageRating}
+            bookId={curBookData.isbn13}
+            disabled={true}
+            publisher={curBookData.publisher}
+            year={curBookData.pubDate}
+            category={curBookData.genre}
+          />
+        </BookWrapperStyled>
+        <BodyInput bodyBind={bodyBind} />
+        <OutLinkInput outLinkBind={outLinkBind} />
+        <button onClick={handleSubmit}>등록</button>
+      </Wrapper>
     </PageContainer>
   );
 };

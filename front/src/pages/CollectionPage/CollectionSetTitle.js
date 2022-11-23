@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const CollectionSetTitleContainer = styled.div`
   width: 100%;
@@ -41,20 +40,18 @@ const CollectionSetTitle = ({ title, isMyCollection }) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionSetTitleContainer>
-        <CollectionTitle>{title}</CollectionTitle>
-        {isMyCollection ? (
-          <MyCollectionBtn onClick={onClickMyCollectionBtn}>
-            모두보기
-            <img
-              src={process.env.PUBLIC_URL + '/images/right_arrow_icon.svg'}
-              alt="to mypage"
-            />
-          </MyCollectionBtn>
-        ) : null}
-      </CollectionSetTitleContainer>
-    </ThemeProvider>
+    <CollectionSetTitleContainer>
+      <CollectionTitle>{title}</CollectionTitle>
+      {isMyCollection ? (
+        <MyCollectionBtn onClick={onClickMyCollectionBtn}>
+          모두보기
+          <img
+            src={process.env.PUBLIC_URL + '/images/right_arrow_icon.svg'}
+            alt="to mypage"
+          />
+        </MyCollectionBtn>
+      ) : null}
+    </CollectionSetTitleContainer>
   );
 };
 

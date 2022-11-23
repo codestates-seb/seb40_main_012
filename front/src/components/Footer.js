@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../styles/theme';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const FooterContainer = styled.div`
@@ -52,32 +51,30 @@ const FooterContent_3 = styled(FooterContent)`
 
 const Footer = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <FooterContainer>
-        <FooterContent_1>
-          <div className="copyright">Copyright Ⓒ Running_Potatoes 2022.</div>
-          <Link to="/pairing">
-            <button>페어링</button>
-          </Link>
-          <Link to="/collection">
-            <button>컬렉션</button>
-          </Link>
-        </FooterContent_1>
-        <FooterContent_2>
-          <img
-            src={process.env.PUBLIC_URL + '/images/github_icon.svg'}
-            alt="github icon"
-          />
-          <a href="https://github.com/codestates-seb/seb40_main_012">github</a>
-        </FooterContent_2>
-        <FooterContent_3>
-          <img
-            src={process.env.PUBLIC_URL + '/images/CherryPick_Footer.svg'}
-            alt="Footer Logo"
-          />
-        </FooterContent_3>
-      </FooterContainer>
-    </ThemeProvider>
+    <FooterContainer>
+      <FooterContent_1>
+        <div className="copyright">Copyright Ⓒ Running_Potatoes 2022.</div>
+        <Link to="/pairing">
+          <button>페어링</button>
+        </Link>
+        <Link to="/collection">
+          <button>컬렉션</button>
+        </Link>
+      </FooterContent_1>
+      <FooterContent_2>
+        <img
+          src={process.env.PUBLIC_URL + '/images/github_icon.svg'}
+          alt="github icon"
+        />
+        <a href="https://github.com/codestates-seb/seb40_main_012">github</a>
+      </FooterContent_2>
+      <FooterContent_3>
+        <img
+          src={process.env.PUBLIC_URL + '/images/CherryPick_Footer.svg'}
+          alt="Footer Logo"
+        />
+      </FooterContent_3>
+    </FooterContainer>
   );
 };
 

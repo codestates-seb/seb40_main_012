@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const CollectionDetailBookContainer = styled.div`
   @media screen and (max-width: 980px) {
@@ -47,18 +46,16 @@ const CollectionDetailBook = ({ bookTitle, rating, bookId }) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionDetailBookContainer onClick={handleBookClick}>
-        <img
-          src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-          alt="book cover"
-        />
-        <BookInfo>
-          <div className="title">{bookTitle}</div>
-          <div className="rating">★ {rating}</div>
-        </BookInfo>
-      </CollectionDetailBookContainer>
-    </ThemeProvider>
+    <CollectionDetailBookContainer onClick={handleBookClick}>
+      <img
+        src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
+        alt="book cover"
+      />
+      <BookInfo>
+        <div className="title">{bookTitle}</div>
+        <div className="rating">★ {rating}</div>
+      </BookInfo>
+    </CollectionDetailBookContainer>
   );
 };
 

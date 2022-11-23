@@ -77,4 +77,39 @@ const message = {
   },
 };
 
-export { validationCheck, duplicationCheck };
+const genreData = {
+  NOVEL: '소설',
+  ESSAY: '수필',
+  POEM: '시',
+  HUMANITIES: '인문학',
+  SOCIAL: '사회과학',
+  NATURAL: '자연과학',
+  COMICS: '만화',
+  ETC: '기타',
+};
+
+const ageGroupData = {
+  TEENAGER: '10대',
+  TWENTIES: '20대',
+  THIRTIES: '30대',
+  FORTIES: '40대',
+  FIFTIES: '50대',
+  SIXTIES: '60대',
+  SEVENTIES: '70대',
+  OTHERS: '그 외',
+};
+
+const genderData = {
+  FEMALE: '여성',
+  MALE: '남성',
+  NOBODY: '둘 다 아님',
+  MYSTIC: '공개 안 함',
+};
+
+export {
+  validationCheck,
+  duplicationCheck,
+  genreData,
+  ageGroupData,
+  genderData,
+};

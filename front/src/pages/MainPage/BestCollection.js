@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const BestCollectionContainer = styled.div`
   display: flex;
@@ -40,39 +39,37 @@ const BestCollection = ({ title, collectionId }) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <BestCollectionContainer onClick={onClickBestCollection}>
-        <BookColumn>
-          <BestCollectionBook>
-            <img
-              src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-              alt="book cover"
-            />
-          </BestCollectionBook>
-          <BestCollectionBook>
-            <img
-              src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-              alt="book cover"
-            />
-          </BestCollectionBook>
-        </BookColumn>
-        <BookColumn>
-          <BestCollectionBook>
-            <img
-              src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-              alt="book cover"
-            />
-          </BestCollectionBook>
-          <BestCollectionBook>
-            <img
-              src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-              alt="book cover"
-            />
-          </BestCollectionBook>
-        </BookColumn>
-        <BestCollectionInfo>{title}</BestCollectionInfo>
-      </BestCollectionContainer>
-    </ThemeProvider>
+    <BestCollectionContainer onClick={onClickBestCollection}>
+      <BookColumn>
+        <BestCollectionBook>
+          <img
+            src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
+            alt="book cover"
+          />
+        </BestCollectionBook>
+        <BestCollectionBook>
+          <img
+            src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
+            alt="book cover"
+          />
+        </BestCollectionBook>
+      </BookColumn>
+      <BookColumn>
+        <BestCollectionBook>
+          <img
+            src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
+            alt="book cover"
+          />
+        </BestCollectionBook>
+        <BestCollectionBook>
+          <img
+            src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
+            alt="book cover"
+          />
+        </BestCollectionBook>
+      </BookColumn>
+      <BestCollectionInfo>{title}</BestCollectionInfo>
+    </BestCollectionContainer>
   );
 };
 
