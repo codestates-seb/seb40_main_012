@@ -71,9 +71,10 @@ const MainBooks = () => {
                 bookId={el.bookId}
                 bookTitle={el.title}
                 author={el.author}
-                publish="출판사"
+                publish={el.publisher}
                 genre={el.genre}
                 rating={el.averageRating}
+                cover={el.cover}
               />
             );
           })}
