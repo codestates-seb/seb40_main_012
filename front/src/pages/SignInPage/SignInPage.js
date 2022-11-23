@@ -61,7 +61,7 @@ const SignInPage = () => {
         if (!response.payload?.error) {
           navigate('/', { replace: true });
         } else {
-          setShowLoginError((prev) => !prev);
+          setShowLoginError(true);
         }
       })
       .catch((err) => console.log(err));
