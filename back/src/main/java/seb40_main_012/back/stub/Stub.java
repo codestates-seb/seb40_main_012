@@ -12,8 +12,14 @@ import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.entity.BookCollectionTag;
+import seb40_main_012.back.bookCollection.entity.Tag;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.bookCollection.repository.BookCollectionTagRepository;
+import seb40_main_012.back.bookCollection.repository.TagRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
+import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
+import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
@@ -27,6 +33,8 @@ import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.Category;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.UserCategory;
+import seb40_main_012.back.user.entity.enums.AgeType;
+import seb40_main_012.back.user.entity.enums.GenderType;
 import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
@@ -50,6 +58,9 @@ public class Stub {
     @Transactional
     CommandLineRunner stubInit(UserRepository userRepository, UserService userService,
                                BookRepository bookRepository, BookService bookService,
+                               BookCollectionTagRepository collectionTagRepository,
+                               BookCollectionBookRepository collectionBookRepository,
+                               TagRepository tagRepository,
                                BookCollectionRepository bookCollectionRepository, BookCollectionService bookCollectionService,
                                PairingRepository pairingRepository, PairingService pairingService,
                                CommentRepository commentRepository, CommentService commentService,
@@ -220,6 +231,7 @@ public class Stub {
         log.info("USER STUB " +
                 userRepository.save(user25));
 
+
         for (long i = 26; i <= 35; i++) {
             User user = new User();
             long rand = (long) (Math.random() * 9) + 1;
@@ -259,6 +271,28 @@ public class Stub {
                             .isbn13("" + i)
                             .genre(Genre.values()[new Random().nextInt(Genre.values().length)])
                             .view((int) (Math.random() * 150))
+                            .title("Stub_Book_" + i)
+                            .averageRating((double) Math.round(
+                                    ((Math.random() * 5) * 100))
+                                    / 100
+                            )
+                            .ratingCount((int) (Math.random() * 35))
+                            .build()));
+        }
+
+        // ------------------------------------------------------------------------------------------
+        // 컬렉션용 BOOK STUB
+        // ------------------------------------------------------------------------------------------
+
+        for (long i = 1; i <= 50; i++) {
+
+            log.info("BOOK STUB " +
+                    bookRepository.save(Book.builder()
+                            .isbn13("" + i)
+                            .genre(Genre.values()[new Random().nextInt(Genre.values().length)])
+                            .view((int) (Math.random() * 150))
+                            .author("양귀자 (지은이)")
+                            .cover("https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg")
                             .title("Stub_Book_" + i)
                             .averageRating((double) Math.round(
                                     ((Math.random() * 5) * 100))
@@ -435,7 +469,66 @@ public class Stub {
         }
 
 //        ------------------------------------------------------------------------------------------
+//              컬렉션 테스트용 stub
 //        ------------------------------------------------------------------------------------------
+
+
+
+//        User findUser = userService.findVerifiedUser(1L);
+//
+//        BookCollection bookCollection = bookCollectionRepository.save(BookCollection.builder()
+//                .book(bookService.findBook("1"))
+//                .title("컬렉션 타이틀")
+//                .content("컬렉션 본문")
+//                .likeCount(1L)
+//                .view(3L)
+//                .collectionTags(null)
+//                .user(findUser)
+//                .createdAt(LocalDateTime.now())
+//                .build());
+//
+//        log.info("BOOK_COLLECTION STUB " + bookCollection);
+//
+//        bookCollection.setCollectionTag();
+//
+//        Tag newTag = new Tag("x");
+//        tagRepository.save(newTag);
+//        BookCollectionTag collectionTag = new BookCollectionTag(bookCollection, newTag);
+//        bookCollectionRepository.save(bookCollection);
+//        collectionTagRepository.save(collectionTag);
+//        bookCollection.addCollectionTag(collectionTag);
+//        findUser.addBookCollection(bookCollection);
+//        bookCollection.addUser(findUser);
+//
+//        Book newBook = bookService.updateView("x");
+//        BookCollectionBook findCollectionBook = new BookCollectionBook(newBook, bookCollection);
+//        collectionBookRepository.save(findCollectionBook);
+//        bookCollection.addCollectionBook(findCollectionBook);
+
+
+        User user26 = new User();
+
+
+        UserCategory userCategory26 = new UserCategory();
+        Category category26 = new Category();
+        category26.setId(1L);
+        userCategory26.addUser(user26);
+        userCategory26.addCategory(category26);
+
+        user26.setEmail("collection@email.com");
+        user26.setNickName("컬렉션 유저");
+        user26.setGender(GenderType.FEMALE);
+        user26.setIntroduction("hi i m groot");
+        user26.setAge(AgeType.OTHERS);
+        user26.setBookTemp(99.9);
+        user26.setPassword(encoder.encode("1234"));
+        user26.setRoles(List.of("USER"));
+        user26.setCategories(List.of(userCategory26));
+
+        log.info("USER STUB " +
+                userRepository.save(user26));
+
+
 //        ------------------------------------------------------------------------------------------
 //        ------------------------------------------------------------------------------------------
 //        ------------------------------------------------------------------------------------------
