@@ -21,7 +21,7 @@ public class BookInfoSearchController {
 
         log.info("[Request] Book List Search");
 
-        return new ResponseEntity<>(bookInfoService.listSearch(title, 1, 20), HttpStatus.OK);
+        return new ResponseEntity<>(bookInfoService.listSearch(title,"Accuracy", 1, 20), HttpStatus.OK);
     }
 
     @GetMapping("/info")
