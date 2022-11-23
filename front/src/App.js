@@ -1,11 +1,12 @@
-import { useEffect } from 'react';
+import { Suspense, lazy, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import GlobalStyle from './GlobalStyle';
 import { logout, refreshToken } from './api/authApi';
 import { selectIsLogin } from './store/modules/authSlice';
-import RoutesComponent from './components/RoutesComponent';
 import ScrollToTop from './components/ScrollToTop';
+
+const RoutesComponent = lazy(() => import('./components/RoutesComponent'));
 
 const App = () => {
   const isLogin = useSelector(selectIsLogin);
@@ -28,7 +29,16 @@ const App = () => {
     <BrowserRouter>
       <ScrollToTop />
       <GlobalStyle />
-      <RoutesComponent />
+      <Suspense
+        fallback={
+          <img
+            src={'/images/cherrypick_loading.gif'}
+            alt="loading cherrypick"
+          ></img>
+        }
+      >
+        <RoutesComponent />
+      </Suspense>
     </BrowserRouter>
   );
 };
