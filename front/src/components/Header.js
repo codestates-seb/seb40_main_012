@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation, Link, useNavigate } from 'react-router-dom';
 import Searchbar from './Searchbar';
 import { useSelector } from 'react-redux';
 import { selectIsLogin } from '../store/modules/authSlice';
@@ -100,6 +100,8 @@ const Header = () => {
   const location = useLocation();
   const isLogin = useSelector(selectIsLogin);
 
+  const navigate = useNavigate();
+
   const handleClickLogoutButton = async () => {
     try {
       await logout();
@@ -108,7 +110,15 @@ const Header = () => {
     }
   };
 
-  return (
+  const handleClickMypageBtn = () => {
+    if (isLogin) {
+      navigate('/mypage');
+    } else {
+      navigate('/user/signin');
+    }
+  };
+
+   return (
     <HeaderContainer>
       <div className="header_left">
         <LogoContainer>
@@ -151,17 +161,16 @@ const Header = () => {
             <LoginOutBtn>로그인</LoginOutBtn>
           </Link>
         )}
-        <Link to="/mypage">
-          <MyPageIconContainer>
-            <img
-              src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
-              alt="Mypage Icon"
-            />
-          </MyPageIconContainer>
-        </Link>
+        <MyPageIconContainer onClick={handleClickMypageBtn}>
+          <img
+            src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
+            alt="Mypage Icon"
+          />
+        </MyPageIconContainer>
       </div>
     </HeaderContainer>
   );
 };
+
 
 export default Header;
