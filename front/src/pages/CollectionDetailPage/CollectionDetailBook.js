@@ -27,8 +27,13 @@ const BookInfo = styled.div`
   font-weight: 700;
   justify-content: space-between;
   .title {
+    font-size: 13px;
     color: ${({ theme }) => theme.colors.dark};
     word-wrap: normal;
+  }
+  .author {
+    font-size: 11px;
+    color: ${({ theme }) => theme.colors.darkgray};
   }
   .rating {
     color: ${({ theme }) => theme.colors.mainColor};
@@ -38,7 +43,7 @@ const BookInfo = styled.div`
   }
 `;
 
-const CollectionDetailBook = ({ bookTitle, rating, bookId }) => {
+const CollectionDetailBook = ({ bookTitle, rating, bookId, cover, author }) => {
   const navigate = useNavigate();
 
   const handleBookClick = () => {
@@ -47,12 +52,10 @@ const CollectionDetailBook = ({ bookTitle, rating, bookId }) => {
 
   return (
     <CollectionDetailBookContainer onClick={handleBookClick}>
-      <img
-        src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-        alt="book cover"
-      />
+      <img src={cover} alt="book cover" />
       <BookInfo>
         <div className="title">{bookTitle}</div>
+        <div className="author">{author}</div>
         <div className="rating">★ {rating}</div>
       </BookInfo>
     </CollectionDetailBookContainer>

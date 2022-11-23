@@ -68,7 +68,7 @@ const MainBooks = () => {
               <MainBook
                 key={el.isbn13}
                 ranking={idx + 1}
-                bookId={el.bookId}
+                isbn={el.isbn13}
                 bookTitle={el.title}
                 author={el.author}
                 publish={el.publisher}
