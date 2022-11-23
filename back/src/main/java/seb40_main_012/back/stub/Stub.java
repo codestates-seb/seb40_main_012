@@ -455,23 +455,49 @@ public class Stub {
 
             long rand1 = (long) (Math.random() * 100) + 1;
             long rand2 = (long) (Math.random() * 100) + 1;
+            long rand3 = (long) (Math.random() * 30) + 1;
 
             log.info("BOOK_COLLECTION STUB " +
                     bookCollectionRepository.save(BookCollection.builder()
-                            .book(bookService.findBook("1"))
                             .title("Stub_Book_Collection_" + i)
+                            .user(userService.findVerifiedUser(rand3))
                             .content("Stub_Book_Collection_Content" + i)
                             .likeCount(rand1)
                             .view(rand2)
+                            .bookIsbn13(Stream.of(String.valueOf(1), String.valueOf(3), String.valueOf(5), String.valueOf(7))
+                                    .distinct().collect(Collectors.toList()))
                             .createdAt(LocalDateTime.now())
+                            .lastModifiedAt(LocalDate.now())
                             .collectionTags(null)
                             .build()));
+        }
+
+        // ------------------------------------------------------------------------------------------
+        // BOOK_COLLECTION_COMMENT Stub
+        // ------------------------------------------------------------------------------------------
+
+        for (long i = 1; i <= 52; i++) {
+
+            long rand = (long) (Math.random() * 35) + 1;
+
+            log.info("BOOK_COLLECTION_COMMENT STUB " +
+                    commentRepository.save(
+                            Comment.builder()
+                                    .commentType(CommentType.BOOK_COLLECTION)
+                                    .view((int) (Math.random() * 150))
+                                    .bookCollection(bookCollectionService.findVerifiedCollection(i))
+                                    .user(userService.findVerifiedUser(rand))
+                                    .body("Stub_Book_Collection_Comment_Body_" + i)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
         }
 
 //        ------------------------------------------------------------------------------------------
 //              컬렉션 테스트용 stub
 //        ------------------------------------------------------------------------------------------
-
 
 
 //        User findUser = userService.findVerifiedUser(1L);

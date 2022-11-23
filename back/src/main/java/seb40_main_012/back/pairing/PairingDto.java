@@ -53,6 +53,9 @@ public class PairingDto {
         @Lob
         private String body;
 
+        @NotNull(message = "카테고리를 선택하셔야 합니다.")
+        private ParingCategory pairingCategory;
+
         private String imagePath;
 
         private String outLinkPath;
