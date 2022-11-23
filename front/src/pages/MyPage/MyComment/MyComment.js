@@ -2,11 +2,11 @@ import Header from '../Header';
 import PageContainer from '../../../components/PageContainer';
 import Nav from '../Nav';
 import Container from '@mui/material/Container';
-import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
+import { MY_PAIRING_URL } from '../../../api/requests';
 import styled from 'styled-components';
 import Content from './Content';
+import axios from '../../../api/axios';
 
 const Void = styled.div`
   min-width: 50vw;
@@ -24,32 +24,37 @@ const Void = styled.div`
 `;
 const MyComment = () => {
   const [view, setView] = useState(1);
-  const CommentData = useSelector((state) =>
-    state.myComment.data.length !== 0
-      ? state.myComment.data.data.content
-      : false
-  );
-  console.log(CommentData);
+  const [content, setContent] = useState({
+    listCount: '',
+    data: [],
+  });
 
-  // console.log(CommentData);
-  const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(asyncGetMyCommentList());
-  }, [dispatch]);
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    axios
+      // ?.get(MY_PAIRING_URL, {
+      //   headers: {
+      //     Authorization:
+      //       'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyLsnpHsl4Ug7IK07J2466eIIl0sImVtYWlsIjoic21pbGVfYW5nZWxAZW1haWwuY29tIiwic3ViIjoic21pbGVfYW5nZWxAZW1haWwuY29tIiwiaWF0IjoxNjY5MTgzNTQyLCJleHAiOjE2NjkxOTA3NDJ9.hosCCTfPDEK5bBmLTYufoyrflDMx1wXP_S5A7X3i8iY',
+      //   },
+      // })
+      .get(MY_PAIRING_URL)
+      .then((response) => {
+        setContent(response.data);
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <PageContainer header footer>
-      {/* xs , sm, md, lg, xl 사이즈 */}
-
-      {CommentData ? (
+      {content ? (
         <Container maxWidth="md">
           <Header></Header>
-          <Nav view={view} setView={setView} CommentData={CommentData}></Nav>
-          <Content
-            view={view}
-            setView={setView}
-            commentData={CommentData}
-          ></Content>
+          <Nav view={view} setView={setView} content={content}></Nav>
+          <Content view={view} setView={setView} content={content}></Content>
         </Container>
       ) : (
         <Container maxWidth="md">

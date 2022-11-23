@@ -3,9 +3,6 @@ import Typography from '@mui/material/Typography';
 import styled, { ThemeProvider } from 'styled-components';
 import { Link } from 'react-router-dom';
 import theme from '../../styles/theme';
-import { useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { asyncGetMyCommentList } from '../../store/modules/commentSlice';
 
 const BorderCSS = styled.button`
   outline: none;
@@ -70,12 +67,8 @@ const Circle = styled.div`
   border-radius: 50%;
 `;
 
-const Nav = ({ CommentData, view, setView }) => {
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(asyncGetMyCommentList());
-  }, [dispatch]);
-  console.log(view);
+const Nav = ({ content, view, setView }) => {
+  console.log(content);
 
   return (
     <div>
@@ -98,7 +91,7 @@ const Nav = ({ CommentData, view, setView }) => {
                 </CommentBorderCSS>
                 <Circle className="circle">
                   <Typography variant="h6" style={{ color: 'white' }}>
-                    {CommentData?.length}
+                    {content?.listCount}
                   </Typography>
                 </Circle>
               </>
@@ -128,7 +121,7 @@ const Nav = ({ CommentData, view, setView }) => {
                 </CommentBorderCSS>
                 <Circle className="circle">
                   <Typography variant="h6" style={{ color: 'white' }}>
-                    {CommentData?.length}
+                    {content?.listCount}
                   </Typography>
                 </Circle>
               </>
@@ -158,7 +151,7 @@ const Nav = ({ CommentData, view, setView }) => {
                 </CommentBorderCSS>
                 <Circle className="circle">
                   <Typography variant="h6" style={{ color: 'white' }}>
-                    {CommentData?.length}
+                    {content?.listCount}
                   </Typography>
                 </Circle>
               </>
@@ -188,7 +181,7 @@ const Nav = ({ CommentData, view, setView }) => {
                 </CommentBorderCSS>
                 <Circle className="circle">
                   <Typography variant="h6" style={{ color: 'white' }}>
-                    {CommentData?.length}
+                    {content?.listCount}
                   </Typography>
                 </Circle>
               </>
