@@ -99,8 +99,7 @@ export default function DeleteModal() {
 
   const pairingData = useSelector((state) => state.pairing.data.pairingRes);
   const bookData = useSelector((state) => state.pairing.data.bookRes);
-  console.log('나와야해', pairingData.pairingCategory);
-  console.log('나와줘', pairingData);
+
   const [category, categoryBind, categoryReset] = useInput(
     pairingData.pairingCategory
   );
