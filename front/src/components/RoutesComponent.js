@@ -97,9 +97,9 @@ const RoutesComponent = () => {
         element={getElement(MyCollection, null)}
       />
       <Route path="/mypage/mypick" element={getElement(MyPick, null)} />
-      <Route path="/settings/profile" element={getElement(EditProfile, null)} />
+      <Route path="/mypage/profile" element={getElement(EditProfile, null)} />
       <Route
-        path="/settings/profile/changepasswd"
+        path="/mypage/profile/changepasswd"
         element={getElement(ChangePassWd, null)}
       />
       <Route path="/redux" element={<ReduxPage />} />

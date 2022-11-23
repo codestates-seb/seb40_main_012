@@ -156,7 +156,7 @@ const EditProfileMain = () => {
           </Grid>
         </Grid>
         <ItemTextStyled>
-          <Link to="/settings/profile/changepasswd" variant="body2">
+          <Link to="/mypage/profile/changepasswd" variant="body2">
             비밀번호 변경
           </Link>
         </ItemTextStyled>

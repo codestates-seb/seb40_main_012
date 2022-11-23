@@ -87,7 +87,7 @@ const ChangePassWd = () => {
     dispatch(setIsValid(params))
       .then((response) => {
         if (response.payload?.data) {
-          navigate('/settings/profile', { replace: true });
+          navigate('/mypage/profile', { replace: true });
         } else {
           console.log(response.payload?.errorMessage);
           setShowLoginError((prev) => !prev);
