@@ -45,8 +45,6 @@ const MyPairing = () => {
       .get(MY_PAIRING_URL)
       .then((response) => {
         setContent(response.data);
-        console.log('state 현재값', content);
-        console.log('response데이터', response);
         setInfiniteData({
           content: response.data,
           hasMore: true,
@@ -57,21 +55,18 @@ const MyPairing = () => {
 
   useEffect(() => {
     fetchData();
-    console.log('useEffect의 state 현재값', content);
   }, []);
 
   useEffect(() => {
     console.log('infiniteData 변경', infiniteData);
   }, [infiniteData]);
 
-  console.log('state 현재값', content);
-
   return (
     <PageContainer header footer>
       {content ? (
         <Container maxWidth="md">
           <Header></Header>
-          <Nav view={view} setView={setView}></Nav>
+          <Nav view={view} setView={setView} content={content}></Nav>
           <Content
             view={view}
             setView={setView}

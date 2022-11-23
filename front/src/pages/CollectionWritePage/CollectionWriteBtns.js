@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const CollectionWriteBtnsContainer = styled.div`
   width: 100%;
@@ -86,31 +85,29 @@ const CollectionWriteBtns = ({ handleCollectionWrite }) => {
   const handleBlurExit = () => setIsHoverExit(false);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionWriteBtnsContainer>
-        <Buttons>
-          <ExitBtn
-            onFocus={handleFocusExit}
-            onMouseOver={handleFocusExit}
-            onMouseLeave={handleBlurExit}
-          >
-            <img
-              src={process.env.PUBLIC_URL + '/images/exit_icon.svg'}
-              alt="exit"
-            />
-            <Link to="/collection">
-              <div>나가기</div>
-            </Link>
-          </ExitBtn>
-          <CollectionWriteBtn onClick={handleCollectionWrite}>
-            생성하기
-          </CollectionWriteBtn>
-        </Buttons>
-        <WarningMsg className={isHoverExit ? 'show' : 'hide'}>
-          <div>작성 중이던 컬렉션이 사라집니다</div>
-        </WarningMsg>
-      </CollectionWriteBtnsContainer>
-    </ThemeProvider>
+    <CollectionWriteBtnsContainer>
+      <Buttons>
+        <ExitBtn
+          onFocus={handleFocusExit}
+          onMouseOver={handleFocusExit}
+          onMouseLeave={handleBlurExit}
+        >
+          <img
+            src={process.env.PUBLIC_URL + '/images/exit_icon.svg'}
+            alt="exit"
+          />
+          <Link to="/collection">
+            <div>나가기</div>
+          </Link>
+        </ExitBtn>
+        <CollectionWriteBtn onClick={handleCollectionWrite}>
+          생성하기
+        </CollectionWriteBtn>
+      </Buttons>
+      <WarningMsg className={isHoverExit ? 'show' : 'hide'}>
+        <div>작성 중이던 컬렉션이 사라집니다</div>
+      </WarningMsg>
+    </CollectionWriteBtnsContainer>
   );
 };
 

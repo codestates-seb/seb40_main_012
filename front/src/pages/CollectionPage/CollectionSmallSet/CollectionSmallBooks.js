@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 import CollectionSmallBook from './CollectionSmallBook';
 
 const CollectionSmallBooksContainer = styled.div`
@@ -30,19 +29,17 @@ const CollectionSmallBooks = ({ title }) => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionSmallBooksContainer onClick={onClickCollectionInfo}>
-        <BookColumn>
-          <CollectionSmallBook />
-          <CollectionSmallBook />
-        </BookColumn>
-        <BookColumn>
-          <CollectionSmallBook />
-          <CollectionSmallBook />
-        </BookColumn>
-        <CollectionSmallInfo>{title}</CollectionSmallInfo>
-      </CollectionSmallBooksContainer>
-    </ThemeProvider>
+    <CollectionSmallBooksContainer onClick={onClickCollectionInfo}>
+      <BookColumn>
+        <CollectionSmallBook />
+        <CollectionSmallBook />
+      </BookColumn>
+      <BookColumn>
+        <CollectionSmallBook />
+        <CollectionSmallBook />
+      </BookColumn>
+      <CollectionSmallInfo>{title}</CollectionSmallInfo>
+    </CollectionSmallBooksContainer>
   );
 };
 

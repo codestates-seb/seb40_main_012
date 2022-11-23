@@ -1,12 +1,11 @@
 import Grid from '@mui/material/Grid';
-import { useState } from 'react';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
+// import { useState } from 'react';
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
   input {
@@ -94,114 +93,171 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ content }) => {
-  const saveData = content.data;
-  const [data, setData] = useState({
-    content: content.data,
-    hasMore: true,
-  });
+const Content = ({
+  setInfiniteData,
+  infiniteData,
+  commentLength,
+  data,
+  setData,
+}) => {
+  // const [data, setData] = useState({
+  //   content: dataArray,
+  //   hasMore: true,
+  // });
 
-  console.log('saveData ', saveData);
-  // console.log('데이터 콘텐츠', data.content);
-  // console.log('pairingLike', content.pairingLike);
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    if (data.content.length >= 100) {
+    if (commentLength >= 100) {
+      // setInfiniteData({
+      //   bookComment: infiniteData.bookComment,
+      //   pairingComment: infiniteData.pairingComment,
+      //   collectionComment: infiniteData.collectionComment,
+      //   hasMore: false,
+      // });
       setData({
         content: data.content,
         hasMore: false,
       });
       return;
     }
-    if (data.content.length <= 10) {
+    if (commentLength < 10) {
       setData({
         content: data.content,
         hasMore: false,
       });
       return;
     }
+    ////// 나중에 통신하는 거 붙여주기
+    // setTimeout(() => {
+    //   setInfiniteData({
+    //     bookComment: infiniteData.bookComment.concat(infiniteData.bookComment),
+    //     pairingComment: infiniteData.pairingComment.concat(
+    //       infiniteData.pairingComment
+    //     ),
+    //     collectionComment: infiniteData.collectionComment.concat(
+    //       infiniteData.collectionComment
+    //     ),
+    //     hasMore: true,
+    //   });
+    // }, 800);
     setTimeout(() => {
       setData({
         content: data.content.concat(data.content),
         hasMore: true,
       });
     }, 800);
+    /////
   };
 
   const onRemove = (targetId) => {
+    // const newBookCommentList = infiniteData.bookComment.filter(
+    //   (el) => el.commentId !== targetId
+    // );
+    // const newPairingCommentList = infiniteData.pairingComment.filter(
+    //   (el) => el.commentId !== targetId
+    // );
+    // const newCollectionCommentList = infiniteData.collectionComment.filter(
+    //   (el) => el.commentId !== targetId
+    // );
+    // setInfiniteData({
+    //   bookComment: newBookCommentList,
+    //   pairingComment: newPairingCommentList,
+    //   collectionComment: newCollectionCommentList,
+    //   hasMore: true,
+    // });
     const newCommentList = data.content.filter(
       (el) => el.commentId !== targetId
     );
-    setData({ content: newCommentList, hasMore: true });
+    setInfiniteData({
+      content: newCommentList,
+      hasMore: true,
+    });
   };
 
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      setData({ content: [], hasMore: false });
+      // setInfiniteData({
+      //   bookComment: [],
+      //   pairingComment: [],
+      //   collectionComment: [],
+      //   hasMore: false,
+      // });
+      setData({
+        content: [],
+        hasMore: false,
+      });
     }
   };
 
+  console.log(
+    'concat궁금해',
+    infiniteData.bookComment
+      .concat(infiniteData.pairingComment)
+      .concat(infiniteData.collectionComment)
+  );
+
   return (
     <>
-      {data.content && (
-        <ContentContainer>
-          <Grid container xs={12}>
-            <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
-              <CommentContainer></CommentContainer>
-            </Grid>
-
-            <Grid
-              item
-              xs={6.5}
-              sx={{
-                display: 'flex',
-                flexDirection: 'row-reverse',
-              }}
-            >
-              <ButtonCSS onClick={removeAll}>
-                <Typography
-                  color="#737373"
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row-reverse',
-                    mt: 1,
-                    mb: 1,
-                  }}
-                  variant="body2"
-                  gutterBottom
-                >
-                  전체 삭제
-                </Typography>
-              </ButtonCSS>
-            </Grid>
+      <ContentContainer>
+        <Grid container xs={12}>
+          <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
+            <CommentContainer></CommentContainer>
           </Grid>
 
-          <InfiniteScroll
-            dataLength={data.content.length}
-            // dataLength={contentLength}
-            next={data.content && fetchMoreData}
-            hasMore={data.hasMore} // 스크롤 막을지 말지 결정
-            loader={
-              <p
-                style={{
-                  textAlign: 'center',
-                }}
-              >
-                <img
-                  src={'/images/cherrypick_loading.gif'}
-                  alt="loading cherrypick"
-                ></img>
-              </p>
-            }
-            height={400}
-            endMessage={
-              <p style={{ textAlign: 'center' }}>
-                <b>Yay! You have seen it all</b>
-              </p>
-            }
+          <Grid
+            item
+            xs={6.5}
+            sx={{
+              display: 'flex',
+              flexDirection: 'row-reverse',
+            }}
           >
-            <div>
-              {data.content.map((data, key) => (
+            <ButtonCSS onClick={removeAll}>
+              <Typography
+                color="#737373"
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row-reverse',
+                  mt: 1,
+                  mb: 1,
+                }}
+                variant="body2"
+                gutterBottom
+              >
+                전체 삭제
+              </Typography>
+            </ButtonCSS>
+          </Grid>
+        </Grid>
+
+        <InfiniteScroll
+          dataLength={data.content.length}
+          // dataLength={data.content.length}
+          // next={data.content && fetchMoreData}
+          next={data.content && fetchMoreData}
+          hasMore={data.hasMore} // 스크롤 막을지 말지 결정
+          loader={
+            <p
+              style={{
+                textAlign: 'center',
+              }}
+            >
+              <img
+                src={'/images/cherrypick_loading.gif'}
+                alt="loading cherrypick"
+              ></img>
+            </p>
+          }
+          height={400}
+          endMessage={
+            <p style={{ textAlign: 'center' }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+        >
+          <div>
+            {data.content ? (
+              data.content.map((data, key) => (
                 <ItemContainer key={key}>
                   <Grid
                     container
@@ -218,7 +274,7 @@ const Content = ({ content }) => {
                         <BookImg>
                           <img
                             className="resize"
-                            src="https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300"
+                            src={data.cover || '/images/cherrypick_loading.gif'}
                             alt="book thumbnail"
                           ></img>
                         </BookImg>
@@ -249,7 +305,6 @@ const Content = ({ content }) => {
                             xs={3}
                             sx={{
                               display: 'flex',
-
                               alignItems: 'center',
                             }}
                             color="#BFBFBF"
@@ -259,7 +314,7 @@ const Content = ({ content }) => {
                               align="center"
                               style={{ color: 'FFD8D8' }}
                             />
-                            {data.pairingLike}
+                            {data.rating ? data.rating : null}
                           </Grid>
                           <Grid
                             item
@@ -272,7 +327,8 @@ const Content = ({ content }) => {
                             color="#737373"
                           >
                             <div>
-                              {data.bookName}, {data.author}
+                              {data.bookName ? data.bookName : null},
+                              {data.author ? data.author : null}
                             </div>
                           </Grid>
                         </div>
@@ -302,11 +358,13 @@ const Content = ({ content }) => {
                     </Grid>
                   </Grid>
                 </ItemContainer>
-              ))}
-            </div>
-          </InfiniteScroll>
-        </ContentContainer>
-      )}
+              ))
+            ) : (
+              <div>데이터없어용</div>
+            )}
+          </div>
+        </InfiniteScroll>
+      </ContentContainer>
     </>
   );
 };

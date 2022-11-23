@@ -35,9 +35,10 @@ const BestBooks = () => {
             <Book
               key={el.isbn13}
               bookTitle={el.title}
-              bookId={el.bookId}
+              isbn={el.isbn13}
               isBest={true}
               ranking={idx + 1}
+              cover={el.cover}
             />
           );
         })}

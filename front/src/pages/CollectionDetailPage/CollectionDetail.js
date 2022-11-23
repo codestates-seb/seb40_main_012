@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 import PageContainer from '../../components/PageContainer';
 import CollectionDetailHeader from './CollectionDetailHeader';
 import CollectionTags from './CollectionTags';
@@ -7,6 +6,12 @@ import CollectionHeaderBtns from './CollectionHeaderBtns';
 import CollectionIntro from './CollectionIntro';
 import CollectionDetailBooks from './CollectionDetailBooks';
 import Comments from '../../components/Comments/Comments';
+import axios from '../../api/axios';
+import { useEffect, useState } from 'react';
+import { ToDateString } from '../../util/ToDateString';
+import { useSelector } from 'react-redux';
+import { selectIsLogin, selectnickName } from '../../store/modules/authSlice';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const CollectionTagBtn = styled.div`
   display: flex;
@@ -14,73 +19,136 @@ const CollectionTagBtn = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
 `;
 
-const commentsData = [
-  {
-    commentId: 1,
-    userInformation: {
-      email: 'hayoung_sama@email.com',
-      nickName: '하영사마',
-      roles: null,
-    },
-    commentType: 'BOOK',
-    body: 'Stub_Pairing_Comment_Body_1',
-    likeCount: 86,
-    view: 0,
-    createdAt: '2022-11-18T10:22:49.79899',
-    modifiedAt: '2022-11-18T10:22:49.799009',
-  },
-  {
-    commentId: 2,
-    userInformation: {
-      email: 'hayoung_sama@email.com',
-      nickName: '하영사마',
-      roles: null,
-    },
-    commentType: 'BOOK',
-    body: 'Stub_Pairing_Comment_Body_1 Stub_Pairing_Comment_Body_1 Stub_Pairing_Comment_Body_1 Stub_Pairing_Comment_Body_1 Stub_Pairing_Comment_Body_1',
-    likeCount: 86,
-    view: 0,
-    createdAt: '2022-11-18T10:22:49.79899',
-    modifiedAt: '2022-11-18T10:22:49.799009',
-  },
-  {
-    commentId: 3,
-    userInformation: {
-      email: 'hayoung_sama@email.com',
-      nickName: '하영사마',
-      roles: null,
-    },
-    commentType: 'BOOK',
-    body: 'Stub_Pairing_Comment_Body_1',
-    likeCount: 86,
-    view: 0,
-    createdAt: '2022-11-18T10:22:49.79899',
-    modifiedAt: '2022-11-18T10:22:49.799009',
-  },
-];
-
-const commentAdd = (content) => {
-  console.log('comment 작성: ', content);
-  //dispatch
-};
-
 const CollectionDetailPage = () => {
+  const [collectionData, setCollectionData] = useState({
+    lastModifiedAt: '',
+    tags: [],
+    books: [],
+    comments: [],
+  });
+  const [isMyCollection, setIsMyCollection] = useState(false);
+  const { collectionId } = useParams();
+  const isLogin = useSelector(selectIsLogin);
+  const usernickName = useSelector(selectnickName);
+  const navigate = useNavigate();
+
+  console.log('ismycollection: ', isMyCollection);
+
+  useEffect(() => {
+    getCollectionData(collectionId);
+    if (collectionData.collectionAuthor === usernickName)
+      setIsMyCollection(true);
+  }, []);
+
+  const getCollectionData = (collectionId) => {
+    //컬렉션 데이터 GET
+    axios
+      .get(`/api/collections/${collectionId}`)
+      .then((res) => {
+        console.log(res.data);
+        setCollectionData(res.data);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCollectionLike = () => {
+    //컬렉션 좋아요
+    if (isLogin) {
+      //로그인했을 때만 동작
+      axios
+        .post(`/api/collections/${collectionId}/like`)
+        .then(() => {
+          getCollectionData(collectionId);
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
+  const handleCollectionDelete = () => {
+    //컬렉션 삭제
+    axios.delete(`/api/collections/${collectionId}`).then(() => {
+      navigate('/collection');
+      console.log('삭제');
+    });
+  };
+
+  const handleCommentAdd = (body) => {
+    axios
+      .post(`/api/collections/${collectionId}/comments/add`, {
+        body,
+      })
+      .then(() => {
+        getCollectionData(collectionId);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCommentDelete = (commentId) => {
+    axios
+      .delete(`/api/comments/${commentId}/delete`)
+      .then(() => {
+        getCollectionData(collectionId);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCommentEdit = (commentId, body) => {
+    axios
+      .patch(`/api/comments/${commentId}/edit`, {
+        body,
+      })
+      .then(() => {
+        getCollectionData(collectionId);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCommentLike = (commentId) => {
+    axios
+      .patch(`/api/comments/${commentId}/like`)
+      .then((res) => {
+        console.log(res.data.data);
+        getCollectionData(collectionId);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCommentDislike = (commentId) => {
+    axios
+      .patch(`/api/comments/${commentId}/dislike`)
+      .then((res) => {
+        console.log(res.data.data);
+        getCollectionData(collectionId);
+      })
+      .catch((error) => console.error(error));
+  };
+
   return (
     <PageContainer footer>
-      <ThemeProvider theme={theme}>
-        <CollectionDetailHeader
-          title="재밌는 책 컬렉션"
-          writer="김뫄뫄"
-          update="2022.11.15"
+      <CollectionDetailHeader
+        title={collectionData.title}
+        writer={collectionData.collectionAuthor}
+        update={ToDateString(collectionData.lastModifiedAt)}
+      />
+      <CollectionTagBtn>
+        <CollectionTags taglist={collectionData.tags} />
+        <CollectionHeaderBtns
+          likeCount={collectionData.likeCount}
+          userLike={collectionData.userLike}
+          handleCollectionLike={handleCollectionLike}
+          handleCollectionDelete={handleCollectionDelete}
         />
-        <CollectionTagBtn>
-          <CollectionTags taglist={['소설', 'sf', '시리즈물']} />
-          <CollectionHeaderBtns />
-        </CollectionTagBtn>
-        <CollectionIntro intro="뫄뫄하고 재밌는 컬렉션입니다!" />
-        <CollectionDetailBooks />
-        <Comments commentsData={commentsData} commentAdd={commentAdd} />
-      </ThemeProvider>
+      </CollectionTagBtn>
+      <CollectionIntro intro={collectionData.content} />
+      <CollectionDetailBooks books={collectionData.books} />
+      <Comments
+        commentsData={collectionData.comments}
+        commentAdd={handleCommentAdd}
+        commentDelete={handleCommentDelete}
+        commentEdit={handleCommentEdit}
+        commentLike={handleCommentLike}
+        commentDislike={handleCommentDislike}
+      />
     </PageContainer>
   );
 };

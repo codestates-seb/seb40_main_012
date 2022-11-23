@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const ContentContainer = styled.div`
@@ -98,20 +97,23 @@ const Content = ({ setInfiniteData, infiniteData }) => {
   //   content: content.data,
   //   hasMore: true,
   // });
-  console.log('infiniteData', infiniteData);
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
     if (infiniteData.content.data.length >= 100) {
       setInfiniteData({
-        content: infiniteData.content.data,
+        content: {
+          data: infiniteData.content.data,
+        },
         hasMore: false,
       });
       return;
     }
     if (infiniteData.content.data.length < 10) {
       setInfiniteData({
-        content: infiniteData.content.data,
+        content: {
+          data: infiniteData.content.data,
+        },
         hasMore: false,
       });
       return;
@@ -119,11 +121,12 @@ const Content = ({ setInfiniteData, infiniteData }) => {
     ////// 나중에 통신하는 거 붙여주기
     setTimeout(() => {
       setInfiniteData({
-        content: infiniteData.content.data.concat(infiniteData.content.data),
+        content: {
+          data: infiniteData.content.data.concat(infiniteData.content.data),
+        },
         // response.data
         hasMore: true,
       });
-      console.log(infiniteData.hasMore);
     }, 800);
     /////
   };
@@ -132,16 +135,15 @@ const Content = ({ setInfiniteData, infiniteData }) => {
     const newCommentList = infiniteData.content.data.filter(
       (el) => el.commentId !== targetId
     );
-    setInfiniteData({ content: newCommentList, hasMore: true });
+    setInfiniteData({ content: { data: newCommentList }, hasMore: true });
   };
 
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      setInfiniteData({ content: [], hasMore: false });
+      setInfiniteData({ content: { data: [] }, hasMore: false });
     }
   };
 
-  console.log('infiniteData', infiniteData);
   return (
     <>
       <ContentContainer>
@@ -177,10 +179,10 @@ const Content = ({ setInfiniteData, infiniteData }) => {
         </Grid>
 
         <InfiniteScroll
-          dataLength={50}
+          dataLength={infiniteData.content.data.length}
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
-          next={fetchMoreData}
+          next={infiniteData.content.data && fetchMoreData}
           hasMore={infiniteData.hasMore} // 스크롤 막을지 말지 결정
           loader={
             <p
@@ -220,7 +222,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                         <BookImg>
                           <img
                             className="resize"
-                            src="https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300"
+                            src={data.bookCover}
                             alt="book thumbnail"
                           ></img>
                         </BookImg>
@@ -240,18 +242,11 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                         </Typography>
 
                         <div className="heart-star-title">
-                          <Grid item xs={3}>
-                            <StarBorderRoundedIcon
-                              align="center"
-                              style={{ color: 'FFF599' }}
-                            />
-                          </Grid>
                           <Grid
                             item
                             xs={3}
                             sx={{
                               display: 'flex',
-
                               alignItems: 'center',
                             }}
                             color="#BFBFBF"
@@ -265,6 +260,15 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                           </Grid>
                           <Grid
                             item
+                            xs={3}
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                            color="#BFBFBF"
+                          ></Grid>
+                          <Grid
+                            item
                             xs={6}
                             sx={{
                               display: 'flex',
@@ -274,7 +278,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                             color="#737373"
                           >
                             <div>
-                              {data.bookName}, {data.author}🎖
+                              {data.bookName}, {data.author}
                             </div>
                           </Grid>
                         </div>

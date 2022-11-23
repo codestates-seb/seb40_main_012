@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectEmail } from '../../store/modules/authSlice';
+import { selectEmail, selectIsLogin } from '../../store/modules/authSlice';
 import styled from 'styled-components';
 import CommentsHeader from './CommentsHeader';
 import Comment from './Comment';
@@ -10,8 +10,17 @@ const CommentsContainer = styled.div`
   padding: 0 20px;
 `;
 
-const Comments = ({ commentsData, commentAdd, commentDelete }) => {
+//TODO: comment dislike 기능 추가
+const Comments = ({
+  commentsData,
+  commentAdd,
+  commentDelete,
+  commentEdit,
+  commentLike,
+  commentDislike,
+}) => {
   const userEmail = useSelector(selectEmail);
+  const isLogin = useSelector(selectIsLogin);
 
   return (
     <CommentsContainer>
@@ -20,10 +29,14 @@ const Comments = ({ commentsData, commentAdd, commentDelete }) => {
         return (
           <Comment
             key={el.commentId}
+            isLogin={isLogin}
             commentId={el.commentId}
+            userEmail={userEmail}
             data={el}
             commentDelete={commentDelete}
-            userEmail={userEmail}
+            commentEdit={commentEdit}
+            commentLike={commentLike}
+            commentDislike={commentDislike}
           />
         );
       })}

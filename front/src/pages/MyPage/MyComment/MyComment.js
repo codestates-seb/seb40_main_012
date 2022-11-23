@@ -1,12 +1,15 @@
 import Header from '../Header';
 import PageContainer from '../../../components/PageContainer';
 import Nav from '../Nav';
-import Container from '@mui/material/Container';
-import { useEffect, useState } from 'react';
-import { MY_PAIRING_URL } from '../../../api/requests';
-import styled from 'styled-components';
 import Content from './Content';
+import Container from '@mui/material/Container';
+import styled from 'styled-components';
+// import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+// import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import axios from '../../../api/axios';
+import { COMMENT_URL } from '../../../api/requests';
+// 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
 
 const Void = styled.div`
   min-width: 50vw;
@@ -22,31 +25,68 @@ const Void = styled.div`
     height: 100px;
   }
 `;
+
 const MyComment = () => {
+  console.log('마이코멘트 시작');
   const [view, setView] = useState(1);
   const [content, setContent] = useState({
-    listCount: '',
-    data: [],
+    listCount: 0,
   });
+
+  const [infiniteData, setInfiniteData] = useState({
+    bookComment: [],
+    pairingComment: [],
+    collectionComment: [],
+    hasMore: true,
+  });
+
+  const fetchData = async () => {
+    axios
+      .get(COMMENT_URL)
+      .then((response) => {
+        setInfiniteData({
+          bookComment: response.data.bookComment,
+          pairingComment: response.data.pairingComment,
+          collectionComment: response.data.collectionComment,
+          hasMore: true,
+        });
+      })
+      .catch((error) => console.log('에러', error));
+  };
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  const fetchData = async () => {
-    axios
-      // ?.get(MY_PAIRING_URL, {
-      //   headers: {
-      //     Authorization:
-      //       'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyLsnpHsl4Ug7IK07J2466eIIl0sImVtYWlsIjoic21pbGVfYW5nZWxAZW1haWwuY29tIiwic3ViIjoic21pbGVfYW5nZWxAZW1haWwuY29tIiwiaWF0IjoxNjY5MTgzNTQyLCJleHAiOjE2NjkxOTA3NDJ9.hosCCTfPDEK5bBmLTYufoyrflDMx1wXP_S5A7X3i8iY',
-      //   },
-      // })
-      .get(MY_PAIRING_URL)
-      .then((response) => {
-        setContent(response.data);
-      })
-      .catch((error) => console.log(error));
+  useEffect(() => {
+    makeLength();
+  }, [infiniteData]);
+
+  useEffect(() => {
+    console.log('infiniteData 변경', infiniteData);
+  }, [infiniteData]);
+
+  const makeLength = () => {
+    setContent({
+      listCount:
+        infiniteData.bookComment.length +
+        infiniteData.pairingComment.length +
+        infiniteData.collectionComment.length,
+    });
   };
+
+  const dataArray = infiniteData.bookComment
+    .concat(infiniteData.pairingComment)
+    .concat(infiniteData.collectionComment);
+
+  const [data, setData] = useState({
+    content: dataArray,
+    hasMore: true,
+  });
+
+  console.log('dataArray 읽기', dataArray);
+  console.log('data content 읽기', data.content);
+  console.log('data 상태 읽기', data);
 
   return (
     <PageContainer header footer>
@@ -54,7 +94,14 @@ const MyComment = () => {
         <Container maxWidth="md">
           <Header></Header>
           <Nav view={view} setView={setView} content={content}></Nav>
-          <Content view={view} setView={setView} content={content}></Content>
+          <Content
+            setInfiniteData={setInfiniteData}
+            infiniteData={infiniteData}
+            commentLength={content.listCount}
+            dataArray={dataArray}
+            data={data}
+            setData={setData}
+          ></Content>
         </Container>
       ) : (
         <Container maxWidth="md">

@@ -1,6 +1,5 @@
 import { useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 
 const GuideContainer = styled.div`
@@ -64,41 +63,39 @@ const Guide = () => {
   const handleClose = () => setOpen(false);
 
   return (
-    <ThemeProvider theme={theme}>
-      <GuideContainer>
-        <div>페어링, 컬렉션</div>
-        <div className="questionmark" onClick={handleOpen} role="presentation">
-          <img
-            src={process.env.PUBLIC_URL + '/images/question_info_icon.svg'}
-            alt="question"
-          />
-        </div>
-        <Modal
-          open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <ModalBox>
-            <div className="img_container">
-              <img
-                src={process.env.PUBLIC_URL + '/images/question_info_icon.svg'}
-                alt="question info"
-              />
-            </div>
-            <div className="title">페어링</div>
-            <div className="info">
-              책과 어울리는 여러가지 문화 컨텐츠를 추천합니다. <br />( 영화,
-              음식, 장소, 음악, 책 ... )
-            </div>
-            <div className="title">컬렉션</div>
-            <div className="info">
-              원하는 책을 골라 나만의 책장을 만들 수 있습니다.
-            </div>
-          </ModalBox>
-        </Modal>
-      </GuideContainer>
-    </ThemeProvider>
+    <GuideContainer>
+      <div>페어링, 컬렉션</div>
+      <div className="questionmark" onClick={handleOpen} role="presentation">
+        <img
+          src={process.env.PUBLIC_URL + '/images/question_info_icon.svg'}
+          alt="question"
+        />
+      </div>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <ModalBox>
+          <div className="img_container">
+            <img
+              src={process.env.PUBLIC_URL + '/images/question_info_icon.svg'}
+              alt="question info"
+            />
+          </div>
+          <div className="title">페어링</div>
+          <div className="info">
+            책과 어울리는 여러가지 문화 컨텐츠를 추천합니다. <br />( 영화, 음식,
+            장소, 음악, 책 ... )
+          </div>
+          <div className="title">컬렉션</div>
+          <div className="info">
+            원하는 책을 골라 나만의 책장을 만들 수 있습니다.
+          </div>
+        </ModalBox>
+      </Modal>
+    </GuideContainer>
   );
 };
 

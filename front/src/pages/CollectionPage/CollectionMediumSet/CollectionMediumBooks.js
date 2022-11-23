@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 import CollectonMediumBook from './CollectionMediumBook';
 import CollectionTags from './CollectinTags';
 
@@ -39,19 +38,17 @@ const CollectonMediumBooks = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionMediumBooksContainer onClick={() => onClickCollection(1)}>
-        <MediumHeader>
-          <CollectionMediumInfo>김뫄뫄님의 컬렉션</CollectionMediumInfo>
-          <CollectionTags tagList={['소설', 'sf']} />
-        </MediumHeader>
-        <MediumBooks>
-          <CollectonMediumBook bookTitle="책 제목1" />
-          <CollectonMediumBook bookTitle="책 제목2" />
-          <CollectonMediumBook bookTitle="책 제목3" />
-        </MediumBooks>
-      </CollectionMediumBooksContainer>
-    </ThemeProvider>
+    <CollectionMediumBooksContainer onClick={() => onClickCollection(1)}>
+      <MediumHeader>
+        <CollectionMediumInfo>김뫄뫄님의 컬렉션</CollectionMediumInfo>
+        <CollectionTags tagList={['소설', 'sf']} />
+      </MediumHeader>
+      <MediumBooks>
+        <CollectonMediumBook bookTitle="책 제목1" />
+        <CollectonMediumBook bookTitle="책 제목2" />
+        <CollectonMediumBook bookTitle="책 제목3" />
+      </MediumBooks>
+    </CollectionMediumBooksContainer>
   );
 };
 

@@ -17,10 +17,9 @@ const BooksContainer = styled.div`
 const UserBooks = ({ nickname }) => {
   const [userBooks, setUserBooks] = useState([]);
 
-  //TODO: 유저 선호 장르 기능 개발 완료시 수정
   useEffect(() => {
     axios
-      .get('/api/books/best') // api/books/recommended 로 수정
+      .get('/api/books/recommended')
       .then((response) => {
         setUserBooks(response.data.data);
       })
@@ -33,7 +32,12 @@ const UserBooks = ({ nickname }) => {
       <BooksContainer>
         {userBooks.map((el) => {
           return (
-            <Book key={el.isbn13} bookTitle={el.title} bookId={el.bookId} />
+            <Book
+              key={el.isbn13}
+              bookTitle={el.title}
+              isbn={el.isbn13}
+              cover={el.cover}
+            />
           );
         })}
       </BooksContainer>

@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 import { GenterMatcherToKor } from '../../util/GenreMatcher';
 
 const randomColor = () => {
@@ -10,7 +9,7 @@ const randomColor = () => {
 const MainBookContainer = styled.div`
   position: relative;
   background-color: ${(props) => props.bgcolor};
-  border-radius: 30px;
+  border-radius: 20px;
   height: 400px;
   img {
     height: 90%;
@@ -38,7 +37,7 @@ const MainBookInfo = styled.div`
   margin: 0 30px;
   background-color: #f5f5f5;
   min-width: 120px;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 20px;
 
   .title {
@@ -83,37 +82,33 @@ const RankInfo = styled.div`
 
 const MainBook = ({
   ranking,
-  bookId,
+  isbn,
   bookTitle,
   author,
   publish,
   genre,
   rating,
+  cover,
 }) => {
   const randomRGB = `rgb(${randomColor()}, ${randomColor()}, ${randomColor()})`;
 
   const navigate = useNavigate();
 
   const onClickMainBook = () => {
-    navigate(`/book/${bookId}`);
+    navigate(`/book/${isbn}`);
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <MainBookContainer bgcolor={randomRGB} onClick={onClickMainBook}>
-        <RankInfo>{ranking}</RankInfo>
-        <img
-          src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-          alt="book cover"
-        />
-        <MainBookInfo>
-          <div className="title">{bookTitle}</div>
-          <div className="author">{`${author} ·${publish}`}</div>
-          <div className="genre">{GenterMatcherToKor(genre)}</div>
-          <div className="rating">★ {rating}</div>
-        </MainBookInfo>
-      </MainBookContainer>
-    </ThemeProvider>
+    <MainBookContainer bgcolor={randomRGB} onClick={onClickMainBook}>
+      <RankInfo>{ranking}</RankInfo>
+      <img src={cover} alt="book cover" />
+      <MainBookInfo>
+        <div className="title">{bookTitle}</div>
+        <div className="author">{`${author} ·${publish}`}</div>
+        <div className="genre">{GenterMatcherToKor(genre)}</div>
+        <div className="rating">★ {rating}</div>
+      </MainBookInfo>
+    </MainBookContainer>
   );
 };
 

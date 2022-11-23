@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const BookContainer = styled.div`
   width: 25%;
@@ -40,24 +39,19 @@ const RankInfo = styled.div`
   font-size: 15px;
 `;
 
-const Book = ({ bookTitle, bookId, ranking = 0, isBest = false }) => {
+const Book = ({ bookTitle, isbn, ranking = 0, isBest = false, cover }) => {
   const navigate = useNavigate();
 
   const onClickBook = () => {
-    navigate(`/book/${bookId}`);
+    navigate(`/book/${isbn}`);
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <BookContainer onClick={onClickBook}>
-        {isBest ? <RankInfo>{ranking}</RankInfo> : null}
-        <img
-          src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-          alt="book cover"
-        />
-        <BookTitle>{bookTitle}</BookTitle>
-      </BookContainer>
-    </ThemeProvider>
+    <BookContainer onClick={onClickBook}>
+      {isBest ? <RankInfo>{ranking}</RankInfo> : null}
+      <img src={cover} alt="book cover" />
+      <BookTitle>{bookTitle}</BookTitle>
+    </BookContainer>
   );
 };
 
