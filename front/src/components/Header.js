@@ -118,7 +118,7 @@ const Header = () => {
     }
   };
 
-   return (
+  return (
     <HeaderContainer>
       <div className="header_left">
         <LogoContainer>
@@ -171,6 +171,5 @@ const Header = () => {
     </HeaderContainer>
   );
 };
-
 
 export default Header;
