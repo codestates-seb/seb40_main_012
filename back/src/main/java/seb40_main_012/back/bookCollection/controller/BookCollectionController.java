@@ -35,68 +35,49 @@ public class BookCollectionController {
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public BookCollectionDto.Response postCollection(
-//            @RequestHeader("Authorization") Long userId,
-            @RequestBody BookCollectionDto.Post request) {
+    public BookCollectionDto.Response postCollection(@RequestBody BookCollectionDto.Post request) {
         BookCollection collection = collectionService.postCollection(request.toEntity(), request.getTags());
         return BookCollectionDto.Response.of(collection);
     }
 
     @PatchMapping("/edit/{collection-id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookCollectionDto.Response patchCollection(
-//            @RequestHeader("Authorization") Long userId,
-            @PathVariable("collection-id") Long collectionId, @RequestBody BookCollectionDto.Post request) {
+    public BookCollectionDto.Response patchCollection(@PathVariable("collection-id") Long collectionId, @RequestBody BookCollectionDto.Post request) {
         BookCollection collection = collectionService.patchCollection(collectionId, request.toEntity(), request.getTags());
         return BookCollectionDto.Response.of(collection);
     }
 
     @GetMapping("/{collection-id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookCollectionDto.CollectionDetails getCollection(
-//            @RequestHeader("Authorization") Long userId,
-            @PathVariable("collection-id") Long collectionId) {
+    public BookCollectionDto.CollectionDetails getCollection(@PathVariable("collection-id") Long collectionId) {
         BookCollection collection = collectionService.getCollection(collectionId);
-        List<String> isbns = collection.getBookIsbn13();
-        List<BookInfoSearchDto.CollectionBook> books = new ArrayList<>();
-        isbns.forEach(
-                x -> books.add(bookInfoSearchService.collectionBookSearch(x))
-        );
 
-        return BookCollectionDto.CollectionDetails.of(collection, books);
+        return BookCollectionDto.CollectionDetails.of(collection);
     }
 
 
     @DeleteMapping("/{collection-id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteCollection(
-//            @RequestHeader("Authorization") Long userId,
-            @PathVariable("collection-id") Long collectionId) {
+    public void deleteCollection(@PathVariable("collection-id") Long collectionId) {
         collectionService.deleteCollection(collectionId);
     }
 
     @PostMapping("/{collection-id}/like")
     @ResponseStatus(HttpStatus.OK)
-    public boolean likeCollection(
-//            @RequestHeader("Authorization") Long userId,
-            @PathVariable("collection-id") Long collectionId) {
+    public boolean likeCollection(@PathVariable("collection-id") Long collectionId) {
         return collectionService.likeCollection(collectionId);
     }
 
     @PostMapping("/{collection-id}/bookmark")
     @ResponseStatus(HttpStatus.OK)
-    public boolean bookmarkCollection(
-//            @RequestHeader("Authorization") Long userId,
-            @PathVariable("collection-id") Long collectionId) {
+    public boolean bookmarkCollection(@PathVariable("collection-id") Long collectionId) {
         return bookmarkService.bookmarkCollection(collectionId);
     }
 
 
     @GetMapping("/userCollection")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection(
-//            @RequestHeader("Authorization") Long userId
-    ) {
+    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {
         User findUser = userService.getLoginUser();
         Long userId = findUser.getUserId();
         List<BookCollection> collections = userService.getUserCollection();
@@ -109,9 +90,7 @@ public class BookCollectionController {
     @GetMapping("/category")
     @ResponseStatus(HttpStatus.OK)
 
-    public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory(
-//            @RequestHeader("Authorization") Long userId
-    ) {
+    public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory() {
 
         List<BookCollection> collections = collectionService.findCollectionByUserCategory();
 
@@ -121,9 +100,7 @@ public class BookCollectionController {
 
     @GetMapping("/tag")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByCollectionTag(
-//            @RequestHeader("Authorization") Long userId
-    ) {
+    public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByCollectionTag() {
         List<BookCollection> collections = collectionService.findCollectionByCollectionTag();
         List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
         return new ListResponseDto<>(tagCollectionDto);
