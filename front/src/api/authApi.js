@@ -1,6 +1,11 @@
 import axios from './axios';
 import { persistor } from '../index';
-import { TOKEN_REFRESH_URL, SIGN_IN_URL, LOGOUT_URL } from './requests';
+import {
+  TOKEN_REFRESH_URL,
+  SIGN_IN_URL,
+  LOGOUT_URL,
+  FIRST_LOGIN_URL,
+} from './requests';
 
 // 만료 시간 (밀리초)
 const ACCESS_EXPIRY_TIME = 2 * 60 * 60 * 1000; // 2시간
@@ -86,4 +91,22 @@ export const logout = () => {
 
 const purge = async () => {
   await persistor.purge();
+};
+
+export const firstLogin = (params) => {
+  return new Promise((resolve, reject) => {
+    return axios
+      .patch(FIRST_LOGIN_URL, params)
+      .then((response) => {
+        resolve(response.data.data);
+      })
+      .catch((error) => {
+        if (Object.prototype.hasOwnProperty.call(error, 'response')) {
+          const { status, message } = error.response.data;
+          reject({ status, message });
+        } else {
+          reject({ status: error.code, message: error.message });
+        }
+      });
+  });
 };

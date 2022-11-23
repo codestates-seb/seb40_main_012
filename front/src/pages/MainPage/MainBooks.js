@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from '../../api/axios';
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 import MainBook from './MainBook';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -61,28 +60,27 @@ const MainBooks = () => {
     prevArrow: <PrevArrow />,
   };
   return (
-    <ThemeProvider theme={theme}>
-      <MainBooksContainer>
-        <MainCarousel>
-          <Slider {...settings}>
-            {mainBooks.map((el, idx) => {
-              return (
-                <MainBook
-                  key={el.isbn13}
-                  ranking={idx + 1}
-                  bookId={el.bookId}
-                  bookTitle={el.title}
-                  author={el.author}
-                  publish="출판사"
-                  genre={el.genre}
-                  rating={el.averageRating}
-                />
-              );
-            })}
-          </Slider>
-        </MainCarousel>
-      </MainBooksContainer>
-    </ThemeProvider>
+    <MainBooksContainer>
+      <MainCarousel>
+        <Slider {...settings}>
+          {mainBooks.map((el, idx) => {
+            return (
+              <MainBook
+                key={el.isbn13}
+                ranking={idx + 1}
+                bookId={el.bookId}
+                bookTitle={el.title}
+                author={el.author}
+                publish={el.publisher}
+                genre={el.genre}
+                rating={el.averageRating}
+                cover={el.cover}
+              />
+            );
+          })}
+        </Slider>
+      </MainCarousel>
+    </MainBooksContainer>
   );
 };
 

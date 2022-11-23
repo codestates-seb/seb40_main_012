@@ -21,6 +21,7 @@ const BestBooks = () => {
     axios
       .get('/api/books/best')
       .then((response) => {
+        console.log(response.data.data);
         setBestBooks(response.data.data);
       })
       .catch((error) => console.error(error));
@@ -35,9 +36,10 @@ const BestBooks = () => {
             <Book
               key={el.isbn13}
               bookTitle={el.title}
-              bookId={el.bookId}
+              isbn={el.isbn13}
               isBest={true}
               ranking={idx + 1}
+              cover={el.cover}
             />
           );
         })}

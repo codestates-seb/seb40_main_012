@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 
 const NewBookContainer = styled.div`
   display: flex;
@@ -35,15 +34,13 @@ const NewBook = ({
   author = '저자',
 }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <NewBookContainer>
-        <CoverContainer>
-          <img src={process.env.PUBLIC_URL + cover} alt="book cover" />
-        </CoverContainer>
-        <TitleContainer>{title}</TitleContainer>
-        <AuthorContainer>{author}</AuthorContainer>
-      </NewBookContainer>
-    </ThemeProvider>
+    <NewBookContainer>
+      <CoverContainer>
+        <img src={process.env.PUBLIC_URL + cover} alt="book cover" />
+      </CoverContainer>
+      <TitleContainer>{title}</TitleContainer>
+      <AuthorContainer>{author}</AuthorContainer>
+    </NewBookContainer>
   );
 };
 

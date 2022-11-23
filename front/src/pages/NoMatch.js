@@ -1,13 +1,5 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../styles/theme';
+import styled from 'styled-components';
 import PageContainer from '../components/PageContainer';
-
-const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
 
 const ImgContainer = styled.div`
   width: 450px;
@@ -135,29 +127,25 @@ const NoMatch = () => {
   const poem = randomPoem();
 
   return (
-    <ThemeProvider theme={theme}>
-      <PageContainer footer>
-        <Wrapper>
-          <ContentsBox>
-            <ImgContainer>
-              <img
-                src={process.env.PUBLIC_URL + '/images/404_image.png'}
-                alt="404 error"
-              />
-            </ImgContainer>
-            <div className="notfound">페이지를 찾을 수 없습니다.</div>
-            <div className="info">
-              예상치 못한 곳에 도달한 당신을 위해 시 한 구절을 준비했어요.
-            </div>
-            <PoemContainer>
-              <div>{poem.poem}</div>
-              <br />
-              <div className="author">{poem.author}</div>
-            </PoemContainer>
-          </ContentsBox>
-        </Wrapper>
-      </PageContainer>
-    </ThemeProvider>
+    <PageContainer footer center maxWidth="xs">
+      <ContentsBox>
+        <ImgContainer>
+          <img
+            src={process.env.PUBLIC_URL + '/images/404_image.png'}
+            alt="404 error"
+          />
+        </ImgContainer>
+        <div className="notfound">페이지를 찾을 수 없습니다.</div>
+        <div className="info">
+          예상치 못한 곳에 도달한 당신을 위해 시 한 구절을 준비했어요.
+        </div>
+        <PoemContainer>
+          <div>{poem.poem}</div>
+          <br />
+          <div className="author">{poem.author}</div>
+        </PoemContainer>
+      </ContentsBox>
+    </PageContainer>
   );
 };
 

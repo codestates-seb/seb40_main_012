@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import Button from '@mui/material/Button';
 import theme from '../styles/theme';
 
@@ -33,18 +33,16 @@ export const BasicButton = ({
   onClick,
 }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <BasicBtn
-        width={width}
-        height={height}
-        borderRadius={borderRadius}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-        onClick={onClick}
-      >
-        {children}
-      </BasicBtn>
-    </ThemeProvider>
+    <BasicBtn
+      width={width}
+      height={height}
+      borderRadius={borderRadius}
+      fontSize={fontSize}
+      fontWeight={fontWeight}
+      onClick={onClick}
+    >
+      {children}
+    </BasicBtn>
   );
 };
 
@@ -76,18 +74,16 @@ export const FillButton = ({
   onClick,
 }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <FillBtn
-        onClick={onClick}
-        width={width}
-        height={height}
-        borderRadius={borderRadius}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-      >
-        {children}
-      </FillBtn>
-    </ThemeProvider>
+    <FillBtn
+      onClick={onClick}
+      width={width}
+      height={height}
+      borderRadius={borderRadius}
+      fontSize={fontSize}
+      fontWeight={fontWeight}
+    >
+      {children}
+    </FillBtn>
   );
 };
 
@@ -114,13 +110,11 @@ export const LikeButton = ({ children }) => {
     setIsLike(!isLike);
   };
   return (
-    <ThemeProvider theme={theme}>
-      <LikeBtnWrapper>
-        <LikeBtn onClick={handleLike} className={isLike ? 'like' : ''}>
-          {children}
-        </LikeBtn>
-      </LikeBtnWrapper>
-    </ThemeProvider>
+    <LikeBtnWrapper>
+      <LikeBtn onClick={handleLike} className={isLike ? 'like' : ''}>
+        {children}
+      </LikeBtn>
+    </LikeBtnWrapper>
   );
 };
 
@@ -154,19 +148,17 @@ export const TransparButton = ({
   onClick,
 }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <TransparBtn
-        onClick={onClick}
-        color={color}
-        width={width}
-        height={height}
-        borderRadius={borderRadius}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-      >
-        {children}
-      </TransparBtn>
-    </ThemeProvider>
+    <TransparBtn
+      onClick={onClick}
+      color={color}
+      width={width}
+      height={height}
+      borderRadius={borderRadius}
+      fontSize={fontSize}
+      fontWeight={fontWeight}
+    >
+      {children}
+    </TransparBtn>
   );
 };
 
@@ -194,17 +186,15 @@ export const MoreButton = ({
   onClick,
 }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <MoreBtn
-        onClick={onClick}
-        width={width}
-        height={height}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-      >
-        {children}
-      </MoreBtn>
-    </ThemeProvider>
+    <MoreBtn
+      onClick={onClick}
+      width={width}
+      height={height}
+      fontSize={fontSize}
+      fontWeight={fontWeight}
+    >
+      {children}
+    </MoreBtn>
   );
 };
 

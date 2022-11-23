@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../styles/theme';
+import styled from 'styled-components';
 
 const CollectionDetailHeaderContainer = styled.div`
   width: 100%;
@@ -34,19 +33,17 @@ const CollectionUpdate = styled.div`
 
 const CollectionDetailHeader = ({ title, writer, update }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionDetailHeaderContainer>
-        <CollectionTitle>{title}</CollectionTitle>
-        <CollectionWriter>
-          <img
-            src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
-            alt="User Profile"
-          />
-          {writer}
-        </CollectionWriter>
-        <CollectionUpdate>마지막 업데이트 {update}</CollectionUpdate>
-      </CollectionDetailHeaderContainer>
-    </ThemeProvider>
+    <CollectionDetailHeaderContainer>
+      <CollectionTitle>{title}</CollectionTitle>
+      <CollectionWriter>
+        <img
+          src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
+          alt="User Profile"
+        />
+        {writer}
+      </CollectionWriter>
+      <CollectionUpdate>마지막 업데이트 {update}</CollectionUpdate>
+    </CollectionDetailHeaderContainer>
   );
 };
 

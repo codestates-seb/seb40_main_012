@@ -1,5 +1,4 @@
-import styled, { ThemeProvider } from 'styled-components';
-import theme from '../../../styles/theme';
+import styled from 'styled-components';
 
 const CollectionLargeBookContainer = styled.div`
   width: 15%;
@@ -18,15 +17,13 @@ const CollectionBookTitle = styled.div`
 
 const CollectionLargeBook = ({ bookTitle }) => {
   return (
-    <ThemeProvider theme={theme}>
-      <CollectionLargeBookContainer>
-        <img
-          src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-          alt="book cover"
-        />
-        <CollectionBookTitle>{bookTitle}</CollectionBookTitle>
-      </CollectionLargeBookContainer>
-    </ThemeProvider>
+    <CollectionLargeBookContainer>
+      <img
+        src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
+        alt="book cover"
+      />
+      <CollectionBookTitle>{bookTitle}</CollectionBookTitle>
+    </CollectionLargeBookContainer>
   );
 };
 

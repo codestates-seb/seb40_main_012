@@ -110,6 +110,17 @@ export const asyncLikePairingComment = createAsyncThunk(
   }
 );
 
+export const asyncDisikePairingComment = createAsyncThunk(
+  'pairingSlice/asyncDisikePairingComment',
+  async (commentId) => {
+    return await axios
+      .patch(`api/comments/${commentId}/dislike`)
+      .then((res) => {
+        return res.data.data;
+      });
+  }
+);
+
 export const pairingSlice = createSlice({
   name: 'pairing',
   initialState,
@@ -210,6 +221,21 @@ export const pairingSlice = createSlice({
       state.status = 'fulfilled';
     });
     builder.addCase(asyncLikePairingComment.rejected, (state) => {
+      state.status = 'rejected';
+    });
+    //comment 좋아요 취소
+    builder.addCase(asyncDisikePairingComment.pending, (state) => {
+      state.status = 'pending';
+    });
+    builder.addCase(asyncDisikePairingComment.fulfilled, (state, action) => {
+      state.data.comments = state.data.comments.map((el) => {
+        if (el.commentId === action.payload.commentId) {
+          return action.payload;
+        } else return el;
+      });
+      state.status = 'fulfilled';
+    });
+    builder.addCase(asyncDisikePairingComment.rejected, (state) => {
       state.status = 'rejected';
     });
   },
