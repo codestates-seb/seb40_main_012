@@ -112,9 +112,8 @@ public class BookCollectionController {
     public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory(
 //            @RequestHeader("Authorization") Long userId
     ) {
-        User findUser = userService.getLoginUser();
-        Long userId = findUser.getUserId();
-        List<BookCollection> collections = collectionService.findCollectionByCollectionTag();
+
+        List<BookCollection> collections = collectionService.findCollectionByUserCategory();
 
         List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
         return new ListResponseDto<>(tagCollectionDto);
