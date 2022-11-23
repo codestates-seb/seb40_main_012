@@ -1,6 +1,7 @@
-import { useState } from 'react';
+//import axios from '../../../api/axios';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import NewBook from './NewBook';
+import Booklist from './Booklist';
 
 const MyBooksContainer = styled.div`
   width: 100%;
@@ -19,7 +20,7 @@ const MyBooksTitle = styled.div`
 
 const Books = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   background-color: white;
   padding: 15px 10px;
   margin: 10px 0;
@@ -41,9 +42,39 @@ const HideBtn = styled(MyBooksBtn)``;
 
 const ShowBtn = styled(MyBooksBtn)``;
 
-const MyBooks = () => {
+const MyBooks = ({ newBooks, setNewBooks }) => {
   const [isOpen, setIsOpen] = useState(false);
-  //const [myBooks, setMyBooks] = useState([]);
+  const [myBooks, setMyBooks] = useState([]);
+
+  useEffect(() => {
+    // axios.get('/api/mypage/bookmark/book').then((res) => {
+    //   console.log(res.data);
+    //   setMyBooks(res.data);
+    //   console.log(myBooks);
+    // });
+    setMyBooks([
+      {
+        title: 'Stub_Book_5',
+        author: '양귀자 (지은이)',
+        ratingCount: 0,
+        isbn13: 2,
+        bookCover:
+          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
+      },
+      {
+        title: 'Stub_Book_6',
+        author: '양귀자 (지은이)',
+        ratingCount: 9,
+        isbn13: 1,
+        bookCover:
+          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
+      },
+    ]);
+  }, []);
+
+  const handleSetNewBooks = (isbn) => {
+    setNewBooks([...new Set([...newBooks, isbn])]);
+  };
 
   return (
     <MyBooksContainer>
@@ -70,13 +101,18 @@ const MyBooks = () => {
         )}
       </MyBooksTitle>
       <Books className={isOpen ? 'open' : 'hide'}>
-        <NewBook />
-        <NewBook />
-        <NewBook />
-        <NewBook />
-        <NewBook />
-        <NewBook />
-        <NewBook />
+        {myBooks.map((el, idx) => {
+          return (
+            <Booklist
+              key={idx}
+              title={el.title}
+              author={el.author}
+              rating={el.ratingCount}
+              isbn={el.isbn13}
+              handleSetNewBooks={handleSetNewBooks}
+            />
+          );
+        })}
       </Books>
     </MyBooksContainer>
   );

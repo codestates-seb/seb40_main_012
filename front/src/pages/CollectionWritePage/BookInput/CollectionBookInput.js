@@ -13,7 +13,7 @@ const CollectionBookInput = ({ data, setData }) => {
   const [newBooks, setNewBooks] = useState([]);
 
   useEffect(() => {
-    setData({ ...data, bookIsbns: newBooks.filter((el) => el.isbn) });
+    setData({ ...data, bookIsbns: newBooks });
   }, [newBooks]);
 
   return (
