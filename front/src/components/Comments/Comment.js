@@ -93,6 +93,11 @@ const LikeBtn = styled.div`
   font-size: 14px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.gray};
+  &.liked {
+    path {
+      fill: ${({ theme }) => theme.colors.mainColor};
+    }
+  }
 `;
 const DeleteBtn = styled.div`
   svg {
@@ -131,16 +136,19 @@ const CheckBtn = styled.button`
 
 //TODO: 본인이 작성한 코멘트만 삭제 버튼 활성화되도록
 const Comment = ({
-  data,
+  isLogin,
   commentId,
-  commentDelete,
   userEmail,
+  data,
+  commentDelete,
   commentEdit,
   commentLike,
+  commentDislike,
 }) => {
   const [isMyComment, setIsMyComment] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
   const [editContent, setEditContent] = useState(data.body);
+  const [isLiked, setIsLiked] = useState(data.isLiked);
 
   useEffect(() => {
     setIsMyComment(userEmail === data.userInformation.email);
@@ -163,7 +171,15 @@ const Comment = ({
   const handleOnChangeEditContent = (e) => setEditContent(e.target.value);
 
   const handleOnClickLikeBtn = () => {
-    commentLike(commentId);
+    if (isLogin) {
+      if (isLiked) {
+        commentDislike(commentId);
+        setIsLiked(false);
+      } else {
+        commentLike(commentId);
+        setIsLiked(true);
+      }
+    }
   };
 
   return (
@@ -215,7 +231,10 @@ const Comment = ({
           </div>
         </BodyContainer>
         <BodyContainer className="btns">
-          <LikeBtn onClick={handleOnClickLikeBtn}>
+          <LikeBtn
+            onClick={handleOnClickLikeBtn}
+            className={isLiked ? 'liked' : 'not'}
+          >
             <svg
               width="25"
               height="25"
