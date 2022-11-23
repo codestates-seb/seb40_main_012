@@ -34,7 +34,7 @@ public class BookInfoSearchService {
                 .fromUriString(getItemLookUpUrl)
                 .queryParam("ttbkey", ttbkey)
                 .queryParam("Query", title)
-                .queryParam("QueryType", "Title")
+                .queryParam("QueryType", "Keyword")
                 .queryParam("SearchTarget", "Book")
                 .queryParam("start", page)
                 .queryParam("MaxResults", size)
