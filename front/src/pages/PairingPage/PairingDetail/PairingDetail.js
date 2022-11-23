@@ -118,13 +118,13 @@ const PairingDetail = () => {
         </InfoContent>
       </MainBody>
       <Comments
-          commentsData={pairingData.comments}
-          commentAdd={handleCommentAdd}
-          commentDelete={handleCommentDelete}
-          commentEdit={handleCommentEdit}
-          commentLike={handleCommentLike}
-          commentDislike={handleCommentDislike}
-        />
+        commentsData={pairingData.comments}
+        commentAdd={handleCommentAdd}
+        commentDelete={handleCommentDelete}
+        commentEdit={handleCommentEdit}
+        commentLike={handleCommentLike}
+        commentDislike={handleCommentDislike}
+      />
     </PageContainer>
   );
 };
