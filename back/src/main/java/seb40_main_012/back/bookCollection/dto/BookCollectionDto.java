@@ -99,7 +99,7 @@ public class BookCollectionDto {
                     .content(collection.getContent())
                     .createdAt(collection.getCreatedAt())
                     .lastModifiedAt(collection.getLastModifiedAt())
-                    .likeCount(collection.getLikeCount())
+                    .likeCount(collection.getCollectionLikes().stream().count())
                     .view(collection.getView())
                     .userLike(!collection.getUser().getCollectionLikes().isEmpty())
                     .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
