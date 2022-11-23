@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { selectEmail } from '../../store/modules/authSlice';
+import { selectEmail, selectIsLogin } from '../../store/modules/authSlice';
 import styled from 'styled-components';
 import CommentsHeader from './CommentsHeader';
 import Comment from './Comment';
@@ -17,8 +17,10 @@ const Comments = ({
   commentDelete,
   commentEdit,
   commentLike,
+  commentDislike,
 }) => {
   const userEmail = useSelector(selectEmail);
+  const isLogin = useSelector(selectIsLogin);
 
   return (
     <CommentsContainer>
@@ -27,12 +29,14 @@ const Comments = ({
         return (
           <Comment
             key={el.commentId}
+            isLogin={isLogin}
             commentId={el.commentId}
+            userEmail={userEmail}
             data={el}
             commentDelete={commentDelete}
-            userEmail={userEmail}
             commentEdit={commentEdit}
             commentLike={commentLike}
+            commentDislike={commentDislike}
           />
         );
       })}
