@@ -109,13 +109,13 @@ public class UserController {
 
 
     /** 조회 API */
-    @GetMapping("/mypage/nickName")
-    @ResponseStatus(HttpStatus.OK)
-    public UserDto.ProfileResponse getNickName(){
-        User findUser = userService.getLoginUser();
-        User user = userService.findVerifiedUser(findUser.getUserId());
-        return new UserDto.ProfileResponse(user.getNickName());
-    }
+//    @GetMapping("/mypage/nickName")
+//    @ResponseStatus(HttpStatus.OK)
+//    public UserDto.ProfileResponse getNickName(){
+//        User findUser = userService.getLoginUser();
+//        User user = userService.findVerifiedUser(findUser.getUserId());
+//        return new UserDto.ProfileResponse(user.getNickName());
+//    }
 
     @GetMapping("/mypage/userInfo")
     @ResponseStatus(HttpStatus.OK)
