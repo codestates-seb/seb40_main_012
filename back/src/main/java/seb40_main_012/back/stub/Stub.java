@@ -38,6 +38,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Configuration
 public class Stub {
@@ -300,13 +302,20 @@ public class Stub {
 
             long rand1 = (long) (Math.random() * 100) + 1;
             long rand2 = (long) (Math.random() * 100) + 1;
+            long rand3 = (long) (Math.random() * 35) + 1;
+            long rand4 = (long) (Math.random() * 50) + 1;
+            long rand5 = (long) (Math.random() * 50) + 1;
+            long rand6 = (long) (Math.random() * 50) + 1;
 
             log.info("BOOK_COLLECTION STUB " +
                     bookCollectionRepository.save(BookCollection.builder()
                             .title("Stub_Book_Collection_" + i)
+                            .user(userService.findUser(rand3))
                             .content("Stub_Book_Collection_Content" + i)
                             .likeCount(rand1)
                             .view(rand2)
+                            .bookIsbn13(Stream.of(String.valueOf(rand3), String.valueOf(rand4), String.valueOf(rand5), String.valueOf(rand6))
+                                    .distinct().collect(Collectors.toList()))
                             .createdAt(LocalDateTime.now())
                             .lastModifiedAt(LocalDate.now())
                             .collectionTags(null)
