@@ -6,24 +6,48 @@ import theme from '../styles/theme';
 import Header from './Header';
 import Footer from './Footer';
 
-const PageContainer = ({ children, header, footer }) => {
-  return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-        }}
-      >
+const PageContainer = ({ children, header, footer, center, maxWidth }) => {
+  if (center) {
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
         {header === false ? null : <Header />}
-        <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="lg">
-          {children}
+        <Container component="main" maxWidth={maxWidth}>
+          <Box
+            sx={{
+              marginTop: 0,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: !footer ? '100vh' : 'calc(100vh - 200px)', // footer
+            }}
+          >
+            {children}
+          </Box>
         </Container>
         {footer ? <Footer /> : null}
-      </Box>
-    </ThemeProvider>
-  );
+      </ThemeProvider>
+    );
+  } else {
+    return (
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {header === false ? null : <Header />}
+          <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="lg">
+            {children}
+          </Container>
+          {footer ? <Footer /> : null}
+        </Box>
+      </ThemeProvider>
+    );
+  }
 };
 
 export default PageContainer;
