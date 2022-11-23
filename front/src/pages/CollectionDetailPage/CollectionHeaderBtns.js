@@ -75,6 +75,8 @@ const ModalBox = styled.div`
     align-items: center;
     justify-content: center;
     margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
     background-color: #e8e8e8;
     &:hover {
       cursor: pointer;
@@ -82,6 +84,7 @@ const ModalBox = styled.div`
   }
 `;
 
+//TODO: 내가 작성한 컬렉션만 삭제 버튼 노출
 const CollectionHeaderBtns = ({
   likeCount,
   userLike,
@@ -144,7 +147,7 @@ const CollectionHeaderBtns = ({
           <div className="info">정말 삭제하시겠습니까?</div>
           <div className="container">
             <div className="close" onClick={handleClose} role="presentation">
-              X
+              취소
             </div>
             <div
               className="delete"
