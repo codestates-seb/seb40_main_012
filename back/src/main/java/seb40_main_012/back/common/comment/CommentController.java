@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
+import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
@@ -66,9 +67,14 @@ public class CommentController {
         );
     }
 
-    @PostMapping("/bookcollections/{bookcollection_id}/comments/add")
-    public ResponseEntity postBookCollectionComment(@RequestHeader("Authorization") long userId) {
-        return null;
+    @PostMapping("/collections/{collection-id}/comments/add")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CommentDto.Response postBookCollectionComment(@PathVariable("collection-id") Long collectionId, @Valid @RequestBody CommentDto.Post request) {
+
+        Comment comment = commentMapper.commentPostToComment(request);
+        Comment createdComment = commentService.createBookCollectionComment(comment,collectionId);
+        CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
+        return response;
     }
 
     @PatchMapping("/comments/{comment_id}/edit")
