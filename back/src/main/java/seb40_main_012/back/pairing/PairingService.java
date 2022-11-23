@@ -11,6 +11,7 @@ import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeRepository;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 public class PairingService {
 
     private final PairingRepository pairingRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final LikeRepository likeRepository;
     private final BookService bookService;
     private final BookRepository bookRepository;
@@ -171,6 +173,21 @@ public class PairingService {
         comment.setIsLiked(isLiked);
 
         return comment;
+    }
+
+    public Pairing isBookMarkedPairing(Pairing pairing, User user) {
+
+        Boolean isBookmarked;
+
+        if (bookmarkRepository.findByUserAndPairing(user,pairing) == null) { //좋아요 안 누른 경우
+            isBookmarked = false;
+        } else {
+            isBookmarked = true;
+        }
+
+        pairing.setIsBookmarked(isBookmarked);
+
+        return pairing;
     }
 
 
