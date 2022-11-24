@@ -73,6 +73,19 @@ const BookWrapperStyled = styled.div`
   margin: 15px;
 `;
 
+const WarningMsg = styled.div`
+  padding: 0 10px;
+  font-size: 13px;
+  display: flex;
+  div {
+    background-color: #ffc5c5;
+    padding: 8px;
+    font-weight: 700;
+    color: #850000;
+    border-radius: 3px;
+  }
+`;
+
 export default function DeleteModal() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -183,9 +196,15 @@ export default function DeleteModal() {
               취소하기
             </TextButton>
             <TextButton onClick={resetAll}>초기화하기</TextButton>
-            <ContainedButton width={'120px'} onClick={handleSubmit}>
-              저장하기
-            </ContainedButton>
+            {category === '' || title === '' ? (
+              <WarningMsg>
+                <div>카테고리와 제목을 입력해주세요</div>
+              </WarningMsg>
+            ) : (
+              <ContainedButton width={'120px'} onClick={handleSubmit}>
+                저장하기
+              </ContainedButton>
+            )}
           </BtnStyleBox>
         </Box>
       </Modal>
