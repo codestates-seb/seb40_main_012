@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { selectIsLogin } from '../../../store/modules/authSlice';
+import NeedLoginModal from './NeedLoginModal';
 
 const Btns = styled.button`
   display: flex;
@@ -22,6 +25,8 @@ const Btns = styled.button`
 `;
 
 const LikeButton = ({ isLiked, LikePlus, LikeMinus, children }) => {
+  const isLogin = useSelector(selectIsLogin);
+
   const setFilledHeart = () => {
     LikePlus();
   };
@@ -30,22 +35,36 @@ const LikeButton = ({ isLiked, LikePlus, LikeMinus, children }) => {
   };
   return (
     <div>
-      {isLiked ? (
-        <Btns onClick={setUnfilledHeart}>
-          <img
-            src={process.env.PUBLIC_URL + '/images/p_heart_filled_icon.svg'}
-            alt="heart icon"
-          />
-          <span>{children}</span>
-        </Btns>
+      {isLogin ? (
+        <div>
+          {isLiked ? (
+            <Btns onClick={setUnfilledHeart}>
+              <img
+                src={process.env.PUBLIC_URL + '/images/p_heart_filled_icon.svg'}
+                alt="heart icon"
+              />
+              <span>{children}</span>
+            </Btns>
+          ) : (
+            <Btns onClick={setFilledHeart}>
+              <img
+                src={
+                  process.env.PUBLIC_URL + '/images/p_heart_unfilled_icon.svg'
+                }
+                alt="heart icon"
+              />
+              <span>{children}</span>
+            </Btns>
+          )}
+        </div>
       ) : (
-        <Btns onClick={setFilledHeart}>
+        <NeedLoginModal>
           <img
             src={process.env.PUBLIC_URL + '/images/p_heart_unfilled_icon.svg'}
             alt="heart icon"
           />
           <span>{children}</span>
-        </Btns>
+        </NeedLoginModal>
       )}
     </div>
   );

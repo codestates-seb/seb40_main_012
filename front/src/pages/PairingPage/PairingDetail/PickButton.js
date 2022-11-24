@@ -1,4 +1,7 @@
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { selectIsLogin } from '../../../store/modules/authSlice';
+import NeedLoginModal from './NeedLoginModal';
 
 const Btns = styled.button`
   display: flex;
@@ -22,27 +25,45 @@ const Btns = styled.button`
 `;
 
 const PickButton = ({ isBookmarked, handleBookmark }) => {
+  const isLogin = useSelector(selectIsLogin);
+
   const handlePick = () => {
     handleBookmark();
   };
   return (
     <div>
-      {isBookmarked ? (
-        <Btns onClick={handlePick}>
-          <img
-            src={process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'}
-            alt="bookmark icon"
-          />
-          <span>나의 Pick</span>
-        </Btns>
+      {isLogin ? (
+        <div>
+          {isBookmarked ? (
+            <Btns onClick={handlePick}>
+              <img
+                src={
+                  process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'
+                }
+                alt="bookmark icon"
+              />
+              <span>나의 Pick</span>
+            </Btns>
+          ) : (
+            <Btns onClick={handlePick}>
+              <img
+                src={
+                  process.env.PUBLIC_URL + '/images/bookmark_unfilled_icon.svg'
+                }
+                alt="bookmark icon"
+              />
+              <span>나의 Pick</span>
+            </Btns>
+          )}
+        </div>
       ) : (
-        <Btns onClick={handlePick}>
+        <NeedLoginModal>
           <img
             src={process.env.PUBLIC_URL + '/images/bookmark_unfilled_icon.svg'}
             alt="bookmark icon"
           />
           <span>나의 Pick</span>
-        </Btns>
+        </NeedLoginModal>
       )}
     </div>
   );
