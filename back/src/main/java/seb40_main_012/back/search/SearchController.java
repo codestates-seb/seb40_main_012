@@ -1,6 +1,7 @@
 package seb40_main_012.back.search;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -123,8 +124,10 @@ public class SearchController {
 
         BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 15);
 
+        PageRequest pageRequest = PageRequest.of(0, 15);
+
         SliceImpl<BookInfoSearchDto.BookList.Item> result =
-                new SliceImpl<BookInfoSearchDto.BookList.Item>(bookResult.getItem().stream().map(a -> a).collect(Collectors.toList()));
+                new SliceImpl<BookInfoSearchDto.BookList.Item>(bookResult.getItem().stream().map(a -> a).collect(Collectors.toList()), pageRequest, bookResult.getItem().iterator().hasNext());
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
