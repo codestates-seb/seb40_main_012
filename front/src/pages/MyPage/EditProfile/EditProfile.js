@@ -117,6 +117,7 @@ const EditProfile = () => {
     COMICS: false,
     ETC: false,
   });
+  const [profileImage, setProfileImage] = useState('');
   const [openModal, setOpenModal] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
@@ -129,7 +130,8 @@ const EditProfile = () => {
   const getUserInfo = async () => {
     try {
       const response = await getUserInfoApi();
-      const { age, category, gender, introduction, nickname } = response;
+      const { age, category, gender, introduction, nickname, profileImage } =
+        response;
       const categoryObj = {};
       if (category.length > 0) {
         for (const genre of category) categoryObj[genre] = true;
@@ -146,6 +148,7 @@ const EditProfile = () => {
         ...checked,
         ...categoryObj,
       });
+      setProfileImage(profileImage);
     } catch (error) {
       console.log(error);
     }
@@ -260,10 +263,7 @@ const EditProfile = () => {
           height: 80,
         }}
       >
-        <img
-          src="https://styles.redditmedia.com/t5_33mhbo/styles/profileIcon_7f1481qm5y291.jpeg?width=256&height=256&frame=1&crop=256:256,smart&s=6cc29126b9f6853db131a0f5189c8e86eff9a20e"
-          alt="cat profile"
-        ></img>
+        <img src={profileImage} alt="cat profile" height="80" width="80"></img>
       </Avatar>
       <WrapperStyled>
         <TitleTextStyled component="h2" variant="h5" gutterBottom>
