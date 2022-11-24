@@ -69,8 +69,8 @@ public class UserController {
 
     @PostMapping("/mypage/password/current")
     @ResponseStatus(HttpStatus.OK)
-    public boolean verifyPassword(@RequestBody String currentPassword) {
-        return userService.verifyPassword(currentPassword);
+    public boolean verifyPassword(@RequestBody UserDto.Password currentPassword) {
+        return userService.verifyPassword(currentPassword.getPassword());
     }
 
     @PatchMapping("/mypage/password/update")
