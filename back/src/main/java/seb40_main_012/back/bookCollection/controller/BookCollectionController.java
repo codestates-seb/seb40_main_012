@@ -120,4 +120,13 @@ public class BookCollectionController {
         BookCollection collection = collectionService.findCollectionByCritic();
         return BookCollectionDto.CriticCollection.of(collection);
     }
+
+    @GetMapping("/category2")
+    @ResponseStatus(HttpStatus.OK)
+    public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory2() {
+        List<BookCollection> bookCollections = collectionService.findCollectionByUserCategory2();
+
+        List<BookCollectionDto.TagCollection> categoryCollectionDto = bookCollections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
+        return new ListResponseDto<>(categoryCollectionDto);
+    }
 }

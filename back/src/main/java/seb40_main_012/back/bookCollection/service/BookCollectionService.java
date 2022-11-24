@@ -1,12 +1,15 @@
 package seb40_main_012.back.bookCollection.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.book.entity.Genre;
+import seb40_main_012.back.book.BookSpecification;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
 import seb40_main_012.back.bookCollection.entity.BookCollectionTag;
@@ -19,6 +22,7 @@ import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.entity.UserCategory;
 import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.service.UserService;
@@ -236,5 +240,30 @@ public class BookCollectionService {
         return findBooks;
     }
 
+    public List<BookCollection> findCollectionByUserCategory2(){
+        User loginUser = userService.getLoginUser();
+        List<UserCategory> userCategory = userCategoryRepository.findAllByUser(loginUser);
+        List<Genre> genres = userCategory.stream()
+                .map(userCate -> userCate.getCategory().getGenre())
+                .collect(Collectors.toList());
+
+        Specification<Book> bookSpec = null;
+        for(Genre genre : genres) {
+            Specification<Book> bookSpecWithGenre = BookSpecification.findBookByGenre(genre);
+            bookSpec = (bookSpec == null) ? bookSpecWithGenre : bookSpec.or(bookSpecWithGenre);
+        }
+        bookSpec.and(BookSpecification.isPresentCollection());
+        List<Book> books = bookRepository.findAll(bookSpec);
+
+        List<BookCollection> bookCollections = new ArrayList<>();
+        for(Book book : books) {
+            bookCollections.addAll(collectionBookRepository.findAllByBook(book).stream()
+                    .map(bookCollectionBook -> bookCollectionBook.getBookCollection())
+                    .filter(bcb -> !bookCollections.contains(bcb))
+                    .collect(Collectors.toList()));
+        }
+
+        return bookCollections;
+    }
 
 }
