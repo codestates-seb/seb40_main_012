@@ -10,7 +10,8 @@ export const FIRST_LOGIN_URL = `${USERS_URL}/firstLogin`;
 
 // 마이페이지
 // export const COMMENT_URL = `${MY_PAGE_URL}/userComment`;
-export const EDIT_USER_INFO = `${MY_PAGE_URL}/userInfo`;
+export const USER_INFO_URL = `${MY_PAGE_URL}/userInfo`;
+export const CURRENT_PASSWORD_CHECK_URL = `${MY_PAGE_URL}/password/current`;
 
 // 책
 export const BOOKS_URL = '/api/books';
