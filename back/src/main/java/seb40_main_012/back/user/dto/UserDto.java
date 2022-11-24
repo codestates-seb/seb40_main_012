@@ -55,13 +55,16 @@ public class UserDto {
         @NotBlank(message = "패스워드를 입력해주세요.")
         @Pattern(regexp = "[0-9a-zA-Z@$!%*?&]{8,16}", message = "8~16자 영문, 숫자, 특수문자(@$!%*?&)만 사용 가능합니다.")
         private String password;
+
+        @NotBlank(message = "기본 이미지를 넣으셔야 합니다")
+        private String profileImage; // 프로필 이미지
     }
 
     @Getter
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class EmailDto {
+    public static class EmailDto { // 이메일 중복 검사
         @Email
         @NotBlank(message = "이메일을 입력하셔야 합니다")
         private String email;
@@ -77,5 +80,6 @@ public class UserDto {
         private String email;
         private double bookTemp;
         private List<String> roles;
+        private String profileImage;
     }
 }

@@ -29,6 +29,7 @@ public interface UserMapper {
                 .map(userCategory -> userCategory.getCategory().getGenre()
                 ).collect(Collectors.toList())
         );
+        responseDto.setProfileImage(user.getProfileImage());
 
         return responseDto;
     }
