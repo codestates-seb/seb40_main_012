@@ -26,7 +26,12 @@ const CollectionBookInput = ({ data, setData }) => {
         newBooksInfo={newBooksInfo}
         setNewBooksInfo={setNewBooksInfo}
       />
-      <BookSearch newBooks={newBooks} setNewBooks={setNewBooks} />
+      <BookSearch
+        newBooks={newBooks}
+        setNewBooks={setNewBooks}
+        newBooksInfo={newBooksInfo}
+        setNewBooksInfo={setNewBooksInfo}
+      />
       <NewBooks
         newBooks={newBooks}
         setNewBooks={setNewBooks}

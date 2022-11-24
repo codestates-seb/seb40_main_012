@@ -6,6 +6,9 @@ const NewBookContainer = styled.div`
   width: 17%;
   margin: 1.5%;
   position: relative;
+  &.search:hover {
+    cursor: pointer;
+  }
 `;
 
 const CoverContainer = styled.div`
@@ -52,7 +55,9 @@ const NewBook = ({
   cover,
   isbn,
   remove = false,
+  search = false,
   handleDeleteBook,
+  handleSetNewBooks,
 }) => {
   const deleteBook = () => {
     if (remove) {
@@ -60,14 +65,31 @@ const NewBook = ({
     }
   };
   return (
-    <NewBookContainer onClick={deleteBook}>
-      {remove ? <DeleteBtn>X</DeleteBtn> : null}
-      <CoverContainer>
-        <img src={cover} alt="book cover" />
-      </CoverContainer>
-      <TitleContainer>{title}</TitleContainer>
-      <AuthorContainer>{author}</AuthorContainer>
-    </NewBookContainer>
+    <>
+      {search ? (
+        <NewBookContainer
+          className="search"
+          onClick={() => {
+            handleSetNewBooks(isbn);
+          }}
+        >
+          <CoverContainer>
+            <img src={cover} alt="book cover" />
+          </CoverContainer>
+          <TitleContainer>{title}</TitleContainer>
+          <AuthorContainer>{author}</AuthorContainer>
+        </NewBookContainer>
+      ) : (
+        <NewBookContainer>
+          <DeleteBtn onClick={deleteBook}>X</DeleteBtn>
+          <CoverContainer>
+            <img src={cover} alt="book cover" />
+          </CoverContainer>
+          <TitleContainer>{title}</TitleContainer>
+          <AuthorContainer>{author}</AuthorContainer>
+        </NewBookContainer>
+      )}
+    </>
   );
 };
 

@@ -51,14 +51,19 @@ const BookSearchbar = styled.input`
 
 const SearchedBooks = styled.div`
   width: 100%;
-  height: 500px;
+  max-height: 450px;
   overflow-y: auto;
   margin: 20px 0;
   display: flex;
   flex-wrap: wrap;
 `;
 
-const BookSearch = () => {
+const BookSearch = ({
+  newBooks,
+  setNewBooks,
+  newBooksInfo,
+  setNewBooksInfo,
+}) => {
   const [searchInput, setSearchInput] = useState('');
   const [searchedBooks, setSearchedBooks] = useState([]);
 
@@ -67,16 +72,28 @@ const BookSearch = () => {
     if (searchInput === '') setSearchedBooks([]);
   };
 
+  //TODO: 무한스크롤로 수정되어야 함
   const handleSearchBook = (e) => {
     if (e.key === 'Enter') {
       axios
-        .get(`/api/search/books?title=${searchInput}`)
+        .get(
+          `/api/search?Category=books&Query=${searchInput}&Sort=accuracy&Page=1&Size=15`
+        )
         .then((res) => {
-          setSearchedBooks(res.data.item);
+          setSearchedBooks(res.data);
         })
         .catch((error) => console.error(error));
       setSearchInput('');
       setSearchedBooks(searchedBooks);
+    }
+  };
+
+  const handleSetNewBooks = (isbn) => {
+    if (!newBooks.includes(isbn)) {
+      setNewBooks([...newBooks, isbn]);
+      axios.get(`/api/books/${isbn}`).then((res) => {
+        setNewBooksInfo([...newBooksInfo, res.data.data]);
+      });
     }
   };
 
@@ -105,6 +122,9 @@ const BookSearch = () => {
                 title={el.title}
                 author={el.author}
                 cover={el.cover}
+                isbn={el.isbn13}
+                handleSetNewBooks={handleSetNewBooks}
+                search={true}
               />
             );
           })}

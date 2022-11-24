@@ -3,6 +3,7 @@ import styled from 'styled-components';
 const BooklistContainer = styled.div`
   padding: 5px 20px;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   white-space: nowrap;
   .rating {
