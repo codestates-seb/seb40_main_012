@@ -64,6 +64,7 @@ const ScrollContainer = styled.div`
   display: flex;
   overflow-y: auto;
   flex-wrap: wrap;
+  height: 100%;
 `;
 
 const EndMessage = styled.div`
