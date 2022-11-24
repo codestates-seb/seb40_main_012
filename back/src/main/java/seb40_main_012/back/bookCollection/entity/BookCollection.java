@@ -1,6 +1,7 @@
 package seb40_main_012.back.bookCollection.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -44,6 +45,7 @@ public class BookCollection {
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     private List<Bookmark> collectionBookmarks = new ArrayList<>();
 
     @ElementCollection
@@ -51,10 +53,12 @@ public class BookCollection {
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     private List<BookCollectionBook> collectionBooks = new ArrayList<>();
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
 
     @JsonBackReference
