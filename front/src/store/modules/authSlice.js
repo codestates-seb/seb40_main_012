@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { signInApi, firstLoginApi } from '../../api/authApi';
+import { patchUserInfoApi } from '../../api/myPageApi';
 import { PURGE } from 'redux-persist';
 
 const initialState = {
@@ -31,6 +32,18 @@ export const firstLoginAsync = createAsyncThunk(
     try {
       const response = await firstLoginApi(params);
       return response;
+    } catch (error) {
+      return thunkAPI.rejectWithValue({ error });
+    }
+  }
+);
+
+export const patchUserInfoAsync = createAsyncThunk(
+  'auth/patchUserInfo',
+  async (data, thunkAPI) => {
+    try {
+      const response = await patchUserInfoApi(data.params);
+      return { ...response, ...data.userInfo };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error });
     }
@@ -110,6 +123,32 @@ export const authSlice = createSlice({
         state.email = '';
         state.roles = [];
         state.profileImage = '';
+      })
+      .addCase(patchUserInfoAsync.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+        state.isLogin = true;
+        state.firstLogin = false;
+      })
+      .addCase(patchUserInfoAsync.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.error = null;
+        state.isLogin = true;
+        state.firstLogin = false;
+        state.nickName = payload.nickName;
+        state.email = payload.email;
+        state.roles = payload.roles;
+        state.profileImage = payload.profileImage;
+      })
+      .addCase(patchUserInfoAsync.rejected, (state, action) => {
+        state.loading = false;
+        if (action.payload) {
+          state.error = action.payload.error;
+        } else {
+          state.error = action.error;
+        }
+        state.isLogin = true;
+        state.firstLogin = false;
       })
       .addCase(PURGE, () => initialState);
   },
