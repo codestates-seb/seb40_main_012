@@ -28,9 +28,21 @@ const AuthorContainer = styled.div`
   color: ${({ theme }) => theme.colors.dark};
 `;
 
-const NewBook = ({ title, author, cover }) => {
+const NewBook = ({
+  title,
+  author,
+  cover,
+  isbn,
+  remove = false,
+  handleDeleteBook,
+}) => {
+  const deleteBook = () => {
+    if (remove) {
+      handleDeleteBook(isbn);
+    }
+  };
   return (
-    <NewBookContainer>
+    <NewBookContainer onClick={deleteBook}>
       <CoverContainer>
         <img src={cover} alt="book cover" />
       </CoverContainer>

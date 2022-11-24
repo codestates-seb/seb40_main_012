@@ -1,4 +1,4 @@
-//import axios from '../../../api/axios';
+import axios from '../../../api/axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Booklist from './Booklist';
@@ -42,7 +42,7 @@ const HideBtn = styled(MyBooksBtn)``;
 
 const ShowBtn = styled(MyBooksBtn)``;
 
-const MyBooks = ({ newBooks, setNewBooks }) => {
+const MyBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [myBooks, setMyBooks] = useState([]);
 
@@ -57,7 +57,7 @@ const MyBooks = ({ newBooks, setNewBooks }) => {
         title: '모순',
         author: '양귀자 (지은이)',
         ratingCount: 0,
-        isbn13: 9788998441012,
+        isbn13: '9788998441012',
         bookCover:
           'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
       },
@@ -65,7 +65,23 @@ const MyBooks = ({ newBooks, setNewBooks }) => {
         title: '여름의 빌라',
         author: '백수린 (지은이)',
         ratingCount: 9,
-        isbn13: 9788954673105,
+        isbn13: '9788954673105',
+        bookCover:
+          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
+      },
+      {
+        title: '책3',
+        author: '저자3 (지은이)',
+        ratingCount: 9,
+        isbn13: '3',
+        bookCover:
+          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
+      },
+      {
+        title: '책4',
+        author: '저자4 (지은이)',
+        ratingCount: 9,
+        isbn13: '4',
         bookCover:
           'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
       },
@@ -75,8 +91,10 @@ const MyBooks = ({ newBooks, setNewBooks }) => {
   const handleSetNewBooks = (isbn) => {
     if (!newBooks.includes(isbn)) {
       setNewBooks([...newBooks, isbn]);
+      axios.get(`/api/books/${isbn}`).then((res) => {
+        setNewBooksInfo([...newBooksInfo, res.data.data]);
+      });
     }
-    //setNewBooks([...new Set([...newBooks, isbn])]);
   };
 
   return (

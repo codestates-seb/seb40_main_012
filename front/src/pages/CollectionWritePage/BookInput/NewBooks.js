@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import NewBook from './NewBook';
 
@@ -18,31 +16,23 @@ const NewBooksTitle = styled.div`
 
 const Books = styled.div`
   display: flex;
+  flex-wrap: wrap;
   background-color: white;
   padding: 15px;
   margin: 10px 0;
   border: 1px solid ${({ theme }) => theme.colors.gray};
 `;
 
-const NewBooks = ({ newBooks }) => {
-  const [newBooksInfo, setNewBooksInfo] = useState([]);
-
-  useEffect(() => {
-    setNewBooksInfo([]);
-    newBooks.forEach((el) => {
-      getBookInfo(el);
+const NewBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
+  const handleDeleteBook = (isbn) => {
+    const tmp = newBooks.filter((el) => {
+      return String(el) !== String(isbn);
     });
-  }, [newBooks]);
-
-  const getBookInfo = (isbn) => {
-    axios
-      .get(`/api/books/${isbn}`)
-      .then((res) => {
-        setNewBooksInfo([...newBooksInfo, res.data.data]);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    setNewBooks(tmp);
+    const tmpInfo = newBooksInfo.filter((el) => {
+      return el.isbn13 !== String(isbn);
+    });
+    setNewBooksInfo(tmpInfo);
   };
 
   return (
@@ -56,6 +46,9 @@ const NewBooks = ({ newBooks }) => {
               title={el.title}
               author={el.author}
               cover={el.cover}
+              isbn={el.isbn13}
+              remove={true}
+              handleDeleteBook={handleDeleteBook}
             />
           );
         })}
