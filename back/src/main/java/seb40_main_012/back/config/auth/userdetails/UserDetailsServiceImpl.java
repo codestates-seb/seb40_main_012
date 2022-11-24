@@ -33,8 +33,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new UserDetailsImpl(findUser);
     }
 
-    private final class UserDetailsImpl extends User implements UserDetails {
-        UserDetailsImpl(User user) {
+    public static class UserDetailsImpl extends User implements UserDetails {
+        public UserDetailsImpl(User user) {
             setUserId(user.getUserId());
             setFirstLogin(user.isFirstLogin());
             setEmail(user.getEmail());
