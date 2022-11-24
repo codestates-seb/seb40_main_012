@@ -20,6 +20,7 @@ import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.config.auth.event.UserRegistrationApplicationEvent;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
+import seb40_main_012.back.email.EmailSenderService;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.Category;
@@ -29,6 +30,8 @@ import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,6 +40,7 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class UserService {
+    private final EmailSenderService emailSenderService;
     private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final UserCategoryRepository userCategoryRepository;
@@ -61,6 +65,12 @@ public class UserService {
         user.setBookTemp(36.5);
         user.setFirstLogin(true);
         User savedUser = userRepository.save(user);
+
+        try {
+            emailSenderService.sendEmail(user.getEmail());
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
 
         publisher.publishEvent(new UserRegistrationApplicationEvent(this, savedUser));
         return savedUser;
