@@ -49,8 +49,8 @@ public class User {
     @Enumerated(EnumType.STRING)
     private AgeType age;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-    @NotFound(action = NotFoundAction.IGNORE)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @NotFound(action = NotFoundAction.IGNORE)
     private List<UserCategory> categories = new ArrayList<>();
 
     @ElementCollection // 사용자 권한 테이블 생성
