@@ -252,7 +252,6 @@ public class BookService {
                 .sorted(Comparator.comparing(Book::getView).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
-
     }
 
     public void deleteBook(long bookId) {
