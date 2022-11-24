@@ -144,8 +144,7 @@ public class UserService {
     }
 
     public User findVerifiedUser(Long id) {
-        User findUser = userRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
-        return findUser;
+        return userRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
     }
 
     public List<BookCollection> getBookmarkByBookCollection(Long userId) {

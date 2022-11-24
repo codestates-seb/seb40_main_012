@@ -127,7 +127,7 @@ public class PairingControllerRestDocs {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.data.title").value(post.getTitle()))
                 .andExpect(jsonPath("$.data.body").value(post.getBody()))
-                .andExpect(jsonPath("$.data.pairingCategory").value(response.getPairingCategory().toString()))
+                .andExpect(jsonPath("$.data.pairingCategory").value(post.getPairingCategory().toString()))
                 .andExpect(jsonPath("$.data.imagePath").value(post.getImagePath()))
                 .andExpect(jsonPath("$.data.outLinkPath").value(post.getOutLinkPath()))
                 .andDo(document(

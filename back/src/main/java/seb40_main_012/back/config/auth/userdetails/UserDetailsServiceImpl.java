@@ -1,6 +1,7 @@
 package seb40_main_012.back.config.auth.userdetails;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -33,7 +34,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return new UserDetailsImpl(findUser);
     }
 
-    private final class UserDetailsImpl extends User implements UserDetails {
+
+    public class UserDetailsImpl extends User implements UserDetails {
         UserDetailsImpl(User user) {
             setUserId(user.getUserId());
             setEmail(user.getEmail());
