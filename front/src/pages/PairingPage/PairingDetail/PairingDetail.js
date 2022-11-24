@@ -25,6 +25,7 @@ import DeleteModal from './DeleteModal';
 import { GenterMatcherToKor } from '../../../util/GenreMatcher';
 import LikeButton from './LikeButton';
 import PickButton from './PickButton';
+import CopyUrlButton from './CopyUrlButton';
 
 const BtnStyleBox = styled.div`
   display: flex;
@@ -155,6 +156,7 @@ const PairingDetail = () => {
         >
           {pairingData.likeCount}
         </LikeButton>
+        <CopyUrlButton />
         <CollectionHeaderBtns
           likeCount={pairingData.likeCount}
           userLike={pairingData.isLiked}
