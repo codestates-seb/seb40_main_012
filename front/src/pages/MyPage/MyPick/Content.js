@@ -165,7 +165,7 @@ const FixContentScroll = ({ commentData }) => {
   return (
     <>
       <ContentContainer>
-        <Grid container xs={12}>
+        <Grid container>
           <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
             <CommentContainer>
               {editMode ? (

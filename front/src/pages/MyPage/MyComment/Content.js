@@ -199,7 +199,7 @@ const Content = ({
   return (
     <>
       <ContentContainer>
-        <Grid container xs={12}>
+        <Grid container>
           <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
             <CommentContainer></CommentContainer>
           </Grid>
@@ -261,6 +261,7 @@ const Content = ({
                 <ItemContainer key={key}>
                   <Grid
                     container
+                    item
                     xs={12}
                     sx={{
                       display: 'flex',
@@ -274,7 +275,11 @@ const Content = ({
                         <BookImg>
                           <img
                             className="resize"
-                            src={data.cover || '/images/cherrypick_loading.gif'}
+                            src={
+                              data.cover.length === 0
+                                ? '/images/cherrypick_loading.gif'
+                                : data.cover
+                            }
                             alt="book thumbnail"
                           ></img>
                         </BookImg>
@@ -294,11 +299,30 @@ const Content = ({
                         </Typography>
 
                         <div className="heart-star-title">
-                          <Grid item xs={3}>
-                            <StarBorderRoundedIcon
-                              align="center"
-                              style={{ color: 'FFF599' }}
-                            />
+                          <Grid
+                            item
+                            xs={3}
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                            }}
+                            color="#BFBFBF"
+                          >
+                            {data.commentType === 'BOOK' ? (
+                              <StarBorderRoundedIcon
+                                align="center"
+                                style={{ color: 'FFF599' }}
+                              />
+                            ) : (
+                              <>
+                                <FavoriteTwoToneIcon
+                                  sx={{ width: 19.5, height: 19.5 }}
+                                  align="center"
+                                  style={{ color: 'FFD8D8' }}
+                                />
+                                <>{data.commentLike}</>
+                              </>
+                            )}
                           </Grid>
                           <Grid
                             item
@@ -309,12 +333,16 @@ const Content = ({
                             }}
                             color="#BFBFBF"
                           >
-                            <FavoriteTwoToneIcon
-                              sx={{ width: 19.5, height: 19.5 }}
-                              align="center"
-                              style={{ color: 'FFD8D8' }}
-                            />
-                            {data.rating ? data.rating : null}
+                            {data.commentType === 'BOOK' ? (
+                              <>
+                                <FavoriteTwoToneIcon
+                                  sx={{ width: 19.5, height: 19.5 }}
+                                  align="center"
+                                  style={{ color: 'FFD8D8' }}
+                                />
+                                {data.commentLike}
+                              </>
+                            ) : null}
                           </Grid>
                           <Grid
                             item

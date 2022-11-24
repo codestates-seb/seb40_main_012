@@ -32,6 +32,10 @@ const MyComment = () => {
   const [content, setContent] = useState({
     listCount: 0,
   });
+  const [data, setData] = useState({
+    content: [],
+    hasMore: true,
+  });
 
   const [infiniteData, setInfiniteData] = useState({
     bookComment: [],
@@ -50,12 +54,19 @@ const MyComment = () => {
           collectionComment: response.data.collectionComment,
           hasMore: true,
         });
+        console.log('state 현재값', infiniteData);
+        console.log('response데이터', response);
+        console.log('data 상태 읽기', data);
       })
       .catch((error) => console.log('에러', error));
   };
+  const dataArray = infiniteData.bookComment
+    .concat(infiniteData.pairingComment)
+    .concat(infiniteData.collectionComment);
 
   useEffect(() => {
     fetchData();
+    console.log('data가 잘 왔을까요', data);
   }, []);
 
   useEffect(() => {
@@ -64,6 +75,10 @@ const MyComment = () => {
 
   useEffect(() => {
     console.log('infiniteData 변경', infiniteData);
+  }, [infiniteData]);
+
+  useEffect(() => {
+    setData({ content: dataArray, hasMore: true });
   }, [infiniteData]);
 
   const makeLength = () => {
@@ -75,18 +90,7 @@ const MyComment = () => {
     });
   };
 
-  const dataArray = infiniteData.bookComment
-    .concat(infiniteData.pairingComment)
-    .concat(infiniteData.collectionComment);
-
-  const [data, setData] = useState({
-    content: dataArray,
-    hasMore: true,
-  });
-
-  console.log('dataArray 읽기', dataArray);
   console.log('data content 읽기', data.content);
-  console.log('data 상태 읽기', data);
 
   return (
     <PageContainer header footer>

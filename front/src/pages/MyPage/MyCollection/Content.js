@@ -150,7 +150,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
   return (
     <>
       <ContentContainer>
-        <Grid container xs={12}>
+        <Grid container>
           <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
             <CommentContainer></CommentContainer>
           </Grid>
@@ -212,6 +212,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                 <ItemContainer key={key}>
                   <Grid
                     container
+                    item
                     xs={12}
                     sx={{
                       display: 'flex',
