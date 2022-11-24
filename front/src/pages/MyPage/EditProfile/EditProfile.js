@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
@@ -14,6 +15,8 @@ import styled from 'styled-components';
 import PageContainer from '../../../components/PageContainer';
 import { OutlinedButton } from '../../../components/Buttons';
 import ValidationTextFields from '../../../components/ValidationTextFields';
+import { getUserInfoApi } from '../../../api/myPageApi';
+import { selectEmail } from '../../../store/modules/authSlice';
 import {
   validationCheck,
   duplicationCheck,
@@ -85,6 +88,8 @@ const ButtonItemStyled = styled(ItemTextStyled)`
 
 const EditProfile = () => {
   const inputRef = useRef([]);
+  const email = useSelector(selectEmail);
+
   const [inputValue, setInputValue] = useState({
     nickName: '',
     introduction: '',
@@ -112,7 +117,33 @@ const EditProfile = () => {
 
   useEffect(() => {
     inputRef.current[0].focus();
+    getUserInfo();
   }, []);
+
+  const getUserInfo = async () => {
+    try {
+      const response = await getUserInfoApi();
+      const { age, category, gender, introduction, nickname } = response;
+      const categoryObj = {};
+      if (category.length > 0) {
+        for (const genre of category) categoryObj[genre] = true;
+      }
+
+      setInputValue({
+        ...inputValue,
+        nickName: nickname,
+        introduction: introduction,
+      });
+      setGender(gender);
+      setAge(age);
+      setChecked({
+        ...checked,
+        ...categoryObj,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleChangeInput = (id, value) => {
     if (id !== 'introduction') {
@@ -240,10 +271,26 @@ const EditProfile = () => {
           />
         </ItemWrapperWithHelperTextStyled>
         <ItemWrapperWithHelperTextStyled>
-          <ItemTextStyled component="h4">한 줄 소개</ItemTextStyled>
+          <ItemTextStyled component="h4">이메일</ItemTextStyled>
           <ValidationTextFields
             inputRef={inputRef}
             refIndex={1}
+            label=""
+            id="email"
+            autoComplete="email"
+            fullWidth
+            setInputValue={handleChangeInput}
+            setIsValid={handleBlur}
+            inputValue={email}
+            size="small"
+            disabled
+          />
+        </ItemWrapperWithHelperTextStyled>
+        <ItemWrapperWithHelperTextStyled>
+          <ItemTextStyled component="h4">한 줄 소개</ItemTextStyled>
+          <ValidationTextFields
+            inputRef={inputRef}
+            refIndex={2}
             label=""
             id="introduction"
             autoComplete="introduction"
