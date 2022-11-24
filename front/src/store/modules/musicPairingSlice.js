@@ -14,18 +14,24 @@ const initialState = {
 export const asyncGetMusicPairingLike = createAsyncThunk(
   'pairingSlice/asyncGetMusicPairingLike',
   async () => {
-    return await axios
-      .get(PAIRING_MUSIC_LIKE_URL)
-      .then((res) => res.data.data.content);
+    try {
+      const res = await axios.get(PAIRING_MUSIC_LIKE_URL);
+      return res.data.data.content;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
 export const asyncGetMusicPairingNewest = createAsyncThunk(
   'pairingSlice/asyncGetMusicPairingNewest',
   async () => {
-    return await axios
-      .get(PAIRING_MUSIC_NEWEST_URL)
-      .then((res) => res.data.data.content);
+    try {
+      const res = await axios.get(PAIRING_MUSIC_NEWEST_URL);
+      return res.data.data.content;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 

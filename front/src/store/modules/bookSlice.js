@@ -12,10 +12,12 @@ const initialState = {
 export const getBookAsync = createAsyncThunk(
   'bookSlice/getBookAsync',
   async (isbn) => {
-    return await axios.get(`${BOOKS_URL}/${isbn}`).then((res) => {
-      console.log(res.data.data);
+    try {
+      const res = await axios.get(`${BOOKS_URL}/${isbn}`);
       return res.data.data;
-    });
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 

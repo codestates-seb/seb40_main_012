@@ -14,18 +14,24 @@ const initialState = {
 export const asyncGetBookPairingLike = createAsyncThunk(
   'pairingSlice/asyncGetBookPairingLike',
   async () => {
-    return await axios
-      .get(PAIRING_BOOK_LIKE_URL)
-      .then((res) => res.data.data.content);
+    try {
+      const res = await axios.get(PAIRING_BOOK_LIKE_URL);
+      return res.data.data.content;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
 export const asyncGetBookPairingNewest = createAsyncThunk(
   'pairingSlice/asyncGetBookPairingNewest',
   async () => {
-    return await axios
-      .get(PAIRING_BOOK_NEWEST_URL)
-      .then((res) => res.data.data.content);
+    try {
+      const res = await axios.get(PAIRING_BOOK_NEWEST_URL);
+      return res.data.data.content;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 

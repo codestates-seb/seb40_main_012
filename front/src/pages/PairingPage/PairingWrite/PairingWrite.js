@@ -6,6 +6,7 @@ import TitleInput from './TitleInput';
 import BodyInput from './BodyInput';
 import OutLinkInput from './OutLinkInput';
 import useInput from '../../../util/useInput';
+import { ContainedButton } from '../../../components/Buttons';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncPostPairing } from '../../../store/modules/pairingSlice';
 import { selectIsLogin } from '../../../store/modules/authSlice';
@@ -45,6 +46,22 @@ const BookWrapperStyled = styled.div`
   margin: 15px;
 `;
 
+const WarningMsg = styled.div`
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  padding: 0 10px;
+  font-size: 14px;
+  div {
+    background-color: #ffc5c5;
+    padding: 8px;
+    font-weight: 700;
+    color: #850000;
+    border-radius: 3px;
+    width: 99%;
+  }
+`;
+
 const PairingWrite = () => {
   const [category, categoryBind, categoryReset] = useInput('');
   const [title, titleBind, titleReset] = useInput('');
@@ -55,7 +72,6 @@ const PairingWrite = () => {
   const navigate = useNavigate();
   const isLogin = useSelector(selectIsLogin);
   const curBookData = useSelector((state) => state.book.data);
-  console.log('페어링 작성해야 해', curBookData);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -102,7 +118,13 @@ const PairingWrite = () => {
         </BookWrapperStyled>
         <BodyInput bodyBind={bodyBind} />
         <OutLinkInput outLinkBind={outLinkBind} />
-        <button onClick={handleSubmit}>등록</button>
+        {category === '' || title === '' ? (
+          <WarningMsg>
+            <div>카테고리와 제목을 입력해주세요</div>
+          </WarningMsg>
+        ) : (
+          <ContainedButton onClick={handleSubmit}>등록</ContainedButton>
+        )}
       </Wrapper>
     </PageContainer>
   );

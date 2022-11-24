@@ -11,6 +11,8 @@ import { getBookAsync } from '../../store/modules/bookSlice';
 import { GenterMatcherToKor } from '../../util/GenreMatcher';
 import { ToDateString } from '../../util/ToDateString';
 import { BasicButton } from '../../components/Buttons';
+import { selectIsLogin } from '../../store/modules/authSlice';
+import NeedLoginModal from '../PairingPage/PairingDetail/NeedLoginModal';
 
 const Wrapper = styled.div`
   display: flex;
@@ -44,6 +46,7 @@ const BookDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isbn } = useParams();
+  const isLogin = useSelector(selectIsLogin);
   useEffect(() => {
     dispatch(getBookAsync(isbn));
   }, [dispatch]);
@@ -70,7 +73,13 @@ const BookDetail = () => {
           rating={bookData.averageRating}
         />
         <RateModal />
-        <BasicButton onClick={navToWrite}>페어링 작성하기</BasicButton>
+        {isLogin ? (
+          <BasicButton onClick={navToWrite}>페어링 작성하기</BasicButton>
+        ) : (
+          <NeedLoginModal>
+            <BasicButton>페어링 작성하기</BasicButton>
+          </NeedLoginModal>
+        )}
         <DescContainer>
           <h1>기본 정보</h1>
           <p>부제: {bookData.subTitle}</p>
