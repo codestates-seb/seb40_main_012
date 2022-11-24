@@ -24,6 +24,9 @@ const TitleContainer = styled.div`
 const AuthorContainer = styled.div`
   font-size: 11px;
   color: ${({ theme }) => theme.colors.dark};
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
 `;
 
 const DeleteBtn = styled.button`

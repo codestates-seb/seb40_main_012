@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styled from 'styled-components';
 import NewBook from './NewBook';
+import axios from '../../../api/axios';
 
 const BookSearchContainer = styled.div`
   margin: 10px 0;
@@ -50,31 +51,30 @@ const BookSearchbar = styled.input`
 
 const SearchedBooks = styled.div`
   width: 100%;
+  height: 500px;
+  overflow-y: auto;
   margin: 20px 0;
-  //border: 1px solid ${({ theme }) => theme.colors.dark};
   display: flex;
+  flex-wrap: wrap;
 `;
 
 const BookSearch = () => {
   const [searchInput, setSearchInput] = useState('');
-  const [searchedBooks, setSearchedBooks] = useState([
-    {
-      title: '책 제목1---',
-      author: '저자1---',
-    },
-    {
-      title: '책 제목2---',
-      author: '저자2---',
-    },
-  ]);
+  const [searchedBooks, setSearchedBooks] = useState([]);
 
   const handleOnChangeInput = (e) => {
     setSearchInput(e.target.value);
+    if (searchInput === '') setSearchedBooks([]);
   };
 
   const handleSearchBook = (e) => {
     if (e.key === 'Enter') {
-      console.log('검색 api 호출: ', searchInput);
+      axios
+        .get(`/api/search/books?title=${searchInput}`)
+        .then((res) => {
+          setSearchedBooks(res.data.item);
+        })
+        .catch((error) => console.error(error));
       setSearchInput('');
       setSearchedBooks(searchedBooks);
     }
@@ -99,7 +99,14 @@ const BookSearch = () => {
         </SearchContainer>
         <SearchedBooks>
           {searchedBooks.map((el, idx) => {
-            return <NewBook key={idx} title={el.title} author={el.author} />;
+            return (
+              <NewBook
+                key={idx}
+                title={el.title}
+                author={el.author}
+                cover={el.cover}
+              />
+            );
           })}
         </SearchedBooks>
       </Books>

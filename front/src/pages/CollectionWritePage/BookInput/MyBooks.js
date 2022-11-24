@@ -21,8 +21,10 @@ const MyBooksTitle = styled.div`
 const Books = styled.div`
   display: flex;
   flex-direction: column;
+  max-height: 250px;
+  overflow-y: auto;
   background-color: white;
-  padding: 15px 10px;
+  padding: 10px;
   margin: 10px 0;
   border: 1px solid ${({ theme }) => theme.colors.gray};
   &.hide {
