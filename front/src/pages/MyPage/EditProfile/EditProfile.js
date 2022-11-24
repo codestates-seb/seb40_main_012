@@ -344,7 +344,7 @@ const EditProfile = () => {
           />
         </ItemWrapperWithHelperTextStyled>
         <ItemWrapperChangePasswordStyled>
-          <Link to="/mypage/profile/changepasswd">
+          <Link to="/mypage/profile/password">
             <ItemTextStyled component="h4">비밀번호 변경</ItemTextStyled>
           </Link>
         </ItemWrapperChangePasswordStyled>
