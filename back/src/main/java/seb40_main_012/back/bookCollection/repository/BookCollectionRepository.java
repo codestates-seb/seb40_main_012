@@ -14,10 +14,13 @@ import java.util.List;
 
 public interface BookCollectionRepository extends JpaRepository<BookCollection, Long> {
     Long countBy();
-
-    List<BookCollection> findByUserUserId(Long userId);
-
     Long countByUserUserId(Long userId);
+    List<BookCollection> findByUserUserId(Long userId);
+//    List<BookCollection> findCollectionByNoOffset(Long collectionId, Long userId, int pageSize){
+//         return queryFactory
+//    }
+//
+
 
     //    @Query()
 //    List<BookCollection> findByTag(List<Tag> tags);
