@@ -87,6 +87,7 @@ public class Pairing {
 
     @OneToMany(mappedBy = "pairing")
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     @CreatedDate

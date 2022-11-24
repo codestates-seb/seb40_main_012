@@ -68,13 +68,16 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Like> likes = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<BookCollection> collections = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<BookCollectionLike> collectionLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<Bookmark> collectionBookmarks = new ArrayList<>();
 
 

@@ -23,7 +23,7 @@ public class BookCollectionBook {
     @JoinColumn(name = "book_id")
     private Book book;
 
-//    @JsonBackReference
+    @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "collection_id")
     private BookCollection bookCollection;
