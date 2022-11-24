@@ -8,6 +8,7 @@ const NewBookContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
+  position: relative;
 `;
 
 const CoverContainer = styled.div`
@@ -28,6 +29,12 @@ const AuthorContainer = styled.div`
   color: ${({ theme }) => theme.colors.dark};
 `;
 
+const DeleteBtn = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
+
 const NewBook = ({
   title,
   author,
@@ -43,6 +50,7 @@ const NewBook = ({
   };
   return (
     <NewBookContainer onClick={deleteBook}>
+      {remove ? <DeleteBtn>x</DeleteBtn> : null}
       <CoverContainer>
         <img src={cover} alt="book cover" />
       </CoverContainer>
