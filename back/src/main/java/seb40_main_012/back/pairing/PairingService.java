@@ -175,11 +175,12 @@ public class PairingService {
         return comment;
     }
 
-    public Pairing isBookMarkedPairing(Pairing pairing, User user) {
+    public Pairing isBookMarkedPairing(Pairing pairing) {
+        User findUser = userService.getLoginUser();
 
         Boolean isBookmarked;
 
-        if (bookmarkRepository.findByUserAndPairing(user,pairing) == null) { //좋아요 안 누른 경우
+        if (bookmarkRepository.findByUserAndPairing(findUser,pairing) == null) { //북마크 안 누른 경우
             isBookmarked = false;
         } else {
             isBookmarked = true;

@@ -71,7 +71,7 @@ public class BookmarkService {
             }
         }
         catch (BusinessLogicException e) {throw new BusinessLogicException(ExceptionCode.FAIL_TO_BOOKMARK);}
-        pairingService.isBookMarkedPairing(pairing,findUser);
+        pairingService.isBookMarkedPairing(pairing);
         return true;
     }
 
