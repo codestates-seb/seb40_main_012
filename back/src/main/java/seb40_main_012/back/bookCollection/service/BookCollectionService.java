@@ -170,11 +170,14 @@ public class BookCollectionService {
         User findUser = userService.getLoginUser();
 
         Long userId = findUser.getUserId();
-        String userCategory = findUser.getCategories().get(0).getCategory().getGenre().getValue();
+        String userCategory = findUser.getCategories().get(0).getCategory().getGenre().toString();
+        System.out.println("HERE>" + userCategory);
 
 //        Category category = categoryRepository.findByGenre(Genre.ART);
 
         Tag tag = tagRepository.findByTagName(userCategory).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+        System.out.println("HERE>" + tag.getTagName());
+
         List<BookCollectionTag> collectionTag = collectionTagRepository.findByTag(tag);
         List<BookCollection> collections = collectionTag.stream().map(BookCollectionTag::getBookCollection).collect(Collectors.toList());
         return collections;
