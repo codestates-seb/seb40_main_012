@@ -43,6 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             setIntroduction(user.getIntroduction());
             setPassword(user.getPassword());
             setRoles(user.getRoles());
+            setProfileImage(user.getProfileImage());
         }
 
         @Override

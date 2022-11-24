@@ -15,7 +15,7 @@ public class LoginDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PostDto {
+    public static class PostDto { // 일반 로그인 request
         @NotBlank(message = "이메일을 입력하셔야 합니다")
         private String email;
         @NotBlank(message = "패스워드를 입력하셔야 합니다")
@@ -26,7 +26,7 @@ public class LoginDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class PatchDto {
+    public static class PatchDto { // 첫 로그인 request
         private GenderType genderType;
         private AgeType age;
 
@@ -39,12 +39,13 @@ public class LoginDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class ResponseDto {
+    public static class ResponseDto { // 일반 로그인 response
         private boolean firstLogin;
         private String nickName;
         private double bookTemp;
         private String email;
         private List<String> roles;
+        private String profileImage; // 프로필 이미지
     }
 
     @Setter
@@ -52,7 +53,7 @@ public class LoginDto {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class firstLoginResponseDto {
+    public static class firstLoginResponseDto { // 첫 로그인 response
         private boolean firstLogin;
         private String nickName;
         private String email;
@@ -61,5 +62,6 @@ public class LoginDto {
         private GenderType genderType;
         private AgeType ageType;
         private List<Genre> genres;
+        private String profileImage; // 프로필 이미지
     }
 }
