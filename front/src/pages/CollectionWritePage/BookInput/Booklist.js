@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const BooklistContainer = styled.div`
-  padding: 0 20px;
+  padding: 5px 20px;
   display: flex;
   align-items: center;
   white-space: nowrap;
@@ -13,9 +13,10 @@ const BooklistContainer = styled.div`
   .title {
     width: 60%;
     font-weight: 700;
+    font-size: 14px;
   }
   .author {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
   }
   &:hover {
