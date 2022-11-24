@@ -28,12 +28,24 @@ public class UserInfoDto {
         private List<Genre> category;
 
         public User toEntity(){
-            return User.builder()
+            /** 로직 dto에서 제거 예정 */
+            if(profileImage==null) {
+                profileImage = "http://url";
+            }
+            if(gender == "NONE"){
+                gender = "NONE";
+            }
+            if(age == "NONE"){
+                age = "NONE";
+            }
+            User user = User.builder()
                     .introduction(introduction)
                     .gender(GenderType.from(gender))
                     .age(AgeType.from(age))
+                    .profileImage(profileImage)
                     .nickName(nickname)
                     .build();
+            return user;
         }
     }
 
