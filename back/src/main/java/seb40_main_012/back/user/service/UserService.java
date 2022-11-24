@@ -102,7 +102,7 @@ public class UserService {
      */
     public User editUserInfo(User user, List<Genre> categoryValue) {
         User findUser = getLoginUser();
-        userCategoryRepository.deleteAllByUser(findUser);
+        userCategoryRepository.deleteByUser(findUser);
 
         if(categoryValue.isEmpty()){
             UserCategory userCategory = new UserCategory();
@@ -117,11 +117,14 @@ public class UserService {
                 value -> {
                     Category category = categoryRepository.findByGenre(value);
                     if(categoryRepository.findByGenre(value)!=null){
-                        UserCategory userCategory = new UserCategory(category, findUser);
-                        userCategoryRepository.save(userCategory);
-                        findUser.addUserCategory(userCategory);
-                        userRepository.save(findUser);
-                    }else throw new BusinessLogicException(ExceptionCode.NOT_FOUND);
+                        if(userCategoryRepository.findByCategoryAndUser(category,findUser)==null){
+                            UserCategory userCategory = new UserCategory(category, findUser);
+                            userCategoryRepository.save(userCategory);
+                            findUser.addUserCategory(userCategory);
+                            userRepository.save(findUser);
+                        }
+                    }
+//                    else throw new BusinessLogicException(ExceptionCode.NOT_FOUND);
                 }
         );
         findUser.updateUserInfo(user);
