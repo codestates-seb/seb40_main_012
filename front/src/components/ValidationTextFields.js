@@ -6,15 +6,16 @@ const ValidationTextFields = ({
   label,
   id,
   autoComplete,
-  type,
-  required,
-  fullWidth,
+  type = 'text',
+  required = false,
+  fullWidth = false,
   setInputValue,
   setIsValid,
   inputValue,
   inputStatus,
   inputHelperText,
-  submit,
+  submit = false,
+  size = 'medium',
 }) => {
   const handleChangeInput = (event) => {
     const { id, value } = event.target;
@@ -50,6 +51,7 @@ const ValidationTextFields = ({
       type={type}
       onBlur={handleBlur}
       onKeyDown={handleKeyDown}
+      size={size}
     />
   );
 };

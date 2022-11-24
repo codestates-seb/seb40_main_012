@@ -14,7 +14,6 @@ const ContentsBox = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 40px;
   margin-top: 0;
   .notfound {
     font-size: 24px;
@@ -127,7 +126,7 @@ const NoMatch = () => {
   const poem = randomPoem();
 
   return (
-    <PageContainer footer center maxWidth="xs">
+    <PageContainer footer center maxWidth="sm" bmt={5}>
       <ContentsBox>
         <ImgContainer>
           <img
