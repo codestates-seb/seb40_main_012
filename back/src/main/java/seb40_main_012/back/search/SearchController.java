@@ -118,6 +118,17 @@ public class SearchController {
         }
     }
 
+    @GetMapping("/collectionbooks")
+    public ResponseEntity getCollectionBooksSearchRequests(@RequestParam("Query") String queryParam) {
+
+        BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 15);
+
+        SliceImpl<BookInfoSearchDto.BookList.Item> result =
+                new SliceImpl<BookInfoSearchDto.BookList.Item>(bookResult.getItem().stream().map(a -> a).collect(Collectors.toList()));
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @GetMapping("/test")
     public ResponseEntity getBookSearchRequests(@RequestParam("Query") String queryParam) {
 
