@@ -10,17 +10,34 @@ const CollectionBookInputContainer = styled.div`
 `;
 
 const CollectionBookInput = ({ data, setData }) => {
+  //isbn13 값으로 관리
   const [newBooks, setNewBooks] = useState([]);
+  const [newBooksInfo, setNewBooksInfo] = useState([]);
 
   useEffect(() => {
-    setData({ ...data, bookIsbns: newBooks.filter((el) => el.isbn) });
+    setData({ ...data, bookIsbns: newBooks });
   }, [newBooks]);
 
   return (
     <CollectionBookInputContainer>
-      <NewBooks newBooks={newBooks} setNewBooks={setNewBooks} />
-      <MyBooks newBooks={newBooks} setNewBooks={setNewBooks} />
-      <BookSearch newBooks={newBooks} setNewBooks={setNewBooks} />
+      <MyBooks
+        newBooks={newBooks}
+        setNewBooks={setNewBooks}
+        newBooksInfo={newBooksInfo}
+        setNewBooksInfo={setNewBooksInfo}
+      />
+      <BookSearch
+        newBooks={newBooks}
+        setNewBooks={setNewBooks}
+        newBooksInfo={newBooksInfo}
+        setNewBooksInfo={setNewBooksInfo}
+      />
+      <NewBooks
+        newBooks={newBooks}
+        setNewBooks={setNewBooks}
+        newBooksInfo={newBooksInfo}
+        setNewBooksInfo={setNewBooksInfo}
+      />
     </CollectionBookInputContainer>
   );
 };

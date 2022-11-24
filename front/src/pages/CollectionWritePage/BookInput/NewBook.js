@@ -5,7 +5,8 @@ const NewBookContainer = styled.div`
   flex-direction: column;
   width: 17%;
   margin: 1.5%;
-  &:hover {
+  position: relative;
+  &.search:hover {
     cursor: pointer;
   }
 `;
@@ -26,21 +27,69 @@ const TitleContainer = styled.div`
 const AuthorContainer = styled.div`
   font-size: 11px;
   color: ${({ theme }) => theme.colors.dark};
+  @media screen and (max-width: 640px) {
+    display: none;
+  }
+`;
+
+const DeleteBtn = styled.button`
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 25px;
+  height: 25px;
+  background-color: ${({ theme }) => theme.colors.lightgray};
+  color: ${({ theme }) => theme.colors.dark};
+  font-weight: 700;
+  border: none;
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.mainColor};
+    color: white;
+  }
 `;
 
 const NewBook = ({
-  cover = '/images/books/bookcover_1.jpeg',
-  title = '책 제목',
-  author = '저자',
+  title,
+  author,
+  cover,
+  isbn,
+  remove = false,
+  search = false,
+  handleDeleteBook,
+  handleSetNewBooks,
 }) => {
+  const deleteBook = () => {
+    if (remove) {
+      handleDeleteBook(isbn);
+    }
+  };
   return (
-    <NewBookContainer>
-      <CoverContainer>
-        <img src={process.env.PUBLIC_URL + cover} alt="book cover" />
-      </CoverContainer>
-      <TitleContainer>{title}</TitleContainer>
-      <AuthorContainer>{author}</AuthorContainer>
-    </NewBookContainer>
+    <>
+      {search ? (
+        <NewBookContainer
+          className="search"
+          onClick={() => {
+            handleSetNewBooks(isbn);
+          }}
+        >
+          <CoverContainer>
+            <img src={cover} alt="book cover" />
+          </CoverContainer>
+          <TitleContainer>{title}</TitleContainer>
+          <AuthorContainer>{author}</AuthorContainer>
+        </NewBookContainer>
+      ) : (
+        <NewBookContainer>
+          <DeleteBtn onClick={deleteBook}>X</DeleteBtn>
+          <CoverContainer>
+            <img src={cover} alt="book cover" />
+          </CoverContainer>
+          <TitleContainer>{title}</TitleContainer>
+          <AuthorContainer>{author}</AuthorContainer>
+        </NewBookContainer>
+      )}
+    </>
   );
 };
 
