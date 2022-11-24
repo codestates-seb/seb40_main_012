@@ -101,10 +101,10 @@ const Header = () => {
                 <Typography variant="h6">chichi</Typography>
 
                 <Typography variant="body1" gutterBottom>
-                  책의 온기 {userInfo.temp}도
+                  안녕하세요!
                 </Typography>
                 <Typography sx={{ mt: 1.6 }} variant="body2" gutterBottom>
-                  팔로잉 2 팔로워 3
+                  책의 온기 {userInfo.temp}도
                 </Typography>
               </Box>
             </Grid>
