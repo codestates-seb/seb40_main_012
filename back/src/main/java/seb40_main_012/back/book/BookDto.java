@@ -89,7 +89,23 @@ public class BookDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class BookmarkResponse{
+        private boolean result;
+        private String isbn13;
+        public static BookmarkResponse of(Book book,boolean result){
+            return BookmarkResponse.builder()
+                    .result(result)
+                    .isbn13(book.getIsbn13())
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class BookmarkedBook{
+        private String isbn13;
         private String title;
         private String author;
         private Long ratingCount;
@@ -97,6 +113,7 @@ public class BookDto {
 
         public static BookmarkedBook of(Book book){
             return BookmarkedBook.builder()
+                    .isbn13(book.getIsbn13())
                     .title(book.getTitle())
                     .author(book.getAuthor())
                     .ratingCount(book.getRatingCount())

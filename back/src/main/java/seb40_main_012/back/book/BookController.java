@@ -143,8 +143,10 @@ public class BookController {
     }
     @PostMapping("/{isbn13}/bookmark")
     @ResponseStatus(HttpStatus.OK)
-    public boolean bookmarkBook(@PathVariable("isbn13") String isbn13){
-        return bookmarkService.bookmarkBook(isbn13);
+    public BookDto.BookmarkResponse bookmarkBook(@PathVariable("isbn13") String isbn13){
+        Book findBook = bookService.findVerifiedBook(isbn13);
+        boolean result = bookmarkService.bookmarkBook(isbn13);
+        return BookDto.BookmarkResponse.of(findBook,result);
     }
 
 }
