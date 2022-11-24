@@ -41,17 +41,17 @@ const PassWdInputStyled = styled.input`
   width: 100%;
 `;
 
-const ForgotPassWdStyled = styled.div`
-  width: 100%;
-  font-size: 13px;
-  font-weight: 300;
-  color: #737373;
-  margin-top: 10px;
-  :hover {
-    color: #6741ff !important;
-    cursor: pointer;
-  }
-`;
+// const ForgotPassWdStyled = styled.div`
+//   width: 100%;
+//   font-size: 13px;
+//   font-weight: 300;
+//   color: #737373;
+//   margin-top: 10px;
+//   :hover {
+//     color: #6741ff !important;
+//     cursor: pointer;
+//   }
+// `;
 
 const BtnStyled = styled(BasicButton)`
   align-items: center;
@@ -128,7 +128,7 @@ const ChangePassWd = () => {
               justifyContent="center"
             >
               <BtnStyled type="submit">비밀번호 변경</BtnStyled>
-              <ForgotPassWdStyled>비밀번호를 잊으셨나요?</ForgotPassWdStyled>
+              {/* <ForgotPassWdStyled>비밀번호를 잊으셨나요?</ForgotPassWdStyled> */}
             </Grid>
           </Box>
         </Container>

@@ -6,48 +6,59 @@ import theme from '../styles/theme';
 import Header from './Header';
 import Footer from './Footer';
 
-const PageContainer = ({ children, header, footer, center, maxWidth }) => {
-  if (center) {
-    return (
-      <ThemeProvider theme={theme}>
+const PageContainer = ({
+  children,
+  header,
+  footer,
+  center,
+  maxWidth = 'lg',
+  cmt = 8,
+  cmb = 8,
+  bmt = 8,
+}) => {
+  return (
+    <ThemeProvider theme={theme}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+        }}
+      >
         <CssBaseline />
         {header === false ? null : <Header />}
-        <Container component="main" maxWidth={maxWidth}>
-          <Box
-            sx={{
-              marginTop: 0,
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: !footer ? '100vh' : 'calc(100vh - 200px)', // footer
-            }}
-          >
-            {children}
-          </Box>
+        <Container
+          component="main"
+          sx={{ mt: cmt, mb: cmb }}
+          maxWidth={maxWidth}
+        >
+          {center ? (
+            <Box
+              sx={{
+                marginTop: bmt,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              {children}
+            </Box>
+          ) : (
+            children
+          )}
         </Container>
-        {footer ? <Footer /> : null}
-      </ThemeProvider>
-    );
-  } else {
-    return (
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
         <Box
+          component="footer"
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
+            mt: 'auto',
           }}
         >
-          {header === false ? null : <Header />}
-          <Container component="main" sx={{ mt: 8, mb: 2 }} maxWidth="lg">
-            {children}
-          </Container>
           {footer ? <Footer /> : null}
         </Box>
-      </ThemeProvider>
-    );
-  }
+      </Box>
+    </ThemeProvider>
+  );
 };
 
 export default PageContainer;

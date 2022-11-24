@@ -78,14 +78,7 @@ const Header = () => {
               <ButtonCSS>
                 <Grid item>
                   <Link to="/mypage/profile" variant="body2">
-                    <Typography
-                      sx={{ mt: 4 }}
-                      variant="body2"
-                      gutterBottom
-                      style={{
-                        fontSize: '0.875rem;',
-                      }}
-                    >
+                    <Typography sx={{ mt: 4 }} variant="body2" gutterBottom>
                       내 정보 수정
                     </Typography>
                   </Link>

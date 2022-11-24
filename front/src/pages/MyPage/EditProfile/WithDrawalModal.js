@@ -2,8 +2,12 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
+import { ContainedButton } from '../../../components/Buttons';
+import { currentPasswordCheckApi, withdrawalApi } from '../../../api/myPageApi';
+import { useNavigate } from 'react-router-dom';
+import { refreshUserData } from '../../../api/authApi';
 
-const Container = styled.div`
+const ContainerStyled = styled.div`
   color: ${({ theme }) => theme.colors.gray};
   display: flex;
   margin-top: 2rem;
@@ -18,8 +22,9 @@ const Container = styled.div`
   }
 `;
 
-const PasswordCheck = styled.input`
+const PasswordCheckInputStyled = styled.input`
   // design fluff
+  width: 100%;
   display: block;
   -webkit-appearance: none;
   border: 1px solid white;
@@ -34,7 +39,7 @@ const PasswordCheck = styled.input`
   }
 `;
 
-const ModalBox = styled.div`
+const ModalBoxStyled = styled.form`
   width: 400px;
   position: absolute;
   background-color: white;
@@ -51,7 +56,6 @@ const ModalBox = styled.div`
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 20px;
-    color: ${({ theme }) => theme.colors.mainColor};
   }
   .info {
     margin-bottom: 24px;
@@ -71,44 +75,68 @@ const ModalBox = styled.div`
   }
 `;
 
-const Guide = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+const ContainedButtonStyled = styled(ContainedButton)`
+  margin-top: 20px;
+`;
+
+const PasswordErrorMessageStyled = styled.p`
+  color: #d32f2f;
+  font-weight: 400;
+  font-size: 0.75rem;
+  margin-top: 4px;
+`;
+
+const WithDrawalModal = ({ open, handleCloseModal }) => {
+  const navigate = useNavigate();
+
+  const [passwordValue, setPasswordValue] = useState('');
+  const [passwordErrMsg, setPasswordErrMsg] = useState('');
+
+  const hadleClickSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await currentPasswordCheckApi(passwordValue);
+      if (!response) {
+        setPasswordErrMsg('현재 비밀번호를 다시 확인해주세요.');
+      } else {
+        setPasswordErrMsg('');
+        await withdrawalApi();
+        // 회원탈퇴 안내 메시지 필요
+        refreshUserData();
+        navigate('/', { replace: true });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChangePasswordValue = (e) => {
+    setPasswordValue(e.target.value);
+  };
 
   return (
-    <Container>
-      <div
-        className="with-drawal-text"
-        onClick={handleOpen}
-        role="presentation"
-      >
-        <div>회원 탈퇴</div>
-      </div>
+    <ContainerStyled>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <ModalBox>
+        <ModalBoxStyled onSubmit={hadleClickSubmit}>
           <div className="close-icon">
             <CloseIcon
               width="100%"
               style={{ textAlign: 'right' }}
               sx={{
                 align: 'right',
-                alignItems: 'right',
                 flexDirection: 'row-reverse',
               }}
               align="right"
-              alignItems="right"
-              onClick={handleClose}
+              onClick={handleCloseModal}
               color="disabled"
             ></CloseIcon>
           </div>
           <div className="title">회원 탈퇴</div>
-
           <div className="info">
             정말로 회원을 탈퇴 하시겠어요? <br />
             즉시 로그아웃 되며
@@ -117,11 +145,21 @@ const Guide = () => {
             <br />
           </div>
           <div className="password-check">비밀번호</div>
-          <PasswordCheck></PasswordCheck>
-        </ModalBox>
+          <PasswordCheckInputStyled
+            type="password"
+            value={passwordValue}
+            onChange={handleChangePasswordValue}
+          ></PasswordCheckInputStyled>
+          <PasswordErrorMessageStyled>
+            {passwordErrMsg}
+          </PasswordErrorMessageStyled>
+          <ContainedButtonStyled size="medium" onClick={hadleClickSubmit}>
+            탈퇴하기
+          </ContainedButtonStyled>
+        </ModalBoxStyled>
       </Modal>
-    </Container>
+    </ContainerStyled>
   );
 };
 
-export default Guide;
+export default WithDrawalModal;

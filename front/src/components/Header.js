@@ -2,8 +2,8 @@ import styled from 'styled-components';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
 import Searchbar from './Searchbar';
 import { useSelector } from 'react-redux';
-import { selectIsLogin } from '../store/modules/authSlice';
-import { logout } from '../api/authApi';
+import { selectIsLogin, selectProfileImage } from '../store/modules/authSlice';
+import { logoutApi } from '../api/authApi';
 
 const HeaderContainer = styled.div`
   position: fixed;
@@ -99,12 +99,13 @@ const RTKBtn = styled(HeaderBtn)`
 const Header = () => {
   const location = useLocation();
   const isLogin = useSelector(selectIsLogin);
+  const profileImage = useSelector(selectProfileImage);
 
   const navigate = useNavigate();
 
   const handleClickLogoutButton = async () => {
     try {
-      await logout();
+      await logoutApi();
     } catch (e) {
       console.log(e);
     }
@@ -157,8 +158,14 @@ const Header = () => {
             </LoginOutBtn>
             <MyPageIconContainer onClick={handleClickMypageBtn}>
               <img
-                src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
+                src={
+                  profileImage
+                    ? profileImage
+                    : process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'
+                }
                 alt="Mypage Icon"
+                height="32"
+                width="32"
               />
             </MyPageIconContainer>
           </>

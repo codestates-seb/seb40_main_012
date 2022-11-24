@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { signUp } from '../../api/signUpAPI';
+import { signUpApi } from '../../api/signUpAPI';
 import { validationCheck, duplicationCheck } from '../../util/util';
 
 const initialState = {
@@ -14,7 +14,7 @@ export const signUpAsync = createAsyncThunk(
   'signUp/signUp',
   async (params, thunkAPI) => {
     try {
-      const response = await signUp(params);
+      const response = await signUpApi(params);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue({
