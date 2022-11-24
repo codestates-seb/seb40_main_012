@@ -27,16 +27,15 @@ const Void = styled.div`
 `;
 
 const MyPairing = () => {
-  console.log('마이페어링 시작');
+  console.log('마이컬렉션 시작');
   const [view, setView] = useState(3);
   const [content, setContent] = useState({
     listCount: '',
     data: [],
+    hasMore: true,
   });
   const [infiniteData, setInfiniteData] = useState({
-    content: {
-      data: [],
-    },
+    data: [],
     hasMore: true,
   });
 
@@ -44,9 +43,11 @@ const MyPairing = () => {
     axios
       .get(MY_COLLECTION_URL)
       .then((response) => {
-        setContent(response.data);
-        console.log('state 현재값', content);
-        console.log('response데이터', response);
+        setContent({
+          listCount: response.data.listCount,
+          data: response.data.data,
+          hasMore: true,
+        });
         setInfiniteData({
           content: response.data,
           hasMore: true,
@@ -64,8 +65,6 @@ const MyPairing = () => {
     console.log('infiniteData 변경', infiniteData);
   }, [infiniteData]);
 
-  console.log('state 현재값', content);
-
   return (
     <PageContainer header footer>
       {content.data.length !== 0 ? (
@@ -73,11 +72,10 @@ const MyPairing = () => {
           <Header></Header>
           <Nav view={view} setView={setView} content={content}></Nav>
           <Content
-            view={view}
-            setView={setView}
             content={content}
             setInfiniteData={setInfiniteData}
             infiniteData={infiniteData}
+            setContent={setContent}
           ></Content>
         </Container>
       ) : (

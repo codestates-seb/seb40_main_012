@@ -4,9 +4,14 @@ import Nav from '../Nav';
 import Content from './Content';
 import Container from '@mui/material/Container';
 import styled from 'styled-components';
-import { useSelector, useDispatch } from 'react-redux';
+// import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
+// import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
+import axios from '../../../api/axios';
+import { MY_PICK_BOOK } from '../../../api/requests';
+// import { MY_PICK_PAIRING } from '../../../api/requests';
+// import { MY_PICK_COLLECTION } from '../../../api/requests';
+// 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
 
 const Void = styled.div`
   min-width: 50vw;
@@ -23,41 +28,68 @@ const Void = styled.div`
   }
 `;
 
-const MyCollection = () => {
+const MyPick = () => {
+  console.log('마이픽 시작');
   const [view, setView] = useState(4);
-  const CommentData = useSelector((state) =>
-    state.myComment.data.length !== 0
-      ? state.myComment.data.data.content
-      : false
-  );
-  console.log(CommentData);
+  const [content, setContent] = useState({
+    listCount: '',
+    data: [],
+    hasMore: true,
+  });
+  const [infiniteData, setInfiniteData] = useState({
+    data: [],
+    hasMore: true,
+  });
 
-  // console.log(CommentData);
-  const dispatch = useDispatch();
+  const fetchData = async () => {
+    axios
+      .get(MY_PICK_BOOK)
+      .then((response) => {
+        setContent({
+          listCount: response.data.listCount,
+          data: response.data.data,
+          hasMore: true,
+        });
+        setInfiniteData({
+          content: response.data,
+          hasMore: true,
+        });
+      })
+      .catch((error) => console.log('에러', error));
+  };
+
   useEffect(() => {
-    dispatch(asyncGetMyCommentList());
-  }, [dispatch]);
+    fetchData();
+    console.log('useEffect의 state 현재값', content);
+  }, []);
+
+  useEffect(() => {
+    console.log('infiniteData 변경', infiniteData);
+  }, [infiniteData]);
 
   return (
     <PageContainer header footer>
-      {CommentData ? (
+      {content.data.length !== 0 ? (
         <Container maxWidth="md">
           <Header></Header>
-          <Nav view={view} setView={setView} CommentData={CommentData}></Nav>
+          <Nav view={view} setView={setView} content={content}></Nav>
           <Content
-            view={view}
-            setView={setView}
-            commentData={CommentData}
+            content={content}
+            setInfiniteData={setInfiniteData}
+            infiniteData={infiniteData}
+            setContent={setContent}
           ></Content>
         </Container>
       ) : (
         <Container maxWidth="md">
           <Header></Header>
+          <Nav view={view} setView={setView} content={content}></Nav>
           <Void>
             <img
               src={'/images/cherrypick_loading.gif'}
               alt="loading cherrypick"
             ></img>
+            데이터가 없어용
           </Void>
         </Container>
       )}
@@ -65,4 +97,4 @@ const MyCollection = () => {
   );
 };
 
-export default MyCollection;
+export default MyPick;

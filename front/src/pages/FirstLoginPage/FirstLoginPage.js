@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -63,8 +62,6 @@ const CheckboxFormGroupStyled = styled(FormGroup)`
 
 const FirstLoginPage = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
-  console.log(location);
 
   const [gender, setGender] = React.useState('');
   const [age, setAge] = React.useState('');

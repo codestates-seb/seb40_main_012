@@ -93,13 +93,7 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({
-  setInfiniteData,
-  infiniteData,
-  commentLength,
-  data,
-  setData,
-}) => {
+const Content = ({ commentLength, data, setData }) => {
   // const [data, setData] = useState({
   //   content: dataArray,
   //   hasMore: true,
@@ -108,12 +102,6 @@ const Content = ({
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
     if (commentLength >= 100) {
-      // setInfiniteData({
-      //   bookComment: infiniteData.bookComment,
-      //   pairingComment: infiniteData.pairingComment,
-      //   collectionComment: infiniteData.collectionComment,
-      //   hasMore: false,
-      // });
       setData({
         content: data.content,
         hasMore: false,
@@ -168,7 +156,7 @@ const Content = ({
     const newCommentList = data.content.filter(
       (el) => el.commentId !== targetId
     );
-    setInfiniteData({
+    setData({
       content: newCommentList,
       hasMore: true,
     });
@@ -188,13 +176,6 @@ const Content = ({
       });
     }
   };
-
-  console.log(
-    'concat궁금해',
-    infiniteData.bookComment
-      .concat(infiniteData.pairingComment)
-      .concat(infiniteData.collectionComment)
-  );
 
   return (
     <>

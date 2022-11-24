@@ -14,14 +14,14 @@ const REFRESH_EXPIRY_TIME = 24 * 60 * 60 * 1000; // 24시간
 const setAxiosHeaderAuth = (value) =>
   (axios.defaults.headers.common['Authorization'] = value);
 
-export const signIn = (params) => {
+export const signInApi = (params) => {
   return new Promise((resolve, reject) => {
     return axios
       .post(SIGN_IN_URL, params)
       .then((response) => {
         signInSuccess(response);
         // refresh token 만료되면 로그아웃
-        setTimeout(logout, REFRESH_EXPIRY_TIME);
+        setTimeout(logoutApi, REFRESH_EXPIRY_TIME);
         resolve(response);
       })
       .catch((error) => {
@@ -33,12 +33,12 @@ export const signIn = (params) => {
         }
 
         // 에러코드 나오면 처리 필요
-        // logout();
+        // logoutApi();
       });
   });
 };
 
-export const refreshToken = () => {
+export const refreshTokenApi = () => {
   return new Promise((resolve, reject) => {
     return axios
       .get(TOKEN_REFRESH_URL)
@@ -55,7 +55,7 @@ export const refreshToken = () => {
         }
 
         // 에러코드 나오면 처리 필요
-        // logout();
+        // logoutApi();
       });
   });
 };
@@ -64,10 +64,10 @@ const signInSuccess = (response) => {
   setAxiosHeaderAuth(response.headers.authorization);
 
   // accessToken 만료하기 1분 전에 로그인 연장
-  setTimeout(refreshToken, ACCESS_EXPIRY_TIME - 60000);
+  setTimeout(refreshTokenApi, ACCESS_EXPIRY_TIME - 60000);
 };
 
-export const logout = () => {
+export const logoutApi = () => {
   return new Promise((resolve, reject) => {
     return axios
       .post(LOGOUT_URL)
@@ -83,17 +83,21 @@ export const logout = () => {
         }
       })
       .finally(() => {
-        setAxiosHeaderAuth();
-        purge();
+        refreshUserData();
       });
   });
+};
+
+export const refreshUserData = () => {
+  setAxiosHeaderAuth();
+  purge();
 };
 
 const purge = async () => {
   await persistor.purge();
 };
 
-export const firstLogin = (params) => {
+export const firstLoginApi = (params) => {
   return new Promise((resolve, reject) => {
     return axios
       .patch(FIRST_LOGIN_URL, params)

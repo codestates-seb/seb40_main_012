@@ -1,10 +1,9 @@
 import Grid from '@mui/material/Grid';
-import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
+
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const ContentContainer = styled.div`
@@ -94,152 +93,115 @@ const ItemContainer = styled.div`
   }
 `;
 
-const FixContentScroll = ({ commentData }) => {
-  const [editMode, setEditMode] = useState(false);
-  console.log(commentData);
-  const handleChangeEditMode = () => {
-    setEditMode(!editMode);
-  };
-  const [data, setData] = useState({
-    content: commentData,
-    hasMore: true,
-  });
-
-  console.log(data.content);
+const Content = ({ setContent, content }) => {
+  // const [data, setData] = useState({
+  //   content: content.data,
+  //   hasMore: true,
+  // });
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    if (data.content.length >= 100) {
-      setData({
-        content: data.content,
+    if (content.data.length >= 100) {
+      setContent({
+        listCount: content.listCount,
+        data: content.data,
         hasMore: false,
       });
       return;
     }
+    if (content.data.length < 10) {
+      setContent({
+        listCount: content.listCount,
+        data: content.data,
+        hasMore: false,
+      });
+      return;
+    }
+    ////// 나중에 통신하는 거 붙여주기
     setTimeout(() => {
-      setData({
-        content: data.content.concat(data.content),
+      setContent({
+        listCount: content.listCount.concat(content.listCount),
+        data: content.data.concat(content.data),
         hasMore: true,
       });
-      console.log(data.hasMore);
     }, 800);
+    /////
   };
 
+  console.log('content.data', content.data);
+
   const onRemove = (targetId) => {
-    const newCommentList = data.content.filter(
+    const newCommentList = content.data.filter(
       (el) => el.commentId !== targetId
     );
-    setData({ content: newCommentList, hasMore: true });
+    setContent({ data: newCommentList, hasMore: true });
   };
 
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      setData({ content: [], hasMore: false });
+      setContent({ data: [], hasMore: false });
     }
   };
 
-  const [checkItems, setCheckItems] = useState([]);
-  const handleSingleCheck = (checked, id) => {
-    if (checked) {
-      setCheckItems((prev) => [...prev, id]);
-    } else {
-      setCheckItems(checkItems.filter((el) => el !== id));
-    }
-  };
-
-  const handleAllCheck = (checked) => {
-    if (checked) {
-      const idArray = [];
-      data.content.forEach((el) => idArray.push(el.commentId));
-      setCheckItems(idArray);
-    } else {
-      setCheckItems([]);
-    }
-  };
-
-  console.log('checkItems', checkItems);
-  useEffect(() => {
-    console.log('hello');
-  }, []);
-  console.log(commentData);
   return (
     <>
       <ContentContainer>
         <Grid container>
-          <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
+          <Grid
+            item
+            xs={11}
+            sx={{
+              mt: 1,
+              mb: 1,
+              display: 'flex',
+              justifyContent: 'space-around',
+            }}
+          >
             <CommentContainer>
-              {editMode ? (
-                <>
-                  <input
-                    type="checkbox"
-                    name="select-all"
-                    onChange={(e) => handleAllCheck(e.target.checked)}
-                    checked={
-                      checkItems.length === data.content.length ? true : false
-                    }
-                  ></input>
-                  <Typography
-                    color="#737373"
-                    variant="body2"
-                    gutterBottom
-                    sx={{ ml: 2 }}
-                  >
-                    전체 선택
-                  </Typography>
-                </>
-              ) : null}
+              <Typography
+                color="#737373"
+                sx={{
+                  display: 'flex',
+                  mt: 1,
+                  mb: 1,
+                }}
+                variant="body2"
+                gutterBottom
+              >
+                <input type="checkbox" name="xxx" />
+                코멘트
+                <input type="checkbox" name="xxx" />
+                페어링
+                <input type="checkbox" name="xxx" />
+                컬렉션
+                <input type="checkbox" name="xxx" />책
+              </Typography>
             </CommentContainer>
           </Grid>
 
-          <Grid
-            item
-            xs={6.5}
-            sx={{
-              display: 'flex',
-              flexDirection: 'row-reverse',
-            }}
-          >
-            {editMode ? (
-              <>
-                <ButtonCSS
-                // onClick={handleClickRemove}
-                >
-                  <Typography color="#737373" variant="body2" gutterBottom>
-                    선택 삭제
-                  </Typography>
-                </ButtonCSS>
-
-                <ButtonCSS onClick={handleChangeEditMode}>
-                  <Typography color="#737373" variant="body2" gutterBottom>
-                    편집 완료
-                  </Typography>
-                </ButtonCSS>
-              </>
-            ) : (
-              <ButtonCSS onClick={removeAll}>
-                <Typography
-                  color="#737373"
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row-reverse',
-                    mt: 1,
-                    mb: 1,
-                  }}
-                  variant="body2"
-                  gutterBottom
-                >
-                  전체 삭제
-                </Typography>
-              </ButtonCSS>
-            )}
+          <Grid item xs={1}>
+            <ButtonCSS onClick={removeAll}>
+              <Typography
+                color="#737373"
+                sx={{
+                  mt: 1,
+                  mb: 1,
+                }}
+                variant="body2"
+                gutterBottom
+              >
+                전체 삭제
+              </Typography>
+            </ButtonCSS>
           </Grid>
         </Grid>
 
         <InfiniteScroll
-          dataLength={data.content.length}
-          // dataLength={contentLength}
-          next={data.content && fetchMoreData}
-          hasMore={data.hasMore} // 스크롤 막을지 말지 결정
+          dataLength={content.data.length}
+          // dataLength={data.content.length}
+          // next={data.content && fetchMoreData}
+          next={content.data && fetchMoreData}
+          hasMore={content.hasMore} // 스크롤 막을지 말지 결정
           loader={
             <p
               style={{
@@ -260,124 +222,140 @@ const FixContentScroll = ({ commentData }) => {
           }
         >
           <div>
-            {data.content.map((data, key) => (
-              <ItemContainer key={key}>
-                <Grid
-                  container
-                  xs={12}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                  }}
-                >
-                  <Grid item xs={0.5} sx={{ width: 20 }}>
-                    {editMode ? (
-                      <>
-                        <input
-                          type="checkbox"
-                          name={`select-${data.commentId}`}
-                          onChange={(e) =>
-                            handleSingleCheck(e.target.checked, data.commentId)
-                          }
-                          checked={
-                            checkItems.includes(data.commentId) ? true : false
-                          }
-                        />
-                      </>
-                    ) : null}
-                  </Grid>
-
-                  <Grid item xs={2}>
-                    {data && (
-                      <BookImg>
-                        <img
-                          className="resize"
-                          src="https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300"
-                          alt="book thumbnail"
-                        ></img>
-                      </BookImg>
-                    )}
-                  </Grid>
-                  <Grid item xs={9}>
-                    <FlexBox>
-                      <Typography
-                        color="#232627"
-                        sx={{
-                          height: 125,
-                        }}
-                        variant="body2"
-                        gutterBottom
-                      >
-                        {data.body}
-                      </Typography>
-
-                      <div className="heart-star-title">
-                        <Grid item xs={3}>
-                          <StarBorderRoundedIcon
-                            align="center"
-                            style={{ color: 'FFF599' }}
-                          />
-                        </Grid>
-                        <Grid
-                          item
-                          xs={3}
-                          sx={{
-                            display: 'flex',
-
-                            alignItems: 'center',
-                          }}
-                          color="#BFBFBF"
-                        >
-                          <FavoriteTwoToneIcon
-                            sx={{ width: 19.5, height: 19.5 }}
-                            align="center"
-                            style={{ color: 'FFD8D8' }}
-                          />
-                          {data.likeCount}
-                        </Grid>
-                        <Grid
-                          item
-                          xs={6}
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'row-reverse',
-                          }}
-                          align="right"
-                          color="#737373"
-                        >
-                          <div>제목과 작가🎖</div>
-                        </Grid>
-                      </div>
-                    </FlexBox>
-                  </Grid>
+            {content.data ? (
+              content.data.map((data, key) => (
+                <ItemContainer key={key}>
                   <Grid
+                    container
                     item
+                    xs={12}
                     sx={{
                       display: 'flex',
-                      flexDirection: 'row-reverse',
+                      flexDirection: 'row',
                     }}
                   >
-                    <Remove
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            `${data.commentId}번째 코멘트를 삭제하시겠습니까?`
-                          )
-                        ) {
-                          onRemove(data.commentId);
-                        }
+                    <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
+
+                    <Grid item xs={2}>
+                      {data && (
+                        <BookImg>
+                          <img
+                            className="resize"
+                            src={
+                              data.bookCover
+                                ? data.bookCover
+                                : '/images/cherrypick_loading.gif'
+                            }
+                            alt="book thumbnail"
+                          ></img>
+                        </BookImg>
+                      )}
+                    </Grid>
+                    <Grid item xs={9}>
+                      <FlexBox>
+                        <Typography
+                          sx={{
+                            display: 'flex',
+                            mt: 1,
+                            mb: 1,
+                            fontSize: 17,
+                            fontWeight: 400,
+                          }}
+                          variant="body2"
+                          gutterBottom
+                        >
+                          {data.title}
+                        </Typography>
+                        <Typography
+                          color="#232627"
+                          sx={{
+                            height: 125,
+                            fontWeight: 200,
+                          }}
+                          variant="body2"
+                          gutterBottom
+                        >
+                          {data.content}
+                        </Typography>
+
+                        <div className="heart-star-title">
+                          <Grid
+                            item
+                            xs={3}
+                            sx={{
+                              display: 'flex',
+
+                              alignItems: 'center',
+                            }}
+                            color="#BFBFBF"
+                          >
+                            <FavoriteTwoToneIcon
+                              sx={{ width: 19.5, height: 19.5 }}
+                              align="center"
+                              style={{ color: 'FFD8D8' }}
+                            />
+                            {data.ratingCount}
+                          </Grid>
+                          <Grid
+                            item
+                            xs={3}
+                            sx={{
+                              display: 'flex',
+
+                              alignItems: 'center',
+                            }}
+                            color="#BFBFBF"
+                          ></Grid>
+                          <Grid
+                            item
+                            xs={6}
+                            sx={{
+                              display: 'flex',
+                              flexDirection: 'row-reverse',
+                            }}
+                            align="right"
+                            color="#737373"
+                          >
+                            <div>
+                              {data.bookName ? data.bookName : null},
+                              {data.author ? data.author : null}
+                            </div>
+                          </Grid>
+                        </div>
+                      </FlexBox>
+                    </Grid>
+                    <Grid
+                      item
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row-reverse',
                       }}
                     >
-                      <DeleteOutlinedIcon />
-                    </Remove>
+                      <Remove
+                        onClick={() => {
+                          // 현재 작동 안됨 (코멘트 아이디 없음)
+                          if (
+                            window.confirm(
+                              `${data.collectionId}번째 컬렉션을 삭제하시겠습니까?`
+                            )
+                          ) {
+                            onRemove(data.collectionId);
+                          }
+                        }}
+                      >
+                        <DeleteOutlinedIcon />
+                      </Remove>
+                    </Grid>
                   </Grid>
-                </Grid>
-              </ItemContainer>
-            ))}
+                </ItemContainer>
+              ))
+            ) : (
+              <div>데이터없어용</div>
+            )}
           </div>
         </InfiniteScroll>
       </ContentContainer>
     </>
   );
 };
-export default FixContentScroll;
+export default Content;

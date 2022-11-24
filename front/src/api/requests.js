@@ -9,10 +9,15 @@ export const DUPLICATION_CHECK_EMAIL_URL = `${MY_PAGE_URL}/verify/email`;
 export const COMMENT_URL = `${MY_PAGE_URL}/userComment`;
 export const MY_PAIRING_URL = `${MY_PAGE_URL}/userPairing`;
 export const MY_COLLECTION_URL = `${MY_PAGE_URL}/userCollection`;
+export const MY_PICK_BOOK = `${MY_PAGE_URL}/bookmark/book`;
+export const MY_PICK_PAIRING = `${MY_PAGE_URL}/bookmark/pairing`;
+export const MY_PICK_COLLECTION = `${MY_PAGE_URL}/bookmark/collection`;
 export const FIRST_LOGIN_URL = `${USERS_URL}/firstLogin`;
 
 // 마이페이지
-export const EDIT_USER_INFO = `${MY_PAGE_URL}/userInfo`;
+// export const COMMENT_URL = `${MY_PAGE_URL}/userComment`;
+export const USER_INFO_URL = `${MY_PAGE_URL}/userInfo`;
+export const CURRENT_PASSWORD_CHECK_URL = `${MY_PAGE_URL}/password/current`;
 
 // 책
 export const BOOKS_URL = '/api/books';

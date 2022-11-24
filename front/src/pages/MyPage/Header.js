@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import axios from '../../api/axios';
 import { useEffect, useState } from 'react';
-import { EDIT_USER_INFO } from '../../api/requests';
+import { USER_INFO_URL } from '../../api/requests';
 
 const ButtonCSS = styled.button`
   outline: none;
@@ -38,7 +38,7 @@ const Header = () => {
 
   const fetchData = async () => {
     axios
-      .get(EDIT_USER_INFO)
+      .get(USER_INFO_URL)
       .then((response) => {
         setUserInfo({
           introduction: '',
@@ -112,14 +112,7 @@ const Header = () => {
               <ButtonCSS>
                 <Grid item>
                   <Link to="/mypage/profile" variant="body2">
-                    <Typography
-                      sx={{ mt: 4 }}
-                      variant="body2"
-                      gutterBottom
-                      style={{
-                        fontSize: '0.875rem',
-                      }}
-                    >
+                    <Typography sx={{ mt: 4 }} variant="body2" gutterBottom>
                       내 정보 수정
                     </Typography>
                   </Link>

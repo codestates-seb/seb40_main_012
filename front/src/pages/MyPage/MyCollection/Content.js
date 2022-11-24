@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
+
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const ContentContainer = styled.div`
@@ -93,7 +93,7 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ setInfiniteData, infiniteData }) => {
+const Content = ({ infiniteData, setContent, content }) => {
   // const [data, setData] = useState({
   //   content: content.data,
   //   hasMore: true,
@@ -102,51 +102,48 @@ const Content = ({ setInfiniteData, infiniteData }) => {
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    if (infiniteData.content.data.length >= 100) {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data,
-        },
+    if (content.data.length >= 100) {
+      setContent({
+        listCount: content.listCount,
+        data: content.data,
         hasMore: false,
       });
       return;
     }
     if (infiniteData.content.data.length < 10) {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data,
-        },
+      setContent({
+        listCount: content.listCount,
+        data: content.data,
         hasMore: false,
       });
       return;
     }
     ////// 나중에 통신하는 거 붙여주기
     setTimeout(() => {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data.concat(infiniteData.content.data),
-        },
-        // response.data
+      setContent({
+        listCount: content.listCount.concat(content.listCount),
+        data: content.data.concat(content.data),
         hasMore: true,
       });
     }, 800);
     /////
   };
 
+  console.log('content.data', content.data);
+
   const onRemove = (targetId) => {
-    const newCommentList = infiniteData.content.data.filter(
+    const newCommentList = content.data.filter(
       (el) => el.commentId !== targetId
     );
-    setInfiniteData({ content: { data: newCommentList }, hasMore: true });
+    setContent({ data: newCommentList, hasMore: true });
   };
 
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      setInfiniteData({ content: { data: [] }, hasMore: false });
+      setContent({ data: [], hasMore: false });
     }
   };
 
-  console.log('infiniteData', infiniteData);
   return (
     <>
       <ContentContainer>
@@ -182,11 +179,11 @@ const Content = ({ setInfiniteData, infiniteData }) => {
         </Grid>
 
         <InfiniteScroll
-          dataLength={infiniteData.content.data.length}
+          dataLength={content.data.length}
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
-          next={infiniteData.content.data && fetchMoreData}
-          hasMore={infiniteData.hasMore} // 스크롤 막을지 말지 결정
+          next={content.data && fetchMoreData}
+          hasMore={content.hasMore} // 스크롤 막을지 말지 결정
           loader={
             <p
               style={{
@@ -207,8 +204,8 @@ const Content = ({ setInfiniteData, infiniteData }) => {
           }
         >
           <div>
-            {infiniteData.content.data ? (
-              infiniteData.content.data.map((data, key) => (
+            {content.data ? (
+              content.data.map((data, key) => (
                 <ItemContainer key={key}>
                   <Grid
                     container
@@ -226,7 +223,13 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                         <BookImg>
                           <img
                             className="resize"
-                            src="https://shopping-phinf.pstatic.net/main_3546279/35462795630.20221101101451.jpg?type=w300"
+                            src={
+                              // data.books[0].bookCover
+                              //   ? data.books[0].bookCover
+                              //   : '/images/cherrypick_loading.gif'
+
+                              '/images/cherrypick_loading.gif'
+                            }
                             alt="book thumbnail"
                           ></img>
                         </BookImg>
@@ -235,9 +238,23 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                     <Grid item xs={9}>
                       <FlexBox>
                         <Typography
+                          sx={{
+                            display: 'flex',
+                            mt: 1,
+                            mb: 1,
+                            fontSize: 17,
+                            fontWeight: 400,
+                          }}
+                          variant="body2"
+                          gutterBottom
+                        >
+                          {data.title}
+                        </Typography>
+                        <Typography
                           color="#232627"
                           sx={{
                             height: 125,
+                            fontWeight: 200,
                           }}
                           variant="body2"
                           gutterBottom
@@ -246,12 +263,6 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                         </Typography>
 
                         <div className="heart-star-title">
-                          <Grid item xs={3}>
-                            <StarBorderRoundedIcon
-                              align="center"
-                              style={{ color: 'FFF599' }}
-                            />
-                          </Grid>
                           <Grid
                             item
                             xs={3}
@@ -267,8 +278,18 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                               align="center"
                               style={{ color: 'FFD8D8' }}
                             />
-                            {data.pairingLike}
+                            {data.collectionLike}
                           </Grid>
+                          <Grid
+                            item
+                            xs={3}
+                            sx={{
+                              display: 'flex',
+
+                              alignItems: 'center',
+                            }}
+                            color="#BFBFBF"
+                          ></Grid>
                           <Grid
                             item
                             xs={6}
@@ -279,9 +300,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                             align="right"
                             color="#737373"
                           >
-                            <div>
-                              {data.bookName}, {data.author}🎖
-                            </div>
+                            <div></div>
                           </Grid>
                         </div>
                       </FlexBox>
@@ -298,10 +317,10 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                           // 현재 작동 안됨 (코멘트 아이디 없음)
                           if (
                             window.confirm(
-                              `${data.commentId}번째 코멘트를 삭제하시겠습니까?`
+                              `${data.collectionId}번째 컬렉션을 삭제하시겠습니까?`
                             )
                           ) {
-                            onRemove(data.commentId);
+                            onRemove(data.collectionId);
                           }
                         }}
                       >
