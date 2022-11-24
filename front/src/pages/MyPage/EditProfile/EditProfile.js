@@ -257,14 +257,9 @@ const EditProfile = () => {
   return (
     <PageContainer footer center maxWidth="sm" bmt={5}>
       <Avatar
-        sx={{
-          bgcolor: '#A28BFF',
-          width: 80,
-          height: 80,
-        }}
-      >
-        <img src={profileImage} alt="cat profile" height="80" width="80"></img>
-      </Avatar>
+        src={profileImage ? profileImage : ''}
+        sx={{ width: 80, height: 80 }}
+      />
       <WrapperStyled>
         <TitleTextStyled component="h2" variant="h5" gutterBottom>
           기본정보

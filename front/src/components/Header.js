@@ -1,9 +1,11 @@
-import styled from 'styled-components';
 import { useLocation, Link, useNavigate } from 'react-router-dom';
-import Searchbar from './Searchbar';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import Avatar from '@mui/material/Avatar';
+import Searchbar from './Searchbar';
 import { selectIsLogin, selectProfileImage } from '../store/modules/authSlice';
 import { logoutApi } from '../api/authApi';
+import { dummyUserImgUrl } from '../util/userAvatar';
 
 const HeaderContainer = styled.div`
   position: fixed;
@@ -111,8 +113,12 @@ const Header = () => {
     }
   };
 
-  const handleClickMypageBtn = () => {
-    navigate('/mypage');
+  const handleClickAvatar = () => {
+    if (isLogin) {
+      navigate('/mypage');
+      return;
+    }
+    navigate('/user/signup');
   };
 
   return (
@@ -156,23 +162,27 @@ const Header = () => {
             <LoginOutBtn onClick={handleClickLogoutButton}>
               로그아웃
             </LoginOutBtn>
-            <MyPageIconContainer onClick={handleClickMypageBtn}>
-              <img
-                src={
-                  profileImage
-                    ? profileImage
-                    : process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'
-                }
+            <MyPageIconContainer onClick={handleClickAvatar}>
+              <Avatar
                 alt="Mypage Icon"
-                height="32"
-                width="32"
+                src={profileImage ? profileImage : dummyUserImgUrl}
+                sx={{ width: 32, height: 32 }}
               />
             </MyPageIconContainer>
           </>
         ) : (
-          <Link to="/user/signin">
-            <LoginOutBtn>로그인</LoginOutBtn>
-          </Link>
+          <>
+            <Link to="/user/signin">
+              <LoginOutBtn>로그인</LoginOutBtn>
+            </Link>
+            {/* <MyPageIconContainer onClick={handleClickAvatar}>
+              <Avatar
+                alt="Sign Up Icon"
+                src={dummyUserImgUrl}
+                sx={{ width: 32, height: 32 }}
+              />
+            </MyPageIconContainer> */}
+          </>
         )}
       </div>
     </HeaderContainer>
