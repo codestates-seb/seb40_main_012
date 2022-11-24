@@ -11,6 +11,8 @@ public interface UserCategoryRepository extends JpaRepository<UserCategory,Long>
     List<UserCategory> findByUserUserId(Long userId);
 
     List<UserCategory> findByCategory(Category category);
+    UserCategory findByCategoryAndUser(Category category,User user);
 
     List<UserCategory> findAllByUser(User user);
+    void deleteAllByUser(User user);
 }
