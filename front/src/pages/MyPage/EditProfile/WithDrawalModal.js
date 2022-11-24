@@ -1,8 +1,9 @@
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
+import { ContainedButton } from '../../../components/Buttons';
 
-const Container = styled.div`
+const ContainerStyled = styled.div`
   color: ${({ theme }) => theme.colors.gray};
   display: flex;
   margin-top: 2rem;
@@ -17,8 +18,9 @@ const Container = styled.div`
   }
 `;
 
-const PasswordCheck = styled.input`
+const PasswordCheckInputStyled = styled.input`
   // design fluff
+  width: 100%;
   display: block;
   -webkit-appearance: none;
   border: 1px solid white;
@@ -33,7 +35,7 @@ const PasswordCheck = styled.input`
   }
 `;
 
-const ModalBox = styled.div`
+const ModalBoxStyled = styled.div`
   width: 400px;
   position: absolute;
   background-color: white;
@@ -50,7 +52,6 @@ const ModalBox = styled.div`
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 20px;
-    color: ${({ theme }) => theme.colors.mainColor};
   }
   .info {
     margin-bottom: 24px;
@@ -70,16 +71,20 @@ const ModalBox = styled.div`
   }
 `;
 
+const ContainedButtonStyled = styled(ContainedButton)`
+  margin-top: 20px;
+`;
+
 const WithDrawalModal = ({ open, handleCloseModal }) => {
   return (
-    <Container>
+    <ContainerStyled>
       <Modal
         open={open}
         onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <ModalBox>
+        <ModalBoxStyled>
           <div className="close-icon">
             <CloseIcon
               width="100%"
@@ -103,10 +108,11 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
             <br />
           </div>
           <div className="password-check">비밀번호</div>
-          <PasswordCheck></PasswordCheck>
-        </ModalBox>
+          <PasswordCheckInputStyled></PasswordCheckInputStyled>
+          <ContainedButtonStyled size="medium">탈퇴하기</ContainedButtonStyled>
+        </ModalBoxStyled>
       </Modal>
-    </Container>
+    </ContainerStyled>
   );
 };
 
