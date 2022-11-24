@@ -77,7 +77,7 @@ public class UserService {
 
     public void updateNickName(String nickName) {
         User findUser = getLoginUser();
-        if(nickName!=findUser.getNickName()) {verifyNickName(nickName);}
+//        if(nickName!=findUser.getNickName()) {verifyNickName(nickName);}
         findUser.updateNickName(nickName);
         userRepository.save(findUser);
     }
