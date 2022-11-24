@@ -77,25 +77,32 @@ const ContainedButtonStyled = styled(ContainedButton)`
   margin-top: 20px;
 `;
 
+const PasswordErrorMessageStyled = styled.p`
+  color: #d32f2f;
+  font-weight: 400;
+  font-size: 0.75rem;
+  margin-top: 4px;
+`;
+
 const WithDrawalModal = ({ open, handleCloseModal }) => {
-  const [inputValue, setInputValue] = useState('');
+  const [passwordValue, setPasswordValue] = useState('');
+  const [passwordErrMsg, setPasswordErrMsg] = useState('');
 
   const hadleClickSubmit = async () => {
-    console.log(inputValue);
     try {
-      const response = await currentPasswordCheckApi(inputValue);
+      const response = await currentPasswordCheckApi(passwordValue);
       if (!response) {
-        console.log('틀림');
+        setPasswordErrMsg('현재 비밀번호를 다시 확인해주세요.');
       } else {
-        console.log('맞음');
+        setPasswordErrMsg('');
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleChangeInputValue = (e) => {
-    setInputValue(e.target.value);
+  const handleChangePasswordValue = (e) => {
+    setPasswordValue(e.target.value);
   };
 
   return (
@@ -121,7 +128,6 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
             ></CloseIcon>
           </div>
           <div className="title">회원 탈퇴</div>
-
           <div className="info">
             정말로 회원을 탈퇴 하시겠어요? <br />
             즉시 로그아웃 되며
@@ -132,9 +138,12 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
           <div className="password-check">비밀번호</div>
           <PasswordCheckInputStyled
             type="password"
-            value={inputValue}
-            onChange={handleChangeInputValue}
+            value={passwordValue}
+            onChange={handleChangePasswordValue}
           ></PasswordCheckInputStyled>
+          <PasswordErrorMessageStyled>
+            {passwordErrMsg}
+          </PasswordErrorMessageStyled>
           <ContainedButtonStyled size="medium" onClick={hadleClickSubmit}>
             탈퇴하기
           </ContainedButtonStyled>
