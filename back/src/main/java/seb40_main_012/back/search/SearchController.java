@@ -120,9 +120,11 @@ public class SearchController {
     }
 
     @GetMapping("/collectionbooks")
-    public ResponseEntity getCollectionBooksSearchRequests(@RequestParam("Query") String queryParam) {
+    public ResponseEntity getCollectionBooksSearchRequests(
+            @RequestParam("Query") String queryParam,
+            @RequestParam("page") Integer page) {
 
-        BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 15);
+        BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", page, 15);
 
         PageRequest pageRequest = PageRequest.of(0, 15);
 
