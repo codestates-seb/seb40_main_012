@@ -47,6 +47,7 @@ const ItemWrapperWithHelperTextStyled = styled(ItemWrapperStyled)`
 
 const ItemWrapperWithHelperCheckBox = styled(ItemWrapperStyled)`
   height: 110px;
+  margin-top: 10px;
 `;
 
 const ItemTextStyled = styled(Typography)`
@@ -72,7 +73,7 @@ const CheckBoxFormControlLabelStyled = styled(FormControlLabel)`
 `;
 
 const ButtonWrapperStyled = styled.div`
-  margin-top: 10px;
+  margin-top: 50px;
   display: flex;
   align-items: center;
 `;
@@ -90,11 +91,11 @@ const EditProfile = () => {
   });
   const [inputStatus, setInputStatus] = useState({
     nickName: '',
-    introduction: '',
+    introduction: 'success',
   });
   const [inputHelperText, setInputHelperText] = useState({
     nickName: '',
-    introduction: '',
+    introduction: '0 / 50',
   });
   const [gender, setGender] = useState('');
   const [age, setAge] = useState('');
@@ -114,6 +115,23 @@ const EditProfile = () => {
   }, []);
 
   const handleChangeInput = (id, value) => {
+    if (id !== 'introduction') {
+      setInputValue({
+        ...inputValue,
+        [id]: value,
+      });
+
+      return;
+    }
+
+    const valueLength = value.length;
+    const lengthLimit = 50;
+
+    if (valueLength > lengthLimit) return;
+    setInputHelperText({
+      ...inputHelperText,
+      [id]: `${valueLength} / ${lengthLimit}`,
+    });
     setInputValue({
       ...inputValue,
       [id]: value,
@@ -221,7 +239,7 @@ const EditProfile = () => {
             required
           />
         </ItemWrapperWithHelperTextStyled>
-        <ItemWrapperStyled>
+        <ItemWrapperWithHelperTextStyled>
           <ItemTextStyled component="h4">한 줄 소개</ItemTextStyled>
           <ValidationTextFields
             inputRef={inputRef}
@@ -237,7 +255,7 @@ const EditProfile = () => {
             inputHelperText={inputHelperText.introduction}
             size="small"
           />
-        </ItemWrapperStyled>
+        </ItemWrapperWithHelperTextStyled>
         <ItemWrapperStyled>
           <Link to="/mypage/profile/changepasswd">
             <ItemTextStyled component="h4">비밀번호 변경</ItemTextStyled>
