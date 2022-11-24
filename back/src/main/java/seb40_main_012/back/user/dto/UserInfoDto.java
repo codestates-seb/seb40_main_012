@@ -71,6 +71,7 @@ public class UserInfoDto {
             String genderType;
             String ageType;
             String profileImage;
+            List<Genre> category;
             if(user.getGender()==null){
                 genderType = "";
             }
@@ -95,6 +96,16 @@ public class UserInfoDto {
             else{
                 profileImage = user.getProfileImage();
             }
+            if(!user.getCategories().isEmpty()){
+                System.out.println("=====================");
+                System.out.println(user.getCategories().size());
+                System.out.println("=====================");
+                category = user.getCategories().stream()
+                        .map(x -> x.getCategory().getGenre()).collect(Collectors.toList());
+            }else {
+                category = null;
+            }
+
 
             return Response.builder()
                     .profileImage(profileImage)
@@ -105,8 +116,7 @@ public class UserInfoDto {
                     .temp(user.getBookTemp())
 //                    .category(user.getCategories().stream()
 //                            .map(x -> CategoryDto.Response.of(x.getCategory().getGenre().getValue())).collect(Collectors.toList()))
-                    .category(user.getCategories().stream()
-                            .map(x -> x.getCategory().getGenre()).collect(Collectors.toList()))
+                    .category(category)
                     .build();
         }
     }
