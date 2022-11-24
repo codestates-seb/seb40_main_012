@@ -54,18 +54,18 @@ const MyBooks = ({ newBooks, setNewBooks }) => {
     // });
     setMyBooks([
       {
-        title: 'Stub_Book_5',
+        title: '모순',
         author: '양귀자 (지은이)',
         ratingCount: 0,
-        isbn13: 2,
+        isbn13: 9788998441012,
         bookCover:
           'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
       },
       {
-        title: 'Stub_Book_6',
-        author: '양귀자 (지은이)',
+        title: '여름의 빌라',
+        author: '백수린 (지은이)',
         ratingCount: 9,
-        isbn13: 1,
+        isbn13: 9788954673105,
         bookCover:
           'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
       },
@@ -73,7 +73,10 @@ const MyBooks = ({ newBooks, setNewBooks }) => {
   }, []);
 
   const handleSetNewBooks = (isbn) => {
-    setNewBooks([...new Set([...newBooks, isbn])]);
+    if (!newBooks.includes(isbn)) {
+      setNewBooks([...newBooks, isbn]);
+    }
+    //setNewBooks([...new Set([...newBooks, isbn])]);
   };
 
   return (

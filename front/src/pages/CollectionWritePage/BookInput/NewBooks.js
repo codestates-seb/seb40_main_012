@@ -1,3 +1,5 @@
+import axios from 'axios';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import NewBook from './NewBook';
 
@@ -22,14 +24,41 @@ const Books = styled.div`
   border: 1px solid ${({ theme }) => theme.colors.gray};
 `;
 
-const NewBooks = () => {
+const NewBooks = ({ newBooks }) => {
+  const [newBooksInfo, setNewBooksInfo] = useState([]);
+
+  useEffect(() => {
+    setNewBooksInfo([]);
+    newBooks.forEach((el) => {
+      getBookInfo(el);
+    });
+  }, [newBooks]);
+
+  const getBookInfo = (isbn) => {
+    axios
+      .get(`/api/books/${isbn}`)
+      .then((res) => {
+        setNewBooksInfo([...newBooksInfo, res.data.data]);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <NewBooksContainer>
       <NewBooksTitle>나의 새로운 컬렉션</NewBooksTitle>
       <Books>
-        <NewBook />
-        <NewBook />
-        <NewBook />
+        {newBooksInfo.map((el, idx) => {
+          return (
+            <NewBook
+              key={idx}
+              title={el.title}
+              author={el.author}
+              cover={el.cover}
+            />
+          );
+        })}
       </Books>
     </NewBooksContainer>
   );

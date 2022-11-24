@@ -28,15 +28,11 @@ const AuthorContainer = styled.div`
   color: ${({ theme }) => theme.colors.dark};
 `;
 
-const NewBook = ({
-  cover = '/images/books/bookcover_1.jpeg',
-  title = '책 제목',
-  author = '저자',
-}) => {
+const NewBook = ({ title, author, cover }) => {
   return (
     <NewBookContainer>
       <CoverContainer>
-        <img src={process.env.PUBLIC_URL + cover} alt="book cover" />
+        <img src={cover} alt="book cover" />
       </CoverContainer>
       <TitleContainer>{title}</TitleContainer>
       <AuthorContainer>{author}</AuthorContainer>

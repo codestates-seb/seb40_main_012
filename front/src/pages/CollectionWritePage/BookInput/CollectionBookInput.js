@@ -10,6 +10,7 @@ const CollectionBookInputContainer = styled.div`
 `;
 
 const CollectionBookInput = ({ data, setData }) => {
+  //isbn13 값으로 관리
   const [newBooks, setNewBooks] = useState([]);
 
   useEffect(() => {
