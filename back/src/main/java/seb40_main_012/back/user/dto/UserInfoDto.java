@@ -20,6 +20,7 @@ public class UserInfoDto {
     @AllArgsConstructor
     @Builder
     public static class Post{
+        private String profileImage;
         private String introduction;
         private String gender;
         private String age;
@@ -42,6 +43,7 @@ public class UserInfoDto {
     @Builder
 //    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Response{
+        private String profileImage;
         private String introduction;
         private String gender;
         private String age;
@@ -52,10 +54,11 @@ public class UserInfoDto {
 
 
         public static Response of(User user){
-            /** null을 더 효율적으로 처리할 수 있는 방법 고민, */
+            /** 로직 dto에서 제거 예정 */
             String introduction;
             String genderType;
             String ageType;
+            String profileImage;
             if(user.getGender()==null){
                 genderType = "";
             }
@@ -74,8 +77,15 @@ public class UserInfoDto {
             else{
                 introduction = user.getIntroduction();
             }
+            if(user.getProfileImage()==null){
+                profileImage = "http://url";
+            }
+            else{
+                profileImage = user.getProfileImage();
+            }
 
             return Response.builder()
+                    .profileImage(profileImage)
                     .introduction(introduction)
                     .gender(genderType)
                     .age(ageType)
