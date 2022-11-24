@@ -16,7 +16,7 @@ import PageContainer from '../../../components/PageContainer';
 import { OutlinedButton } from '../../../components/Buttons';
 import ValidationTextFields from '../../../components/ValidationTextFields';
 import { getUserInfoApi } from '../../../api/myPageApi';
-import { selectEmail } from '../../../store/modules/authSlice';
+import { selectEmail, selectnickName } from '../../../store/modules/authSlice';
 import {
   validationCheck,
   duplicationCheck,
@@ -89,6 +89,7 @@ const ButtonItemStyled = styled(ItemTextStyled)`
 const EditProfile = () => {
   const inputRef = useRef([]);
   const email = useSelector(selectEmail);
+  const nickName = useSelector(selectnickName);
 
   const [inputValue, setInputValue] = useState({
     nickName: '',
@@ -206,6 +207,17 @@ const EditProfile = () => {
       });
     } catch (error) {
       const { status, message } = error;
+      if (nickName === value) {
+        setInputStatus({
+          ...inputStatus,
+          [id]: '',
+        });
+        setInputHelperText({
+          ...inputHelperText,
+          [id]: '',
+        });
+        return;
+      }
       setInputStatus({
         ...inputStatus,
         [id]: status,
