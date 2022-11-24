@@ -5,9 +5,6 @@ const NewBookContainer = styled.div`
   flex-direction: column;
   width: 17%;
   margin: 1.5%;
-  &:hover {
-    cursor: pointer;
-  }
   position: relative;
 `;
 
@@ -33,6 +30,17 @@ const DeleteBtn = styled.button`
   position: absolute;
   top: 0;
   right: 0;
+  width: 25px;
+  height: 25px;
+  background-color: ${({ theme }) => theme.colors.lightgray};
+  color: ${({ theme }) => theme.colors.dark};
+  font-weight: 700;
+  border: none;
+  &:hover {
+    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.mainColor};
+    color: white;
+  }
 `;
 
 const NewBook = ({
@@ -50,7 +58,7 @@ const NewBook = ({
   };
   return (
     <NewBookContainer onClick={deleteBook}>
-      {remove ? <DeleteBtn>x</DeleteBtn> : null}
+      {remove ? <DeleteBtn>X</DeleteBtn> : null}
       <CoverContainer>
         <img src={cover} alt="book cover" />
       </CoverContainer>
