@@ -24,6 +24,7 @@ import {
   ageGroupData,
   genreData,
 } from '../../../util/util';
+import WithDrawal from './WithDrawalModal';
 
 const WrapperStyled = styled.div`
   display: flex;
@@ -84,6 +85,7 @@ const ButtonWrapperStyled = styled.div`
 const ButtonItemStyled = styled(ItemTextStyled)`
   width: auto;
   margin-right: 100px;
+  cursor: pointer;
 `;
 
 const EditProfile = () => {
@@ -115,6 +117,9 @@ const EditProfile = () => {
     COMICS: false,
     ETC: false,
   });
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   useEffect(() => {
     inputRef.current[0].focus();
@@ -395,7 +400,10 @@ const EditProfile = () => {
         </ItemWrapperWithHelperCheckBox>
       </WrapperStyled>
       <ButtonWrapperStyled>
-        <ButtonItemStyled component="h4">회원 탈퇴</ButtonItemStyled>
+        <ButtonItemStyled component="h4" onClick={handleOpenModal}>
+          회원 탈퇴
+        </ButtonItemStyled>
+        <WithDrawal open={openModal} handleCloseModal={handleCloseModal} />
         <OutlinedButton size="medium">저장하기</OutlinedButton>
       </ButtonWrapperStyled>
     </PageContainer>

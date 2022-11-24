@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
@@ -71,23 +70,12 @@ const ModalBox = styled.div`
   }
 `;
 
-const Guide = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
+const WithDrawalModal = ({ open, handleCloseModal }) => {
   return (
     <Container>
-      <div
-        className="with-drawal-text"
-        onClick={handleOpen}
-        role="presentation"
-      >
-        <div>회원 탈퇴</div>
-      </div>
       <Modal
         open={open}
-        onClose={handleClose}
+        onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
@@ -98,12 +86,10 @@ const Guide = () => {
               style={{ textAlign: 'right' }}
               sx={{
                 align: 'right',
-                alignItems: 'right',
                 flexDirection: 'row-reverse',
               }}
               align="right"
-              alignItems="right"
-              onClick={handleClose}
+              onClick={handleCloseModal}
               color="disabled"
             ></CloseIcon>
           </div>
@@ -124,4 +110,4 @@ const Guide = () => {
   );
 };
 
-export default Guide;
+export default WithDrawalModal;
