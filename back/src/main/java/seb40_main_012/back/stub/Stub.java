@@ -20,6 +20,9 @@ import seb40_main_012.back.bookCollection.repository.TagRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
+import seb40_main_012.back.common.bookmark.Bookmark;
+import seb40_main_012.back.common.bookmark.BookmarkRepository;
+import seb40_main_012.back.common.bookmark.BookmarkType;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
@@ -44,6 +47,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -65,7 +69,7 @@ public class Stub {
                                PairingRepository pairingRepository, PairingService pairingService,
                                CommentRepository commentRepository, CommentService commentService,
                                CategoryRepository categoryRepository, FollowRepository followRepository,
-                               BCryptPasswordEncoder encoder) {
+                               BCryptPasswordEncoder encoder, BookmarkRepository bookmarkRepository) {
 
         for (int i = 0; i < 9; i++) {
             Category category = new Category();
@@ -80,20 +84,11 @@ public class Stub {
         for (long i = 1; i <= 18; i++) {
             User user = new User();
             long rand = (long) (Math.random() * 9) + 1;
-//            long rand2 = (long) (Math.random() * 9) + 1;
-
             UserCategory userCategory = new UserCategory();
             Category category = new Category();
             category.setId(rand);
             userCategory.addUser(user);
             userCategory.addCategory(category);
-
-//            UserCategory userCategory2 = new UserCategory();
-//            Category category2 = new Category();
-//            category2.setId(rand2);
-//            userCategory2.addUser(user);
-//            userCategory2.addCategory(category2);
-
             user.setEmail("stub_email_" + i + "@email.com");
             user.setNickName("Stub_Potato_" + i);
             user.setBookTemp(36.5 + Math.round((Math.random() * 15) * 10) / 10.0);
@@ -557,6 +552,28 @@ public class Stub {
 
 //        ------------------------------------------------------------------------------------------
 //        ------------------------------------------------------------------------------------------
+        user24.setCollectionBookmarks(List.of(
+                Bookmark.builder()
+                        .bookmarkId(1L)
+                        .user(user24)
+                        .bookCollection(bookCollectionService.getCollection(1L))
+                        .bookmarkType(BookmarkType.COLLECTION)
+                        .build(),
+                Bookmark.builder()
+                        .bookmarkId(2L)
+                        .user(user24)
+                        .book(bookService.findBook("1"))
+                        .bookmarkType(BookmarkType.BOOK)
+                        .build(),
+                Bookmark.builder()
+                        .bookmarkId(3L)
+                        .user(user24)
+                        .pairing(pairingService.findPairing(1L))
+                        .bookmarkType(BookmarkType.PAIRING)
+                        .build())
+        );
+
+        userRepository.save(user24);
 //        ------------------------------------------------------------------------------------------
 //        ------------------------------------------------------------------------------------------
 
