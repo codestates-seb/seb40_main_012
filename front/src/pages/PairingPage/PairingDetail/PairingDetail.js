@@ -11,6 +11,7 @@ import {
   asyncGetOnePairing,
   asyncPairingLike,
   asyncPairingDislike,
+  asyncPairingPick,
   asyncPostPairingComment,
   asyncDeletePairingComment,
   asyncEditPairingComment,
@@ -23,6 +24,7 @@ import PatchModal from './PatchModal';
 import DeleteModal from './DeleteModal';
 import { GenterMatcherToKor } from '../../../util/GenreMatcher';
 import LikeButton from './LikeButton';
+import PickButton from './PickButton';
 
 const BtnStyleBox = styled.div`
   display: flex;
@@ -98,6 +100,10 @@ const PairingDetail = () => {
     dispatch(asyncPairingDislike(pairingId));
   };
 
+  const handlePairingBookmark = () => {
+    dispatch(asyncPairingPick(pairingId));
+  };
+
   const handleCommentAdd = (body) => {
     //dispatch - 코멘트 입력
     dispatch(asyncPostPairingComment({ pairingId, body }));
@@ -138,6 +144,10 @@ const PairingDetail = () => {
         ) : (
           <div></div>
         )}
+        <PickButton
+          isBookmarked={pairingData.isBookmarked}
+          handleBookmark={handlePairingBookmark}
+        />
         <LikeButton
           isLiked={pairingData.isLiked}
           LikePlus={handlePairingLike}
