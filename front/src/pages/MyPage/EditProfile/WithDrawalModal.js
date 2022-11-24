@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { ContainedButton } from '../../../components/Buttons';
+import { currentPasswordCheckApi } from '../../../api/myPageApi';
 
 const ContainerStyled = styled.div`
   color: ${({ theme }) => theme.colors.gray};
@@ -76,6 +78,26 @@ const ContainedButtonStyled = styled(ContainedButton)`
 `;
 
 const WithDrawalModal = ({ open, handleCloseModal }) => {
+  const [inputValue, setInputValue] = useState('');
+
+  const hadleClickSubmit = async () => {
+    console.log(inputValue);
+    try {
+      const response = await currentPasswordCheckApi(inputValue);
+      if (!response) {
+        console.log('틀림');
+      } else {
+        console.log('맞음');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleChangeInputValue = (e) => {
+    setInputValue(e.target.value);
+  };
+
   return (
     <ContainerStyled>
       <Modal
@@ -108,8 +130,14 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
             <br />
           </div>
           <div className="password-check">비밀번호</div>
-          <PasswordCheckInputStyled></PasswordCheckInputStyled>
-          <ContainedButtonStyled size="medium">탈퇴하기</ContainedButtonStyled>
+          <PasswordCheckInputStyled
+            type="password"
+            value={inputValue}
+            onChange={handleChangeInputValue}
+          ></PasswordCheckInputStyled>
+          <ContainedButtonStyled size="medium" onClick={hadleClickSubmit}>
+            탈퇴하기
+          </ContainedButtonStyled>
         </ModalBoxStyled>
       </Modal>
     </ContainerStyled>
