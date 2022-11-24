@@ -1,5 +1,6 @@
 package seb40_main_012.back.bookCollection.repository;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,10 +17,11 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection, 
     Long countBy();
     Long countByUserUserId(Long userId);
     List<BookCollection> findByUserUserId(Long userId);
-//    List<BookCollection> findCollectionByNoOffset(Long collectionId, Long userId, int pageSize){
+//    Page<BookCollection> findCollectionByNoOffset(Pageable pageable, Long collectionId, Long userId){
+//        QueryResults<>
 //         return queryFactory
 //    }
-//
+
 
 
     //    @Query()
