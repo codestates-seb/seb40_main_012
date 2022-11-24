@@ -28,6 +28,7 @@ const Toast = styled.div`
   padding: 3px 5px;
   border-radius: 3px;
   color: gray;
+  font-size: 13px;
   background-color: rgba(200, 200, 200, 0.5);
   animation: fadeout 3s;
   @keyframes fadeout {

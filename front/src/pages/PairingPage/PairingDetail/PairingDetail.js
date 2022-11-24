@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import PageContainer from '../../../components/PageContainer';
 import CollectionDetailHeader from '../../CollectionDetailPage/CollectionDetailHeader';
-import CollectionHeaderBtns from '../../CollectionDetailPage/CollectionHeaderBtns';
 import PairingOriginBook from './PairingOriginBook';
 
 import { useEffect, useState } from 'react';
@@ -75,6 +74,11 @@ const InfoContent = styled.div`
   color: ${({ theme }) => theme.colors.darkgray};
 `;
 
+const BtnsContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const PairingDetail = () => {
   const dispatch = useDispatch();
   const { pairingId } = useParams();
@@ -145,25 +149,20 @@ const PairingDetail = () => {
         ) : (
           <div></div>
         )}
-        <PickButton
-          isBookmarked={pairingData.isBookmarked}
-          handleBookmark={handlePairingBookmark}
-        />
-        <LikeButton
-          isLiked={pairingData.isLiked}
-          LikePlus={handlePairingLike}
-          LikeMinus={handlePairingDislike}
-        >
-          {pairingData.likeCount}
-        </LikeButton>
-        <CopyUrlButton />
-        <CollectionHeaderBtns
-          likeCount={pairingData.likeCount}
-          userLike={pairingData.isLiked}
-          handleCollectionLike={() => {
-            console.log('하트 올려!!');
-          }}
-        />
+        <BtnsContainer>
+          <PickButton
+            isBookmarked={pairingData.isBookmarked}
+            handleBookmark={handlePairingBookmark}
+          />
+          <LikeButton
+            isLiked={pairingData.isLiked}
+            LikePlus={handlePairingLike}
+            LikeMinus={handlePairingDislike}
+          >
+            {pairingData.likeCount}
+          </LikeButton>
+          <CopyUrlButton />
+        </BtnsContainer>
       </BtnStyleBox>
       <OriginBookWrapper>
         <InfoTitle>How about pairing this book</InfoTitle>
