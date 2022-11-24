@@ -61,6 +61,9 @@ export const withdrawalApi = () => {
 };
 
 export const patchUserInfoApi = (params) => {
+  params.gender = params.gender || 'NONE';
+  params.age = params.age || 'NONE';
+
   return new Promise((resolve, reject) => {
     return axios
       .patch(USER_INFO_URL, params)
