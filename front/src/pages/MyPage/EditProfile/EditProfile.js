@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
@@ -14,6 +15,8 @@ import styled from 'styled-components';
 import PageContainer from '../../../components/PageContainer';
 import { OutlinedButton } from '../../../components/Buttons';
 import ValidationTextFields from '../../../components/ValidationTextFields';
+import { getUserInfoApi } from '../../../api/myPageApi';
+import { selectEmail, selectnickName } from '../../../store/modules/authSlice';
 import {
   validationCheck,
   duplicationCheck,
@@ -21,6 +24,7 @@ import {
   ageGroupData,
   genreData,
 } from '../../../util/util';
+import WithDrawal from './WithDrawalModal';
 
 const WrapperStyled = styled.div`
   display: flex;
@@ -47,6 +51,7 @@ const ItemWrapperWithHelperTextStyled = styled(ItemWrapperStyled)`
 
 const ItemWrapperWithHelperCheckBox = styled(ItemWrapperStyled)`
   height: 110px;
+  margin-top: 10px;
 `;
 
 const ItemTextStyled = styled(Typography)`
@@ -72,7 +77,7 @@ const CheckBoxFormControlLabelStyled = styled(FormControlLabel)`
 `;
 
 const ButtonWrapperStyled = styled.div`
-  margin-top: 10px;
+  margin-top: 50px;
   display: flex;
   align-items: center;
 `;
@@ -80,21 +85,25 @@ const ButtonWrapperStyled = styled.div`
 const ButtonItemStyled = styled(ItemTextStyled)`
   width: auto;
   margin-right: 100px;
+  cursor: pointer;
 `;
 
 const EditProfile = () => {
   const inputRef = useRef([]);
+  const email = useSelector(selectEmail);
+  const nickName = useSelector(selectnickName);
+
   const [inputValue, setInputValue] = useState({
     nickName: '',
     introduction: '',
   });
   const [inputStatus, setInputStatus] = useState({
     nickName: '',
-    introduction: '',
+    introduction: 'success',
   });
   const [inputHelperText, setInputHelperText] = useState({
     nickName: '',
-    introduction: '',
+    introduction: '0 / 50',
   });
   const [gender, setGender] = useState('');
   const [age, setAge] = useState('');
@@ -108,12 +117,61 @@ const EditProfile = () => {
     COMICS: false,
     ETC: false,
   });
+  const [profileImage, setProfileImage] = useState('');
+  const [openModal, setOpenModal] = useState(false);
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   useEffect(() => {
     inputRef.current[0].focus();
+    getUserInfo();
   }, []);
 
+  const getUserInfo = async () => {
+    try {
+      const response = await getUserInfoApi();
+      const { age, category, gender, introduction, nickname, profileImage } =
+        response;
+      const categoryObj = {};
+      if (category.length > 0) {
+        for (const genre of category) categoryObj[genre] = true;
+      }
+
+      setInputValue({
+        ...inputValue,
+        nickName: nickname,
+        introduction: introduction,
+      });
+      setGender(gender);
+      setAge(age);
+      setChecked({
+        ...checked,
+        ...categoryObj,
+      });
+      setProfileImage(profileImage);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleChangeInput = (id, value) => {
+    if (id !== 'introduction') {
+      setInputValue({
+        ...inputValue,
+        [id]: value,
+      });
+
+      return;
+    }
+
+    const valueLength = value.length;
+    const lengthLimit = 50;
+
+    if (valueLength > lengthLimit) return;
+    setInputHelperText({
+      ...inputHelperText,
+      [id]: `${valueLength} / ${lengthLimit}`,
+    });
     setInputValue({
       ...inputValue,
       [id]: value,
@@ -157,6 +215,17 @@ const EditProfile = () => {
       });
     } catch (error) {
       const { status, message } = error;
+      if (nickName === value) {
+        setInputStatus({
+          ...inputStatus,
+          [id]: '',
+        });
+        setInputHelperText({
+          ...inputHelperText,
+          [id]: '',
+        });
+        return;
+      }
       setInputStatus({
         ...inputStatus,
         [id]: status,
@@ -194,10 +263,7 @@ const EditProfile = () => {
           height: 80,
         }}
       >
-        <img
-          src="https://styles.redditmedia.com/t5_33mhbo/styles/profileIcon_7f1481qm5y291.jpeg?width=256&height=256&frame=1&crop=256:256,smart&s=6cc29126b9f6853db131a0f5189c8e86eff9a20e"
-          alt="cat profile"
-        ></img>
+        <img src={profileImage} alt="cat profile" height="80" width="80"></img>
       </Avatar>
       <WrapperStyled>
         <TitleTextStyled component="h2" variant="h5" gutterBottom>
@@ -221,11 +287,27 @@ const EditProfile = () => {
             required
           />
         </ItemWrapperWithHelperTextStyled>
-        <ItemWrapperStyled>
-          <ItemTextStyled component="h4">한 줄 소개</ItemTextStyled>
+        <ItemWrapperWithHelperTextStyled>
+          <ItemTextStyled component="h4">이메일</ItemTextStyled>
           <ValidationTextFields
             inputRef={inputRef}
             refIndex={1}
+            label=""
+            id="email"
+            autoComplete="email"
+            fullWidth
+            setInputValue={handleChangeInput}
+            setIsValid={handleBlur}
+            inputValue={email}
+            size="small"
+            disabled
+          />
+        </ItemWrapperWithHelperTextStyled>
+        <ItemWrapperWithHelperTextStyled>
+          <ItemTextStyled component="h4">한 줄 소개</ItemTextStyled>
+          <ValidationTextFields
+            inputRef={inputRef}
+            refIndex={2}
             label=""
             id="introduction"
             autoComplete="introduction"
@@ -237,7 +319,7 @@ const EditProfile = () => {
             inputHelperText={inputHelperText.introduction}
             size="small"
           />
-        </ItemWrapperStyled>
+        </ItemWrapperWithHelperTextStyled>
         <ItemWrapperStyled>
           <Link to="/mypage/profile/changepasswd">
             <ItemTextStyled component="h4">비밀번호 변경</ItemTextStyled>
@@ -318,7 +400,10 @@ const EditProfile = () => {
         </ItemWrapperWithHelperCheckBox>
       </WrapperStyled>
       <ButtonWrapperStyled>
-        <ButtonItemStyled component="h4">회원 탈퇴</ButtonItemStyled>
+        <ButtonItemStyled component="h4" onClick={handleOpenModal}>
+          회원 탈퇴
+        </ButtonItemStyled>
+        <WithDrawal open={openModal} handleCloseModal={handleCloseModal} />
         <OutlinedButton size="medium">저장하기</OutlinedButton>
       </ButtonWrapperStyled>
     </PageContainer>
