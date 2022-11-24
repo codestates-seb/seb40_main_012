@@ -6,9 +6,9 @@ export const LOGOUT_URL = '/api/logout';
 export const MY_PAGE_URL = '/api/mypage';
 export const DUPLICATION_CHECK_NICKNAME_URL = `${MY_PAGE_URL}/verify/nickName`;
 export const DUPLICATION_CHECK_EMAIL_URL = `${MY_PAGE_URL}/verify/email`;
-export const COMMENT_URL = '/api/mypage/userComment';
-export const MY_PAIRING_URL = '/api/mypage/userPairing';
-export const MY_COLLECTION_URL = '/api/mypage/userCollection';
+export const COMMENT_URL = `${MY_PAGE_URL}/userComment`;
+export const MY_PAIRING_URL = `${MY_PAGE_URL}/userPairing`;
+export const MY_COLLECTION_URL = `${MY_PAGE_URL}/userCollection`;
 export const FIRST_LOGIN_URL = `${USERS_URL}/firstLogin`;
 
 // 마이페이지

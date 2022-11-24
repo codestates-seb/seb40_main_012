@@ -5,6 +5,9 @@ import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import axios from '../../api/axios';
+import { useEffect, useState } from 'react';
+import { EDIT_USER_INFO } from '../../api/requests';
 
 const ButtonCSS = styled.button`
   outline: none;
@@ -24,6 +27,37 @@ const ButtonCSS = styled.button`
 `;
 
 const Header = () => {
+  const [userInfo, setUserInfo] = useState({
+    introduction: '',
+    gender: '',
+    age: '',
+    nickname: '',
+    temp: '',
+    category: [],
+  });
+
+  const fetchData = async () => {
+    axios
+      .get(EDIT_USER_INFO)
+      .then((response) => {
+        setUserInfo({
+          introduction: '',
+          gender: '',
+          age: '',
+          nickname: '',
+          temp: response.data.temp,
+          category: [],
+        });
+        console.log('state 현재값', userInfo);
+      })
+      .catch((error) => console.log('에러', error));
+  };
+
+  useEffect(() => {
+    fetchData();
+    console.log('userInfo 잘 왔을까요', userInfo);
+  }, []);
+
   return (
     <>
       {/* xs , sm, md, lg, xl 사이즈 */}
@@ -67,7 +101,7 @@ const Header = () => {
                 <Typography variant="h6">chichi</Typography>
 
                 <Typography variant="body1" gutterBottom>
-                  책의 온기 37.5도
+                  책의 온기 {userInfo.temp}도
                 </Typography>
                 <Typography sx={{ mt: 1.6 }} variant="body2" gutterBottom>
                   팔로잉 2 팔로워 3
