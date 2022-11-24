@@ -10,7 +10,6 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
-import Box from '@mui/material/Box';
 import styled from 'styled-components';
 import PageContainer from '../../../components/PageContainer';
 import { OutlinedButton } from '../../../components/Buttons';
@@ -187,152 +186,141 @@ const EditProfile = () => {
   const checkCount = Object.values(checked).filter((v) => v).length >= 3;
 
   return (
-    <PageContainer footer center maxWidth="sm" height>
-      <Box
+    <PageContainer footer center maxWidth="sm" bmt={5}>
+      <Avatar
         sx={{
-          marginTop: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          height: 'calc(100vh - 60px - 200px)', // footer
+          bgcolor: '#A28BFF',
+          width: 80,
+          height: 80,
         }}
       >
-        <Avatar
-          sx={{
-            bgcolor: '#A28BFF',
-            width: 80,
-            height: 80,
-          }}
-        >
-          <img
-            src="https://styles.redditmedia.com/t5_33mhbo/styles/profileIcon_7f1481qm5y291.jpeg?width=256&height=256&frame=1&crop=256:256,smart&s=6cc29126b9f6853db131a0f5189c8e86eff9a20e"
-            alt="cat profile"
-          ></img>
-        </Avatar>
-        <WrapperStyled>
-          <TitleTextStyled component="h2" variant="h5" gutterBottom>
-            기본정보
-          </TitleTextStyled>
-          <ItemWrapperWithHelperTextStyled>
-            <ItemTextStyled component="h4">닉네임</ItemTextStyled>
-            <ValidationTextFields
-              inputRef={inputRef}
-              refIndex={0}
+        <img
+          src="https://styles.redditmedia.com/t5_33mhbo/styles/profileIcon_7f1481qm5y291.jpeg?width=256&height=256&frame=1&crop=256:256,smart&s=6cc29126b9f6853db131a0f5189c8e86eff9a20e"
+          alt="cat profile"
+        ></img>
+      </Avatar>
+      <WrapperStyled>
+        <TitleTextStyled component="h2" variant="h5" gutterBottom>
+          기본정보
+        </TitleTextStyled>
+        <ItemWrapperWithHelperTextStyled>
+          <ItemTextStyled component="h4">닉네임</ItemTextStyled>
+          <ValidationTextFields
+            inputRef={inputRef}
+            refIndex={0}
+            label=""
+            id="nickName"
+            autoComplete="nickname"
+            fullWidth
+            setInputValue={handleChangeInput}
+            setIsValid={handleBlur}
+            inputValue={inputValue.nickName}
+            inputStatus={inputStatus.nickName}
+            inputHelperText={inputHelperText.nickName}
+            size="small"
+            required
+          />
+        </ItemWrapperWithHelperTextStyled>
+        <ItemWrapperStyled>
+          <ItemTextStyled component="h4">한 줄 소개</ItemTextStyled>
+          <ValidationTextFields
+            inputRef={inputRef}
+            refIndex={1}
+            label=""
+            id="introduction"
+            autoComplete="introduction"
+            fullWidth
+            setInputValue={handleChangeInput}
+            setIsValid={handleBlur}
+            inputValue={inputValue.introduction}
+            inputStatus={inputStatus.introduction}
+            inputHelperText={inputHelperText.introduction}
+            size="small"
+          />
+        </ItemWrapperStyled>
+        <ItemWrapperStyled>
+          <Link to="/mypage/profile/changepasswd">
+            <ItemTextStyled component="h4">비밀번호 변경</ItemTextStyled>
+          </Link>
+        </ItemWrapperStyled>
+        <TitleTextStyled component="h1" variant="h5" gutterBottom>
+          상세정보
+        </TitleTextStyled>
+        <ItemWrapperStyled>
+          <ItemTextStyled component="h4">성별</ItemTextStyled>
+          <FormControl sx={{ m: 1, minWidth: 80 }} size="small" fullWidth>
+            <InputLabel id="gender-select-label"></InputLabel>
+            <Select
+              labelId="gender-select-label"
+              id="gender-select"
+              value={gender}
+              onChange={handleChangeGender}
               label=""
-              id="nickName"
-              autoComplete="nickname"
-              fullWidth
-              setInputValue={handleChangeInput}
-              setIsValid={handleBlur}
-              inputValue={inputValue.nickName}
-              inputStatus={inputStatus.nickName}
-              inputHelperText={inputHelperText.nickName}
-              size="small"
-              required
-            />
-          </ItemWrapperWithHelperTextStyled>
-          <ItemWrapperStyled>
-            <ItemTextStyled component="h4">한 줄 소개</ItemTextStyled>
-            <ValidationTextFields
-              inputRef={inputRef}
-              refIndex={1}
-              label=""
-              id="introduction"
-              autoComplete="introduction"
-              fullWidth
-              setInputValue={handleChangeInput}
-              setIsValid={handleBlur}
-              inputValue={inputValue.introduction}
-              inputStatus={inputStatus.introduction}
-              inputHelperText={inputHelperText.introduction}
-              size="small"
-            />
-          </ItemWrapperStyled>
-          <ItemWrapperStyled>
-            <Link to="/mypage/profile/changepasswd">
-              <ItemTextStyled component="h4">비밀번호 변경</ItemTextStyled>
-            </Link>
-          </ItemWrapperStyled>
-          <TitleTextStyled component="h1" variant="h5" gutterBottom>
-            상세정보
-          </TitleTextStyled>
-          <ItemWrapperStyled>
-            <ItemTextStyled component="h4">성별</ItemTextStyled>
-            <FormControl sx={{ m: 1, minWidth: 80 }} size="small" fullWidth>
-              <InputLabel id="gender-select-label"></InputLabel>
-              <Select
-                labelId="gender-select-label"
-                id="gender-select"
-                value={gender}
-                onChange={handleChangeGender}
-                label=""
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {Object.entries(genderData).map(([key, value]) => (
-                  <MenuItem key={key} value={key}>
-                    {value}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </ItemWrapperStyled>
-          <ItemWrapperStyled>
-            <ItemTextStyled component="h4">연령대</ItemTextStyled>
-            <FormControl sx={{ m: 1, minWidth: 80 }} size="small" fullWidth>
-              <InputLabel id="age-select-label"></InputLabel>
-              <Select
-                labelId="age-select-label"
-                id="age-select"
-                value={age}
-                onChange={handleChangeAge}
-                label=""
-              >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                {Object.entries(ageGroupData).map(([key, value]) => (
-                  <MenuItem key={key} value={key}>
-                    {value}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </ItemWrapperStyled>
-          <ItemWrapperWithHelperCheckBox>
-            <ItemTextStyled component="h4">선호 장르</ItemTextStyled>
-            <CheckboxFormControlStyled
-              component="fieldset"
-              variant="standard"
-              sx={{ m: 1 }}
             >
-              <FormHelperText>
-                선호 장르는 최대 3개까지 선택할 수 있습니다.
-              </FormHelperText>
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {Object.entries(genderData).map(([key, value]) => (
+                <MenuItem key={key} value={key}>
+                  {value}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </ItemWrapperStyled>
+        <ItemWrapperStyled>
+          <ItemTextStyled component="h4">연령대</ItemTextStyled>
+          <FormControl sx={{ m: 1, minWidth: 80 }} size="small" fullWidth>
+            <InputLabel id="age-select-label"></InputLabel>
+            <Select
+              labelId="age-select-label"
+              id="age-select"
+              value={age}
+              onChange={handleChangeAge}
+              label=""
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {Object.entries(ageGroupData).map(([key, value]) => (
+                <MenuItem key={key} value={key}>
+                  {value}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+        </ItemWrapperStyled>
+        <ItemWrapperWithHelperCheckBox>
+          <ItemTextStyled component="h4">선호 장르</ItemTextStyled>
+          <CheckboxFormControlStyled
+            component="fieldset"
+            variant="standard"
+            sx={{ m: 1 }}
+          >
+            <FormHelperText>
+              선호 장르는 최대 3개까지 선택할 수 있습니다.
+            </FormHelperText>
 
-              <CheckboxFormGroupStyled>
-                {Object.entries(genreData).map(([key, value]) => (
-                  <CheckBoxFormControlLabelStyled
-                    key={key}
-                    control={
-                      <Checkbox onChange={handleChangeCheckBox} name={key} />
-                    }
-                    checked={checked[key]}
-                    disabled={checkCount && !checked[key]}
-                    label={value}
-                  />
-                ))}
-              </CheckboxFormGroupStyled>
-            </CheckboxFormControlStyled>
-          </ItemWrapperWithHelperCheckBox>
-        </WrapperStyled>
-        <ButtonWrapperStyled>
-          <ButtonItemStyled component="h4">회원 탈퇴</ButtonItemStyled>
-          <OutlinedButton size="medium">저장하기</OutlinedButton>
-        </ButtonWrapperStyled>
-      </Box>
+            <CheckboxFormGroupStyled>
+              {Object.entries(genreData).map(([key, value]) => (
+                <CheckBoxFormControlLabelStyled
+                  key={key}
+                  control={
+                    <Checkbox onChange={handleChangeCheckBox} name={key} />
+                  }
+                  checked={checked[key]}
+                  disabled={checkCount && !checked[key]}
+                  label={value}
+                />
+              ))}
+            </CheckboxFormGroupStyled>
+          </CheckboxFormControlStyled>
+        </ItemWrapperWithHelperCheckBox>
+      </WrapperStyled>
+      <ButtonWrapperStyled>
+        <ButtonItemStyled component="h4">회원 탈퇴</ButtonItemStyled>
+        <OutlinedButton size="medium">저장하기</OutlinedButton>
+      </ButtonWrapperStyled>
     </PageContainer>
   );
 };
