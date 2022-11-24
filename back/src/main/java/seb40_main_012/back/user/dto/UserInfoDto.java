@@ -23,6 +23,7 @@ public class UserInfoDto {
         private String introduction;
         private String gender;
         private String age;
+        private String nickname;
         private List<Genre> category;
 
         public User toEntity(){
@@ -30,6 +31,7 @@ public class UserInfoDto {
                     .introduction(introduction)
                     .gender(GenderType.from(gender))
                     .age(AgeType.from(age))
+                    .nickName(nickname)
                     .build();
         }
     }
@@ -43,8 +45,10 @@ public class UserInfoDto {
         private String introduction;
         private String gender;
         private String age;
+        private String nickname;
+        private double temp;
 //        private List<CategoryDto.Response> category;
-        private List<String> category;
+        private List<Genre> category;
 
 
         public static Response of(User user){
@@ -75,10 +79,12 @@ public class UserInfoDto {
                     .introduction(introduction)
                     .gender(genderType)
                     .age(ageType)
+                    .nickname(user.getNickName())
+                    .temp(user.getBookTemp())
 //                    .category(user.getCategories().stream()
 //                            .map(x -> CategoryDto.Response.of(x.getCategory().getGenre().getValue())).collect(Collectors.toList()))
                     .category(user.getCategories().stream()
-                            .map(x -> x.getCategory().getGenre().getValue()).collect(Collectors.toList()))
+                            .map(x -> x.getCategory().getGenre()).collect(Collectors.toList()))
                     .build();
         }
     }

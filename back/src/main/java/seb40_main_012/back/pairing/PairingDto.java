@@ -53,6 +53,9 @@ public class PairingDto {
         @Lob
         private String body;
 
+        @NotNull(message = "카테고리를 선택하셔야 합니다.")
+        private ParingCategory pairingCategory;
+
         private String imagePath;
 
         private String outLinkPath;
@@ -91,6 +94,7 @@ public class PairingDto {
         private String title;
         private String body;
         private Boolean isLiked;
+        private Boolean isBookmarked;
         private long likeCount;
         private long view;
         private String imagePath;
@@ -109,7 +113,7 @@ public class PairingDto {
         private String content;
         private String bookName;
         private String author;
-        //        private Image  bookCover;
+        private String bookCover;
         private Long pairingLike;
 
         public static PairingDto.UserPairing of(Pairing pairing){
@@ -117,6 +121,7 @@ public class PairingDto {
                     .content(pairing.getBody())
                     .bookName(pairing.getBook().getTitle())
                     .author(pairing.getBook().getAuthor())
+                    .bookCover(pairing.getBook().getCover())
                     .pairingLike(pairing.getLikeCount())
                     .build();
         }
@@ -126,17 +131,18 @@ public class PairingDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class BookmarkedPairing{
-        private String title;
         private String content;
-        private String userName;
+        private String bookName;
+        private String author;
+        private String bookCover;
         private Long pairingLike;
-//        private Image bookCover;
 
         public static PairingDto.BookmarkedPairing of(Pairing pairing){
             return BookmarkedPairing.builder()
-                    .title(pairing.getTitle())
                     .content(pairing.getBody())
-                    .userName(pairing.getUser().getNickName())
+                    .bookName(pairing.getBook().getTitle())
+                    .author(pairing.getBook().getAuthor())
+                    .bookCover(pairing.getBook().getCover())
                     .pairingLike(pairing.getLikeCount())
                     .build();
         }

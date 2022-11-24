@@ -27,8 +27,11 @@ public class BookmarkService {
     private final BookmarkRepository bookmarkRepository;
 
 
-    public boolean bookmarkCollection(Long userId, Long collectionId){
-        User findUser = userService.findVerifiedUser(userId);
+    public boolean bookmarkCollection(Long collectionId){
+        User findUser = userService.getLoginUser();
+
+        Long userId = findUser.getUserId();
+
         BookCollection collection = collectionService.findVerifiedCollection(collectionId);
         Bookmark findBookmark = bookmarkRepository.findByUserAndBookCollection(findUser,collection);
 
@@ -68,6 +71,7 @@ public class BookmarkService {
             }
         }
         catch (BusinessLogicException e) {throw new BusinessLogicException(ExceptionCode.FAIL_TO_BOOKMARK);}
+        pairingService.isBookMarkedPairing(pairing,findUser);
         return true;
     }
 

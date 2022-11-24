@@ -26,7 +26,7 @@ public class BookInfoSearchService {
     private final String getItemLookUpUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx";
     private final String itemLookUpUrl = "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx";
 
-    public BookInfoSearchDto.BookList listSearch(String title) {
+    public BookInfoSearchDto.BookList listSearch(String title, String sort, Integer page, Integer size) {
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -34,11 +34,11 @@ public class BookInfoSearchService {
                 .fromUriString(getItemLookUpUrl)
                 .queryParam("ttbkey", ttbkey)
                 .queryParam("Query", title)
+                .queryParam("QueryType", "Keyword")
                 .queryParam("SearchTarget", "Book")
-                .queryParam("QueryType", "Title")
-                .queryParam("start", 1)
-                .queryParam("MaxResults", 20)
-                .queryParam("sort", "Accuracy")
+                .queryParam("start", page)
+                .queryParam("MaxResults", size)
+                .queryParam("sort", sort)
                 .queryParam("Version", 20131101)
                 .queryParam("output", "JS")
                 .build()

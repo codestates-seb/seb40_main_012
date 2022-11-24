@@ -1,26 +1,15 @@
 package seb40_main_012.back.book;
 
 import lombok.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Range;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookWiki.BookWiki;
 import seb40_main_012.back.common.comment.entity.Comment;
-import seb40_main_012.back.pairing.PairingDto;
 import seb40_main_012.back.pairing.entity.Pairing;
 
-import javax.persistence.Column;
-import javax.validation.constraints.Digits;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.Optional;
 
@@ -116,4 +105,25 @@ public class BookDto {
         }
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class CollectionBook{
+        private String isbn13;
+        private String title;
+        private String author;
+        private Long ratingCount;
+        private String bookCover;
+
+        public static CollectionBook of(Book book){
+            return CollectionBook.builder()
+                    .isbn13(book.getIsbn13())
+                    .title(book.getTitle())
+                    .author(book.getAuthor())
+                    .ratingCount(book.getRatingCount())
+                    .bookCover(book.getCover())
+                    .build();
+        }
+    }
 }

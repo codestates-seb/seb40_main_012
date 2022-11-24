@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 @Component
 public class CookieManager {
@@ -22,6 +23,16 @@ public class CookieManager {
 
     public String outCookie(HttpServletRequest request, String key) {
         String[] cookies = request.getHeader("Cookie").split(";");
+        Stream<String> stream = Arrays.stream(cookies)
+                .map(cookie -> cookie.replace(" ", ""))
+                .filter(c -> c.startsWith(key));
+        String value = stream.reduce((first, second) -> second)
+                .map(v -> v.replace(key + "=", ""))
+                .orElse(null);
+
+        return value;
+
+        /*String[] cookies = request.getHeader("Cookie").split(";");
         String value = Arrays.stream(cookies)
                 .map(cookie -> cookie.replace(" ", ""))
                 .filter(c -> c.startsWith(key))
@@ -29,6 +40,6 @@ public class CookieManager {
                 .map(v -> v.replace(key + "=", ""))
                 .orElse(null);
 
-        return value;
+        return value;*/
     }
 }

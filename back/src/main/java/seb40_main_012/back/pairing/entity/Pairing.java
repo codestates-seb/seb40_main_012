@@ -49,6 +49,8 @@ public class Pairing {
     @Column
     private Boolean isLiked;
 
+    private Boolean isBookmarked;
+
     @Column
     private String outLinkPath;
 
@@ -85,6 +87,7 @@ public class Pairing {
 
     @OneToMany(mappedBy = "pairing")
     @LazyCollection(LazyCollectionOption.FALSE)
+    @JsonManagedReference
     private List<Bookmark> bookmarks = new ArrayList<>();
 
     @CreatedDate

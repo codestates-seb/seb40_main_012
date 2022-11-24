@@ -17,6 +17,7 @@ import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.config.auth.event.UserRegistrationApplicationEvent;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
@@ -59,6 +60,7 @@ public class UserService {
         List<String> roles = authorityUtils.createRoles(user.getEmail());
         user.setRoles(roles);
         user.setBookTemp(36.5);
+        user.setFirstLogin(true);
         User savedUser = userRepository.save(user);
 
         publisher.publishEvent(new UserRegistrationApplicationEvent(this, savedUser));
@@ -73,21 +75,21 @@ public class UserService {
         }
     }
 
-    public void updateNickName(Long id, String nickName) {
-        User findUser = findVerifiedUser(id);
+    public void updateNickName(String nickName) {
+        User findUser = getLoginUser();
         verifyNickName(nickName);
         findUser.updateNickName(nickName);
         userRepository.save(findUser);
     }
 
-    public boolean verifyPassword(Long userId, String password) {
-        User findUser = findVerifiedUser(userId);
+    public boolean verifyPassword(String password) {
+        User findUser = getLoginUser();
         return findUser.verifyPassword(passwordEncoder, password);
     }
 
-    public void updatePassword(Long id, String password) {
-        User findUser = findVerifiedUser(id);
-        if (verifyPassword(id, password)) {
+    public void updatePassword(String password) {
+        User findUser = getLoginUser();
+        if (verifyPassword(password)) {
             throw new BusinessLogicException(ExceptionCode.PASSWORD_CANNOT_CHANGE);
         } else {
             findUser.updatePassword(passwordEncoder, password);
@@ -98,8 +100,8 @@ public class UserService {
     /**
      * 리팩토링 필요
      */
-    public User editUserInfo(Long id, User user, List<Genre> categoryValue) {
-        User findUser = findVerifiedUser(id);
+    public User editUserInfo(User user, List<Genre> categoryValue) {
+        User findUser = getLoginUser();
 //        Category findCategory = categoryRepository.findByName(categoryValue);
 
         categoryValue.forEach(
@@ -115,30 +117,41 @@ public class UserService {
         return findUser;
     }
 
-    public boolean deleteUser(Long userId) {
-        findVerifiedUser(userId);
-        userRepository.deleteById(userId);
+    public boolean deleteUser() {
+        User findUser = getLoginUser();
+        userRepository.deleteById(findUser.getUserId());
         return true;
     }
 
-    public List<Comment> getUserComment(Long userId) {
-        User findUser = findVerifiedUser(userId);
+    public List<Comment> getUserComment() {
+        User findUser = getLoginUser();
         List<Comment> comments = findUser.getComments();
+        comments.forEach(
+                x ->{
+                    if(x.getCommentType()== CommentType.BOOK) {
+
+                    }
+                    else if(x.getCommentType()==CommentType.PAIRING);
+                    else if(x.getCommentType()==CommentType.BOOK_COLLECTION);
+                }
+        );
         return comments;
     }
 
-    public List<Pairing> getUserPairing(Long userId) {
-        return pairingRepository.findByUser_UserId(userId);
+    public List<Pairing> getUserPairing() {
+        User findUser = getLoginUser();
+        return pairingRepository.findByUser_UserId(findUser.getUserId());
     }
 
-    public List<BookCollection> getUserCollection(Long userId) {
-        return collectionRepository.findByUserUserId(userId); //왜 안될까?
+    public List<BookCollection> getUserCollection() {
+        User findUser = getLoginUser();
+        return collectionRepository.findByUserUserId(findUser.getUserId());
 
     }
 
-    public User findUser(long userId) {
-        User findUser = findVerifiedUser(userId);
-        findUser.setBookTemp(calcBookTemp(userId)); // 유저 테이블에 컬렉션 & 좋아요 추가된 후에 주석 풀기
+    public User findUser() {
+        User findUser = getLoginUser();
+        findUser.setBookTemp(calcBookTemp()); // 유저 테이블에 컬렉션 & 좋아요 추가된 후에 주석 풀기
 
         return findUser;
     }
@@ -147,31 +160,30 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
     }
 
-    public List<BookCollection> getBookmarkByBookCollection(Long userId) {
-        User findUser = findVerifiedUser(userId);
+    public List<BookCollection> getBookmarkByBookCollection() {
+        User findUser = getLoginUser();
         List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
         List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
         return collections;
     }
 
-    public List<Pairing> getBookmarkByPairing(Long userId) {
-        User findUser = findVerifiedUser(userId);
+    public List<Pairing> getBookmarkByPairing() {
+        User findUser = getLoginUser();
         List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
         List<Pairing> pairings = bookmarks.stream().map(x -> x.getPairing()).collect(Collectors.toList());
         return pairings;
     }
 
-    public List<Book> getBookmarkByBook(Long userId) {
-        User findUser = findVerifiedUser(userId);
+    public List<Book> getBookmarkByBook() {
+        User findUser = getLoginUser();
         List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
         List<Book> books = bookmarks.stream().map(x -> x.getBook()).collect(Collectors.toList());
         return books;
     }
 
 
-    public double calcBookTemp(long userId) {
-
-        User findUser = findVerifiedUser(userId);
+    public double calcBookTemp() {
+        User findUser = getLoginUser();
 
         double basicTemp = 36.5; // 기본 온기
 

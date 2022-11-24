@@ -141,6 +141,7 @@ public class PairingController {
         if (token == null) {
 
             Pairing pairing = pairingService.updateView(pairingId);
+            pairing.setIsLiked(null);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
             return new ResponseEntity<>(
@@ -319,9 +320,11 @@ public class PairingController {
 
     @PostMapping("/pairings/{pairing-id}/bookmark")
     @ResponseStatus(HttpStatus.OK)
-    public boolean bookmarkPairing(@PathVariable("pairing-id") Long pairingId){
-        return bookmarkService.bookmarkPairing(pairingId);
-
+    public PairingDto.Response bookmarkPairing(@PathVariable("pairing-id") Long pairingId){
+        bookmarkService.bookmarkPairing(pairingId);
+        Pairing findPairing = pairingService.findVerifiedPairing(pairingId);
+        PairingDto.Response response = pairingMapper.pairingToPairingResponse(findPairing);
+        return response;
     }
 
 

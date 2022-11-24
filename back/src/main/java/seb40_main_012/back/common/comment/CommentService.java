@@ -12,6 +12,7 @@ import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
@@ -42,7 +43,7 @@ public class CommentService {
     private final LikeRepository likeRepository;
     private final PairingService pairingService;
     private final PairingRepository pairingRepository;
-    private final BookCollectionService bookCollectionService;
+    private final BookCollectionService collectionService;
     private final BookCollectionRepository bookCollectionRepository;
     private final UserService userService;
     private final UserRepository userRepository;
@@ -87,8 +88,18 @@ public class CommentService {
         return commentRepository.save(savedPairingComment);
     }
 
-    public Comment createBookCollectionComment(Comment comment) {
-        return null;
+    public Comment createBookCollectionComment(Comment comment,Long collectionId) {
+        User findUser = userService.getLoginUser();
+        BookCollection collection = collectionService.findVerifiedCollection(collectionId);
+        Comment savedComment = Comment.builder()
+                .commentType(CommentType.BOOK_COLLECTION)
+                .user(findUser)
+                .body(comment.getBody())
+                .bookCollection(collection)
+                .createdAt(LocalDateTime.now())
+                .modifiedAt(LocalDateTime.now())
+                .build();
+        return commentRepository.save(savedComment);
     }
 
     public Comment updateComment(Comment comment, long commentId) {
@@ -151,6 +162,15 @@ public class CommentService {
         }
 
         findComment.setIsLiked(isLiked);
+
+        return findComment;
+    }
+
+    public Comment isLikedNull(long commentId) {
+
+        Comment findComment = findVerifiedComment(commentId);
+
+        findComment.setIsLiked(null);
 
         return findComment;
     }
