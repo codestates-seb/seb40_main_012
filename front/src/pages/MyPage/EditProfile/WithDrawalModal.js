@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { ContainedButton } from '../../../components/Buttons';
-import { currentPasswordCheckApi } from '../../../api/myPageApi';
+import { currentPasswordCheckApi, withdrawalApi } from '../../../api/myPageApi';
+import { useNavigate } from 'react-router-dom';
+import { refreshUserData } from '../../../api/authApi';
 
 const ContainerStyled = styled.div`
   color: ${({ theme }) => theme.colors.gray};
@@ -37,7 +39,7 @@ const PasswordCheckInputStyled = styled.input`
   }
 `;
 
-const ModalBoxStyled = styled.div`
+const ModalBoxStyled = styled.form`
   width: 400px;
   position: absolute;
   background-color: white;
@@ -85,16 +87,23 @@ const PasswordErrorMessageStyled = styled.p`
 `;
 
 const WithDrawalModal = ({ open, handleCloseModal }) => {
+  const navigate = useNavigate();
+
   const [passwordValue, setPasswordValue] = useState('');
   const [passwordErrMsg, setPasswordErrMsg] = useState('');
 
-  const hadleClickSubmit = async () => {
+  const hadleClickSubmit = async (e) => {
+    e.preventDefault();
     try {
       const response = await currentPasswordCheckApi(passwordValue);
       if (!response) {
         setPasswordErrMsg('현재 비밀번호를 다시 확인해주세요.');
       } else {
         setPasswordErrMsg('');
+        await withdrawalApi();
+        // 회원탈퇴 안내 메시지 필요
+        refreshUserData();
+        navigate('/', { replace: true });
       }
     } catch (error) {
       console.log(error);
@@ -113,7 +122,7 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <ModalBoxStyled>
+        <ModalBoxStyled onSubmit={hadleClickSubmit}>
           <div className="close-icon">
             <CloseIcon
               width="100%"

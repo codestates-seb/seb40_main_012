@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { signIn, firstLogin } from '../../api/authApi';
+import { signInApi, firstLoginApi } from '../../api/authApi';
 import { PURGE } from 'redux-persist';
 
 const initialState = {
@@ -16,7 +16,7 @@ export const signInAsync = createAsyncThunk(
   'auth/getTokens',
   async (params, thunkAPI) => {
     try {
-      const response = await signIn(params);
+      const response = await signInApi(params);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error });
@@ -28,7 +28,7 @@ export const firstLoginAsync = createAsyncThunk(
   'auth/firstLogin',
   async (params, thunkAPI) => {
     try {
-      const response = await firstLogin(params);
+      const response = await firstLoginApi(params);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error });

@@ -3,7 +3,7 @@ import { useLocation, Link, useNavigate } from 'react-router-dom';
 import Searchbar from './Searchbar';
 import { useSelector } from 'react-redux';
 import { selectIsLogin } from '../store/modules/authSlice';
-import { logout } from '../api/authApi';
+import { logoutApi } from '../api/authApi';
 
 const HeaderContainer = styled.div`
   position: fixed;
@@ -104,7 +104,7 @@ const Header = () => {
 
   const handleClickLogoutButton = async () => {
     try {
-      await logout();
+      await logoutApi();
     } catch (e) {
       console.log(e);
     }
