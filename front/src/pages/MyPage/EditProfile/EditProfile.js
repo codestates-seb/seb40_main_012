@@ -257,7 +257,10 @@ const EditProfile = () => {
     });
   };
 
-  const handleClickSaveButton = () => {
+  const handleClickSaveButton = async () => {
+    const { status } = await duplicationCheck('nickName', inputValue.nickName);
+    if (status === 'error' && nickName !== inputValue.nickName) return;
+
     const categoryArray = Object.entries(checked)
       .filter((v) => v[1])
       .map((v) => v[0]);
