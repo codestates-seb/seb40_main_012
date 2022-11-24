@@ -9,7 +9,7 @@ import seb40_main_012.back.common.comment.entity.Comment;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-11-22T23:33:59+0900",
+    date = "2022-11-24T11:28:11+0900",
     comments = "version: 1.5.3.Final, compiler: javac, environment: Java 17.0.5 (Azul Systems, Inc.)"
 )
 @Component

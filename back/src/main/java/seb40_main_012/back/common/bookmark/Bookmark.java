@@ -1,5 +1,6 @@
 package seb40_main_012.back.common.bookmark;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,18 +27,22 @@ public class Bookmark {
 
     @ManyToOne(fetch = FetchType.LAZY) //
     @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "collection_id")
+    @JsonBackReference
     private BookCollection bookCollection;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "pairing_id")
+    @JsonBackReference
     private Pairing pairing;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
+    @JsonBackReference
     private Book book;
 
 
