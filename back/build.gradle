@@ -43,6 +43,7 @@ dependencies {
     implementation 'org.webjars:sockjs-client:1.5.1' // SockJS
     implementation 'org.webjars:stomp-websocket:2.3.4' // STOMP
     implementation 'org.springframework.boot:spring-boot-devtools:' // DevTools
+	implementation 'org.springframework.boot:spring-boot-starter-mail' // Email 전송
     //    --------------------------------------------------------------------------------------------
     testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc' // Spring Rest Docs
     asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor' // Spring Rest Docs
@@ -60,7 +61,6 @@ dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 	runtimeOnly 'com.h2database:h2'
 //	runtimeOnly 'mysql:mysql-connector-java'
-
     //    --------------------------------------------------------------------------------------------
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'

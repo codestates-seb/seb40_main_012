@@ -11,6 +11,7 @@ spring:
     open-in-view: true
   profiles:
     include: database, security
+
 server:
   servlet:
     encoding:
@@ -30,6 +31,13 @@ server:
 #    key-store-type: PKCS12
 #    key-alias: bootsecurity
 mail:
+  smtp.host: smtp.gmail.com
+  smtp.port: 587
+  smtp.username: cherrypick.official.012
+  smtp.password: thmhbdarrtpawdwa
+  smtp.auth: true
+  smtp.starttls.enable: true
+#mail:
   address:
     admin: admin@gmail.com
 jwt:
