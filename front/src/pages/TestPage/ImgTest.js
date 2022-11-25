@@ -20,7 +20,11 @@ const ImgTest = () => {
     const file = event.currentTarget['fileInput'].files[0];
     console.log('과연', file);
 
-    const res = axios.post('/api/images/upload', file);
+    const res = axios.post('/api/images/upload', file, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     console.log(res);
   };
   return (
