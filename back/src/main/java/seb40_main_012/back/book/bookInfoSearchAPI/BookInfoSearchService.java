@@ -137,28 +137,28 @@ public class BookInfoSearchService {
 
 //        if (0 <= list1Size && list1Size <= 50) {
 
-            BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
-
-            List<BookInfoSearchDto.BookList.Item> result1 = totalResult1.getItem().stream().filter(book -> book.isbn13 != "").distinct().collect(Collectors.toList());
+//            BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+//
+//            List<BookInfoSearchDto.BookList.Item> result1 = totalResult1.getItem().stream().filter(book -> book.isbn13 != "").distinct().collect(Collectors.toList());
 
 //            List<BookInfoSearchDto.BookList.Item> pageResult1 = makePageable(result1, page, size);
 
-            return result1;
+//            return result1;
 //            return pageResult1;
 
 //        } else
 ////            if (51 <= list1Size && list1Size <= 100)
 //            {
 //
-//            BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
-//            BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
-//
-//            List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
-//                    totalResult2.getItem().stream().filter(a -> a.isbn13 != "")).distinct().collect(Collectors.toList());
-//
+            BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+            BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
+
+            List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
+                    totalResult2.getItem().stream().filter(a -> a.isbn13 != "")).distinct().collect(Collectors.toList());
+
 //            List<BookInfoSearchDto.BookList.Item> pageResult2 = makePageable(result2, page, size);
-//
-//            return pageResult2;
+
+            return result2;
 //        }
 
 //        else if (101 <= list1Size && list1Size <= 150) {
