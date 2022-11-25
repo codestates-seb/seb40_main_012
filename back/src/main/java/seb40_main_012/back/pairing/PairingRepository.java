@@ -18,6 +18,7 @@ import java.util.List;
 public interface PairingRepository extends JpaRepository<Pairing, Long> {
 
 
+
     @Query(nativeQuery = true, value = "select * " +
             "from Pairing " +
             "order by " + "like_count desc, created_at " + "desc")

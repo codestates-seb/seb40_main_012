@@ -6,11 +6,13 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.image.Image;
 import seb40_main_012.back.common.like.entity.Like;
 //import seb40_main_012.back.notification.Notification;
 import seb40_main_012.back.common.rating.Rating;
@@ -72,6 +74,11 @@ public class User {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Like> likes = new ArrayList<>();
+
+    @Nullable
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Image> images = new ArrayList<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)

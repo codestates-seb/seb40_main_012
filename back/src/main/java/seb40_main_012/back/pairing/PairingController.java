@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
+import seb40_main_012.back.common.image.ImageService;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
 //import seb40_main_012.back.notification.NotificationService;
@@ -19,6 +21,7 @@ import seb40_main_012.back.user.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.io.IOException;
 import java.util.List;
 
 @Validated
@@ -32,6 +35,7 @@ public class PairingController {
     private final PairingMapper pairingMapper;
     private final BookService bookService;
     private final LikeService likeService;
+    private final ImageService imageService;
     //    ------------------------------------------------------------
     private final NotificationService noticeService;
 //    ------------------------------------------------------------
@@ -39,12 +43,15 @@ public class PairingController {
     @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
 //            @RequestHeader("Authorization") long userId,
+            @Nullable @RequestParam("image") MultipartFile file,
             @PathVariable("isbn13") @Positive String isbn13,
-            @Valid @RequestBody PairingDto.Post postPairing) {
+            @Valid @RequestBody PairingDto.Post postPairing) throws IOException {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
         Pairing createPairing = pairingService.createPairing(pairing, isbn13);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
+
+        imageService.savePairingImage(file, createPairing);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED);
@@ -146,6 +153,10 @@ public class PairingController {
             pairing.setIsBookmarked(null);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
+            if(pairing.getImage() != null) {
+                response.setImagePath(pairing.getImage().getStoredPath());
+            }
+
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
         } else {
@@ -154,6 +165,11 @@ public class PairingController {
             pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
             Pairing isLikedComments = pairingService.isLikedComments(pairingId);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
+
+            if(pairing.getImage() != null) {
+                response.setImagePath(pairing.getImage().getStoredPath());
+            }
+
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
         }
