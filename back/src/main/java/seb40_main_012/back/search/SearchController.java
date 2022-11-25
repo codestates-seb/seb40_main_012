@@ -126,30 +126,18 @@ public class SearchController {
     @GetMapping("/collectionbooks")
     public ResponseEntity getCollectionBooksSearchRequests(
             @RequestParam("Query") String queryParam,
-            @RequestParam("page") Integer page
+            @RequestParam("Page") Integer page
     ) {
 
-//        BookInfoSearchDto.BookList result1 = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 10);
+        List<BookInfoSearchDto.BookList.Item> result = bookInfoSearchService.cherryPickSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", page, 15);
 
-//        if (result1.getTotalResults() > 200) {
-
-        BookInfoSearchDto.BookList totalResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
-        BookInfoSearchDto.BookList totalResult2 = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
-        BookInfoSearchDto.BookList totalResult3 = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 3, 50);
-        BookInfoSearchDto.BookList totalResult4 = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 4, 50);
-
-        List<BookInfoSearchDto.BookList.Item> resultConcat = Stream.concat(Stream.concat(totalResult.getItem().stream().filter(a -> a.isbn13 != ""),
-                totalResult2.getItem().stream().filter(a -> a.isbn13 != "")), Stream.concat(
-                totalResult3.getItem().stream().filter(a -> a.isbn13 != ""),
-                totalResult4.getItem().stream().filter(a -> a.isbn13 != ""))).distinct().collect(Collectors.toList());
-
-        List<BookInfoSearchDto.BookList.Item> list1 = getPage(resultConcat, page, 15);
-
-        return new ResponseEntity<>(list1, HttpStatus.OK);
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @GetMapping("/test")
-    public ResponseEntity getBookSearchRequests(@RequestParam("Query") String queryParam) {
+    public ResponseEntity getBookSearchRequests(
+
+            @RequestParam("Query") String queryParam) {
 
         List<BookCollection> result = searchService.findTest(queryParam);
 
@@ -178,7 +166,7 @@ public class SearchController {
 //    }
 
 
-    public static <T> List<T> getPage(List<T> sourceList, int page, int pageSize) {
+    public static <T> List<T> makePageable(List<T> sourceList, int page, int pageSize) {
         if (pageSize <= 0 || page <= 0) {
             throw new IllegalArgumentException("invalid page size: " + pageSize);
         }
