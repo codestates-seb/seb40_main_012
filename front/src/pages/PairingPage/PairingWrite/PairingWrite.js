@@ -9,8 +9,9 @@ import useInput from '../../../util/useInput';
 import { ContainedButton } from '../../../components/Buttons';
 import { useDispatch, useSelector } from 'react-redux';
 import { asyncPostPairing } from '../../../store/modules/pairingSlice';
-import { selectIsLogin } from '../../../store/modules/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import axios from '../../../api/axios';
 
 const Wrapper = styled.div`
   display: flex;
@@ -46,6 +47,12 @@ const BookWrapperStyled = styled.div`
   margin: 15px;
 `;
 
+const LinkAndImgWrapperStyled = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
 const WarningMsg = styled.div`
   display: flex;
   justify-content: center;
@@ -67,25 +74,41 @@ const PairingWrite = () => {
   const [title, titleBind, titleReset] = useInput('');
   const [body, bodyBind, bodyReset] = useInput('');
   const [outLink, outLinkBind, outLinkReset] = useInput('');
+  const [imgData, setImgData] = useState({});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isLogin = useSelector(selectIsLogin);
   const curBookData = useSelector((state) => state.book.data);
 
-  const handleSubmit = (e) => {
+  const onChangeImg = (e) => {
+    e.preventDefault();
+
+    if (e.target.files) {
+      const uploadFile = e.target.files[0];
+      console.log('uploadFile', uploadFile);
+      setImgData(uploadFile);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const pairingPostBody = {
       title: title,
       body: body,
       pairingCategory: category,
-      imagePath: 'img',
       outLinkPath: outLink,
     };
+    console.log('ff', imgData);
+    const formData = new FormData();
+    formData.append('image', imgData);
+    console.log('formData', formData);
+
+    await axios.post('/api/images/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     dispatch(asyncPostPairing({ pairingPostBody, isbn: curBookData.isbn13 }));
-    console.log(pairingPostBody);
-    console.log('isbn', curBookData.isbn13);
-    console.log(isLogin);
     navigate('/pairing', { replace: true });
     categoryReset();
     titleReset();
@@ -117,7 +140,10 @@ const PairingWrite = () => {
           />
         </BookWrapperStyled>
         <BodyInput bodyBind={bodyBind} />
-        <OutLinkInput outLinkBind={outLinkBind} />
+        <LinkAndImgWrapperStyled>
+          <OutLinkInput outLinkBind={outLinkBind} />
+          <input id="upload" type="file" onChange={onChangeImg} />
+        </LinkAndImgWrapperStyled>
         {category === '' || title === '' ? (
           <WarningMsg>
             <div>카테고리와 제목을 입력해주세요</div>

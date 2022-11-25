@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import axios from '../../api/axios';
 
@@ -14,29 +14,52 @@ const Div = styled.div`
 `;
 
 const ImgTest = () => {
-  const onChangeImg = async (e) => {
+  const [imgData, setImgData] = useState({});
+  // const onChangeImg = async (e) => {
+  //   e.preventDefault();
+
+  //   if (e.target.files) {
+  //     const uploadFile = e.target.files[0];
+  //     console.log('uploadFile', uploadFile);
+  //     const formData = new FormData();
+  //     formData.append('image', uploadFile);
+  //     console.log('formData', formData);
+
+  //     await axios.post('/api/images/upload', formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     });
+  //   }
+  // };
+  const onChangeImg = (e) => {
     e.preventDefault();
 
     if (e.target.files) {
       const uploadFile = e.target.files[0];
       console.log('uploadFile', uploadFile);
-      const formData = new FormData();
-      formData.append('image', uploadFile);
-      console.log('formData', formData);
-
-      await axios.post('/api/images/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      setImgData(uploadFile);
     }
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log('ff', imgData);
+    const formData = new FormData();
+    formData.append('image', imgData);
+    console.log('formData', formData);
+
+    await axios.post('/api/images/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
   };
   return (
     <Div>
-      <form onSubmit={onChangeImg}>
+      <div>
         <input id="upload" type="file" onChange={onChangeImg} />
-        <button>제출</button>
-      </form>
+        <button onClick={handleSubmit}>제출</button>
+      </div>
     </Div>
   );
 };

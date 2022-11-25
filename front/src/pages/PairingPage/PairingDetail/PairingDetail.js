@@ -72,6 +72,8 @@ const InfoTitle = styled.div`
   }
 `;
 const InfoContent = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 10px 0px 0px 20px;
   font-size: 15px;
   color: ${({ theme }) => theme.colors.darkgray};
@@ -93,6 +95,7 @@ const PairingDetail = () => {
   }, [dispatch]);
 
   const pairingData = useSelector((state) => state.pairing.data.pairingRes);
+  console.log('여기보세여!', pairingData);
   const bookData = useSelector((state) => state.pairing.data.bookRes);
 
   useEffect(() => {
@@ -188,6 +191,9 @@ const PairingDetail = () => {
         </InfoTitle>
         <InfoContent>
           <p>{pairingData.body}</p>
+          {pairingData.imagePath ? (
+            <img src={pairingData.imagePath} alt="pairing img" />
+          ) : null}
           <a
             href={pairingData.outLinkPath}
             target="_blank"
