@@ -88,7 +88,7 @@ export const logoutApi = () => {
   });
 };
 
-export const refreshUserData = () => {
+const refreshUserData = () => {
   setAxiosHeaderAuth();
   purge();
 };

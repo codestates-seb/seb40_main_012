@@ -12,7 +12,7 @@ import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
-import ChangePassWdTextFields from './ChangePassWdTextFields';
+import ChangePassWdTextFields from './_ChangePassWdTextFields';
 
 const TitleTextStyled = styled.div`
   width: 100%;

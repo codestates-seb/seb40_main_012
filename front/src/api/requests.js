@@ -11,6 +11,7 @@ export const FIRST_LOGIN_URL = `${USERS_URL}/firstLogin`;
 // 마이페이지
 export const USER_INFO_URL = `${MY_PAGE_URL}/userInfo`;
 export const CURRENT_PASSWORD_CHECK_URL = `${MY_PAGE_URL}/password/current`;
+export const PASSWORD_UPDATE_URL = `${MY_PAGE_URL}/password/update`;
 export const COMMENT_URL = `${MY_PAGE_URL}/userComment`;
 export const MY_PAIRING_URL = `${MY_PAGE_URL}/userPairing`;
 export const MY_COLLECTION_URL = `${MY_PAGE_URL}/userCollection`;

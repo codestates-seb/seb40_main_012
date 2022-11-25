@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Grid from '@mui/material/Grid';
-import PassWdTextFields from './PassWdTextFields';
+import PassWdTextFields from './_PassWdTextFields';
 import {
   setInputValue,
   setIsValid,
