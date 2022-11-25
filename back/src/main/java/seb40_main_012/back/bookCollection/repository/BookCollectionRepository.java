@@ -15,10 +15,10 @@ import java.util.List;
 
 public interface BookCollectionRepository extends JpaRepository<BookCollection, Long> {
     Long countBy();
-    Long countByUserUserId(Long userId);
+    Long countByUser(User user);
     List<BookCollection> findByUserUserId(Long userId);
 //    Page<BookCollection> findCollectionByNoOffset(Pageable pageable, Long collectionId, Long userId){
-//        QueryResults<>
+//        QueryResul<BookCollection>
 //         return queryFactory
 //    }
 

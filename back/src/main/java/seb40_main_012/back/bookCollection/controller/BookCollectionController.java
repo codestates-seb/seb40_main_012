@@ -82,7 +82,7 @@ public class BookCollectionController {
         Long userId = findUser.getUserId();
         List<BookCollection> collections = userService.getUserCollection();
         List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
-        Long listCount = collectionRepository.countByUserUserId(userId);
+        Long listCount = collectionRepository.countByUser(findUser);
         return new ListResponseDto<>(listCount, collectionDto);
     }
 
