@@ -7,8 +7,8 @@ import styled from 'styled-components';
 import { BasicButton } from '../../../components/Buttons';
 import PageContainer from '../../../components/PageContainer';
 import WithDrawal from './WithDrawalModal';
-import FavoriteGenre from './FavoriteGenre';
-import AgeGroup from './AgeGroup';
+import FavoriteGenre from './_FavoriteGenre';
+import AgeGroup from './_AgeGroup';
 
 const TitleTextStyled = styled.div`
   width: 100%;
