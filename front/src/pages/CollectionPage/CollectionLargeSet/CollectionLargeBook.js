@@ -15,13 +15,10 @@ const CollectionBookTitle = styled.div`
   color: ${({ theme }) => theme.colors.darkgray};
 `;
 
-const CollectionLargeBook = ({ bookTitle }) => {
+const CollectionLargeBook = ({ bookTitle, cover }) => {
   return (
     <CollectionLargeBookContainer>
-      <img
-        src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-        alt="book cover"
-      />
+      <img src={cover} alt="book cover" />
       <CollectionBookTitle>{bookTitle}</CollectionBookTitle>
     </CollectionLargeBookContainer>
   );
