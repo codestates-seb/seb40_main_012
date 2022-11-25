@@ -4,8 +4,8 @@ import PairingOriginBook from '../PairingPage/PairingDetail/PairingOriginBook';
 import RateModal from './RateModal';
 import BestPairing from '../MainPage/BestPairing';
 // import Comment from '../../components/Comments/Comment';
-import { useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBookAsync } from '../../store/modules/bookSlice';
 import { GenterMatcherToKor } from '../../util/GenreMatcher';
@@ -13,6 +13,7 @@ import { ToDateString } from '../../util/ToDateString';
 import { BasicButton } from '../../components/Buttons';
 import { selectIsLogin } from '../../store/modules/authSlice';
 import NeedLoginModal from '../PairingPage/PairingDetail/NeedLoginModal';
+import LinkCopyModal from '../../components/LinkCopyModal';
 
 const Wrapper = styled.div`
   display: flex;
@@ -42,11 +43,41 @@ const DescContainer = styled.div`
   }
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  padding: 0 20px 10px;
+  button {
+    margin: 0 3px;
+  }
+  justify-content: space-between;
+`;
+
+const ShareBtnContainer = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 3px 7px;
+  border-radius: 3px;
+  color: ${({ theme }) => theme.colors.darkgray};
+  font-size: 15px;
+  font-weight: 500;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: #e8e8e8;
+  }
+`;
+
 const BookDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isbn } = useParams();
   const isLogin = useSelector(selectIsLogin);
+  const location = useLocation();
+
   useEffect(() => {
     dispatch(getBookAsync(isbn));
   }, [dispatch]);
@@ -57,6 +88,11 @@ const BookDetail = () => {
   const navToWrite = () => {
     navigate('/pairing/write');
   };
+
+  //LinkCopy Modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
 
   return (
     <PageContainer footer>
@@ -72,14 +108,31 @@ const BookDetail = () => {
           category={GenterMatcherToKor(bookData.genre)}
           rating={bookData.averageRating}
         />
-        <RateModal />
-        {isLogin ? (
-          <BasicButton onClick={navToWrite}>페어링 작성하기</BasicButton>
-        ) : (
-          <NeedLoginModal>
-            <BasicButton>페어링 작성하기</BasicButton>
-          </NeedLoginModal>
-        )}
+        <ButtonContainer>
+          <div>
+            <RateModal />
+            {isLogin ? (
+              <BasicButton onClick={navToWrite}>페어링 작성하기</BasicButton>
+            ) : (
+              <NeedLoginModal>
+                <BasicButton>페어링 작성하기</BasicButton>
+              </NeedLoginModal>
+            )}
+          </div>
+          <ShareBtnContainer onClick={handleModalOpen} rolo="presentation">
+            <img
+              src={process.env.PUBLIC_URL + '/images/share_icon.svg'}
+              alt="share icon"
+            />
+            공유하기
+          </ShareBtnContainer>
+          <LinkCopyModal
+            modalOpen={modalOpen}
+            handleClose={handleModalClose}
+            link={location.pathname}
+            type="책에 대한 생각들을"
+          />
+        </ButtonContainer>
         <DescContainer>
           <h1>기본 정보</h1>
           <p>부제: {bookData.subTitle}</p>

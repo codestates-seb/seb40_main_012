@@ -1,5 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
+import LinkCopyModal from '../../../components/LinkCopyModal';
+import { useLocation } from 'react-router-dom';
 
 const Btns = styled.button`
   display: flex;
@@ -22,38 +24,18 @@ const Btns = styled.button`
   }
 `;
 
-const Toast = styled.div`
-  position: absolute;
-  margin-top: 3px;
-  padding: 3px 5px;
-  border-radius: 3px;
-  color: gray;
-  font-size: 13px;
-  background-color: rgba(200, 200, 200, 0.5);
-  animation: fadeout 3s;
-  @keyframes fadeout {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-`;
-
 const CopyUrlButton = () => {
-  const [toast, setToast] = useState(false);
+  //LinkCopy Modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setToast(false);
-    }, 5000);
-  });
+  const location = useLocation();
+
   const copyUrl = () => {
-    const curUrl = window.location.href;
-    navigator.clipboard.writeText(curUrl);
-    setToast(true);
+    handleModalOpen();
   };
+
   return (
     <div>
       <Btns onClick={copyUrl}>
@@ -63,7 +45,12 @@ const CopyUrlButton = () => {
         />
         <span>공유하기</span>
       </Btns>
-      {toast ? <Toast>복사되었습니다</Toast> : null}
+      <LinkCopyModal
+        modalOpen={modalOpen}
+        handleClose={handleModalClose}
+        type="특별한 페어링을"
+        link={location.pathname}
+      />
     </div>
   );
 };

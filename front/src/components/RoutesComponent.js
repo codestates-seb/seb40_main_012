@@ -88,7 +88,7 @@ const RoutesComponent = () => {
       />
       <Route
         path="/collection/write"
-        element={getElement(CollectionWritePage, null)}
+        element={getElement(CollectionWritePage, true)}
       />
       <Route path="/mypage" element={getElement(MyComment, true)} />
       <Route path="/mypage/mycomment" element={getElement(MyComment, true)} />

@@ -58,6 +58,19 @@ const CollectionDetailPage = () => {
     }
   };
 
+  const handleCollectionBookmark = () => {
+    //컬렉션 북마크
+    if (isLogin) {
+      //로그인했을 때만 동작
+      axios
+        .post(`/api/collections/${collectionId}/bookmark`)
+        .then(() => {
+          getCollectionData(collectionId);
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
   const handleCollectionDelete = () => {
     //컬렉션 삭제
     axios.delete(`/api/collections/${collectionId}`).then(() => {
@@ -129,8 +142,10 @@ const CollectionDetailPage = () => {
         <CollectionHeaderBtns
           likeCount={collectionData.likeCount}
           userLike={collectionData.userLike}
+          userBookmark={collectionData.userBookmark}
           userCollection={collectionData.userCollection}
           handleCollectionLike={handleCollectionLike}
+          handleCollectionBookmark={handleCollectionBookmark}
           handleCollectionDelete={handleCollectionDelete}
         />
       </CollectionTagBtn>

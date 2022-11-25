@@ -16,6 +16,7 @@ const BasicBtn = styled.button`
     background-color: ${({ theme }) => theme.colors.purple_1};
     border: none;
     color: white;
+    cursor: pointer;
   }
   &:active {
     background-color: ${({ theme }) => theme.colors.mainColor};
@@ -58,6 +59,7 @@ const FillBtn = styled.button`
   &:hover {
     background-color: ${({ theme }) => theme.colors.purple_1};
     color: white;
+    cursor: pointer;
   }
   &:active {
     background-color: ${({ theme }) => theme.colors.mainColor};
@@ -101,6 +103,9 @@ const LikeBtn = styled.button`
   border-radius: 25px;
   &:active {
     background-color: ${({ theme }) => theme.colors.purple_1};
+  }
+  &:hover {
+    cursor: pointer;
   }
 `;
 
