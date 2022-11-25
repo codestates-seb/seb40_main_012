@@ -67,13 +67,14 @@ public class UserService {
         user.setFirstLogin(true);
         User savedUser = userRepository.save(user);
 
-        try {
-            emailSenderService.sendEmail(user.getEmail());
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        }
+//        try {
+//            emailSenderService.sendEmail(user.getEmail());
+//        } catch (GeneralSecurityException e) {
+//            throw new RuntimeException(e);
+//        }
 
-        publisher.publishEvent(new UserRegistrationApplicationEvent(this, savedUser));
+        UserRegistrationApplicationEvent signupEvent = new UserRegistrationApplicationEvent(this, savedUser);
+        publisher.publishEvent(signupEvent);
         return savedUser;
     }
 
