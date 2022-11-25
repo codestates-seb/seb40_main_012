@@ -60,7 +60,7 @@ public class Comment {
     private Book book;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "pairing_id")
     private Pairing pairing;
 
