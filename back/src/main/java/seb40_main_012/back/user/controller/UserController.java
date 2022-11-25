@@ -5,7 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookDto;
+import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.common.bookmark.BookmarkRepository;
+import seb40_main_012.back.common.bookmark.BookmarkType;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
@@ -40,6 +43,8 @@ public class UserController {
     private final CommentRepository commentRepository;
     private final PairingRepository pairingRepository;
     private final BookCollectionRepository collectionRepository;
+    private final BookRepository bookRepository;
+    private final BookmarkRepository bookmarkRepository;
 
 
     @PostMapping("/users")
@@ -157,9 +162,10 @@ public class UserController {
     @GetMapping("/mypage/userPairing")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<PairingDto.UserPairing> getUserPairing() {
+        User findUser = userService.getLoginUser();
         List<Pairing> pairings = userService.getUserPairing();
         List<PairingDto.UserPairing> pairingDto = pairings.stream().map(x -> PairingDto.UserPairing.of(x)).collect(Collectors.toList());
-        Long listCount = pairingRepository.countBy();
+        Long listCount = pairingRepository.countByUser(findUser);
         return new ListResponseDto<>(listCount, pairingDto);
     }
 
@@ -169,7 +175,7 @@ public class UserController {
         List<BookCollection> collections = userService.getUserCollection();
         List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
         User findUser = userService.getLoginUser();
-        Long listCount = collectionRepository.countByUserUserId(findUser.getUserId());
+        Long listCount = collectionRepository.countByUser(findUser);
         return new ListResponseDto<>(listCount, collectionDto);
     }
 
@@ -180,25 +186,27 @@ public class UserController {
         List<BookCollection> collections = userService.getBookmarkByBookCollection();
         List<BookCollectionDto.BookmarkedCollection> bookmarkedCollectionDto = collections.stream().map(x -> BookCollectionDto.BookmarkedCollection.of(x)).collect(Collectors.toList());
         User findUser = userService.getLoginUser();
-        Long listCount = collectionRepository.countByUserUserId(findUser.getUserId());
+        Long listCount = bookmarkRepository.countByUserAndBookmarkType(findUser, BookmarkType.COLLECTION);
         return new ListResponseDto<>(listCount, bookmarkedCollectionDto);
     }
 
     @GetMapping("/mypage/bookmark/pairing")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<PairingDto.BookmarkedPairing> getBookMarkByPairing() {
+        User findUser = userService.getLoginUser();
         List<Pairing> pairings = userService.getBookmarkByPairing();
         List<PairingDto.BookmarkedPairing> pairingDto = pairings.stream().map(x -> PairingDto.BookmarkedPairing.of(x)).collect(Collectors.toList());
-        Long listCount = pairingRepository.countBy();
+        Long listCount = bookmarkRepository.countByUserAndBookmarkType(findUser, BookmarkType.PAIRING);
         return new ListResponseDto<>(listCount, pairingDto);
     }
 
     @GetMapping("/mypage/bookmark/book")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<BookDto.BookmarkedBook> getBookMarkByBook() {
+        User findUser = userService.getLoginUser();
         List<Book> books = userService.getBookmarkByBook();
         List<BookDto.BookmarkedBook> bookDto = books.stream().map(x -> BookDto.BookmarkedBook.of(x)).collect(Collectors.toList());
-        Long listCount = pairingRepository.countBy();
+        Long listCount = bookmarkRepository.countByUserAndBookmarkType(findUser, BookmarkType.BOOK);
         return new ListResponseDto<>(listCount, bookDto);
     }
 

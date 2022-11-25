@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import seb40_main_012.back.common.comment.entity.Comment;
 
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.entity.User;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public interface PairingRepository extends JpaRepository<Pairing, Long> {
             "limit 10")
     List<Pairing> findBestTenCategory();
 
-    Long countBy();
+    Long countByUser(User user);
 
     List<Pairing> findByUser_UserId(Long userId);
 
