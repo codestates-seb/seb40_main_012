@@ -218,6 +218,7 @@ public class BookCollectionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class AuthorCollection{
+        private Long collectionId;
         private String title;
         private List<BookDto.CollectionBook> books;
 
@@ -225,6 +226,7 @@ public class BookCollectionDto {
         //collection book
         public static AuthorCollection of(BookCollection collection){
             return AuthorCollection.builder()
+                    .collectionId(collection.getCollectionId())
                     .title(collection.getTitle())
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .build();
@@ -236,6 +238,7 @@ public class BookCollectionDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class CriticCollection{
+        private Long collectionId;
         private String title;
         private List<BookDto.CollectionBook> books;
 
@@ -243,6 +246,7 @@ public class BookCollectionDto {
         //collection book
         public static CriticCollection of(BookCollection collection){
             return CriticCollection.builder()
+                    .collectionId(collection.getCollectionId())
                     .title("00 평론가가 평가한 그 책")
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .build();
