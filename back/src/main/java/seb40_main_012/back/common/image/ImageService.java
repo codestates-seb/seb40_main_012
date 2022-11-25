@@ -34,7 +34,7 @@ public class ImageService {
 
         String storedImageName = uuid + extension; // 파일 이름 + 확장자
 
-        String storedPath = imageDir + storedImageName; // 파일 불러올 때 사용할 경
+        String storedPath = imageDir + storedImageName; // 파일 불러올 때 사용할 경로
 
         Image image = Image.builder()
                 .originalImageName(originalImageName)
