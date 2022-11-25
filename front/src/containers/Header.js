@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
 import { Searchbar } from 'components';
 import { selectIsLogin, selectProfileImage } from 'store/modules/authSlice';
-import { logoutApi } from 'api/authApi';
+import { authApi } from 'api';
 import { dummyUserImgUrl } from 'util/userAvatar';
 
 const HeaderContainer = styled.div`
@@ -97,7 +97,7 @@ const Header = () => {
 
   const handleClickLogoutButton = async () => {
     try {
-      await logoutApi();
+      await authApi.logout();
     } catch (e) {
       console.log(e);
     }

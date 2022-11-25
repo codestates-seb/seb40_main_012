@@ -14,7 +14,7 @@ import Checkbox from '@mui/material/Checkbox';
 import styled from 'styled-components';
 import { PageContainer } from 'containers';
 import { OutlinedButton, ValidationTextFields } from 'components';
-import { getUserInfoApi } from 'api/myPageApi';
+import { myPageApi } from 'api';
 import { patchUserInfoAsync } from 'store/modules/authSlice';
 import {
   validationCheck,
@@ -133,7 +133,7 @@ const EditProfile = () => {
 
   const getUserInfo = async () => {
     try {
-      const response = await getUserInfoApi();
+      const response = await myPageApi.getUserInfo();
       const { age, category, gender, introduction, nickname, profileImage } =
         response;
       const categoryObj = {};
@@ -146,8 +146,8 @@ const EditProfile = () => {
         nickName: nickname,
         introduction: introduction,
       });
-      setGender(gender);
-      setAge(age);
+      setGender(gender === 'NONE' ? '' : gender);
+      setAge(age === 'NONE' ? '' : age);
       setChecked({ ...checked, ...categoryObj });
       setProfileImage(profileImage);
     } catch (error) {

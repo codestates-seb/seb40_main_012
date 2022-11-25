@@ -3,9 +3,8 @@ import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
 import { ContainedButton } from 'components';
-import { currentPasswordCheckApi, withdrawalApi } from 'api/myPageApi';
+import { myPageApi, authApi } from 'api';
 import { useNavigate } from 'react-router-dom';
-import { logoutApi } from 'api/authApi';
 
 const ContainerStyled = styled.div`
   color: ${({ theme }) => theme.colors.gray};
@@ -95,13 +94,13 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
   const hadleClickSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await currentPasswordCheckApi(passwordValue);
+      const response = await myPageApi.currentPasswordCheck(passwordValue);
       if (!response) {
         setPasswordErrMsg('현재 비밀번호를 다시 확인해주세요.');
       } else {
         setPasswordErrMsg('');
-        await withdrawalApi(); // 회원탈퇴 안내 메시지 필요
-        await logoutApi(); // 회원탈퇴 api 단에서 로그아웃 api 로직까지 같이 처리해주는게 좋을 것 같음
+        await myPageApi.withdrawal(); // 회원탈퇴 안내 메시지 필요
+        await authApi.logout(); // 회원탈퇴 api 단에서 로그아웃 api 로직까지 같이 처리해주는게 좋을 것 같음
         navigate('/', { replace: true });
       }
     } catch (error) {

@@ -2,7 +2,7 @@ import { Suspense, lazy, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { GlobalStyle } from 'styles';
-import { logoutApi, refreshTokenApi } from 'api/authApi';
+import { authApi } from 'api';
 import { selectIsLogin } from 'store/modules/authSlice';
 import { ScrollToTop } from 'components';
 
@@ -17,11 +17,11 @@ const App = () => {
 
   const getToken = async () => {
     try {
-      await refreshTokenApi();
+      await authApi.refreshToken();
     } catch (e) {
       console.log(e);
       // 에러코드 나오면 처리 필요
-      logoutApi();
+      authApi.logout();
     }
   };
 
