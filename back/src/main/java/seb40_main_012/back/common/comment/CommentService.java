@@ -223,6 +223,15 @@ public class CommentService {
         commentRepository.delete(findComment);
     }
 
+    public void deleteComments() {
+
+        User findUser = userService.getLoginUser();
+
+        long userId = findUser.getUserId();
+
+        commentRepository.deleteAllByUserId(userId);
+    }
+
     public void verifyUser(long userId, Comment comment) {
     }
 

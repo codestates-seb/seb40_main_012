@@ -37,15 +37,15 @@ public class ImageController {
 //    }
 
     @PostMapping("/upload")
-    public String uploadImage(@RequestHeader("Authorization") long userId,
-                              @RequestParam("Image") MultipartFile file,
-                              @RequestParam("Images") List<MultipartFile> files) throws IOException { // 이미지 업로드
+    public String uploadImage(
+            @RequestParam("Image") MultipartFile file,
+            @RequestParam("Images") List<MultipartFile> files) throws IOException { // 이미지 업로드
 
         imageService.saveImage(file);
 
         log.info("multipartFile = {}", file);
 
-        for(MultipartFile multipartFile : files) {
+        for (MultipartFile multipartFile : files) {
             imageService.saveImage(multipartFile);
         }
 
@@ -63,7 +63,7 @@ public class ImageController {
 
     @GetMapping("/{image_id}")
     public Resource viewImage(@PathVariable("image_id") @Positive long imageId,
-                            Model model) throws IOException { // 이미지 조회
+                              Model model) throws IOException { // 이미지 조회
 
         Image image = imageRepository.findById(imageId).orElse(null);
 
