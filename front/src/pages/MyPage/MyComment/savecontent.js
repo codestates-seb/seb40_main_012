@@ -1,9 +1,13 @@
+/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import MyCommentBook from './MyCommentBook';
+// import { useState } from 'react';
 import axios from '../../../api/axios';
 
 const ContentContainer = styled.div`
@@ -28,8 +32,8 @@ const ContentContainer = styled.div`
     align-items: center;
     justify-content: center;
     align-content: center;
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
   }
   .fixed {
     position: fixed;
@@ -93,40 +97,52 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ setInfiniteData, infiniteData }) => {
-  // const [data, setData] = useState({
-  //   content: content.data,
-  //   hasMore: true,
-  // });
-
+const Content = ({ commentLength, content, setContent }) => {
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    if (infiniteData.content.data.length >= 100) {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data,
-        },
+    if (commentLength >= 100) {
+      setContent({
+        bookComment: content.bookComment,
+        pairingComment: content.pairingComment,
+        collectionComment: content.collectionComment,
         hasMore: false,
+        listCount: 0,
       });
       return;
     }
-    if (infiniteData.content.data.length < 10) {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data,
-        },
+    if (commentLength < 10) {
+      setData({
+        bookComment: content.bookComment,
+        pairingComment: content.pairingComment,
+        collectionComment: content.collectionComment,
         hasMore: false,
+        listCount: 0,
       });
       return;
     }
+
     ////// 나중에 통신하는 거 붙여주기
+    // setTimeout(() => {
+    //   setInfiniteData({
+    //     bookComment: infiniteData.bookComment.concat(infiniteData.bookComment),
+    //     pairingComment: infiniteData.pairingComment.concat(
+    //       infiniteData.pairingComment
+    //     ),
+    //     collectionComment: infiniteData.collectionComment.concat(
+    //       infiniteData.collectionComment
+    //     ),
+    //     hasMore: true,
+    //   });
+    // }, 800);
     setTimeout(() => {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data.concat(infiniteData.content.data),
-        },
-        // response.data
+      setContent({
+        bookComment: content.bookComment.concat(content.bookComment),
+        pairingComment: content.pairingComment.concat(content.pairingComment),
+        collectionComment: content.collectionComment.concat(
+          content.collectionComment
+        ),
         hasMore: true,
+        listCount: 0,
       });
     }, 800);
     /////
@@ -134,7 +150,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
 
   const onRemove = (id) => {
     axios
-      .delete(`/api/books/pairings/${id}/delete`)
+      .delete(`/api/comments/${id}/delete`)
       .then(location.reload())
       .catch((error) => console.log('에러', error));
   };
@@ -142,7 +158,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
       axios
-        .delete(`/api/books/pairings/delete`)
+        .delete(`api/comments/delete`)
         .then(location.reload())
         .catch((error) => console.log('에러', error));
     }
@@ -183,11 +199,11 @@ const Content = ({ setInfiniteData, infiniteData }) => {
         </Grid>
 
         <InfiniteScroll
-          dataLength={infiniteData.content.data.length}
+          dataLength={content.listCount}
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
-          next={infiniteData.content.data && fetchMoreData}
-          hasMore={infiniteData.hasMore} // 스크롤 막을지 말지 결정
+          next={content && fetchMoreData}
+          hasMore={content.hasMore} // 스크롤 막을지 말지 결정
           loader={
             <p
               style={{
@@ -198,7 +214,6 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                 src={'/images/cherrypick_loading.gif'}
                 alt="loading cherrypick"
               ></img>
-              <div>열심히 읽어오는 중</div>
             </p>
           }
           height={400}
@@ -209,8 +224,8 @@ const Content = ({ setInfiniteData, infiniteData }) => {
           }
         >
           <div>
-            {infiniteData.content.data ? (
-              infiniteData.content.data.map((data, key) => (
+            {content ? (
+              data.content.map((data, key) => (
                 <ItemContainer key={key}>
                   <Grid
                     container
@@ -228,7 +243,11 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                         <BookImg>
                           <img
                             className="resize"
-                            src={data.bookCover}
+                            src={
+                              data.cover
+                                ? data.cover
+                                : '/images/cherrypick_loading.gif'
+                            }
                             alt="book thumbnail"
                           ></img>
                         </BookImg>
@@ -236,6 +255,21 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                     </Grid>
                     <Grid item xs={9}>
                       <FlexBox>
+                        <Typography
+                          sx={{
+                            display: 'flex',
+                            mt: 1,
+                            mb: 1,
+                            fontSize: 17,
+                            fontWeight: 400,
+                          }}
+                          variant="body2"
+                          gutterBottom
+                        >
+                          {data.pairingTitle}
+                          {data.collectionTitle}
+                          {data.bookName}
+                        </Typography>
                         <Typography
                           color="#232627"
                           sx={{
@@ -258,12 +292,24 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                             }}
                             color="#BFBFBF"
                           >
-                            <FavoriteTwoToneIcon
-                              sx={{ width: 19.5, height: 19.5 }}
-                              align="center"
-                              style={{ color: 'FFD8D8' }}
-                            />
-                            {data.pairingLike}
+                            {data.commentType === 'BOOK' ? (
+                              <>
+                                <StarRoundedIcon
+                                  align="center"
+                                  style={{ color: 'FFF599' }}
+                                />
+                                {data.rating}
+                              </>
+                            ) : (
+                              <>
+                                <FavoriteTwoToneIcon
+                                  sx={{ width: 19.5, height: 19.5 }}
+                                  align="center"
+                                  style={{ color: 'FFD8D8' }}
+                                />
+                                <>{data.commentLike}</>
+                              </>
+                            )}
                           </Grid>
                           <Grid
                             item
@@ -273,7 +319,18 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                               alignItems: 'center',
                             }}
                             color="#BFBFBF"
-                          ></Grid>
+                          >
+                            {data.commentType === 'BOOK' ? (
+                              <>
+                                <FavoriteTwoToneIcon
+                                  sx={{ width: 19.5, height: 19.5 }}
+                                  align="center"
+                                  style={{ color: 'FFD8D8' }}
+                                />
+                                {data.commentLike}
+                              </>
+                            ) : null}
+                          </Grid>
                           <Grid
                             item
                             xs={6}
@@ -284,9 +341,8 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                             align="right"
                             color="#737373"
                           >
-                            <div>
-                              {data.bookName}, {data.author}
-                            </div>
+                            <div>{data.author ? data.author : null}</div>
+                            <div>{data.bookName ? data.bookName : null}, </div>
                           </Grid>
                         </div>
                       </FlexBox>

@@ -28,8 +28,8 @@ const ContentContainer = styled.div`
     align-items: center;
     justify-content: center;
     align-content: center;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
   }
   .fixed {
     position: fixed;
@@ -193,6 +193,7 @@ const Content = ({ infiniteData, setContent, content }) => {
                 src={'/images/cherrypick_loading.gif'}
                 alt="loading cherrypick"
               ></img>
+              <div>열심히 읽어오는 중</div>
             </p>
           }
           height={400}
