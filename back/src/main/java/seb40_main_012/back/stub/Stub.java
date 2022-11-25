@@ -342,6 +342,9 @@ public class Stub {
                             .user(userService.findVerifiedUser(rand3))
                             .content("Stub_Book_Collection_Content" + i)
                             .likeCount(rand1)
+                            .userLike(false)
+                            .userBookmark(false)
+                            .userCollection(false)
                             .view(rand2)
                             .bookIsbn13(Stream.of(String.valueOf(rand3), String.valueOf(rand4), String.valueOf(rand5), String.valueOf(rand6))
                                     .distinct().collect(Collectors.toList()))
@@ -556,7 +559,7 @@ public class Stub {
                 Bookmark.builder()
                         .bookmarkId(1L)
                         .user(user24)
-                        .bookCollection(bookCollectionService.getCollection(1L))
+                        .bookCollection(bookCollectionService.findVerifiedCollection(1L))
                         .bookmarkType(BookmarkType.COLLECTION)
                         .build(),
                 Bookmark.builder()
