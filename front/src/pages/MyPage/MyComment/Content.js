@@ -237,7 +237,7 @@ const Content = ({ commentLength, data, setData }) => {
                           <img
                             className="resize"
                             src={
-                              data.cover
+                              data.cover !== null
                                 ? data.cover
                                 : '/images/cherrypick_loading.gif'
                             }
