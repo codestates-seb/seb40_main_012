@@ -48,12 +48,15 @@ const OriginBookWrapper = styled.div`
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
+  margin: 0 20px;
 `;
 
 const MainBody = styled.div`
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
+  padding: 10px 0 20px 0;
+  margin: 0 20px;
 `;
 
 const InfoTitle = styled.div`
@@ -77,6 +80,7 @@ const InfoContent = styled.div`
 const BtnsContainer = styled.div`
   display: flex;
   align-items: center;
+  padding-bottom: 10px;
 `;
 
 const PairingDetail = () => {
