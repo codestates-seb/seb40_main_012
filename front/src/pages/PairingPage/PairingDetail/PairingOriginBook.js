@@ -15,6 +15,7 @@ const PairingOriginBookContainer = styled.div`
   }
   width: 25%;
   padding: 0px 20px;
+  margin-right: 20px;
   img {
     width: 100%;
     aspect-ratio: 6.5 / 10;
@@ -52,6 +53,9 @@ const BookInfo = styled.div`
   }
   @media screen and (min-width: 641px) {
     font-size: 18px;
+  }
+  div {
+    margin: 5px 0;
   }
 `;
 

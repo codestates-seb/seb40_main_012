@@ -22,7 +22,7 @@ const BestCollectionCarousel = styled.div`
     display: none;
   }
   .slick-next {
-    right: 20px;
+    right: 26px;
     top: 47%;
   }
   .slick-prev {

@@ -88,16 +88,6 @@ const MyPageIconContainer = styled.div`
   }
 `;
 
-//Redux Toolkit 참고용 나중에 삭제!!
-const RTKBtn = styled(HeaderBtn)`
-  height: 60px;
-  border-top: 3px solid transparent;
-  &:hover,
-  &.selected {
-    border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor};
-  }
-`;
-
 const Header = () => {
   const location = useLocation();
   const isLogin = useSelector(selectIsLogin);
@@ -145,14 +135,6 @@ const Header = () => {
           >
             컬렉션
           </CollectionBtn>
-        </Link>
-        {/* Redux Toolkit 참고용 페이지!! */}
-        <Link to="/redux">
-          <RTKBtn
-            className={location.pathname === '/redux' ? 'selected' : null}
-          >
-            Redux TK
-          </RTKBtn>
         </Link>
       </div>
       <div className="header_right">
