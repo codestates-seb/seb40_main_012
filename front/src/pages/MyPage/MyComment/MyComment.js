@@ -1,15 +1,15 @@
 import Header from '../Header';
 import PageContainer from '../../../components/PageContainer';
-import Nav from './Nav';
-
-import Container from '@mui/material/Container';
-
-// import FixContentScroll from './FixContentScroll';
-import { useSelector, useDispatch } from 'react-redux';
-import { useEffect } from 'react';
-import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
-import styled from 'styled-components';
+import Nav from '../Nav';
 import Content from './Content';
+import Container from '@mui/material/Container';
+import styled from 'styled-components';
+// import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
+// import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
+import axios from '../../../api/axios';
+import { COMMENT_URL } from '../../../api/requests';
+// 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
 
 const Void = styled.div`
   min-width: 50vw;
@@ -17,7 +17,7 @@ const Void = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  .img {
+  img {
     align-items: center;
     justify-content: center;
     align-content: center;
@@ -25,30 +25,83 @@ const Void = styled.div`
     height: 100px;
   }
 `;
-const MyComment = () => {
-  const CommentData = useSelector((state) =>
-    state.myComment.data.length !== 0
-      ? state.myComment.data.data.content
-      : false
-  );
-  console.log(CommentData);
 
-  // console.log(CommentData);
-  const dispatch = useDispatch();
+const MyComment = () => {
+  console.log('마이코멘트 시작');
+  const [view, setView] = useState(1);
+  const [content, setContent] = useState({
+    listCount: 0,
+  });
+  const [data, setData] = useState({
+    content: [],
+    hasMore: true,
+  });
+
+  const [infiniteData, setInfiniteData] = useState({
+    bookComment: [],
+    pairingComment: [],
+    collectionComment: [],
+    hasMore: true,
+  });
+
+  const fetchData = async () => {
+    axios
+      .get(COMMENT_URL)
+      .then((response) => {
+        setInfiniteData({
+          bookComment: response.data.bookComment,
+          pairingComment: response.data.pairingComment,
+          collectionComment: response.data.collectionComment,
+          hasMore: true,
+        });
+      })
+      .catch((error) => console.log('에러', error));
+  };
+  const dataArray = infiniteData.bookComment
+    .concat(infiniteData.pairingComment)
+    .concat(infiniteData.collectionComment);
+
   useEffect(() => {
-    dispatch(asyncGetMyCommentList());
-  }, [dispatch]);
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    makeLength();
+  }, [infiniteData]);
+
+  useEffect(() => {
+    console.log('infiniteData 변경', infiniteData);
+  }, [infiniteData]);
+
+  useEffect(() => {
+    setData({ content: dataArray, hasMore: true });
+  }, [infiniteData]);
+
+  const makeLength = () => {
+    setContent({
+      listCount:
+        infiniteData.bookComment.length +
+        infiniteData.pairingComment.length +
+        infiniteData.collectionComment.length,
+    });
+  };
+
+  console.log('data content 읽기', data.content);
 
   return (
     <PageContainer header footer>
-      {/* xs , sm, md, lg, xl 사이즈 */}
-
-      {CommentData ? (
+      {content ? (
         <Container maxWidth="md">
           <Header></Header>
-          <Nav></Nav>
-          <Content commentData={CommentData}></Content>
-          {/* <FixContentScroll commentData={CommentData}></FixContentScroll> */}
+          <Nav view={view} setView={setView} content={content}></Nav>
+          <Content
+            setInfiniteData={setInfiniteData}
+            infiniteData={infiniteData}
+            commentLength={content.listCount}
+            dataArray={dataArray}
+            data={data}
+            setData={setData}
+          ></Content>
         </Container>
       ) : (
         <Container maxWidth="md">
