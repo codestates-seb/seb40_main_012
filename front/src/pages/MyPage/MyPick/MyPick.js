@@ -157,7 +157,7 @@ const MyPick = () => {
                 src={'/images/cherrypick_loading.gif'}
                 alt="loading cherrypick"
               ></img>
-              데이터가 없습니다
+              더 읽어올 데이터가 없군요 📕
             </Void>
           </Container>
         )}

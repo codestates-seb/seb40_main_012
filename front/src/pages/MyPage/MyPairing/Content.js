@@ -198,13 +198,13 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                 src={'/images/cherrypick_loading.gif'}
                 alt="loading cherrypick"
               ></img>
-              <div>열심히 읽어오는 중</div>
+              <div>열심히 읽어오는 중..</div>
             </p>
           }
           height={400}
           endMessage={
             <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
+              <b>Yayy! 모든 페어링을 다 읽었어요!</b>
             </p>
           }
         >
