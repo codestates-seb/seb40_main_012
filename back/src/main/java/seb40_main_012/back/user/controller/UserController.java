@@ -1,5 +1,6 @@
 package seb40_main_012.back.user.controller;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,12 +49,16 @@ public class UserController {
 
 
     @PostMapping("/users")
-    public ResponseEntity postUser(@Valid @RequestBody UserDto.PostDto postdto) {
-        User user = mapper.userPostToUser(postdto);
+    public ResponseEntity postUser(@Valid @RequestBody UserDto.PostDto postDto) {
+        User user = mapper.userPostToUser(postDto);
 
         User createdUser = userService.createUser(user);
+        UserDto.ResponseDto response = mapper.userToUserResponse(createdUser);
+
         return new ResponseEntity<>(
-                new SingleResponseDto<>(mapper.userToUserResponse(createdUser)), HttpStatus.CREATED);
+                response
+//                new SingleResponseDto<>(response)
+                , HttpStatus.CREATED);
     }
 
     @PostMapping("/mypage/verify/nickName")

@@ -2,13 +2,11 @@ package seb40_main_012.back.common.image;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +15,10 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.util.UriUtils;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Positive;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 @Slf4j
 @Validated
@@ -46,13 +41,16 @@ public class ImageController {
 //            ,@RequestParam("files") @Nullable List<MultipartFile> files
     ) throws IOException { // 이미지 업로드
 
-        imageService.saveImage(file);
+        Long savedImageId = imageService.saveImage(file);
+
+        Image savedImage = imageService.findImage(savedImageId);
 
         log.info("multipartFile = {}", file);
 
 //        for (MultipartFile multipartFile : files) {
 //            imageService.saveImage(multipartFile);
 //        }
+        System.out.println(savedImage.getStoredPath());
 
         return "redirect:/";
     }
