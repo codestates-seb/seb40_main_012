@@ -315,6 +315,15 @@ public class PairingService {
         pairingRepository.delete(findPairing);
     }
 
+    public void deletePairings() {
+
+        User findUser = userService.getLoginUser();
+
+        long userId = findUser.getUserId();
+
+        pairingRepository.deleteAllByUserId(userId);
+    }
+
 
     public Pairing findVerifiedPairing(long pairingId) {
         Optional<Pairing> optionalPairing = pairingRepository.findById(pairingId);

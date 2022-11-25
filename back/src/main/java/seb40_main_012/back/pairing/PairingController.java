@@ -320,6 +320,14 @@ public class PairingController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @DeleteMapping("/pairings/delete")
+    public ResponseEntity deletePairings() {
+
+        pairingService.deletePairings();
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @PostMapping("/pairings/{pairing-id}/bookmark")
     @ResponseStatus(HttpStatus.OK)
     public PairingDto.Response bookmarkPairing(@PathVariable("pairing-id") Long pairingId){
