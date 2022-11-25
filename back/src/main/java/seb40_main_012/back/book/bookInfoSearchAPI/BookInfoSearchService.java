@@ -145,7 +145,9 @@ public class BookInfoSearchService {
 
             return pageResult1;
 
-        } else if (51 <= list1Size && list1Size <= 100) {
+        } else
+//            if (51 <= list1Size && list1Size <= 100)
+            {
 
             BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
             BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
@@ -156,37 +158,39 @@ public class BookInfoSearchService {
             List<BookInfoSearchDto.BookList.Item> pageResult2 = makePageable(result2, page, size);
 
             return pageResult2;
-        } else if (101 <= list1Size && list1Size <= 150) {
-
-            BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
-            BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
-            BookInfoSearchDto.BookList totalResult3 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 50);
-
-            List<BookInfoSearchDto.BookList.Item> result3 = Stream
-                    .concat((Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
-                                    totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
-                            totalResult3.getItem().stream().filter(a -> a.isbn13 != "")).distinct().collect(Collectors.toList());
-
-            List<BookInfoSearchDto.BookList.Item> pageResult3 = makePageable(result3, page, size);
-
-            return pageResult3;
-        } else {
-
-            BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
-            BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
-            BookInfoSearchDto.BookList totalResult3 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 50);
-            BookInfoSearchDto.BookList totalResult4 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 4, 50);
-
-            List<BookInfoSearchDto.BookList.Item> result4 = Stream
-                    .concat((Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
-                                    totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
-                            Stream.concat((totalResult3.getItem().stream().filter(a -> a.isbn13 != "")),
-                                    totalResult4.getItem().stream().filter(a -> a.isbn13 != ""))).distinct().collect(Collectors.toList());
-
-            List<BookInfoSearchDto.BookList.Item> pageResult4 = makePageable(result4, page, size);
-
-            return pageResult4;
         }
+
+//        else if (101 <= list1Size && list1Size <= 150) {
+//
+//            BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+//            BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
+//            BookInfoSearchDto.BookList totalResult3 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 50);
+//
+//            List<BookInfoSearchDto.BookList.Item> result3 = Stream
+//                    .concat((Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
+//                                    totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
+//                            totalResult3.getItem().stream().filter(a -> a.isbn13 != "")).distinct().collect(Collectors.toList());
+//
+//            List<BookInfoSearchDto.BookList.Item> pageResult3 = makePageable(result3, page, size);
+//
+//            return pageResult3;
+//        } else {
+//
+//            BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+//            BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
+//            BookInfoSearchDto.BookList totalResult3 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 50);
+//            BookInfoSearchDto.BookList totalResult4 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 4, 50);
+//
+//            List<BookInfoSearchDto.BookList.Item> result4 = Stream
+//                    .concat((Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
+//                                    totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
+//                            Stream.concat((totalResult3.getItem().stream().filter(a -> a.isbn13 != "")),
+//                                    totalResult4.getItem().stream().filter(a -> a.isbn13 != ""))).distinct().collect(Collectors.toList());
+//
+//            List<BookInfoSearchDto.BookList.Item> pageResult4 = makePageable(result4, page, size);
+//
+//            return pageResult4;
+//        }
     }
 
     public static <T> List<T> makePageable(List<T> sourceList, int page, int pageSize) {
