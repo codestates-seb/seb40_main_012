@@ -78,7 +78,18 @@ const WarningMsg = styled.div`
   }
 `;
 
-const CollectionWriteBtns = ({ handleCollectionWrite }) => {
+const InputWaringMsg = styled.div`
+  width: 100%;
+  font-weight: 600;
+  text-align: end;
+  margin-bottom: 12px;
+  color: #850000;
+  &.hide {
+    display: none;
+  }
+`;
+
+const CollectionWriteBtns = ({ handleCollectionWrite, isFilled }) => {
   const [isHoverExit, setIsHoverExit] = useState(false);
 
   const handleFocusExit = () => setIsHoverExit(true);
@@ -86,6 +97,9 @@ const CollectionWriteBtns = ({ handleCollectionWrite }) => {
 
   return (
     <CollectionWriteBtnsContainer>
+      <InputWaringMsg className={isFilled ? 'hide' : 'show'}>
+        제목과 새로운 컬렉션의 책이 필요합니다
+      </InputWaringMsg>
       <Buttons>
         <ExitBtn
           onFocus={handleFocusExit}

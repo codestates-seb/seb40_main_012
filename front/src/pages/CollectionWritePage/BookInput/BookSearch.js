@@ -152,7 +152,7 @@ const BookSearch = ({
         <SearchContainer>
           <BookSearchbar
             type="text"
-            placeholder="컬렉션에 추가할 책 제목을 검색해보세요"
+            placeholder="컬렉션에 추가할 책을 검색해보세요"
             value={searchInput}
             onChange={handleOnChangeInput}
             onKeyPress={handleSearchBook}
