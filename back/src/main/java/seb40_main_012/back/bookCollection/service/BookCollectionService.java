@@ -57,14 +57,25 @@ public class BookCollectionService {
 
         tags.forEach(
                 x -> {
-                    Tag newTag = new Tag(x);
-                    tagRepository.save(newTag);
-                    BookCollectionTag collectionTag = new BookCollectionTag(collection, newTag);
-                    collectionRepository.save(collection);
-                    collectionTagRepository.save(collectionTag);
-                    collection.addCollectionTag(collectionTag);
-                    findUser.addBookCollection(collection);
-                    collection.addUser(findUser);
+                    if(tagRepository.findByTagName(x).isEmpty()){
+                        Tag newTag = new Tag(x);
+                        tagRepository.save(newTag);
+                        BookCollectionTag collectionTag = new BookCollectionTag(collection, newTag);
+                        collectionRepository.save(collection);
+                        collectionTagRepository.save(collectionTag);
+                        collection.addCollectionTag(collectionTag);
+                        findUser.addBookCollection(collection);
+                        collection.addUser(findUser);
+                    }else {
+                        Tag tag = tagRepository.findByTagName(x).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+                        BookCollectionTag collectionTag = new BookCollectionTag(collection, tag);
+                        collectionRepository.save(collection);
+                        collectionTagRepository.save(collectionTag);
+                        collection.addCollectionTag(collectionTag);
+                        findUser.addBookCollection(collection);
+                        collection.addUser(findUser);
+                    }
+
                 }
         );
         List<String> isbn = collection.getBookIsbn13();
@@ -74,18 +85,6 @@ public class BookCollectionService {
                     BookCollectionBook findCollectionBook = new BookCollectionBook(newBook,collection);
                     collectionBookRepository.save(findCollectionBook);
                     collection.addCollectionBook(findCollectionBook);
-//                    if(bookRepository.findByIsbn13(x)!=null){
-//                        Book findBook = bookRepository.findByIsbn13(x).orElseThrow(() -> new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
-//                        BookCollectionBook findCollectionBook = new BookCollectionBook(findBook,collection);
-//                        collectionBookRepository.save(findCollectionBook);
-//                        collection.addCollectionBook(findCollectionBook);
-//                    }else {
-//                        Book newBook = bookService.updateView(x);
-//                        BookCollectionBook findCollectionBook = new BookCollectionBook(newBook,collection);
-//                        collectionBookRepository.save(findCollectionBook);
-//                        collection.addCollectionBook(findCollectionBook);
-//                    }
-
                 }
         );
 
@@ -104,15 +103,24 @@ public class BookCollectionService {
 
         tags.forEach(
                 x -> {
-                    Tag newTag = new Tag(x);
-                    tagRepository.save(newTag);
-                    BookCollectionTag collectionTag = new BookCollectionTag(bookCollection, newTag);
-                    collectionRepository.save(bookCollection);
-                    collectionTagRepository.save(collectionTag);
-                    bookCollection.addCollectionTag(collectionTag);
-                    bookCollection.editCollection(collection);
-                    findUser.addBookCollection(bookCollection);
-                    bookCollection.addUser(findUser);
+                    if(tagRepository.findByTagName(x).isEmpty()){
+                        Tag newTag = new Tag(x);
+                        tagRepository.save(newTag);
+                        BookCollectionTag collectionTag = new BookCollectionTag(collection, newTag);
+                        collectionRepository.save(collection);
+                        collectionTagRepository.save(collectionTag);
+                        collection.addCollectionTag(collectionTag);
+                        findUser.addBookCollection(collection);
+                        collection.addUser(findUser);
+                    }else {
+                        Tag tag = tagRepository.findByTagName(x).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
+                        BookCollectionTag collectionTag = new BookCollectionTag(collection, tag);
+                        collectionRepository.save(collection);
+                        collectionTagRepository.save(collectionTag);
+                        collection.addCollectionTag(collectionTag);
+                        findUser.addBookCollection(collection);
+                        collection.addUser(findUser);
+                    }
                 }
         );
         return bookCollection;
@@ -123,7 +131,6 @@ public class BookCollectionService {
     public BookCollection getCollection(Long collectionId) {
         BookCollection findBookCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
-
         isUserLike(collectionId);
         isUserBookmark(collectionId);
         isUserCollection(collectionId);

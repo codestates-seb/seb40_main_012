@@ -51,7 +51,6 @@ public class BookCollectionController {
     @ResponseStatus(HttpStatus.OK)
     public BookCollectionDto.CollectionDetails getCollection(@PathVariable("collection-id") Long collectionId) {
         BookCollection collection = collectionService.getCollection(collectionId);
-
         return BookCollectionDto.CollectionDetails.of(collection);
     }
 
