@@ -21,6 +21,8 @@ const validationCheck = (type, value, required) => {
       errorMessage = message.valid.emailError;
       return { test: regExp.test(value), errorMessage };
     case 'password':
+    case 'currentPassword':
+    case 'newPassword':
       regExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
       errorMessage = message.valid.passwordError;
       return { test: regExp.test(value), errorMessage };
@@ -72,8 +74,8 @@ const message = {
   duplicate: {
     nickNameSuccess: '사용할 수 있는 닉네임입니다.',
     nickNameError: '이미 사용중인 닉네임입니다.',
-    emailNameSuccess: '사용할 수 있는 닉네임입니다.',
-    emailNameError: '이미 사용중인 닉네임입니다.',
+    emailNameSuccess: '사용할 수 있는 이메일입니다.',
+    emailNameError: '이미 사용중인 이메일입니다.',
   },
 };
 
