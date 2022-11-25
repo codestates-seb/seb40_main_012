@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
+import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.service.UserService;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,11 +21,15 @@ import java.util.UUID;
 public class ImageService {
 
     private final ImageRepository imageRepository;
+    private final UserService userService;
 
     @Value("")
     private String imageDir;
 
     public Long saveImage(MultipartFile files) throws IOException {
+
+        User findUser = userService.getLoginUser();
+
         if (files.isEmpty()) {return null;}
 
         String originalImageName = files.getOriginalFilename(); // 원래 파일 이름
