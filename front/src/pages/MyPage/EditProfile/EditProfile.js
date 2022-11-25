@@ -149,10 +149,7 @@ const EditProfile = () => {
       });
       setGender(gender);
       setAge(age);
-      setChecked({
-        ...checked,
-        ...categoryObj,
-      });
+      setChecked({ ...checked, ...categoryObj });
       setProfileImage(profileImage);
     } catch (error) {
       console.log(error);
@@ -161,11 +158,7 @@ const EditProfile = () => {
 
   const handleChangeInput = (id, value) => {
     if (id !== 'introduction') {
-      setInputValue({
-        ...inputValue,
-        [id]: value,
-      });
-
+      setInputValue({ ...inputValue, [id]: value });
       return;
     }
 
@@ -177,23 +170,14 @@ const EditProfile = () => {
       ...inputHelperText,
       [id]: `${valueLength} / ${lengthLimit}`,
     });
-    setInputValue({
-      ...inputValue,
-      [id]: value,
-    });
+    setInputValue({ ...inputValue, [id]: value });
   };
 
   const handleBlur = (id, value, required) => {
     const { test, errorMessage } = validationCheck(id, value, required);
     if (!test) {
-      setInputStatus({
-        ...inputStatus,
-        [id]: 'error',
-      });
-      setInputHelperText({
-        ...inputHelperText,
-        [id]: errorMessage,
-      });
+      setInputStatus({ ...inputStatus, [id]: 'error' });
+      setInputHelperText({ ...inputHelperText, [id]: errorMessage });
       return;
     }
 
@@ -210,35 +194,17 @@ const EditProfile = () => {
     try {
       const response = await duplicationCheck(id, value);
       const { status, message } = response;
-      setInputStatus({
-        ...inputStatus,
-        [id]: status,
-      });
-      setInputHelperText({
-        ...inputHelperText,
-        [id]: message,
-      });
+      setInputStatus({ ...inputStatus, [id]: status });
+      setInputHelperText({ ...inputHelperText, [id]: message });
     } catch (error) {
       const { status, message } = error;
       if (nickName === value) {
-        setInputStatus({
-          ...inputStatus,
-          [id]: '',
-        });
-        setInputHelperText({
-          ...inputHelperText,
-          [id]: '',
-        });
+        setInputStatus({ ...inputStatus, [id]: '' });
+        setInputHelperText({ ...inputHelperText, [id]: '' });
         return;
       }
-      setInputStatus({
-        ...inputStatus,
-        [id]: status,
-      });
-      setInputHelperText({
-        ...inputHelperText,
-        [id]: message,
-      });
+      setInputStatus({ ...inputStatus, [id]: status });
+      setInputHelperText({ ...inputHelperText, [id]: message });
     }
   };
 
@@ -251,10 +217,7 @@ const EditProfile = () => {
   };
 
   const handleChangeCheckBox = (event) => {
-    setChecked({
-      ...checked,
-      [event.target.name]: event.target.checked,
-    });
+    setChecked({ ...checked, [event.target.name]: event.target.checked });
   };
 
   const handleClickSaveButton = async () => {
@@ -273,10 +236,7 @@ const EditProfile = () => {
       category: categoryArray,
       // profileImage, // api 변경되면 params에 필요할 수도 있음
     };
-    const userInfo = {
-      email,
-      roles,
-    };
+    const userInfo = { email, roles };
     dispatch(patchUserInfoAsync({ params, userInfo }));
   };
 
