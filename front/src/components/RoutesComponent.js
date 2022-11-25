@@ -76,7 +76,7 @@ const RoutesComponent = () => {
       <Route path="/pairing/music" element={getElement(PairingMusic, null)} />
       <Route path="/pairing/book" element={getElement(PairingBook, null)} />
       <Route path="/pairing/etc" element={getElement(PairingEtc, null)} />
-      <Route path="/pairing/write" element={getElement(PairingWrite, null)} />
+      <Route path="/pairing/write" element={getElement(PairingWrite, true)} />
       <Route
         path="/pairing/:pairingId"
         element={getElement(PairingDetail, null)}

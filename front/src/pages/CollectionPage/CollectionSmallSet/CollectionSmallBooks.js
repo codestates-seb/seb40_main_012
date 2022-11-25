@@ -21,22 +21,24 @@ const CollectionSmallInfo = styled.div`
   color: ${({ theme }) => theme.colors.darkgray};
 `;
 
-const CollectionSmallBooks = ({ title }) => {
+const CollectionSmallBooks = ({ collectionId, title, books }) => {
   const navigate = useNavigate();
 
   const onClickCollectionInfo = () => {
-    navigate('/collection/{collection_id}');
+    navigate(`/collection/${collectionId}`);
   };
 
   return (
     <CollectionSmallBooksContainer onClick={onClickCollectionInfo}>
       <BookColumn>
-        <CollectionSmallBook />
-        <CollectionSmallBook />
+        {books.slice(0, 2).map((el) => {
+          return <CollectionSmallBook key={el.isbn13} cover={el.bookCover} />;
+        })}
       </BookColumn>
       <BookColumn>
-        <CollectionSmallBook />
-        <CollectionSmallBook />
+        {books.slice(2, 4).map((el) => {
+          return <CollectionSmallBook key={el.isbn13} cover={el.bookCover} />;
+        })}
       </BookColumn>
       <CollectionSmallInfo>{title}</CollectionSmallInfo>
     </CollectionSmallBooksContainer>

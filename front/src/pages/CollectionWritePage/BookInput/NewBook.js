@@ -13,9 +13,13 @@ const NewBookContainer = styled.div`
 
 const CoverContainer = styled.div`
   img {
-    width: 100%;
+    width: 100% !important;
+    height: 100% !important;
     aspect-ratio: 7 / 10;
     object-fit: cover;
+    image-rendering: -webkit-optimize-contrast;
+    backface-visibility: hidden;
+    transform: translateZ(0);
   }
 `;
 

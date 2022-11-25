@@ -10,7 +10,7 @@ import axios from '../../api/axios';
 import { useEffect, useState } from 'react';
 import { ToDateString } from '../../util/ToDateString';
 import { useSelector } from 'react-redux';
-import { selectIsLogin, selectnickName } from '../../store/modules/authSlice';
+import { selectIsLogin } from '../../store/modules/authSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const CollectionTagBtn = styled.div`
@@ -26,18 +26,12 @@ const CollectionDetailPage = () => {
     books: [],
     comments: [],
   });
-  const [isMyCollection, setIsMyCollection] = useState(false);
   const { collectionId } = useParams();
   const isLogin = useSelector(selectIsLogin);
-  const usernickName = useSelector(selectnickName);
   const navigate = useNavigate();
-
-  console.log('ismycollection: ', isMyCollection);
 
   useEffect(() => {
     getCollectionData(collectionId);
-    if (collectionData.collectionAuthor === usernickName)
-      setIsMyCollection(true);
   }, []);
 
   const getCollectionData = (collectionId) => {
@@ -135,6 +129,7 @@ const CollectionDetailPage = () => {
         <CollectionHeaderBtns
           likeCount={collectionData.likeCount}
           userLike={collectionData.userLike}
+          userCollection={collectionData.userCollection}
           handleCollectionLike={handleCollectionLike}
           handleCollectionDelete={handleCollectionDelete}
         />
