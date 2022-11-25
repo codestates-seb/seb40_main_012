@@ -28,7 +28,7 @@ public class ImageService {
 
     public Long saveImage(MultipartFile files) throws IOException {
 
-        User findUser = userService.getLoginUser();
+//        User findUser = userService.getLoginUser();
 
         if (files.isEmpty()) {return null;}
 
@@ -42,13 +42,13 @@ public class ImageService {
 
         String storedPath = imageDir + storedImageName; // 파일 불러올 때 사용할 경로
 
-        Image image = Image.builder()
+        Image image = Image.builder() // 파일 엔티티 생성
                 .originalImageName(originalImageName)
                 .storedImageName(storedImageName)
                 .storedPath(storedPath)
                 .build();
 
-        files.transferTo(new File(storedPath));
+        files.transferTo(new File(storedPath)); // 로컬에 uuid 파일명으로 저장
 
         Image storedImage = imageRepository.save(image);
 
