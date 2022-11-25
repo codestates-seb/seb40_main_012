@@ -61,7 +61,7 @@ public class Pairing {
     private long view;
 
     @JsonBackReference
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -85,7 +85,7 @@ public class Pairing {
     @NotFound(action = NotFoundAction.IGNORE)
     private List<Like> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pairing")
+    @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<Bookmark> bookmarks = new ArrayList<>();
@@ -97,7 +97,5 @@ public class Pairing {
     @LastModifiedDate
     @Column(nullable = false, name = "MODIFIED_AT")
     private LocalDateTime modifiedAt = LocalDateTime.now();
-
-
 
 }
