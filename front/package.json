@@ -76,8 +76,8 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
-    "build": "env-cmd -f .env.development react-scripts  build",
-    "build:prod": "env-cmd -f .env.production react-scripts  build && move build ./build_prod"
+    "build": "env-cmd -f .env.development node scripts/build.js",
+    "build:prod": "env-cmd -f .env.production node scripts/build.js"
   },
   "eslintConfig": {
     "extends": [
