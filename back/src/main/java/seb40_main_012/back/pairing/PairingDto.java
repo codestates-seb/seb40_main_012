@@ -110,6 +110,7 @@ public class PairingDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UserPairing{
+        private long pairingId;
         private String content;
         private String bookName;
         private String author;
@@ -118,6 +119,7 @@ public class PairingDto {
 
         public static PairingDto.UserPairing of(Pairing pairing){
             return UserPairing.builder()
+                    .pairingId(pairing.getPairingId())
                     .content(pairing.getBody())
                     .bookName(pairing.getBook().getTitle())
                     .author(pairing.getBook().getAuthor())
@@ -131,6 +133,7 @@ public class PairingDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class BookmarkedPairing{
+        private long pairingId;
         private String content;
         private String bookName;
         private String author;
@@ -139,6 +142,7 @@ public class PairingDto {
 
         public static PairingDto.BookmarkedPairing of(Pairing pairing){
             return BookmarkedPairing.builder()
+                    .pairingId(builder().pairingId)
                     .content(pairing.getBody())
                     .bookName(pairing.getBook().getTitle())
                     .author(pairing.getBook().getAuthor())
