@@ -10,13 +10,10 @@ const CollectionSmallBookContainer = styled.div`
   }
 `;
 
-const CollectionSmallBook = () => {
+const CollectionSmallBook = ({ cover }) => {
   return (
     <CollectionSmallBookContainer>
-      <img
-        src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-        alt="book cover"
-      />
+      <img src={cover} alt="book cover" />
     </CollectionSmallBookContainer>
   );
 };
