@@ -49,8 +49,49 @@ const BookWrapperStyled = styled.div`
 
 const LinkAndImgWrapperStyled = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: center;
+  flex-direction: column;
+  justify-content: flex-start;
+  @media screen and (min-width: 641px) {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .imgLabel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 7px;
+    margin-bottom: 10px;
+  }
+  .imgName {
+    margin-left: 10px;
+    color: ${({ theme }) => theme.colors.gray};
+  }
+  input[type='file'] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+`;
+
+const Imgbtn = styled.div`
+  background-color: ${({ theme }) => theme.colors.purple_3};
+  padding: 15px 60px;
+  font-size: 14px;
+  border-radius: 5px;
+  margin-top: 5px;
+  @media screen and (min-width: 641px) {
+    padding: 15px 30px;
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.mainColor};
+    color: white;
+  }
 `;
 
 const WarningMsg = styled.div`
@@ -142,6 +183,10 @@ const PairingWrite = () => {
         <BodyInput bodyBind={bodyBind} />
         <LinkAndImgWrapperStyled>
           <OutLinkInput outLinkBind={outLinkBind} />
+          <label htmlFor="upload" className="imgLabel">
+            <Imgbtn>이미지 업로드</Imgbtn>
+            <span className="imgName">{imgData.name}</span>
+          </label>
           <input id="upload" type="file" onChange={onChangeImg} />
         </LinkAndImgWrapperStyled>
         {category === '' || title === '' ? (
