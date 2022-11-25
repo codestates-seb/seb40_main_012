@@ -21,6 +21,8 @@ const validationCheck = (type, value, required) => {
       errorMessage = message.valid.emailError;
       return { test: regExp.test(value), errorMessage };
     case 'password':
+    case 'currentPassword':
+    case 'newPassword':
       regExp = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,16}$/;
       errorMessage = message.valid.passwordError;
       return { test: regExp.test(value), errorMessage };
