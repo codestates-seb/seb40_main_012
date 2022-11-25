@@ -138,7 +138,7 @@ const EditProfile = () => {
       const { age, category, gender, introduction, nickname, profileImage } =
         response;
       const categoryObj = {};
-      if (category.length > 0) {
+      if (category?.length > 0) {
         for (const genre of category) categoryObj[genre] = true;
       }
 
