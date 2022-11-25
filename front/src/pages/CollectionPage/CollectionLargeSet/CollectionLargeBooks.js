@@ -7,15 +7,18 @@ const CollectionLargeBooksContainer = styled.div`
   justify-content: space-between;
 `;
 
-const CollectionLargeBooks = () => {
+const CollectionLargeBooks = ({ books }) => {
   return (
     <CollectionLargeBooksContainer>
-      <CollectionLargeBook bookTitle="책 제목1" />
-      <CollectionLargeBook bookTitle="책 제목2" />
-      <CollectionLargeBook bookTitle="책 제목3" />
-      <CollectionLargeBook bookTitle="책 제목4" />
-      <CollectionLargeBook bookTitle="책 제목5" />
-      <CollectionLargeBook bookTitle="책 제목6" />
+      {books.slice(0, 6).map((el) => {
+        return (
+          <CollectionLargeBook
+            key={el.isbn13}
+            bookTitle={el.title}
+            cover={el.bookCover}
+          />
+        );
+      })}
     </CollectionLargeBooksContainer>
   );
 };

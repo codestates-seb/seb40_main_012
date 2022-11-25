@@ -26,7 +26,7 @@ const BtnStyleBox = styled.div`
   margin-left: -15px;
 `;
 
-const Btns = styled.button`
+const Btns = styled.div`
   display: flex;
   align-items: center;
   padding: 3px 7px;

@@ -31,20 +31,24 @@ const CollectionWriteBtn = styled(BasicButton)`
 
 const ModalBox = styled.div`
   width: 300px;
-  height: 100px;
+  height: 130px;
   position: absolute;
   background-color: white;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   .login {
     color: ${({ theme }) => theme.colors.mainColor};
+    margin-top: 10px;
+    padding: 5px;
     &:hover {
       cursor: pointer;
+      background-color: ${({ theme }) => theme.colors.purple_3};
     }
   }
   a {
@@ -89,10 +93,10 @@ const CollectionHeader = () => {
         aria-describedby="modal-modal-description"
       >
         <ModalBox>
+          <div>로그인이 필요한 서비스입니다.</div>
           <Link to="/user/signin">
             <div className="login">로그인</div>
           </Link>
-          <div>이 필요한 기능입니다.</div>
         </ModalBox>
       </Modal>
     </CollectionHeaderContainer>

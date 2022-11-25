@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
+import LinkCopyModal from '../../components/LinkCopyModal';
 
 const CollectionHeaderBtnsContainer = styled.div`
   display: flex;
@@ -88,31 +90,56 @@ const ModalBox = styled.div`
 const CollectionHeaderBtns = ({
   likeCount,
   userLike,
+  userBookmark,
+  userCollection,
   handleCollectionLike,
+  handleCollectionBookmark,
   handleCollectionDelete,
 }) => {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(userLike);
+  const [isBookmarked, setIsBookmarked] = useState(userBookmark);
 
-  //Modal
+  //Delete Modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  //LinkCopy Modal
+  const [modalOpen, setModalOpen] = useState(false);
+  const handleModalOpen = () => setModalOpen(true);
+  const handleModalClose = () => setModalOpen(false);
+
+  const location = useLocation();
 
   useEffect(() => {
     setIsLiked(userLike);
   }, [userLike]);
 
+  useEffect(() => {
+    setIsBookmarked(userBookmark);
+  }, [userBookmark]);
+
   const handleClickLikeBtn = () => {
     handleCollectionLike();
   };
 
+  const handleClickBookmarkBtn = () => {
+    handleCollectionBookmark();
+  };
+
   return (
     <CollectionHeaderBtnsContainer>
-      <CollectionBookmark>
-        <img
-          src={process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'}
-          alt="bookmark icon"
-        />
+      <CollectionBookmark onClick={handleClickBookmarkBtn}>
+        {isBookmarked ? (
+          <img
+            src={process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'}
+            alt="bookmark icon"
+          />
+        ) : (
+          <img
+            src={process.env.PUBLIC_URL + '/images/bookmark_unfilled_icon.svg'}
+            alt="bookmark icon"
+          />
+        )}
         북마크
       </CollectionBookmark>
       <CollectionHeart onClick={handleClickLikeBtn}>
@@ -129,36 +156,50 @@ const CollectionHeaderBtns = ({
         )}
         {likeCount}
       </CollectionHeart>
-      <CollectionShare>
+      <CollectionShare onClick={handleModalOpen}>
         <img
           src={process.env.PUBLIC_URL + '/images/share_icon.svg'}
           alt="share icon"
         />
         공유하기
       </CollectionShare>
-      <CollectionDelete onClick={handleOpen}>삭제하기</CollectionDelete>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <ModalBox>
-          <div className="info">정말 삭제하시겠습니까?</div>
-          <div className="container">
-            <div className="close" onClick={handleClose} role="presentation">
-              취소
-            </div>
-            <div
-              className="delete"
-              onClick={handleCollectionDelete}
-              role="presentation"
-            >
-              삭제하기
-            </div>
-          </div>
-        </ModalBox>
-      </Modal>
+      <LinkCopyModal
+        modalOpen={modalOpen}
+        handleClose={handleModalClose}
+        link={location.pathname}
+        type="마음에 드는 컬렉션을"
+      />
+      {userCollection ? (
+        <>
+          <CollectionDelete onClick={handleOpen}>삭제하기</CollectionDelete>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <ModalBox>
+              <div className="info">정말 삭제하시겠습니까?</div>
+              <div className="container">
+                <div
+                  className="close"
+                  onClick={handleClose}
+                  role="presentation"
+                >
+                  취소
+                </div>
+                <div
+                  className="delete"
+                  onClick={handleCollectionDelete}
+                  role="presentation"
+                >
+                  삭제하기
+                </div>
+              </div>
+            </ModalBox>
+          </Modal>
+        </>
+      ) : null}
     </CollectionHeaderBtnsContainer>
   );
 };

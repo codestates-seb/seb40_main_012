@@ -2,7 +2,6 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import NewBook from './NewBook';
 import axios from '../../../api/axios';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
 const BookSearchContainer = styled.div`
   margin: 10px 0;
@@ -52,36 +51,24 @@ const BookSearchbar = styled.input`
 
 const SearchedBooks = styled.div`
   width: 100%;
-  height: 400px;
-  overflow-y: auto;
   margin: 20px 0;
+  max-height: 450px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  img {
+    width: 50px;
+    height: 50px;
+    &.hide {
+      display: none;
+    }
+  }
 `;
 
 const ScrollContainer = styled.div`
   display: flex;
   overflow-y: auto;
   flex-wrap: wrap;
-  height: 100%;
-`;
-
-const EndMessage = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  font-weight: 700;
-`;
-
-const LoaderContainer = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  img {
-    width: 100px;
-    height: 100px;
-  }
 `;
 
 const BookSearch = ({
@@ -91,49 +78,29 @@ const BookSearch = ({
   setNewBooksInfo,
 }) => {
   const [searchInput, setSearchInput] = useState('');
-  const [searchedBooks, setSearchedBooks] = useState({
-    content: [],
-    hasMore: false,
-  });
-  const [page, setPage] = useState(1);
+  const [searchedBooks, setSearchedBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleOnChangeInput = (e) => {
     setSearchInput(e.target.value);
     if (searchInput === '') {
-      setSearchedBooks({ ...searchedBooks, content: [] });
-      setPage(1);
+      setSearchedBooks([]);
+      setIsLoading(false);
     }
   };
 
   //TODO: 무한스크롤로 수정되어야 함
   const handleSearchBook = (e) => {
+    setIsLoading(true);
     if (e.key === 'Enter') {
-      fetchMoreData();
-    }
-  };
-
-  const fetchMoreData = () => {
-    setTimeout(() => {
       axios
-        .get(`/api/search/collectionbooks?Query=${searchInput}&Page=${page}`)
+        .get(`/api/search/collectionbooks?Query=${searchInput}`)
         .then((res) => {
-          if (res.data.length === 0) {
-            setSearchedBooks({
-              ...searchedBooks,
-              hasMore: false,
-            });
-            setPage(1);
-          } else {
-            setSearchedBooks({
-              ...searchedBooks,
-              content: searchedBooks.content.concat(res.data),
-              hasMore: true,
-            });
-            setPage(page + 1);
-          }
+          setSearchedBooks(res.data);
+          setIsLoading(false);
         })
         .catch((error) => console.error(error));
-    }, 10);
+    }
   };
 
   const handleSetNewBooks = (isbn) => {
@@ -162,41 +129,28 @@ const BookSearch = ({
             alt="search"
           />
         </SearchContainer>
+
         <SearchedBooks>
-          <InfiniteScroll
-            dataLength={searchedBooks.content.length}
-            next={searchedBooks.content && fetchMoreData}
-            hasMore={searchedBooks.hasMore}
-            endMessage={
-              <EndMessage>
-                <div>더 이상 책이 없습니다.</div>
-              </EndMessage>
-            }
-            loader={
-              <LoaderContainer>
-                <img
-                  src={process.env.PUBLIC_URL + '/images/spinner.gif'}
-                  alt="spinner"
+          <img
+            src={process.env.PUBLIC_URL + '/images/spinner.gif'}
+            alt="spinner"
+            className={isLoading ? 'show' : 'hide'}
+          />
+          <ScrollContainer>
+            {searchedBooks.map((el, idx) => {
+              return (
+                <NewBook
+                  key={idx}
+                  title={el.title}
+                  author={el.author}
+                  cover={el.cover}
+                  isbn={el.isbn13}
+                  handleSetNewBooks={handleSetNewBooks}
+                  search={true}
                 />
-              </LoaderContainer>
-            }
-          >
-            <ScrollContainer>
-              {searchedBooks.content.map((el, idx) => {
-                return (
-                  <NewBook
-                    key={idx}
-                    title={el.title}
-                    author={el.author}
-                    cover={el.cover}
-                    isbn={el.isbn13}
-                    handleSetNewBooks={handleSetNewBooks}
-                    search={true}
-                  />
-                );
-              })}
-            </ScrollContainer>
-          </InfiniteScroll>
+              );
+            })}
+          </ScrollContainer>
         </SearchedBooks>
       </Books>
     </BookSearchContainer>

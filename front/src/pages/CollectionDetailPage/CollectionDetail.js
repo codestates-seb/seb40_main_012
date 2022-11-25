@@ -10,7 +10,7 @@ import axios from '../../api/axios';
 import { useEffect, useState } from 'react';
 import { ToDateString } from '../../util/ToDateString';
 import { useSelector } from 'react-redux';
-import { selectIsLogin, selectnickName } from '../../store/modules/authSlice';
+import { selectIsLogin } from '../../store/modules/authSlice';
 import { useNavigate, useParams } from 'react-router-dom';
 
 const CollectionTagBtn = styled.div`
@@ -26,18 +26,12 @@ const CollectionDetailPage = () => {
     books: [],
     comments: [],
   });
-  const [isMyCollection, setIsMyCollection] = useState(false);
   const { collectionId } = useParams();
   const isLogin = useSelector(selectIsLogin);
-  const usernickName = useSelector(selectnickName);
   const navigate = useNavigate();
-
-  console.log('ismycollection: ', isMyCollection);
 
   useEffect(() => {
     getCollectionData(collectionId);
-    if (collectionData.collectionAuthor === usernickName)
-      setIsMyCollection(true);
   }, []);
 
   const getCollectionData = (collectionId) => {
@@ -57,6 +51,19 @@ const CollectionDetailPage = () => {
       //로그인했을 때만 동작
       axios
         .post(`/api/collections/${collectionId}/like`)
+        .then(() => {
+          getCollectionData(collectionId);
+        })
+        .catch((error) => console.error(error));
+    }
+  };
+
+  const handleCollectionBookmark = () => {
+    //컬렉션 북마크
+    if (isLogin) {
+      //로그인했을 때만 동작
+      axios
+        .post(`/api/collections/${collectionId}/bookmark`)
         .then(() => {
           getCollectionData(collectionId);
         })
@@ -135,7 +142,10 @@ const CollectionDetailPage = () => {
         <CollectionHeaderBtns
           likeCount={collectionData.likeCount}
           userLike={collectionData.userLike}
+          userBookmark={collectionData.userBookmark}
+          userCollection={collectionData.userCollection}
           handleCollectionLike={handleCollectionLike}
+          handleCollectionBookmark={handleCollectionBookmark}
           handleCollectionDelete={handleCollectionDelete}
         />
       </CollectionTagBtn>
