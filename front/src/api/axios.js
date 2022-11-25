@@ -8,4 +8,26 @@ const instance = axios.create({
   withCredentials: true,
 });
 
+instance.interceptors.request.use(
+  (config) => {
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+instance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (!Object.prototype.hasOwnProperty.call(error, 'response')) {
+      return Promise.reject({ status: error.code, message: error.message });
+    }
+    const { status, message } = error.response.data;
+    return Promise.reject({ status, message });
+  }
+);
+
 export default instance;

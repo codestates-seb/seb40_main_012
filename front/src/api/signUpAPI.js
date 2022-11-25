@@ -7,7 +7,13 @@ const signUpApi = {
     params.profileImage = `http://gravatar.com/avatar/${md5(
       params.email.toLowerCase()
     )}?d=identicon`;
-    return axios.post(USERS_URL, params);
+
+    return new Promise((resolve, reject) => {
+      return axios
+        .post(USERS_URL, params)
+        .then(() => resolve())
+        .catch((error) => reject(error));
+    });
   },
 };
 

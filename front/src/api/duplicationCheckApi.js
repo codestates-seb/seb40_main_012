@@ -10,17 +10,10 @@ const duplicationCheckApi = {
       return axios
         .post(DUPLICATION_CHECK_NICKNAME_URL, { nickName })
         .then((response) => {
-          if (response.data) resolve(response.data);
-          reject();
+          if (response.data) return resolve(response.data);
+          return reject();
         })
-        .catch((error) => {
-          if (Object.prototype.hasOwnProperty.call(error, 'response')) {
-            const { status, message } = error.response.data;
-            reject({ status, message });
-          } else {
-            reject({ status: error.code, message: error.message });
-          }
-        });
+        .catch((error) => reject(error));
     });
   },
   dupilicationCheckEmail: (email) => {
@@ -28,17 +21,10 @@ const duplicationCheckApi = {
       return axios
         .post(DUPLICATION_CHECK_EMAIL_URL, { email })
         .then((response) => {
-          if (response.data) resolve(response.data);
-          reject();
+          if (response.data) return resolve(response.data);
+          return reject();
         })
-        .catch((error) => {
-          if (Object.prototype.hasOwnProperty.call(error, 'response')) {
-            const { status, message } = error.response.data;
-            reject({ status, message });
-          } else {
-            reject({ status: error.code, message: error.message });
-          }
-        });
+        .catch((error) => reject(error));
     });
   },
 };

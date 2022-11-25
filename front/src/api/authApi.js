@@ -39,15 +39,10 @@ const authApi = {
           signInSuccess(response);
           // refresh token 만료되면 로그아웃
           setTimeout(authApi.logout, REFRESH_EXPIRY_TIME);
-          resolve(response);
+          return resolve(response);
         })
         .catch((error) => {
-          if (Object.prototype.hasOwnProperty.call(error, 'response')) {
-            const { status, message } = error.response.data;
-            reject({ status, message });
-          } else {
-            reject({ status: error.code, message: error.message });
-          }
+          return reject(error);
 
           // 에러코드 나오면 처리 필요
           // logoutApi();
@@ -60,15 +55,10 @@ const authApi = {
         .get(TOKEN_REFRESH_URL)
         .then((response) => {
           signInSuccess(response);
-          resolve();
+          return resolve();
         })
         .catch((error) => {
-          if (Object.prototype.hasOwnProperty.call(error, 'response')) {
-            const { status, message } = error.response.data;
-            reject({ status, message });
-          } else {
-            reject({ status: error.code, message: error.message });
-          }
+          return reject(error);
 
           // 에러코드 나오면 처리 필요
           // logoutApi();
@@ -79,17 +69,8 @@ const authApi = {
     return new Promise((resolve, reject) => {
       return axios
         .post(LOGOUT_URL)
-        .then(() => {
-          resolve();
-        })
-        .catch((error) => {
-          if (Object.prototype.hasOwnProperty.call(error, 'response')) {
-            const { status, message } = error.response.data;
-            reject({ status, message });
-          } else {
-            reject({ status: error.code, message: error.message });
-          }
-        })
+        .then(() => resolve())
+        .catch((error) => reject(error))
         .finally(() => {
           refreshUserData();
         });
@@ -99,17 +80,8 @@ const authApi = {
     return new Promise((resolve, reject) => {
       return axios
         .patch(FIRST_LOGIN_URL, params)
-        .then((response) => {
-          resolve(response.data.data);
-        })
-        .catch((error) => {
-          if (Object.prototype.hasOwnProperty.call(error, 'response')) {
-            const { status, message } = error.response.data;
-            reject({ status, message });
-          } else {
-            reject({ status: error.code, message: error.message });
-          }
-        });
+        .then((response) => resolve(response.data.data))
+        .catch((error) => reject(error));
     });
   },
 };
