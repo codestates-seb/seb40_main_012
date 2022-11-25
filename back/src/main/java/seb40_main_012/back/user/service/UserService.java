@@ -57,7 +57,7 @@ public class UserService {
     public User createUser(User user) {
         verifyEmail(user.getEmail());
         verifyNickName(user.getNickName());
-
+//
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
 
