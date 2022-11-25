@@ -377,29 +377,29 @@ public class Stub {
             );
         }
 
-        for (long i = 1; i <= 10; i++) {
-
-            log.info("Following " +
-                    followRepository.save(
-                            Follow.builder()
-                                    .followingUser(User.builder().userId(i).build())
-                                    .followedUser(User.builder().userId(22L).build())
-                                    .createDate(new Timestamp(System.currentTimeMillis()))
-                                    .build())
-            );
-        }
-
-        for (long i = 11; i <= 20; i++) {
-
-            log.info("Following " +
-                    followRepository.save(
-                            Follow.builder()
-                                    .followingUser(User.builder().userId(22L).build())
-                                    .followedUser(User.builder().userId(i).build())
-                                    .createDate(new Timestamp(System.currentTimeMillis()))
-                                    .build())
-            );
-        }
+//        for (long i = 1; i <= 10; i++) {
+//
+//            log.info("Following " +
+//                    followRepository.save(
+//                            Follow.builder()
+//                                    .followingUser(User.builder().userId(i).build())
+//                                    .followedUser(User.builder().userId(22L).build())
+//                                    .createDate(new Timestamp(System.currentTimeMillis()))
+//                                    .build())
+//            );
+//        }
+//
+//        for (long i = 11; i <= 20; i++) {
+//
+//            log.info("Following " +
+//                    followRepository.save(
+//                            Follow.builder()
+//                                    .followingUser(User.builder().userId(22L).build())
+//                                    .followedUser(User.builder().userId(i).build())
+//                                    .createDate(new Timestamp(System.currentTimeMillis()))
+//                                    .build())
+//            );
+//        }
 
 //        ------------------------------------------------------------------------------------------
 //        ------------------------------------------------------------------------------------------
