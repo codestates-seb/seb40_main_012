@@ -125,11 +125,11 @@ public class SearchController {
 
     @GetMapping("/collectionbooks")
     public ResponseEntity getCollectionBooksSearchRequests(
-            @RequestParam("Query") String queryParam,
-            @RequestParam("Page") Integer page
+            @RequestParam("Query") String queryParam
+//            @RequestParam("Page") Integer page
     ) {
 
-        List<BookInfoSearchDto.BookList.Item> result = bookInfoSearchService.cherryPickSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", page, 15);
+        List<BookInfoSearchDto.BookList.Item> result = bookInfoSearchService.cherryPickSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
