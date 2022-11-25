@@ -19,7 +19,6 @@ import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.config.auth.dto.LoginDto;
-import seb40_main_012.back.config.auth.event.UserRegistrationApplicationEvent;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 import seb40_main_012.back.email.EmailSenderService;
 import seb40_main_012.back.pairing.PairingRepository;
@@ -31,8 +30,6 @@ import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -67,14 +64,8 @@ public class UserService {
         user.setFirstLogin(true);
         User savedUser = userRepository.save(user);
 
-//        try {
-//            emailSenderService.sendEmail(user.getEmail());
-//        } catch (GeneralSecurityException e) {
-//            throw new RuntimeException(e);
-//        }
-
-        UserRegistrationApplicationEvent signupEvent = new UserRegistrationApplicationEvent(this, savedUser);
-        publisher.publishEvent(signupEvent);
+//        UserRegistrationApplicationEvent signupEvent = new UserRegistrationApplicationEvent(this, savedUser);
+//        publisher.publishEvent(signupEvent);
         return savedUser;
     }
 

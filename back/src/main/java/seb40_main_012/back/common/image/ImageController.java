@@ -3,14 +3,18 @@ package seb40_main_012.back.common.image;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,16 +42,27 @@ public class ImageController {
 
     @PostMapping("/upload")
     public String uploadImage(
-            @RequestParam("Image") MultipartFile file,
-            @RequestParam("Images") List<MultipartFile> files) throws IOException { // 이미지 업로드
+            @RequestParam("image") MultipartFile file
+//            ,@RequestParam("files") @Nullable List<MultipartFile> files
+    ) throws IOException { // 이미지 업로드
+
+        System.out.println("---------------------------------------------------");
+        System.out.println("---------------------------------------------------");
+        System.out.println("---------------------------------------------------");
+        System.out.println("---------------------------------------------------");
+        System.out.println("---------------------------------------------------");
+        System.out.println("---------------------------------------------------");
+        System.out.println("---------------------------------------------------");
+        System.out.println("---------------------------------------------------");
+        System.out.println("---------------------------------------------------");
 
         imageService.saveImage(file);
 
         log.info("multipartFile = {}", file);
 
-        for (MultipartFile multipartFile : files) {
-            imageService.saveImage(multipartFile);
-        }
+//        for (MultipartFile multipartFile : files) {
+//            imageService.saveImage(multipartFile);
+//        }
 
         return "redirect:/";
     }
@@ -88,4 +103,12 @@ public class ImageController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, imageDisposition)
                 .body(resource);
     }
+
+    @Bean
+    public MultipartResolver multipartResolver() {
+        CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
+        multipartResolver.setMaxUploadSize(2000000000);
+        return multipartResolver;
+    }
+
 }
