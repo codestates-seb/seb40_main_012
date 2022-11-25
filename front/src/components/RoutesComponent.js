@@ -99,7 +99,7 @@ const RoutesComponent = () => {
       <Route path="/mypage/mypick" element={getElement(MyPick, true)} />
       <Route path="/mypage/profile" element={getElement(EditProfile, true)} />
       <Route
-        path="/mypage/profile/changepasswd"
+        path="/mypage/profile/password"
         element={getElement(ChangePassWd, true)}
       />
       <Route path="/redux" element={<ReduxPage />} />
