@@ -14,18 +14,24 @@ const initialState = {
 export const asyncGetAllPairingLike = createAsyncThunk(
   'pairingSlice/asyncGetAllPairingLike',
   async () => {
-    return await axios
-      .get(PAIRING_ALL_LIKE_URL)
-      .then((res) => res.data.data.content);
+    try {
+      const res = await axios.get(PAIRING_ALL_LIKE_URL);
+      return res.data.data.content;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
 export const asyncGetAllPairingNewest = createAsyncThunk(
   'pairingSlice/asyncGetAllPairingNewest',
   async () => {
-    return await axios
-      .get(PAIRING_ALL_NEWEST_URL)
-      .then((res) => res.data.data.content);
+    try {
+      const res = await axios.get(PAIRING_ALL_NEWEST_URL);
+      return res.data.data.content;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 

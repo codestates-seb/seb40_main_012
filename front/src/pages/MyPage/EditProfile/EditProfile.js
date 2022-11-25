@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
@@ -16,7 +16,7 @@ import PageContainer from '../../../components/PageContainer';
 import { OutlinedButton } from '../../../components/Buttons';
 import ValidationTextFields from '../../../components/ValidationTextFields';
 import { getUserInfoApi } from '../../../api/myPageApi';
-import { selectEmail, selectnickName } from '../../../store/modules/authSlice';
+import { patchUserInfoAsync } from '../../../store/modules/authSlice';
 import {
   validationCheck,
   duplicationCheck,
@@ -77,7 +77,7 @@ const CheckBoxFormControlLabelStyled = styled(FormControlLabel)`
 `;
 
 const ButtonWrapperStyled = styled.div`
-  margin-top: 50px;
+  margin-top: 30px;
   display: flex;
   align-items: center;
 `;
@@ -88,10 +88,15 @@ const ButtonItemStyled = styled(ItemTextStyled)`
   cursor: pointer;
 `;
 
+const ItemWrapperChangePasswordStyled = styled(ItemWrapperStyled)`
+  margin-bottom: 30px;
+`;
+
 const EditProfile = () => {
   const inputRef = useRef([]);
-  const email = useSelector(selectEmail);
-  const nickName = useSelector(selectnickName);
+  const dispatch = useDispatch();
+  const userInfo = useSelector((state) => state.auth);
+  const { email, nickName, roles } = userInfo;
 
   const [inputValue, setInputValue] = useState({
     nickName: '',
@@ -133,7 +138,7 @@ const EditProfile = () => {
       const { age, category, gender, introduction, nickname, profileImage } =
         response;
       const categoryObj = {};
-      if (category.length > 0) {
+      if (category?.length > 0) {
         for (const genre of category) categoryObj[genre] = true;
       }
 
@@ -252,19 +257,37 @@ const EditProfile = () => {
     });
   };
 
+  const handleClickSaveButton = async () => {
+    if (inputStatus.nickName === 'error' && nickName !== inputValue.nickName)
+      return;
+
+    const categoryArray = Object.entries(checked)
+      .filter((v) => v[1])
+      .map((v) => v[0]);
+
+    const params = {
+      introduction: inputValue.introduction,
+      gender: gender,
+      age: age,
+      nickname: inputValue.nickName,
+      category: categoryArray,
+      // profileImage, // api 변경되면 params에 필요할 수도 있음
+    };
+    const userInfo = {
+      email,
+      roles,
+    };
+    dispatch(patchUserInfoAsync({ params, userInfo }));
+  };
+
   const checkCount = Object.values(checked).filter((v) => v).length >= 3;
 
   return (
     <PageContainer footer center maxWidth="sm" bmt={5}>
       <Avatar
-        sx={{
-          bgcolor: '#A28BFF',
-          width: 80,
-          height: 80,
-        }}
-      >
-        <img src={profileImage} alt="cat profile" height="80" width="80"></img>
-      </Avatar>
+        src={profileImage ? profileImage : ''}
+        sx={{ width: 80, height: 80 }}
+      />
       <WrapperStyled>
         <TitleTextStyled component="h2" variant="h5" gutterBottom>
           기본정보
@@ -320,11 +343,11 @@ const EditProfile = () => {
             size="small"
           />
         </ItemWrapperWithHelperTextStyled>
-        <ItemWrapperStyled>
-          <Link to="/mypage/profile/changepasswd">
+        <ItemWrapperChangePasswordStyled>
+          <Link to="/mypage/profile/password">
             <ItemTextStyled component="h4">비밀번호 변경</ItemTextStyled>
           </Link>
-        </ItemWrapperStyled>
+        </ItemWrapperChangePasswordStyled>
         <TitleTextStyled component="h1" variant="h5" gutterBottom>
           상세정보
         </TitleTextStyled>
@@ -404,7 +427,9 @@ const EditProfile = () => {
           회원 탈퇴
         </ButtonItemStyled>
         <WithDrawal open={openModal} handleCloseModal={handleCloseModal} />
-        <OutlinedButton size="medium">저장하기</OutlinedButton>
+        <OutlinedButton size="medium" onClick={handleClickSaveButton}>
+          저장하기
+        </OutlinedButton>
       </ButtonWrapperStyled>
     </PageContainer>
   );

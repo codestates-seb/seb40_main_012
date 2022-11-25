@@ -29,7 +29,6 @@ export const currentPasswordCheckApi = (password) => {
     return axios
       .post(CURRENT_PASSWORD_CHECK_URL, { password })
       .then((response) => {
-        console.log(response);
         resolve(response.data);
       })
       .catch((error) => {
@@ -47,9 +46,29 @@ export const withdrawalApi = () => {
   return new Promise((resolve, reject) => {
     return axios
       .delete(MY_PAGE_URL)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         resolve();
+      })
+      .catch((error) => {
+        if (Object.prototype.hasOwnProperty.call(error, 'response')) {
+          const { status, message } = error.response.data;
+          reject({ status, message });
+        } else {
+          reject({ status: error.code, message: error.message });
+        }
+      });
+  });
+};
+
+export const patchUserInfoApi = (params) => {
+  params.gender = params.gender || 'NONE';
+  params.age = params.age || 'NONE';
+
+  return new Promise((resolve, reject) => {
+    return axios
+      .patch(USER_INFO_URL, params)
+      .then((response) => {
+        resolve(response.data);
       })
       .catch((error) => {
         if (Object.prototype.hasOwnProperty.call(error, 'response')) {

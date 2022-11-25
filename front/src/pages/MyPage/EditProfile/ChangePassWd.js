@@ -1,72 +1,67 @@
-import Grid from '@mui/material/Grid';
-import { BasicButton } from '../../../components/Buttons';
+import { useEffect, useRef, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
-import Container from '@mui/material/Container';
+import Avatar from '@mui/material/Avatar';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
 import PageContainer from '../../../components/PageContainer';
+import { ContainedButton } from '../../../components/Buttons';
+
 import {
+  signUpAsync,
   selectValidCheckArray,
   setIsValid,
-} from '../../../store/modules/changePassWdSlice';
+  setInputValue,
+} from '../../../store/modules/signUpSlice';
+import ValidationTextFields from '../../../components/ValidationTextFields';
 
-import { shallowEqual, useDispatch, useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import Box from '@mui/material/Box';
-import { useState } from 'react';
-import ChangePassWdTextFields from './ChangePassWdTextFields';
+const inputInfo = [
+  {
+    label: '현재 비밀번호',
+    id: 'password',
+    autoComplete: 'password',
+    type: 'password',
+  },
+  {
+    label: '새 비밀번호',
+    id: 'newPassword',
+    autoComplete: 'new-password',
+    type: 'password',
+  },
+  {
+    label: '비밀번호 확인',
+    id: 'newPasswordCheck',
+    autoComplete: 'new-password',
+    type: 'password',
+  },
+];
 
-const TitleTextStyled = styled.div`
-  width: 100%;
-  font-size: 15px;
-  font-weight: 300;
-  margin-top: 10px;
-`;
-
-const LoginErrorMsgStyled = styled.div`
-  font-size: 0.75rem;
-  color: #d32f2f;
-  margin-bottom: 16px;
-`;
-const PassWdInputStyled = styled.input`
-  border-bottom: solid 1px white;
-  appearance: none;
-  height: 20px;
-  outline: 0;
-  font-size: 16px;
-  border-width: 0 0 2px;
-  border-color: #cfc3ff;
-  margin-top: 18px;
-  :focus {
-    border-color: #a28bff;
-  }
-  width: 100%;
-`;
-
-// const ForgotPassWdStyled = styled.div`
-//   width: 100%;
-//   font-size: 13px;
-//   font-weight: 300;
-//   color: #737373;
-//   margin-top: 10px;
-//   :hover {
-//     color: #6741ff !important;
-//     cursor: pointer;
-//   }
-// `;
-
-const BtnStyled = styled(BasicButton)`
-  align-items: center;
-  justify-content: center;
-  margin-top: 100px;
-  &:hover {
-    cursor: pointer;
-  }
+const AvatarStyled = styled(Avatar)`
+  background-color: ${({ theme }) => theme.colors.purple_2};
 `;
 
 const ChangePassWd = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const inputRef = useRef([]);
   const validCheckArray = useSelector(selectValidCheckArray, shallowEqual);
-  const [showLoginError, setShowLoginError] = useState(false);
+  const selectSignUP = useSelector((state) => state.signUp, shallowEqual);
+  const { inputValue, inputStatus, inputHelperText } = selectSignUP;
+
+  useEffect(() => {
+    inputRef.current[0].focus();
+  }, []);
+
+  const handleChangeInput = useCallback((id, value) => {
+    dispatch(setInputValue({ id, value }));
+  });
+
+  const handleBlur = useCallback((id, value, required) => {
+    dispatch(setIsValid(id, value, required));
+  });
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -80,61 +75,58 @@ const ChangePassWd = () => {
     }
 
     const params = {
-      currentPassword: data.get('currentPassword'),
+      nickName: data.get('nickName'),
+      email: data.get('email'),
       password: data.get('password'),
     };
 
-    dispatch(setIsValid(params))
+    dispatch(signUpAsync(params))
       .then((response) => {
         if (response.payload?.data) {
-          navigate('/mypage/profile', { replace: true });
+          navigate('/user/signin', { replace: true });
         } else {
           console.log(response.payload?.errorMessage);
-          setShowLoginError((prev) => !prev);
         }
       })
       .catch((err) => console.log(err));
   };
 
   return (
-    <>
-      {/* xs , sm, md, lg, xl 사이즈 */}
-      <PageContainer header footer>
-        <Container component="main" maxWidth="sm" sx={{ mt: 10, mb: 15 }}>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            {showLoginError ? (
-              <LoginErrorMsgStyled>
-                현재 비밀번호를 잘못 입력했습니다. 입력하신 내용을 다시
-                확인해주세요.
-              </LoginErrorMsgStyled>
-            ) : null}
-
-            <ChangePassWdTextFields />
-            <TitleTextStyled>비밀번호 확인</TitleTextStyled>
-            <Grid item align="left" xs={12} justifyContent="left">
-              <PassWdInputStyled className="nickname-border"></PassWdInputStyled>
+    <PageContainer footer center maxWidth="xs">
+      <AvatarStyled sx={{ m: 1 }}>
+        <LockOutlinedIcon />
+      </AvatarStyled>
+      <Typography component="h1" variant="h5">
+        비밀번호 변경
+      </Typography>
+      <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Grid container spacing={2}>
+          {inputInfo.map((v, i) => (
+            <Grid key={v.id} item xs={12}>
+              <ValidationTextFields
+                inputRef={inputRef}
+                refIndex={i}
+                label={v.label}
+                id={v.id}
+                autoComplete={v.autoComplete}
+                type={v.type}
+                required
+                fullWidth
+                setInputValue={handleChangeInput}
+                setIsValid={handleBlur}
+                inputValue={inputValue[v.id]}
+                inputStatus={inputStatus[v.id]}
+                inputHelperText={inputHelperText[v.id]}
+                submit={inputInfo.length - 1 === i ? true : false}
+              />
             </Grid>
-
-            <Grid
-              item
-              align="center"
-              xs={12}
-              sx={{ mt: 7 }}
-              justifyContent="center"
-            >
-              <BtnStyled type="submit">비밀번호 변경</BtnStyled>
-              {/* <ForgotPassWdStyled>비밀번호를 잊으셨나요?</ForgotPassWdStyled> */}
-            </Grid>
-          </Box>
-        </Container>
-      </PageContainer>
-    </>
+          ))}
+        </Grid>
+        <ContainedButton type="submit" fullWidth sx={{ mt: 3, mb: 2 }}>
+          변경하기
+        </ContainedButton>
+      </Box>
+    </PageContainer>
   );
 };
-
 export default ChangePassWd;

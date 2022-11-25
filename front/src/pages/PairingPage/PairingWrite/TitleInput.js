@@ -11,6 +11,8 @@ export default function FullWidthTextField({ titleBind }) {
       <TextField
         fullWidth
         required
+        type="text"
+        inputProps={{ maxLength: 30 }}
         label="제목을 입력해주세요"
         id="fullWidth"
         {...titleBind}
