@@ -15,8 +15,8 @@ public class CookieManager {
                 .maxAge(24 * 60 * 60) // 하루 설정
                 .path("/")
                 .path("/")
-                .secure(true)
-                .sameSite("None")
+                .secure(false)
+                .sameSite("Lax")
                 .httpOnly(true)
                 .build();
     }
