@@ -1,6 +1,7 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +9,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.image.ImageService;
@@ -43,7 +46,7 @@ public class PairingController {
     @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
 //            @RequestHeader("Authorization") long userId,
-            @Nullable @RequestParam("image") MultipartFile file,
+            @RequestParam("image") @Nullable MultipartFile file,
             @PathVariable("isbn13") @Positive String isbn13,
             @Valid @RequestBody PairingDto.Post postPairing) throws IOException {
 
@@ -51,7 +54,9 @@ public class PairingController {
         Pairing createPairing = pairingService.createPairing(pairing, isbn13);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
 
-        imageService.savePairingImage(file, createPairing);
+        if (file != null) {
+            imageService.savePairingImage(file, createPairing);
+        }
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED);
@@ -352,6 +357,5 @@ public class PairingController {
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(findPairing);
         return response;
     }
-
 
 }

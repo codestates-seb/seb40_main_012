@@ -84,7 +84,7 @@ public interface PairingMapper {
                 .isBookmarked(pairing.getIsBookmarked())
                 .likeCount(pairing.getLikeCount())
                 .view(pairing.getView())
-                .imagePath(pairing.getImagePath())
+                .imagePath(pairing.getImage() != null ? pairing.getImage().getStoredPath() : null)
                 .outLinkPath(pairing.getOutLinkPath())
                 .comments(commentResponses)
                 .createdAt(pairing.getCreatedAt())
