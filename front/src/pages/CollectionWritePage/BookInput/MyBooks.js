@@ -49,45 +49,9 @@ const MyBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
   const [myBooks, setMyBooks] = useState([]);
 
   useEffect(() => {
-    // axios.get('/api/mypage/bookmark/book').then((res) => {
-    //   console.log(res.data);
-    //   setMyBooks(res.data);
-    //   console.log(myBooks);
-    // });
-    setMyBooks([
-      {
-        title: '모순',
-        author: '양귀자 (지은이)',
-        ratingCount: 0,
-        isbn13: '9788998441012',
-        bookCover:
-          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
-      },
-      {
-        title: '여름의 빌라',
-        author: '백수린 (지은이)',
-        ratingCount: 9,
-        isbn13: '9788954673105',
-        bookCover:
-          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
-      },
-      {
-        title: '책3',
-        author: '저자3 (지은이)',
-        ratingCount: 9,
-        isbn13: '3',
-        bookCover:
-          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
-      },
-      {
-        title: '책4',
-        author: '저자4 (지은이)',
-        ratingCount: 9,
-        isbn13: '4',
-        bookCover:
-          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
-      },
-    ]);
+    axios.get('/api/mypage/bookmark/book').then((res) => {
+      setMyBooks(res.data.data);
+    });
   }, []);
 
   const handleSetNewBooks = (isbn) => {
