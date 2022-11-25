@@ -200,6 +200,7 @@ export const MoreButton = ({
 
 const InitButton = styled(Button)`
   border-radius: ${(props) => props.borderRadius || '20px'};
+  width: ${(props) => props.width};
 `;
 
 export const ContainedButton = styled(InitButton)`

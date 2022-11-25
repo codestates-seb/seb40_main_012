@@ -4,7 +4,8 @@ import { PAIRING_URL } from '../../api/requests';
 
 const initialState = {
   data: {
-    comments: [],
+    pairingRes: { comments: [] },
+    bookRes: { title: '' },
   },
   status: 'start',
 };
@@ -12,24 +13,101 @@ const initialState = {
 export const asyncGetOnePairing = createAsyncThunk(
   'pairingSlice/asyncGetOnePairing',
   async (pairingId) => {
-    return await axios.get(`${PAIRING_URL}/${pairingId}`).then((res) => {
-      return res.data.data;
-    });
+    try {
+      const pairingRes = await axios.get(`${PAIRING_URL}/${pairingId}`);
+      const isbn = pairingRes.data.data.isbn13;
+      const bookRes = await axios.get(`api/books/${isbn}`);
+      return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
 export const asyncPostPairing = createAsyncThunk(
   'pairingSlice/asyncPostPairing',
   async ({ pairingPostBody, isbn }) => {
-    console.log('axios.defaults.headers', axios.defaults.headers);
-    return await axios
-      .post(`/api/books/${isbn}/pairings/add`, pairingPostBody)
-      .then((res) => {
-        console.log('성공', res);
-      })
-      .catch((err) => {
-        console.log('post 실패', err);
-      });
+    try {
+      return await axios.post(
+        `/api/books/${isbn}/pairings/add`,
+        pairingPostBody
+      );
+    } catch (error) {
+      console.log('페어링 post 실패', error);
+    }
+  }
+);
+
+export const asyncDeletePairing = createAsyncThunk(
+  'pairingSlice/asyncDeletePairing',
+  async ({ deleteId }) => {
+    try {
+      return await axios.delete(`${PAIRING_URL}/${deleteId}/delete`);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const asyncPatchPairing = createAsyncThunk(
+  'pairingSlice/asyncPatchPairing',
+  async ({ pairingPatchBody, pairingId }) => {
+    try {
+      const pairingRes = await axios.patch(
+        `${PAIRING_URL}/${pairingId}/edit`,
+        pairingPatchBody
+      );
+      const isbn = pairingRes.data.data.isbn13;
+      const bookRes = await axios.get(`api/books/${isbn}`);
+      return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const asyncPairingLike = createAsyncThunk(
+  'pairingSlice/asyncPairingLike',
+  async (pairingId) => {
+    try {
+      const pairingRes = await axios.patch(`${PAIRING_URL}/${pairingId}/like`);
+      const isbn = pairingRes.data.data.isbn13;
+      const bookRes = await axios.get(`api/books/${isbn}`);
+      return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+export const asyncPairingDislike = createAsyncThunk(
+  'pairingSlice/asyncPairingDislike',
+  async (pairingId) => {
+    try {
+      const pairingRes = await axios.patch(
+        `${PAIRING_URL}/${pairingId}/dislike`
+      );
+      const isbn = pairingRes.data.data.isbn13;
+      const bookRes = await axios.get(`api/books/${isbn}`);
+      return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const asyncPairingPick = createAsyncThunk(
+  'pairingSlice/asyncPairingPick',
+  async (pairingId) => {
+    try {
+      const pairingRes = await axios.post(
+        `${PAIRING_URL}/${pairingId}/bookmark`
+      );
+      const isbn = pairingRes.data.isbn13;
+      const bookRes = await axios.get(`api/books/${isbn}`);
+      return { pairingRes: pairingRes.data, bookRes: bookRes.data.data };
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
@@ -93,26 +171,81 @@ export const pairingSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
+    //페이링 상세 조회
     builder.addCase(asyncGetOnePairing.pending, (state) => {
-      state.status = 'pending';
+      state.status = 'asyncGetOnePairing/pending';
     });
     builder.addCase(asyncGetOnePairing.fulfilled, (state, action) => {
       state.data = action.payload;
-      state.status = 'fulfilled';
+      state.status = 'asyncGetOnePairing/fulfilled';
     });
     builder.addCase(asyncGetOnePairing.rejected, (state) => {
       state.data = [];
-      state.status = 'rejected';
+      state.status = 'asyncGetOnePairing/rejected';
     });
+    //페어링 작성
     builder.addCase(asyncPostPairing.pending, (state) => {
-      state.status = 'pending';
+      state.status = 'asyncPostPairing/pending';
     });
     builder.addCase(asyncPostPairing.fulfilled, (state) => {
-      state.status = 'fulfilled';
+      state.status = 'asyncPostPairing/fulfilled';
     });
     builder.addCase(asyncPostPairing.rejected, (state) => {
-      state.data = [];
-      state.status = 'rejected';
+      state.status = 'asyncPostPairing/rejected';
+    });
+    //페어링 삭제
+    builder.addCase(asyncDeletePairing.pending, (state) => {
+      state.status = 'asyncDeletePairing/pending';
+    });
+    builder.addCase(asyncDeletePairing.fulfilled, (state) => {
+      state.status = 'asyncDeletePairing/fulfilled';
+    });
+    builder.addCase(asyncDeletePairing.rejected, (state) => {
+      state.status = 'asyncDeletePairing/rejected';
+    });
+    //페어링 수정
+    builder.addCase(asyncPatchPairing.pending, (state) => {
+      state.status = 'asyncPatchPairing/pending';
+    });
+    builder.addCase(asyncPatchPairing.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.status = 'asyncPatchPairing/fulfilled';
+    });
+    builder.addCase(asyncPatchPairing.rejected, (state) => {
+      state.status = 'asyncPatchPairing/rejected';
+    });
+    //페어링 좋아요
+    builder.addCase(asyncPairingLike.pending, (state) => {
+      state.status = 'asyncPairingLike/pending';
+    });
+    builder.addCase(asyncPairingLike.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.status = 'asyncPairingLike/fulfilled';
+    });
+    builder.addCase(asyncPairingLike.rejected, (state) => {
+      state.status = 'asyncPairingLike/rejected';
+    });
+    //페어링 좋아요 취소
+    builder.addCase(asyncPairingDislike.pending, (state) => {
+      state.status = 'asyncPairingDislike/pending';
+    });
+    builder.addCase(asyncPairingDislike.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.status = 'asyncPairingDislike/fulfilled';
+    });
+    builder.addCase(asyncPairingDislike.rejected, (state) => {
+      state.status = 'asyncPairingDislike/rejected';
+    });
+    //페어링 북마크(나의 픽)
+    builder.addCase(asyncPairingPick.pending, (state) => {
+      state.status = 'asyncPairingPick/pending';
+    });
+    builder.addCase(asyncPairingPick.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.status = 'asyncPairingPick/fulfilled';
+    });
+    builder.addCase(asyncPairingPick.rejected, (state) => {
+      state.status = 'asyncPairingPick/rejected';
     });
     //comment 추가
     builder.addCase(asyncPostPairingComment.pending, (state) => {

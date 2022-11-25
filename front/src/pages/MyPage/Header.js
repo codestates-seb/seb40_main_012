@@ -5,6 +5,9 @@ import Avatar from '@mui/material/Avatar';
 import Container from '@mui/material/Container';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import axios from '../../api/axios';
+import { useEffect, useState } from 'react';
+import { USER_INFO_URL } from '../../api/requests';
 
 const ButtonCSS = styled.button`
   outline: none;
@@ -24,6 +27,35 @@ const ButtonCSS = styled.button`
 `;
 
 const Header = () => {
+  const [userInfo, setUserInfo] = useState({
+    introduction: '',
+    gender: '',
+    age: '',
+    nickname: '',
+    temp: '',
+    category: [],
+  });
+
+  const fetchData = async () => {
+    axios
+      .get(USER_INFO_URL)
+      .then((response) => {
+        setUserInfo({
+          introduction: '',
+          gender: '',
+          age: '',
+          nickname: '',
+          temp: response.data.temp,
+          category: [],
+        });
+      })
+      .catch((error) => console.log('에러', error));
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <>
       {/* xs , sm, md, lg, xl 사이즈 */}
@@ -64,13 +96,17 @@ const Header = () => {
                   marginLeft: 20,
                 }}
               >
-                <Typography variant="h6">chichi</Typography>
+                <Typography variant="h6">
+                  {userInfo.nickname ? userInfo.nickname : '체리픽'}
+                </Typography>
 
                 <Typography variant="body1" gutterBottom>
-                  책의 온기 37.5도
+                  {userInfo.introduction
+                    ? userInfo.introduction
+                    : 'Cherry Pick!'}
                 </Typography>
                 <Typography sx={{ mt: 1.6 }} variant="body2" gutterBottom>
-                  팔로잉 2 팔로워 3
+                  책의 온기 {userInfo.temp}도
                 </Typography>
               </Box>
             </Grid>

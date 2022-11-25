@@ -14,18 +14,24 @@ const initialState = {
 export const asyncGetFilmPairingLike = createAsyncThunk(
   'pairingSlice/asyncGetFilmPairingLike',
   async () => {
-    return await axios
-      .get(PAIRING_FILM_LIKE_URL)
-      .then((res) => res.data.data.content);
+    try {
+      const res = await axios.get(PAIRING_FILM_LIKE_URL);
+      return res.data.data.content;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 
 export const asyncGetFilmPairingNewest = createAsyncThunk(
   'pairingSlice/asyncGetFilmPairingNewest',
   async () => {
-    return await axios
-      .get(PAIRING_FILM_NEWEST_URL)
-      .then((res) => res.data.data.content);
+    try {
+      const res = await axios.get(PAIRING_FILM_NEWEST_URL);
+      return res.data.data.content;
+    } catch (error) {
+      console.log(error);
+    }
   }
 );
 

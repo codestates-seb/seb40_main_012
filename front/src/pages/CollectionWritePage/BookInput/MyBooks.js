@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import axios from '../../../api/axios';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import NewBook from './NewBook';
+import Booklist from './Booklist';
 
 const MyBooksContainer = styled.div`
   width: 100%;
@@ -19,9 +20,11 @@ const MyBooksTitle = styled.div`
 
 const Books = styled.div`
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
+  max-height: 250px;
+  overflow-y: auto;
   background-color: white;
-  padding: 15px 10px;
+  padding: 10px;
   margin: 10px 0;
   border: 1px solid ${({ theme }) => theme.colors.gray};
   &.hide {
@@ -41,8 +44,60 @@ const HideBtn = styled(MyBooksBtn)``;
 
 const ShowBtn = styled(MyBooksBtn)``;
 
-const MyBooks = () => {
+const MyBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [myBooks, setMyBooks] = useState([]);
+
+  useEffect(() => {
+    // axios.get('/api/mypage/bookmark/book').then((res) => {
+    //   console.log(res.data);
+    //   setMyBooks(res.data);
+    //   console.log(myBooks);
+    // });
+    setMyBooks([
+      {
+        title: '모순',
+        author: '양귀자 (지은이)',
+        ratingCount: 0,
+        isbn13: '9788998441012',
+        bookCover:
+          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
+      },
+      {
+        title: '여름의 빌라',
+        author: '백수린 (지은이)',
+        ratingCount: 9,
+        isbn13: '9788954673105',
+        bookCover:
+          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
+      },
+      {
+        title: '책3',
+        author: '저자3 (지은이)',
+        ratingCount: 9,
+        isbn13: '3',
+        bookCover:
+          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
+      },
+      {
+        title: '책4',
+        author: '저자4 (지은이)',
+        ratingCount: 9,
+        isbn13: '4',
+        bookCover:
+          'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
+      },
+    ]);
+  }, []);
+
+  const handleSetNewBooks = (isbn) => {
+    if (!newBooks.includes(isbn)) {
+      setNewBooks([...newBooks, isbn]);
+      axios.get(`/api/books/${isbn}`).then((res) => {
+        setNewBooksInfo([...newBooksInfo, res.data.data]);
+      });
+    }
+  };
 
   return (
     <MyBooksContainer>
@@ -69,13 +124,18 @@ const MyBooks = () => {
         )}
       </MyBooksTitle>
       <Books className={isOpen ? 'open' : 'hide'}>
-        <NewBook />
-        <NewBook />
-        <NewBook />
-        <NewBook />
-        <NewBook />
-        <NewBook />
-        <NewBook />
+        {myBooks.map((el, idx) => {
+          return (
+            <Booklist
+              key={idx}
+              title={el.title}
+              author={el.author}
+              rating={el.ratingCount}
+              isbn={el.isbn13}
+              handleSetNewBooks={handleSetNewBooks}
+            />
+          );
+        })}
       </Books>
     </MyBooksContainer>
   );
