@@ -1,4 +1,4 @@
-import PageContainer from '../../components/PageContainer';
+import { PageContainer } from 'containers';
 import CollectionHeader from './CollectionHeader';
 import CollectionSmallSet from './CollectionSmallSet/CollectionSmallSet';
 import CollectionMediumSet from './CollectionMediumSet/CollectionMediumSet';

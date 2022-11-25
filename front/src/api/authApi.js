@@ -1,5 +1,5 @@
-import axios from './axios';
-import { persistor } from '../index';
+import { axios } from 'api';
+import { persistor } from 'index';
 import {
   TOKEN_REFRESH_URL,
   SIGN_IN_URL,

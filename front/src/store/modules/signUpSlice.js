@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { signUpApi } from '../../api/signUpAPI';
-import { validationCheck, duplicationCheck } from '../../util/util';
+import { signUpApi } from 'api/signUpAPI';
+import { validationCheck, duplicationCheck } from 'util/util';
 
 const initialState = {
   loading: false,

@@ -1,7 +1,7 @@
 import {
   dupilicationCheckNickName,
   dupilicationCheckEmail,
-} from '../api/duplicationCheckApi';
+} from 'api/duplicationCheckApi';
 
 const validationCheck = (type, value, required) => {
   let regExp = null;

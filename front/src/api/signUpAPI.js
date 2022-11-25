@@ -1,5 +1,5 @@
 import md5 from 'md5';
-import axios from './axios';
+import { axios } from 'api';
 import { USERS_URL } from './requests';
 
 export const signUpApi = (params) => {

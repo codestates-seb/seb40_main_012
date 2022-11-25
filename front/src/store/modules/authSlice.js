@@ -1,7 +1,7 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { signInApi, firstLoginApi } from '../../api/authApi';
-import { patchUserInfoApi } from '../../api/myPageApi';
 import { PURGE } from 'redux-persist';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { signInApi, firstLoginApi } from 'api/authApi';
+import { patchUserInfoApi } from 'api/myPageApi';
 
 const initialState = {
   loading: false,

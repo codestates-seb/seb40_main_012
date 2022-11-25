@@ -1,4 +1,4 @@
-import axios from './axios';
+import { axios } from 'api';
 import {
   DUPLICATION_CHECK_NICKNAME_URL,
   DUPLICATION_CHECK_EMAIL_URL,

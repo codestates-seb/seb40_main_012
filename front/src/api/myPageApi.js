@@ -1,4 +1,4 @@
-import axios from './axios';
+import { axios } from 'api';
 import {
   USER_INFO_URL,
   CURRENT_PASSWORD_CHECK_URL,

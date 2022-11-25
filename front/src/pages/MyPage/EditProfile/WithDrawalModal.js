@@ -2,10 +2,10 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import CloseIcon from '@mui/icons-material/Close';
-import { ContainedButton } from '../../../components/Buttons';
-import { currentPasswordCheckApi, withdrawalApi } from '../../../api/myPageApi';
+import { ContainedButton } from 'components';
+import { currentPasswordCheckApi, withdrawalApi } from 'api/myPageApi';
 import { useNavigate } from 'react-router-dom';
-import { logoutApi } from '../../../api/authApi';
+import { logoutApi } from 'api/authApi';
 
 const ContainerStyled = styled.div`
   color: ${({ theme }) => theme.colors.gray};

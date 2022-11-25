@@ -1,9 +1,5 @@
-import PageContainer from '../../components/PageContainer';
-import {
-  ContainedButton,
-  TextButton,
-  OutlinedButton,
-} from '../../components/Buttons';
+import { PageContainer } from 'containers';
+import { ContainedButton, TextButton, OutlinedButton } from 'components';
 
 const ButtonTest = () => {
   return (

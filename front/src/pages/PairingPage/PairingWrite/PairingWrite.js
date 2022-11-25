@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import PageContainer from '../../../components/PageContainer';
+import { PageContainer } from 'containers';
 import PairingOriginBook from '../PairingDetail/PairingOriginBook';
 import BasicSelect from './Select';
 import TitleInput from './TitleInput';

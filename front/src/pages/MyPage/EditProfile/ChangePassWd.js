@@ -5,14 +5,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import PageContainer from '../../../components/PageContainer';
-import { ContainedButton } from '../../../components/Buttons';
-import ValidationTextFields from '../../../components/ValidationTextFields';
-import { validationCheck } from '../../../util/util';
-import {
-  currentPasswordCheckApi,
-  passwordUpdateApi,
-} from '../../../api/myPageApi';
+import { PageContainer } from 'containers';
+import { ContainedButton, ValidationTextFields } from 'components';
+import { validationCheck } from 'util/util';
+import { currentPasswordCheckApi, passwordUpdateApi } from 'api/myPageApi';
 import { useNavigate } from 'react-router-dom';
 
 const inputInfo = [

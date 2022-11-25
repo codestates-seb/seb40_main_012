@@ -6,14 +6,14 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import PageContainer from '../../components/PageContainer';
-import { ContainedButton } from '../../components/Buttons';
+import { PageContainer } from 'containers';
+import { ContainedButton } from 'components';
 
 import {
   signUpAsync,
   selectValidCheckArray,
   setIsValid,
-} from '../../store/modules/signUpSlice';
+} from 'store/modules/signUpSlice';
 import SignUpTextFields from './SignUpTextFields';
 
 const SignInLinkStyled = styled(Link)`

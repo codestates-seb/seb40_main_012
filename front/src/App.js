@@ -1,12 +1,12 @@
 import { Suspense, lazy, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
-import GlobalStyle from './GlobalStyle';
-import { logoutApi, refreshTokenApi } from './api/authApi';
-import { selectIsLogin } from './store/modules/authSlice';
-import ScrollToTop from './components/ScrollToTop';
+import { GlobalStyle } from 'styles';
+import { logoutApi, refreshTokenApi } from 'api/authApi';
+import { selectIsLogin } from 'store/modules/authSlice';
+import { ScrollToTop } from 'components';
 
-const RoutesComponent = lazy(() => import('./components/RoutesComponent'));
+const RoutesComponent = lazy(() => import('components/RoutesComponent'));
 
 const App = () => {
   const isLogin = useSelector(selectIsLogin);

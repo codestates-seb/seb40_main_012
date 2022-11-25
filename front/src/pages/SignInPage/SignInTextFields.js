@@ -1,8 +1,8 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import Grid from '@mui/material/Grid';
-import ValidationTextFields from '../../components/ValidationTextFields';
-import { setInputValue, setIsValid } from '../../store/modules/signInSlice';
+import { ValidationTextFields } from 'components';
+import { setInputValue, setIsValid } from 'store/modules/signInSlice';
 
 const inputInfo = [
   {
