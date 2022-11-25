@@ -92,7 +92,7 @@ const CollectionHeader = () => {
           <Link to="/user/signin">
             <div className="login">로그인</div>
           </Link>
-          <div>을 해주세요</div>
+          <div>이 필요한 기능입니다.</div>
         </ModalBox>
       </Modal>
     </CollectionHeaderContainer>

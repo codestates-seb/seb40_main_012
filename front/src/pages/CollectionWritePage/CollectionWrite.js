@@ -28,7 +28,7 @@ const CollectionWritePage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (data.title !== '') setIsFilled(true);
+    if (data.title !== '' && data.bookIsbns.length !== 0) setIsFilled(true);
     else setIsFilled(false);
   }, [data]);
 
@@ -40,7 +40,7 @@ const CollectionWritePage = () => {
         })
         .then((res) => {
           console.log(res.data);
-          navigate('/collection');
+          navigate(`/collection/${res.data.collectionId}`);
         })
         .catch((error) => console.error(error));
     }
@@ -56,7 +56,10 @@ const CollectionWritePage = () => {
           ></CollectionInfoInput>
           <CollectionBookInput data={data} setData={setData} />
         </div>
-        <CollectionWriteBtns handleCollectionWrite={handleCollectionWrite} />
+        <CollectionWriteBtns
+          handleCollectionWrite={handleCollectionWrite}
+          isFilled={isFilled}
+        />
       </CollectionWritePageContainer>
     </PageContainer>
   );
