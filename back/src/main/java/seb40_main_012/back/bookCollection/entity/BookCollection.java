@@ -35,6 +35,9 @@ public class BookCollection {
     private String title;
     private String content;
     private Long likeCount;
+    private boolean userLike;
+    private boolean userBookmark;
+    private boolean userCollection;
     private Long view;
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
@@ -83,6 +86,9 @@ public class BookCollection {
         this.content= content;
         this.bookIsbn13 = bookIsbn13;
         this.likeCount = 0L;
+        this.userLike = false;
+        this.userBookmark=false;
+        this.userCollection=false;
         this.view = 0L;
         this.createdAt = LocalDateTime.now();
         this.lastModifiedAt = LocalDate.now();

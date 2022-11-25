@@ -113,13 +113,6 @@ public class UserService {
     public User editUserInfo(User user, List<Genre> categoryValue) {
         User findUser = getLoginUser();
         userCategoryRepository.deleteAllByUser(findUser);
-//
-//        if(categoryValue.isEmpty()){
-//            UserCategory userCategory = new UserCategory();
-//            userCategoryRepository.save(userCategory);
-//            findUser.addUserCategory(userCategory);
-//            userRepository.save(findUser);
-//        }
 
         //카테고리에 있는 값이면 > 유저 카테고리에 해당 카테고리가 저장돼있는지 확인 후 > 있으면 쓰루, 없으면 유저카테고리에 카테고리 저장
         //카테고리에 없는 값이면 에러
@@ -133,7 +126,6 @@ public class UserService {
                         findUser.addUserCategory(userCategory);
                         userRepository.save(findUser);
                     }
-//                    else throw new BusinessLogicException(ExceptionCode.NOT_FOUND);
                 }
         );
         findUser.updateUserInfo(user);

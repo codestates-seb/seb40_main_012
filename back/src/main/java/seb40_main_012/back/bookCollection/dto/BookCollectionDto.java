@@ -61,8 +61,8 @@ public class BookCollectionDto {
                     .createdAt(LocalDate.now())
                     .lastModifiedAt(collection.getLastModifiedAt())
                     .likeCount(collection.getLikeCount())
-                    .userLike(!collection.getUser().getCollectionLikes().isEmpty())
-                    .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
+                    .userLike(collection.isUserLike())
+                    .userBookmark(collection.isUserBookmark())
                     .collectionAuthor(collection.getUser().getNickName())
                     .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
                     .isbns(collection.getBookIsbn13())
@@ -84,6 +84,7 @@ public class BookCollectionDto {
         private Long view;
         private boolean userLike;
         private boolean userBookmark;
+        private boolean userCollection;
         private String collectionAuthor;
         private List<String> tags;
         private List<BookDto.CollectionBook> books;
@@ -101,8 +102,9 @@ public class BookCollectionDto {
                     .lastModifiedAt(collection.getLastModifiedAt())
                     .likeCount(collection.getCollectionLikes().stream().count())
                     .view(collection.getView())
-                    .userLike(!collection.getUser().getCollectionLikes().isEmpty())
-                    .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
+                    .userLike(collection.isUserLike())
+                    .userBookmark(collection.isUserBookmark())
+                    .userCollection(collection.isUserCollection())
                     .collectionAuthor(collection.getUser().getNickName())
                     .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
