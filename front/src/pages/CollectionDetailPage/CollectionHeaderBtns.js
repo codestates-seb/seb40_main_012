@@ -88,11 +88,14 @@ const ModalBox = styled.div`
 const CollectionHeaderBtns = ({
   likeCount,
   userLike,
+  userBookmark,
   userCollection,
   handleCollectionLike,
+  handleCollectionBookmark,
   handleCollectionDelete,
 }) => {
-  const [isLiked, setIsLiked] = useState(false);
+  const [isLiked, setIsLiked] = useState(userLike);
+  const [isBookmarked, setIsBookmarked] = useState(userBookmark);
 
   //Modal
   const [open, setOpen] = useState(false);
@@ -103,17 +106,32 @@ const CollectionHeaderBtns = ({
     setIsLiked(userLike);
   }, [userLike]);
 
+  useEffect(() => {
+    setIsBookmarked(userBookmark);
+  }, [userBookmark]);
+
   const handleClickLikeBtn = () => {
     handleCollectionLike();
   };
 
+  const handleClickBookmarkBtn = () => {
+    handleCollectionBookmark();
+  };
+
   return (
     <CollectionHeaderBtnsContainer>
-      <CollectionBookmark>
-        <img
-          src={process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'}
-          alt="bookmark icon"
-        />
+      <CollectionBookmark onClick={handleClickBookmarkBtn}>
+        {isBookmarked ? (
+          <img
+            src={process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'}
+            alt="bookmark icon"
+          />
+        ) : (
+          <img
+            src={process.env.PUBLIC_URL + '/images/bookmark_unfilled_icon.svg'}
+            alt="bookmark icon"
+          />
+        )}
         북마크
       </CollectionBookmark>
       <CollectionHeart onClick={handleClickLikeBtn}>
