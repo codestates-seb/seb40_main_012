@@ -14,28 +14,27 @@ const Div = styled.div`
 `;
 
 const ImgTest = () => {
-  // const [img, setImg]= useState([]);
-  const handleImageUpload = (event) => {
-    event.preventDefault();
-    const file = event.currentTarget['fileInput'].files[0];
-    console.log('과연', file);
+  const onChangeImg = async (e) => {
+    e.preventDefault();
 
-    const res = axios.post('/api/images/upload', file, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
-    console.log(res);
+    if (e.target.files) {
+      const uploadFile = e.target.files[0];
+      console.log('uploadFile', uploadFile);
+      const formData = new FormData();
+      formData.append('image', uploadFile);
+      console.log('formData', formData);
+
+      await axios.post('/api/images/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+    }
   };
   return (
     <Div>
-      <form
-        onSubmit={handleImageUpload}
-        action="/api/images/upload"
-        method="post"
-        encType="multipart/form-data"
-      >
-        <input id="fileInput" type="file" />
+      <form onSubmit={onChangeImg}>
+        <input id="upload" type="file" onChange={onChangeImg} />
         <button>제출</button>
       </form>
     </Div>
