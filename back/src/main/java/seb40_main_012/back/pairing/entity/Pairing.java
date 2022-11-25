@@ -61,7 +61,7 @@ public class Pairing {
     private long view;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "user_id")
     private User user;
 
