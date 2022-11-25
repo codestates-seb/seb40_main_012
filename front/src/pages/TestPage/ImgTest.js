@@ -14,6 +14,7 @@ const Div = styled.div`
 `;
 
 const ImgTest = () => {
+  // const [img, setImg]= useState([]);
   const handleImageUpload = (event) => {
     event.preventDefault();
     const file = event.currentTarget['fileInput'].files[0];
@@ -24,7 +25,12 @@ const ImgTest = () => {
   };
   return (
     <Div>
-      <form onSubmit={handleImageUpload} encType="multipart/form-data">
+      <form
+        onSubmit={handleImageUpload}
+        action="/api/images/upload"
+        method="post"
+        encType="multipart/form-data"
+      >
         <input id="fileInput" type="file" />
         <button>제출</button>
       </form>
