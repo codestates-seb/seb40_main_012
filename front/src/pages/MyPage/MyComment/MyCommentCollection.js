@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-
 import axios from '../../../api/axios';
-import CollectionThumbnail from './collectionThumbnail';
+import CollectionThumbnail from './CollectionThumbnail';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -75,23 +74,15 @@ const MyCommentCollection = ({ content }) => {
               <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
 
               <Grid item xs={2}>
-                {data && (
+                {data.cover.map((it) => (
                   <>
-                    {/* <BookImg>
-                      <img
-                        className="resize"
-                        src={
-                          data.cover
-                            ? data.cover
-                            : '/images/cherrypick_loading.gif'
-                        }
-                        alt="book thumbnail"
-                      ></img>
-                    </BookImg> */}
-
-                    <CollectionThumbnail books={data.cover} />
+                    <CollectionThumbnail
+                      key={index}
+                      it={it}
+                      // books={it.cover}
+                    />
                   </>
-                )}
+                ))}
               </Grid>
               <Grid item xs={9}>
                 <FlexBox>

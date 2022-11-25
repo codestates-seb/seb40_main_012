@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-
+import CollectionThumbnail from './CollectionThumbnail';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 const ContentContainer = styled.div`
@@ -35,14 +35,14 @@ const ContentContainer = styled.div`
     position: fixed;
   }
 `;
-const BookImg = styled.div`
-  .resize {
-    box-sizing: inherit;
-    width: 108px !important;
-    height: 164px !important;
-    margin-left: 10px;
-  }
-`;
+// const BookImg = styled.div`
+//   .resize {
+//     box-sizing: inherit;
+//     width: 108px !important;
+//     height: 164px !important;
+//     margin-left: 10px;
+//   }
+// `;
 
 const CommentContainer = styled.div`
   display: flex;
@@ -220,19 +220,9 @@ const Content = ({ infiniteData, setContent, content }) => {
 
                     <Grid item xs={2}>
                       {data && (
-                        <BookImg>
-                          <img
-                            className="resize"
-                            src={
-                              // data.books[0].bookCover
-                              //   ? data.books[0].bookCover
-                              //   : '/images/cherrypick_loading.gif'
-
-                              '/images/cherrypick_loading.gif'
-                            }
-                            alt="book thumbnail"
-                          ></img>
-                        </BookImg>
+                        <>
+                          <CollectionThumbnail books={data.books} />
+                        </>
                       )}
                     </Grid>
                     <Grid item xs={9}>
