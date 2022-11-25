@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { ContainedButton } from '../../../components/Buttons';
 import { currentPasswordCheckApi, withdrawalApi } from '../../../api/myPageApi';
 import { useNavigate } from 'react-router-dom';
-import { refreshUserData } from '../../../api/authApi';
+import { logoutApi } from '../../../api/authApi';
 
 const ContainerStyled = styled.div`
   color: ${({ theme }) => theme.colors.gray};
@@ -100,9 +100,8 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
         setPasswordErrMsg('현재 비밀번호를 다시 확인해주세요.');
       } else {
         setPasswordErrMsg('');
-        await withdrawalApi();
-        // 회원탈퇴 안내 메시지 필요
-        refreshUserData();
+        await withdrawalApi(); // 회원탈퇴 안내 메시지 필요
+        await logoutApi(); // 회원탈퇴 api 단에서 로그아웃 api 로직까지 같이 처리해주는게 좋을 것 같음
         navigate('/', { replace: true });
       }
     } catch (error) {
