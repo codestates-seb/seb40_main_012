@@ -270,7 +270,6 @@ public class PairingService {
 
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
 
-
         return pairingRepository.findCategorySliceByNewestDesc("BOOK", pageRequest);
     }
 

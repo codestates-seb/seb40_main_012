@@ -46,16 +46,6 @@ public class ImageController {
 //            ,@RequestParam("files") @Nullable List<MultipartFile> files
     ) throws IOException { // 이미지 업로드
 
-        System.out.println("---------------------------------------------------");
-        System.out.println("---------------------------------------------------");
-        System.out.println("---------------------------------------------------");
-        System.out.println("---------------------------------------------------");
-        System.out.println("---------------------------------------------------");
-        System.out.println("---------------------------------------------------");
-        System.out.println("---------------------------------------------------");
-        System.out.println("---------------------------------------------------");
-        System.out.println("---------------------------------------------------");
-
         imageService.saveImage(file);
 
         log.info("multipartFile = {}", file);
