@@ -12,6 +12,7 @@ export const MY_COLLECTION_URL = `${MY_PAGE_URL}/userCollection`;
 export const MY_PICK_BOOK = `${MY_PAGE_URL}/bookmark/book`;
 export const MY_PICK_PAIRING = `${MY_PAGE_URL}/bookmark/pairing`;
 export const MY_PICK_COLLECTION = `${MY_PAGE_URL}/bookmark/collection`;
+
 export const FIRST_LOGIN_URL = `${USERS_URL}/firstLogin`;
 
 // 마이페이지

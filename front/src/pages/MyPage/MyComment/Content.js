@@ -257,9 +257,9 @@ const Content = ({ commentLength, data, setData }) => {
                           <img
                             className="resize"
                             src={
-                              data.cover.length === 0
-                                ? '/images/cherrypick_loading.gif'
-                                : data.cover
+                              data.cover.length !== 0
+                                ? data.cover
+                                : '/images/cherrypick_loading.gif'
                             }
                             alt="book thumbnail"
                           ></img>
@@ -272,6 +272,7 @@ const Content = ({ commentLength, data, setData }) => {
                           color="#232627"
                           sx={{
                             height: 125,
+                            fontWeight: 200,
                           }}
                           variant="body2"
                           gutterBottom

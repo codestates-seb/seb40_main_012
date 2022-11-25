@@ -87,7 +87,7 @@ const MyPairing = () => {
               src={'/images/cherrypick_loading.gif'}
               alt="loading cherrypick"
             ></img>
-            데이터가 없어용
+            데이터가 없습니다
           </Void>
         </Container>
       )}

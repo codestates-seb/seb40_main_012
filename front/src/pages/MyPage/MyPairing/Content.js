@@ -235,6 +235,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                           color="#232627"
                           sx={{
                             height: 125,
+                            fontWeight: 200,
                           }}
                           variant="body2"
                           gutterBottom

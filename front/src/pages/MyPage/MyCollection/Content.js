@@ -98,7 +98,6 @@ const Content = ({ infiniteData, setContent, content }) => {
   //   content: content.data,
   //   hasMore: true,
   // });
-  console.log('infiniteData', infiniteData);
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {

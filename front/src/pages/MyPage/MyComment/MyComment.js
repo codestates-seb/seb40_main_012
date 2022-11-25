@@ -54,9 +54,6 @@ const MyComment = () => {
           collectionComment: response.data.collectionComment,
           hasMore: true,
         });
-        console.log('state 현재값', infiniteData);
-        console.log('response데이터', response);
-        console.log('data 상태 읽기', data);
       })
       .catch((error) => console.log('에러', error));
   };
@@ -66,7 +63,6 @@ const MyComment = () => {
 
   useEffect(() => {
     fetchData();
-    console.log('data가 잘 왔을까요', data);
   }, []);
 
   useEffect(() => {

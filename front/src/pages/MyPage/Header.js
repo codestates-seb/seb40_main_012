@@ -48,14 +48,12 @@ const Header = () => {
           temp: response.data.temp,
           category: [],
         });
-        console.log('state 현재값', userInfo);
       })
       .catch((error) => console.log('에러', error));
   };
 
   useEffect(() => {
     fetchData();
-    console.log('userInfo 잘 왔을까요', userInfo);
   }, []);
 
   return (
@@ -98,10 +96,14 @@ const Header = () => {
                   marginLeft: 20,
                 }}
               >
-                <Typography variant="h6">chichi</Typography>
+                <Typography variant="h6">
+                  {userInfo.nickname ? userInfo.nickname : '체리픽'}
+                </Typography>
 
                 <Typography variant="body1" gutterBottom>
-                  안녕하세요!
+                  {userInfo.introduction
+                    ? userInfo.introduction
+                    : 'Cherry Pick!'}
                 </Typography>
                 <Typography sx={{ mt: 1.6 }} variant="body2" gutterBottom>
                   책의 온기 {userInfo.temp}도
