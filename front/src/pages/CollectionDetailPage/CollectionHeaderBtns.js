@@ -88,6 +88,7 @@ const ModalBox = styled.div`
 const CollectionHeaderBtns = ({
   likeCount,
   userLike,
+  userCollection,
   handleCollectionLike,
   handleCollectionDelete,
 }) => {
@@ -136,29 +137,37 @@ const CollectionHeaderBtns = ({
         />
         공유하기
       </CollectionShare>
-      <CollectionDelete onClick={handleOpen}>삭제하기</CollectionDelete>
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <ModalBox>
-          <div className="info">정말 삭제하시겠습니까?</div>
-          <div className="container">
-            <div className="close" onClick={handleClose} role="presentation">
-              취소
-            </div>
-            <div
-              className="delete"
-              onClick={handleCollectionDelete}
-              role="presentation"
-            >
-              삭제하기
-            </div>
-          </div>
-        </ModalBox>
-      </Modal>
+      {userCollection ? (
+        <>
+          <CollectionDelete onClick={handleOpen}>삭제하기</CollectionDelete>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <ModalBox>
+              <div className="info">정말 삭제하시겠습니까?</div>
+              <div className="container">
+                <div
+                  className="close"
+                  onClick={handleClose}
+                  role="presentation"
+                >
+                  취소
+                </div>
+                <div
+                  className="delete"
+                  onClick={handleCollectionDelete}
+                  role="presentation"
+                >
+                  삭제하기
+                </div>
+              </div>
+            </ModalBox>
+          </Modal>
+        </>
+      ) : null}
     </CollectionHeaderBtnsContainer>
   );
 };

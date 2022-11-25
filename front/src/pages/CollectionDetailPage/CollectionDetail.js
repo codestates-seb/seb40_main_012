@@ -135,6 +135,7 @@ const CollectionDetailPage = () => {
         <CollectionHeaderBtns
           likeCount={collectionData.likeCount}
           userLike={collectionData.userLike}
+          userCollection={collectionData.userCollection}
           handleCollectionLike={handleCollectionLike}
           handleCollectionDelete={handleCollectionDelete}
         />
