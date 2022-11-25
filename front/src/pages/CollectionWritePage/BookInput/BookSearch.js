@@ -95,10 +95,14 @@ const BookSearch = ({
     content: [],
     hasMore: false,
   });
+  const [page, setPage] = useState(1);
 
   const handleOnChangeInput = (e) => {
     setSearchInput(e.target.value);
-    if (searchInput === '') setSearchedBooks({ ...searchedBooks, content: [] });
+    if (searchInput === '') {
+      setSearchedBooks({ ...searchedBooks, content: [] });
+      setPage(1);
+    }
   };
 
   //TODO: 무한스크롤로 수정되어야 함
@@ -109,22 +113,24 @@ const BookSearch = ({
   };
 
   const fetchMoreData = () => {
-    if (searchedBooks.content.length >= 100) {
-      setSearchedBooks({
-        ...searchedBooks,
-        hasMore: false,
-      });
-      return;
-    }
     setTimeout(() => {
       axios
-        .get(`/api/search/collectionbooks?Query=${searchInput}`)
+        .get(`/api/search/collectionbooks?Query=${searchInput}&Page=${page}`)
         .then((res) => {
-          setSearchedBooks({
-            ...searchedBooks,
-            content: searchedBooks.content.concat(res.data.content),
-            hasMore: true,
-          });
+          if (res.data.length === 0) {
+            setSearchedBooks({
+              ...searchedBooks,
+              hasMore: false,
+            });
+            setPage(1);
+          } else {
+            setSearchedBooks({
+              ...searchedBooks,
+              content: searchedBooks.content.concat(res.data),
+              hasMore: true,
+            });
+            setPage(page + 1);
+          }
         })
         .catch((error) => console.error(error));
     }, 10);
