@@ -60,15 +60,15 @@ const MyPick = () => {
     hasMore: true,
   });
 
-  /// 테스트용
-  // const fetchDataTest = async () => {
-  //   axios
-  //     .get(COMMENT_URL)
-  //     .then((response) => {
-  //       console.log('response를 알아보장', response);
-  //     })
-  //     .catch((error) => console.log('에러', error));
-  // };
+  // 테스트용
+  const fetchDataTest = async () => {
+    axios
+      .get(COMMENT_URL)
+      .then((response) => {
+        console.log('response를 알아보장', response);
+      })
+      .catch((error) => console.log('에러', error));
+  };
 
   // 책 북마크 데이터 가져오기
   const fetchData = async () => {

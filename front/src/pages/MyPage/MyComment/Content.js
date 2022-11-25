@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -6,6 +7,8 @@ import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import InfiniteScroll from 'react-infinite-scroll-component';
 // import { useState } from 'react';
+import axios from '../../../api/axios';
+
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
   input {
@@ -115,6 +118,7 @@ const Content = ({ commentLength, data, setData }) => {
       });
       return;
     }
+
     ////// 나중에 통신하는 거 붙여주기
     // setTimeout(() => {
     //   setInfiniteData({
@@ -137,43 +141,19 @@ const Content = ({ commentLength, data, setData }) => {
     /////
   };
 
-  const onRemove = (targetId) => {
-    // const newBookCommentList = infiniteData.bookComment.filter(
-    //   (el) => el.commentId !== targetId
-    // );
-    // const newPairingCommentList = infiniteData.pairingComment.filter(
-    //   (el) => el.commentId !== targetId
-    // );
-    // const newCollectionCommentList = infiniteData.collectionComment.filter(
-    //   (el) => el.commentId !== targetId
-    // );
-    // setInfiniteData({
-    //   bookComment: newBookCommentList,
-    //   pairingComment: newPairingCommentList,
-    //   collectionComment: newCollectionCommentList,
-    //   hasMore: true,
-    // });
-    const newCommentList = data.content.filter(
-      (el) => el.commentId !== targetId
-    );
-    setData({
-      content: newCommentList,
-      hasMore: true,
-    });
+  const onRemove = (id) => {
+    axios
+      .delete(`/api/comments/${id}/delete`)
+      .then(location.reload())
+      .catch((error) => console.log('에러', error));
   };
 
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      // setInfiniteData({
-      //   bookComment: [],
-      //   pairingComment: [],
-      //   collectionComment: [],
-      //   hasMore: false,
-      // });
-      setData({
-        content: [],
-        hasMore: false,
-      });
+      axios
+        .delete(`api/comments/delete`)
+        .then(location.reload())
+        .catch((error) => console.log('에러', error));
     }
   };
 
@@ -257,7 +237,7 @@ const Content = ({ commentLength, data, setData }) => {
                           <img
                             className="resize"
                             src={
-                              data.cover.length !== 0
+                              data.cover
                                 ? data.cover
                                 : '/images/cherrypick_loading.gif'
                             }

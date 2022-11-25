@@ -95,8 +95,6 @@ const MyComment = () => {
           <Header></Header>
           <Nav view={view} setView={setView} content={content}></Nav>
           <Content
-            setInfiniteData={setInfiniteData}
-            infiniteData={infiniteData}
             commentLength={content.listCount}
             dataArray={dataArray}
             data={data}
