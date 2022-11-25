@@ -84,6 +84,7 @@ public class BookCollectionDto {
         private Long view;
         private boolean userLike;
         private boolean userBookmark;
+        private boolean userCollection;
         private String collectionAuthor;
         private List<String> tags;
         private List<BookDto.CollectionBook> books;
@@ -103,6 +104,7 @@ public class BookCollectionDto {
                     .view(collection.getView())
                     .userLike(collection.isUserLike())
                     .userBookmark(collection.isUserBookmark())
+                    .userCollection(collection.isUserCollection())
                     .collectionAuthor(collection.getUser().getNickName())
                     .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
