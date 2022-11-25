@@ -35,7 +35,7 @@ public class CommentController {
 
     //    ------------------------------------------------------------
     private final NotificationService noticeService;
-//    ------------------------------------------------------------
+    //    ------------------------------------------------------------
 
     @PostMapping("/books/{isbn13}/comments/add")
     public ResponseEntity postBookComment(@PathVariable("isbn13") @Positive String isbn13,
@@ -72,7 +72,7 @@ public class CommentController {
     public CommentDto.Response postBookCollectionComment(@PathVariable("collection-id") Long collectionId, @Valid @RequestBody CommentDto.Post request) {
 
         Comment comment = commentMapper.commentPostToComment(request);
-        Comment createdComment = commentService.createBookCollectionComment(comment,collectionId);
+        Comment createdComment = commentService.createBookCollectionComment(comment, collectionId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
         return response;
     }
@@ -150,24 +150,32 @@ public class CommentController {
                     new SingleResponseDto<>(response), HttpStatus.OK);
         }
 
-        }
-
-        @GetMapping("/comments")
-        public ResponseEntity getComments () {
-
-            List<Comment> sliceComments = commentService.findComments();
-            Slice<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(sliceComments);
-
-            return new ResponseEntity<>(
-                    new SingleResponseDto<>(responses), HttpStatus.OK
-            );
-        }
-
-        @DeleteMapping("/comments/{comment_id}/delete")
-        public ResponseEntity deleteComment ( @PathVariable("comment_id") @Positive long commentId){
-
-            commentService.deleteComment(commentId);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
     }
+
+    @GetMapping("/comments")
+    public ResponseEntity getComments() {
+
+        List<Comment> sliceComments = commentService.findComments();
+        Slice<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(sliceComments);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/comments/{comment_id}/delete")
+    public ResponseEntity deleteComment(@PathVariable("comment_id") @Positive long commentId) {
+
+        commentService.deleteComment(commentId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/comments/delete")
+    public ResponseEntity deleteComments() {
+
+        commentService.deleteComments();
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}
