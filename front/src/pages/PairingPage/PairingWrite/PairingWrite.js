@@ -8,9 +8,6 @@ import OutLinkInput from './OutLinkInput';
 import useInput from '../../../util/useInput';
 import { ContainedButton } from '../../../components/Buttons';
 import { useSelector } from 'react-redux';
-//원래로 되돌리기!! (10번 주석처리하고 12,13 둘다 주석 해제)
-// import { useDispatch useSelector } from 'react-redux';
-// import { asyncPostPairing } from '../../../store/modules/pairingSlice';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from '../../../api/axios';
@@ -118,8 +115,7 @@ const PairingWrite = () => {
   const [body, bodyBind, bodyReset] = useInput('');
   const [outLink, outLinkBind, outLinkReset] = useInput('');
   const [imgData, setImgData] = useState({});
-  //원래로 되돌리기!! 주석 해제
-  // const dispatch = useDispatch();
+
   const navigate = useNavigate();
   const curBookData = useSelector((state) => state.book.data);
 
@@ -141,22 +137,19 @@ const PairingWrite = () => {
       pairingCategory: category,
       outLinkPath: outLink,
     };
-    console.log('ff', imgData);
     const formData = new FormData();
     formData.append('image', imgData);
-    const bodyData = new FormData();
-    bodyData.append('postParingDto', pairingPostBody);
-    //원래로 되돌리기!!(147번 주석처리하고 149 주석 해제)
+    formData.append(
+      'postParingDto',
+      new Blob([JSON.stringify(pairingPostBody)], {
+        type: 'application/json',
+      })
+    );
     // dispatch(asyncPostPairing({ pairingPostBody, isbn: curBookData.isbn13 }));
     const isbn = curBookData.isbn13;
     await axios.post(`/api/books/${isbn}/pairings/add`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-      },
-    });
-    await axios.post(`/api/books/${isbn}/pairings/add`, bodyData, {
-      headers: {
-        'Content-Type': 'application/json',
       },
     });
     navigate('/pairing', { replace: true });
