@@ -30,6 +30,9 @@ import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -170,21 +173,39 @@ public class UserService {
 
     public List<BookCollection> getBookmarkByBookCollection() {
         User findUser = getLoginUser();
-        List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
+        List<Bookmark> allBookmarks = bookmarkRepository.findByUser(findUser);
+        List<Bookmark> bookmarks = new ArrayList<>();
+        allBookmarks.forEach(
+                x -> {
+                    if (x.getBookCollection()!=null) bookmarks.add(x);
+                }
+        );
         List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
         return collections;
     }
 
     public List<Pairing> getBookmarkByPairing() {
         User findUser = getLoginUser();
-        List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
+        List<Bookmark> allBookmarks = bookmarkRepository.findByUser(findUser);
+        List<Bookmark> bookmarks = new ArrayList<>();
+        allBookmarks.forEach(
+                x -> {
+                    if(x.getPairing()!=null) bookmarks.add(x);
+                }
+        );
         List<Pairing> pairings = bookmarks.stream().map(x -> x.getPairing()).collect(Collectors.toList());
         return pairings;
     }
 
     public List<Book> getBookmarkByBook() {
         User findUser = getLoginUser();
-        List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
+        List<Bookmark> allBookmarks = bookmarkRepository.findByUser(findUser);
+        List<Bookmark> bookmarks = new ArrayList<>();
+        allBookmarks.forEach(
+                x -> {
+                    if(x.getBook()!=null) bookmarks.add(x);
+                }
+        );
         List<Book> books = bookmarks.stream().map(x -> x.getBook()).collect(Collectors.toList());
         return books;
     }
