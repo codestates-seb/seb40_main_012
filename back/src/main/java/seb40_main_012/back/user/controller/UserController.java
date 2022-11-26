@@ -10,6 +10,8 @@ import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.common.bookmark.BookmarkType;
+import seb40_main_012.back.common.comment.CommentMapper;
+import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
@@ -41,6 +43,8 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserService userService;
     private final UserMapper mapper;
+    private final CommentMapper commentMapper;
+    private final CommentService commentService;
     private final CommentRepository commentRepository;
     private final PairingRepository pairingRepository;
     private final BookCollectionRepository collectionRepository;
@@ -50,15 +54,13 @@ public class UserController {
 
     @PostMapping("/users")
     public ResponseEntity postUser(@Valid @RequestBody UserDto.PostDto postDto) {
-        User user = mapper.userPostToUser(postDto);
 
+        User user = mapper.userPostToUser(postDto);
         User createdUser = userService.createUser(user);
         UserDto.ResponseDto response = mapper.userToUserResponse(createdUser);
 
         return new ResponseEntity<>(
-//                response
-                new SingleResponseDto<>(response)
-                , HttpStatus.CREATED);
+                new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
 
     @PostMapping("/mypage/verify/nickName")
@@ -142,27 +144,38 @@ public class UserController {
     }
 
     @GetMapping("/mypage/userComment")
-    @ResponseStatus(HttpStatus.OK)
-    public CommentDto.CommentList getUserComment() {
-        List<Comment> comments = userService.getUserComment();
-        List<CommentDto.BookComment> bookComments = new ArrayList<>();
-        List<CommentDto.PairingComment> pairingComments = new ArrayList<>();
-        List<CommentDto.CollectionComment> collectionComments = new ArrayList<>();
+    public ResponseEntity getUserComment() {
 
-        comments.forEach(
-                x -> {
-                    if (x.getCommentType() == CommentType.BOOK) {
-                        bookComments.add(CommentDto.BookComment.of(x));
-                    } else if (x.getCommentType() == CommentType.PAIRING) {
-                        pairingComments.add(CommentDto.PairingComment.of(x));
-                    } else if (x.getCommentType() == CommentType.BOOK_COLLECTION) {
-                        collectionComments.add(CommentDto.CollectionComment.of(x));
-                    }
-                }
-        );
-        Long listCount = commentRepository.countBy();
-        return CommentDto.CommentList.of(bookComments, pairingComments, collectionComments);
+        List<Comment> findComments = commentService.findMyCommentAll();
+
+        List<CommentDto.myPageResponse> responses = commentMapper.commentsToMyPageResponse(findComments);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK);
     }
+
+//    @GetMapping("/mypage/userComment")
+//    @ResponseStatus(HttpStatus.OK)
+//    public CommentDto.CommentList getUserComment() {
+//        List<Comment> comments = userService.getUserComment();
+//        List<CommentDto.BookComment> bookComments = new ArrayList<>();
+//        List<CommentDto.PairingComment> pairingComments = new ArrayList<>();
+//        List<CommentDto.CollectionComment> collectionComments = new ArrayList<>();
+//
+//        comments.forEach(
+//                x -> {
+//                    if (x.getCommentType() == CommentType.BOOK) {
+//                        bookComments.add(CommentDto.BookComment.of(x));
+//                    } else if (x.getCommentType() == CommentType.PAIRING) {
+//                        pairingComments.add(CommentDto.PairingComment.of(x));
+//                    } else if (x.getCommentType() == CommentType.BOOK_COLLECTION) {
+//                        collectionComments.add(CommentDto.CollectionComment.of(x));
+//                    }
+//                }
+//        );
+//        Long listCount = commentRepository.countBy();
+//        return CommentDto.CommentList.of(bookComments, pairingComments, collectionComments);
+//    }
 
     @GetMapping("/mypage/userPairing")
     @ResponseStatus(HttpStatus.OK)

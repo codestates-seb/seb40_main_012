@@ -80,6 +80,26 @@ public class CommentDto {
 
     }
 
+    @Getter
+    @Setter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class myPageResponse { // 작성일 순으로 내림차순 - 한 번에 전부 리턴하기
+
+        private long commentCount; // 나의 총 댓글 개수
+        private long commentId; // 코멘트 식별 번호
+        private long contentId; // 책의 경우 ISBN13, 페어링과 컬렉션의 경우 각각의 ID
+        private long likeCount; // 코멘트 현재 좋아요 개수
+        private String title; // 책,페어링,컬렉션 통합 타이틀 가능한지 화인할 것
+        private String cover; // 책 커버
+        private List<String> collectionCover; // 컬렉션에 속한 책 커버 4개. 컬렉션에 추가된 순으로 오름차순
+        private Double myBookRating; // 내가 매긴 별점. 책의 경우에만 표시. 나머지는 null 처리
+        private String author; // 책의 경우에만 표시. 나머지는 null 처리
+        private CommentType commentType; // 책, 페어링, 컬렉션 구분자
+        private String body; // 댓글 내용
+        private LocalDateTime createdAt; // 코멘트 작성 날짜. 정렬 편하게 하기 위해
+    }
 
     @Getter
     @Builder

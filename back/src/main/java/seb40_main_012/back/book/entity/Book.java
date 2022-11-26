@@ -10,6 +10,7 @@ import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookWiki.BookWiki;
 import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.rating.Rating;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.persistence.*;
@@ -84,9 +85,9 @@ public class Book {
     @Column
     private long ratingCount;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "book")
-//    private List<Rating> ratings;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "book")
+    private List<Rating> ratings;
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
     /*도서 파고들기*/
