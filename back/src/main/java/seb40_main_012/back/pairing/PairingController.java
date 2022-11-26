@@ -42,24 +42,26 @@ public class PairingController {
     private final LikeService likeService;
     private final ImageController imageController;
     private final ImageService imageService;
+    private final MultipartResolver multipartResolver;
     //    ------------------------------------------------------------
     private final NotificationService noticeService;
 //    ------------------------------------------------------------
 
     @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
-            @RequestParam(value = "image", required = false) MultipartFile file,
             @PathVariable("isbn13") @Positive String isbn13,
-            @Valid @RequestBody PairingDto.Post postPairing) throws IOException {
+            @RequestPart(value = "image", required = false) @Nullable MultipartFile file,
+            @RequestPart(value = "postParingDto") PairingDto.Post postPairing) throws IOException {
+//            @RequestParam(value = "image", required = false) MultipartFile file,
+//            @Valid @RequestBody PairingDto.Post postPairing) throws IOException {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
         Pairing createPairing = pairingService.createPairing(pairing, isbn13);
 
-        assert file != null;
-        imageService.savePairingImage(file, pairing);
-
+        if (file != null) {
+            imageService.savePairingImage(file, createPairing);
+        }
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
-
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED);

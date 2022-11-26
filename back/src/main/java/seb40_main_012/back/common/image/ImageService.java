@@ -52,17 +52,6 @@ public class ImageService {
                 .user(findUser)
                 .build();
 
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-        System.out.println(findUser.getUserId());
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-
-
         files.transferTo(new File(storedPath)); // 로컬에 uuid 파일명으로 저장
 
         Image storedImage = imageRepository.save(image);
@@ -74,7 +63,7 @@ public class ImageService {
 
         User findUser = userService.getLoginUser();
 
-        if (files.isEmpty()) {return null;}
+        if (files == null) {return null;}
 
         String originalImageName = files.getOriginalFilename(); // 원래 파일 이름
 
@@ -85,16 +74,6 @@ public class ImageService {
         String storedImageName = uuid + extension; // 파일 이름 + 확장자
 
         String storedPath = imageDir + storedImageName; // 파일 불러올 때 사용할 경로
-
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-        System.out.println(pairing.getPairingId());
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
-        System.out.println("----------------------------------------------------------");
 
         Image image = Image.builder() // 파일 엔티티 생성
                 .originalImageName(originalImageName)

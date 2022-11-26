@@ -23,7 +23,6 @@ public interface PairingMapper {
                 .title(postPairing.getTitle())
                 .body(postPairing.getBody())
                 .pairingCategory(postPairing.getPairingCategory())
-                .imagePath(postPairing.getImagePath())
                 .outLinkPath(postPairing.getOutLinkPath())
                 .build();
 
