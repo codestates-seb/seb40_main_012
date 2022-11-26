@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import Header from '../Header';
-import PageContainer from '../../../components/PageContainer';
+import { PageContainer } from 'containers';
 import Nav from '../Nav';
 import Content from './Content';
 import Container from '@mui/material/Container';

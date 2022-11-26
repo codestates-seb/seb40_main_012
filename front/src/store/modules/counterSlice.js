@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { fetchCount } from '../../api/counterAPI';
+import { fetchCount } from 'api/counterAPI';
 
 const initialState = {
   value: 0,

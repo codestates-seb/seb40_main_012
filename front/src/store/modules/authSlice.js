@@ -1,7 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { signInApi, firstLoginApi } from '../../api/authApi';
-import { patchUserInfoApi } from '../../api/myPageApi';
 import { PURGE } from 'redux-persist';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { authApi, myPageApi } from 'api';
 
 const initialState = {
   loading: false,
@@ -18,7 +17,7 @@ export const signInAsync = createAsyncThunk(
   'auth/getTokens',
   async (params, thunkAPI) => {
     try {
-      const response = await signInApi(params);
+      const response = await authApi.signIn(params);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error });
@@ -30,7 +29,7 @@ export const firstLoginAsync = createAsyncThunk(
   'auth/firstLogin',
   async (params, thunkAPI) => {
     try {
-      const response = await firstLoginApi(params);
+      const response = await authApi.firstLogin(params);
       return response;
     } catch (error) {
       return thunkAPI.rejectWithValue({ error });
@@ -42,7 +41,7 @@ export const patchUserInfoAsync = createAsyncThunk(
   'auth/patchUserInfo',
   async (data, thunkAPI) => {
     try {
-      const response = await patchUserInfoApi(data.params);
+      const response = await myPageApi.patchUserInfo(data.params);
       return { ...response, ...data.userInfo };
     } catch (error) {
       return thunkAPI.rejectWithValue({ error });

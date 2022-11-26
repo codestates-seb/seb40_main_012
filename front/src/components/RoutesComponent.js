@@ -1,40 +1,37 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { selectFirstLogin, selectIsLogin } from '../store/modules/authSlice';
+import { selectFirstLogin, selectIsLogin } from 'store/modules/authSlice';
 
-import MainPage from '../pages/MainPage/MainPage';
-import SignUpPage from '../pages/SignUpPage/SignUpPage';
-import SignInPage from '../pages/SignInPage/SignInPage';
-import FirstLoginPage from '../pages/FirstLoginPage/FirstLoginPage';
-
-import BookDetail from '../pages/BookDetailPage/BookDetail';
-
-import PairingPage from '../pages/PairingPage/PairingAll';
-import PairingFilm from '../pages/PairingPage/PairingFilm';
-import PairingCuisine from '../pages/PairingPage/PairingCuisine';
-import PairingMusic from '../pages/PairingPage/PairingMusic';
-import PairingBook from '../pages/PairingPage/PairingBook';
-import PairingEtc from '../pages/PairingPage/PairingEtc';
-import PairingWrite from '../pages/PairingPage/PairingWrite/PairingWrite';
-import PairingDetail from '../pages/PairingPage/PairingDetail/PairingDetail';
-
-import CollectionPage from '../pages/CollectionPage/Collection';
-import CollectionDetailPage from '../pages/CollectionDetailPage/CollectionDetail';
-import CollectionWritePage from '../pages/CollectionWritePage/CollectionWrite';
-
-import MyComment from '../pages/MyPage/MyComment/MyComment';
-import MyParing from '../pages/MyPage/MyPairing/MyPairing';
-import MyPick from '../pages/MyPage/MyPick/MyPick';
-import EditProfile from '../pages/MyPage/EditProfile/EditProfile';
-import ChangePassWd from '../pages/MyPage/EditProfile/ChangePassWd';
-import MyCollection from '../pages/MyPage/MyCollection/MyCollection';
-
-import NoMatch from '../pages/NoMatch';
+import {
+  MainPage,
+  SignUpPage,
+  SignInPage,
+  FirstLoginPage,
+  BookDetail,
+  PairingPage,
+  PairingFilm,
+  PairingCuisine,
+  PairingMusic,
+  PairingBook,
+  PairingEtc,
+  PairingWrite,
+  PairingDetail,
+  CollectionPage,
+  CollectionDetailPage,
+  CollectionWritePage,
+  MyComment,
+  MyParing,
+  MyPick,
+  EditProfile,
+  ChangePassWd,
+  MyCollection,
+  NoMatch,
+} from 'pages';
 
 //임시 페이지!
-import ReduxPage from '../pages/TestPage/Temp_Redux';
-import ButtonTest from '../pages/TestPage/ButtonTest';
-import ImgTest from '../pages/TestPage/ImgTest';
+import ReduxPage from 'pages/TestPage/Temp_Redux';
+import ButtonTest from 'pages/TestPage/ButtonTest';
+import ImgTest from 'pages/TestPage/ImgTest';
 
 const RoutesComponent = () => {
   const isLogin = useSelector(selectIsLogin);

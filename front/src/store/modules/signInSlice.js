@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { validationCheck } from '../../util/util';
+import { validationCheck } from 'util/util';
 
 const initialState = {
   loading: false,

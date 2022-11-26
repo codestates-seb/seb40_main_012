@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import PageContainer from '../../../components/PageContainer';
+import { PageContainer } from 'containers';
 import CollectionDetailHeader from '../../CollectionDetailPage/CollectionDetailHeader';
 import PairingOriginBook from './PairingOriginBook';
 

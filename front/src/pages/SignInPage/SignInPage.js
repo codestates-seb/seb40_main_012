@@ -9,14 +9,11 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import PageContainer from '../../components/PageContainer';
-import { ContainedButton } from '../../components/Buttons';
+import { PageContainer } from 'containers';
+import { ContainedButton } from 'components';
 
-import {
-  selectValidCheckArray,
-  setIsValid,
-} from '../../store/modules/signInSlice';
-import { signInAsync } from '../../store/modules/authSlice';
+import { selectValidCheckArray, setIsValid } from 'store/modules/signInSlice';
+import { signInAsync } from 'store/modules/authSlice';
 import SignInTextFields from './SignInTextFields';
 
 const LoginErrorMsgStyled = styled.div`

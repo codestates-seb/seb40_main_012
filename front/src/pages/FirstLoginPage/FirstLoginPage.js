@@ -19,10 +19,10 @@ import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
-import PageContainer from '../../components/PageContainer';
+import { PageContainer } from 'containers';
 import styled from 'styled-components';
-import { genreData, ageGroupData, genderData } from '../../util/util';
-import { firstLoginAsync } from '../../store/modules/authSlice';
+import { genreData, ageGroupData, genderData } from 'util/util';
+import { firstLoginAsync } from 'store/modules/authSlice';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;

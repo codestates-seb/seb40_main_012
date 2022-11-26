@@ -6,14 +6,14 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import PageContainer from '../../components/PageContainer';
-import { ContainedButton } from '../../components/Buttons';
+import { PageContainer } from 'containers';
+import { ContainedButton } from 'components';
 
 import {
   signUpAsync,
   selectValidCheckArray,
   setIsValid,
-} from '../../store/modules/signUpSlice';
+} from 'store/modules/signUpSlice';
 import SignUpTextFields from './SignUpTextFields';
 
 const SignInLinkStyled = styled(Link)`
@@ -48,10 +48,11 @@ const SignUpPage = () => {
     // console.log(params);
     dispatch(signUpAsync(params))
       .then((response) => {
-        if (response.payload?.data) {
+        if (response.payload) {
           navigate('/user/signin', { replace: true });
         } else {
-          console.log(response.payload?.errorMessage);
+          // 에러 어떻게 넘어오는지 확인해보기
+          // console.log(response.payload?.errorMessage);
         }
       })
       .catch((err) => console.log(err));

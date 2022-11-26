@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import PageContainer from '../../components/PageContainer';
+import { PageContainer } from 'containers';
 import CollectionDetailHeader from './CollectionDetailHeader';
 import CollectionTags from './CollectionTags';
 import CollectionHeaderBtns from './CollectionHeaderBtns';
