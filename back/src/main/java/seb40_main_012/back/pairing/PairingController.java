@@ -50,7 +50,7 @@ public class PairingController {
     @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
             @PathVariable("isbn13") @Positive String isbn13,
-            @RequestPart(value = "image") @Nullable MultipartFile file,
+            @RequestParam(value = "image") @Nullable MultipartFile file,
             @Valid @RequestPart(value = "postPairingDto") PairingDto.Post postPairing) throws IOException {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
@@ -66,10 +66,10 @@ public class PairingController {
                 new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/pairings/{pairing_id}/edit")
+    @PostMapping("/pairings/{pairing_id}/edit")
     public ResponseEntity patchPairing(
             @PathVariable("pairing_id") @Positive long pairingId,
-            @RequestPart(value = "image") @Nullable MultipartFile file,
+            @RequestParam(value = "image") @Nullable MultipartFile file,
             @Valid @RequestPart(value = "patchPairingDto") PairingDto.Patch patchPairing) throws IOException {
 
         if (pairingService.findPairing(pairingId).getImage() == null && file == null) {
@@ -102,8 +102,9 @@ public class PairingController {
 
         } else if (pairingService.findPairing(pairingId).getImage() != null && file != null) {
 
-            imageService.deletePairingImage(pairingId); // 기존 이미지 삭제
+
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
+            imageService.deletePairingImage(pairingId); // 기존 이미지 삭제
             Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
             imageService.savePairingImage(file, updatedPairing); // 새 이미지 저장
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
