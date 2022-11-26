@@ -15,7 +15,7 @@ import {
   asyncDeletePairingComment,
   asyncEditPairingComment,
   asyncLikePairingComment,
-  asyncDisikePairingComment,
+  asyncDislikePairingComment,
 } from '../../../store/modules/pairingSlice';
 import { selectEmail } from '../../../store/modules/authSlice';
 import Comments from '../../../components/Comments/Comments';
@@ -132,7 +132,7 @@ const PairingDetail = () => {
   };
 
   const handleCommentDislike = (commentId) => {
-    dispatch(asyncDisikePairingComment(commentId));
+    dispatch(asyncDislikePairingComment(commentId));
   };
 
   return (
@@ -203,7 +203,7 @@ const PairingDetail = () => {
         commentDelete={handleCommentDelete}
         commentEdit={handleCommentEdit}
         commentLike={handleCommentLike}
-        commentDisLike={handleCommentDislike}
+        commentDislike={handleCommentDislike}
       />
     </PageContainer>
   );
