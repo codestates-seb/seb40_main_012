@@ -85,7 +85,7 @@ public class Pairing {
     @NotFound(action = NotFoundAction.IGNORE)
     private List<Like> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "pairing", cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<Bookmark> bookmarks = new ArrayList<>();
