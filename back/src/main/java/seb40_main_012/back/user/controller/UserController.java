@@ -174,6 +174,7 @@ public class UserController {
         return new ListResponseDto<>(listCount, pairingDto);
     }
 
+
     @GetMapping("/mypage/userCollection")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {
@@ -184,6 +185,11 @@ public class UserController {
         return new ListResponseDto<>(listCount, collectionDto);
     }
 
+    @DeleteMapping("/mypage/userCollection/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAllUserCollection(){
+        userService.deleteAllUserCollection();
+    }
 
     @GetMapping("/mypage/bookmark/collection")
     @ResponseStatus(HttpStatus.OK)
