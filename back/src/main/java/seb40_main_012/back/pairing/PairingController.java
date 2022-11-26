@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
+import seb40_main_012.back.common.image.ImageController;
 import seb40_main_012.back.common.image.ImageService;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
@@ -25,6 +26,7 @@ import seb40_main_012.back.user.service.UserService;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 @Validated
@@ -38,6 +40,7 @@ public class PairingController {
     private final PairingMapper pairingMapper;
     private final BookService bookService;
     private final LikeService likeService;
+    private final ImageController imageController;
     private final ImageService imageService;
     //    ------------------------------------------------------------
     private final NotificationService noticeService;
@@ -45,18 +48,18 @@ public class PairingController {
 
     @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
-//            @RequestHeader("Authorization") long userId,
-            @RequestParam("image") @Nullable MultipartFile file,
+            @RequestParam(value = "image", required = false) MultipartFile file,
             @PathVariable("isbn13") @Positive String isbn13,
             @Valid @RequestBody PairingDto.Post postPairing) throws IOException {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
         Pairing createPairing = pairingService.createPairing(pairing, isbn13);
+
+        assert file != null;
+        imageService.savePairingImage(file, pairing);
+
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
 
-        if (file != null) {
-            imageService.savePairingImage(file, createPairing);
-        }
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED);

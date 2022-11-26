@@ -7,6 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.util.UriUtils;
+import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.constraints.Positive;
 import java.io.IOException;
@@ -47,13 +49,29 @@ public class ImageController {
 
         log.info("multipartFile = {}", file);
 
-//        for (MultipartFile multipartFile : files) {
-//            imageService.saveImage(multipartFile);
-//        }
         System.out.println(savedImage.getStoredPath());
 
         return "redirect:/";
     }
+
+//    @PostMapping("/pairing/upload")
+//    public String uploadPairingImage(
+//            @RequestParam("image") @Nullable MultipartFile file,
+//            @RequestParam("pairing") Pairing pairing
+//            ) throws IOException { // 이미지 업로드
+//
+//        Long savedImageId = imageService.savePairingImage(file, pairing);
+//
+//        Image savedImage = imageService.findImage(savedImageId);
+//
+//        log.info("multipartFile = {}", file);
+//
+//        System.out.println(savedImage.getStoredPath());
+//
+//        return "redirect:/";
+//    }
+
+
 
 //    @GetMapping("/{image_id}")
 //    public String viewImage(Model model) {

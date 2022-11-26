@@ -56,8 +56,8 @@ public class UserController {
         UserDto.ResponseDto response = mapper.userToUserResponse(createdUser);
 
         return new ResponseEntity<>(
-                response
-//                new SingleResponseDto<>(response)
+//                response
+                new SingleResponseDto<>(response)
                 , HttpStatus.CREATED);
     }
 
