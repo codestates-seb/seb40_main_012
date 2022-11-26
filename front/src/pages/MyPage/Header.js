@@ -39,15 +39,18 @@ const Header = () => {
   const fetchData = async () => {
     axios
       .get(USER_INFO_URL)
+
       .then((response) => {
+        console.log('response', response);
         setUserInfo({
-          introduction: '',
-          gender: '',
-          age: '',
-          nickname: '',
+          introduction: response.data.introduction,
+          gender: response.data.gender,
+          age: response.data.age,
+          nickname: response.data.nickname,
           temp: response.data.temp,
-          category: [],
+          category: response.data.category,
         });
+        console.log('userInfo', userInfo);
       })
       .catch((error) => console.log('에러', error));
   };
