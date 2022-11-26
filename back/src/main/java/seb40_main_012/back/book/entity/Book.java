@@ -133,7 +133,7 @@ public class Book {
     //    --------------------------------------------------------------------------------------------
     /*북마크*/
     //    --------------------------------------------------------------------------------------------
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Bookmark> bookmarks = new ArrayList<>();
 }

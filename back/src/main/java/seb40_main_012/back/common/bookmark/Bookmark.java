@@ -30,7 +30,7 @@ public class Bookmark {
     @JsonBackReference
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "collection_id")
     @JsonBackReference
     private BookCollection bookCollection;
@@ -40,7 +40,7 @@ public class Bookmark {
     @JsonBackReference
     private Pairing pairing;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinColumn(name = "book_id")
     @JsonBackReference
     private Book book;
