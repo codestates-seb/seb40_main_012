@@ -40,6 +40,7 @@ public class UserDto {
     }
 
     @Getter
+    @Setter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
