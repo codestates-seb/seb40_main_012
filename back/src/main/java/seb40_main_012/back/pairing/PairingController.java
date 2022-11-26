@@ -1,14 +1,20 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
+import seb40_main_012.back.common.image.ImageController;
+import seb40_main_012.back.common.image.ImageService;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
 //import seb40_main_012.back.notification.NotificationService;
@@ -19,6 +25,8 @@ import seb40_main_012.back.user.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.List;
 
 @Validated
@@ -32,18 +40,27 @@ public class PairingController {
     private final PairingMapper pairingMapper;
     private final BookService bookService;
     private final LikeService likeService;
+    private final ImageController imageController;
+    private final ImageService imageService;
+    private final MultipartResolver multipartResolver;
     //    ------------------------------------------------------------
     private final NotificationService noticeService;
 //    ------------------------------------------------------------
 
     @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
-//            @RequestHeader("Authorization") long userId,
             @PathVariable("isbn13") @Positive String isbn13,
-            @Valid @RequestBody PairingDto.Post postPairing) {
+            @RequestPart(value = "image", required = false) @Nullable MultipartFile file,
+            @RequestPart(value = "postParingDto") PairingDto.Post postPairing) throws IOException {
+//            @RequestParam(value = "image", required = false) MultipartFile file,
+//            @Valid @RequestBody PairingDto.Post postPairing) throws IOException {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
         Pairing createPairing = pairingService.createPairing(pairing, isbn13);
+
+        if (file != null) {
+            imageService.savePairingImage(file, createPairing);
+        }
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
 
         return new ResponseEntity<>(
@@ -146,6 +163,10 @@ public class PairingController {
             pairing.setIsBookmarked(null);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
+            if(pairing.getImage() != null) {
+                response.setImagePath(pairing.getImage().getStoredPath());
+            }
+
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
         } else {
@@ -154,6 +175,11 @@ public class PairingController {
             pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
             Pairing isLikedComments = pairingService.isLikedComments(pairingId);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
+
+            if(pairing.getImage() != null) {
+                response.setImagePath(pairing.getImage().getStoredPath());
+            }
+
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
         }
@@ -336,6 +362,5 @@ public class PairingController {
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(findPairing);
         return response;
     }
-
 
 }

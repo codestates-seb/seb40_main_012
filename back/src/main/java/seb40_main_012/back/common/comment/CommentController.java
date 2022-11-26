@@ -8,7 +8,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
-import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;

@@ -56,6 +56,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 사진 저장을 위해 추가
     implementation 'org.springframework.boot:spring-boot-starter-hateoas' // 하이퍼링크를 위해 추가
+	implementation 'commons-io:commons-io:2.11.0' // 사진 업로드
+	implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4' // 사진 업로드
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'org.mapstruct:mapstruct:1.5.3.Final'
