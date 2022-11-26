@@ -231,6 +231,11 @@ public class UserService {
         else return Math.round(temperature * 10) / 10.0;
     }
 
+    public void deleteAllUserCollection(){
+        User findUser = getLoginUser();
+        collectionRepository.deleteAllByUser(findUser);
+    }
+
 //    public List<Pairing> getBookMarkByPairing(Long id){
 //    }
 
