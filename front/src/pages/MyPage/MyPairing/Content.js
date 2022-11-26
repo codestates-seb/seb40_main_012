@@ -303,7 +303,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                           // 현재 작동 안됨 (코멘트 아이디 없음)
                           if (
                             window.confirm(
-                              `${data.commentId}번째 코멘트를 삭제하시겠습니까?`
+                              `${data.commentId}번째 페어링을 삭제하시겠습니까?`
                             )
                           ) {
                             onRemove(data.commentId);
