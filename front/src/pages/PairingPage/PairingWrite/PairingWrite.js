@@ -143,13 +143,13 @@ const PairingWrite = () => {
     const formData = new FormData();
     formData.append('image', imgData);
     console.log('formData', formData);
-
-    await axios.post('/api/images/upload', formData, {
+    dispatch(asyncPostPairing({ pairingPostBody, isbn: curBookData.isbn13 }));
+    const isbn = curBookData.isbn13;
+    await axios.post(`/api/books/${isbn}/pairings/add`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
     });
-    dispatch(asyncPostPairing({ pairingPostBody, isbn: curBookData.isbn13 }));
     navigate('/pairing', { replace: true });
     categoryReset();
     titleReset();
@@ -185,7 +185,7 @@ const PairingWrite = () => {
           <OutLinkInput outLinkBind={outLinkBind} />
           <label htmlFor="upload" className="imgLabel">
             <Imgbtn>이미지 업로드</Imgbtn>
-            <span className="imgName">{imgData.name}</span>
+            <span className="imgName">{imgData?.name}</span>
           </label>
           <input id="upload" type="file" onChange={onChangeImg} />
         </LinkAndImgWrapperStyled>
