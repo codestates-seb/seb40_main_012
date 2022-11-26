@@ -7,8 +7,8 @@ import BodyInput from './BodyInput';
 import OutLinkInput from './OutLinkInput';
 import useInput from '../../../util/useInput';
 import { ContainedButton } from '../../../components/Buttons';
-import { useDispatch, useSelector } from 'react-redux';
-import { asyncPostPairing } from '../../../store/modules/pairingSlice';
+import { useSelector } from 'react-redux';
+// import { asyncPostPairing } from '../../../store/modules/pairingSlice';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import axios from '../../../api/axios';
@@ -117,7 +117,7 @@ const PairingWrite = () => {
   const [outLink, outLinkBind, outLinkReset] = useInput('');
   const [imgData, setImgData] = useState({});
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const curBookData = useSelector((state) => state.book.data);
 
@@ -142,8 +142,8 @@ const PairingWrite = () => {
     console.log('ff', imgData);
     const formData = new FormData();
     formData.append('image', imgData);
-    console.log('formData', formData);
-    dispatch(asyncPostPairing({ pairingPostBody, isbn: curBookData.isbn13 }));
+    formData.append('postResponseDto', pairingPostBody);
+    // dispatch(asyncPostPairing({ pairingPostBody, isbn: curBookData.isbn13 }));
     const isbn = curBookData.isbn13;
     await axios.post(`/api/books/${isbn}/pairings/add`, formData, {
       headers: {
