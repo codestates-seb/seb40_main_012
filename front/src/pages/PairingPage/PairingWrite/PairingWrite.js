@@ -144,13 +144,19 @@ const PairingWrite = () => {
     console.log('ff', imgData);
     const formData = new FormData();
     formData.append('image', imgData);
-    formData.append('postResponseDto', pairingPostBody);
+    const bodyData = new FormData();
+    bodyData.append('postParingDto', pairingPostBody);
     //원래로 되돌리기!!(147번 주석처리하고 149 주석 해제)
     // dispatch(asyncPostPairing({ pairingPostBody, isbn: curBookData.isbn13 }));
     const isbn = curBookData.isbn13;
     await axios.post(`/api/books/${isbn}/pairings/add`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
+      },
+    });
+    await axios.post(`/api/books/${isbn}/pairings/add`, bodyData, {
+      headers: {
+        'Content-Type': 'application/json',
       },
     });
     navigate('/pairing', { replace: true });
