@@ -33,10 +33,13 @@ public class PairingDto {
         @NotNull(message = "카테고리를 선택하셔야 합니다.")
         private ParingCategory pairingCategory;
 
-        private String imagePath;
-
         private String outLinkPath;
 
+        public Post(String title, String body, ParingCategory pairingCategory) {
+            this.title = title;
+            this.body = body;
+            this.pairingCategory = pairingCategory;
+        }
     }
 
     @Data
