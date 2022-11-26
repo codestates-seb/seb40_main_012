@@ -27,6 +27,12 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(nativeQuery = true, value = "DELETE FROM COMMENT WHERE USER_ID = :userId")
     void deleteAllByUserId(long userId);
 
+    @Query(nativeQuery = true, value = "select * " +
+            "from Comment " +
+            "where User_Id = :userId "
+            + "order by " + "created_at desc, created_at " + "desc")
+    List<Comment> findByUserId(long userId);
+
     Long countBy();
 
 }

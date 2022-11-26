@@ -186,6 +186,15 @@ public class CommentService {
         return commentRepository.findByIsbn13AndUserId(isbn13, findUser.getUserId());
     }
 
+    public List<Comment> findMyCommentAll() {
+
+        User findUser = userService.getLoginUser();
+
+        long userId = findUser.getUserId();
+
+        return commentRepository.findByUserId(userId);
+    }
+
 //    public Page<Comment> findComments(int page, int size) { // 페이지네이션으로 받기
 //
 //        return commentRepository.findAll(PageRequest.of(page, size, Sort.by("likeCount").descending()));

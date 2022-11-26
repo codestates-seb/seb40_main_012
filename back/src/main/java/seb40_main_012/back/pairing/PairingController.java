@@ -50,8 +50,8 @@ public class PairingController {
     @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
             @PathVariable("isbn13") @Positive String isbn13,
-            @RequestPart(value = "image", required = false) @Nullable MultipartFile file,
-            @RequestPart(value = "postParingDto") PairingDto.Post postPairing) throws IOException {
+            @RequestPart(value = "image") @Nullable MultipartFile file,
+            @RequestPart(value = "postPairingDto") PairingDto.Post postPairing) throws IOException {
 //            @RequestParam(value = "image", required = false) MultipartFile file,
 //            @Valid @RequestBody PairingDto.Post postPairing) throws IOException {
 
@@ -61,6 +61,7 @@ public class PairingController {
         if (file != null) {
             imageService.savePairingImage(file, createPairing);
         }
+
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
 
         return new ResponseEntity<>(
