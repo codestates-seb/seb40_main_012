@@ -103,11 +103,22 @@ public class ImageService {
         imageRepository.delete(findImage);
     }
 
+    public void deletePairingImage(long pairingId) {
+
+        imageRepository.deleteByPairingId(pairingId);
+    }
+
     public void verifyImage(long userId, Image image) {
     }
 
     public Image findVerifiedImage(long imageId) {
         Optional<Image> optionalImage = imageRepository.findById(imageId);
+        return optionalImage.orElseThrow(() ->
+                new BusinessLogicException(ExceptionCode.IMAGE_NOT_FOUND));
+    }
+
+    public Image findVerifiedImageByPairingId(long pairingId) {
+        Optional<Image> optionalImage = imageRepository.findByPairingId(pairingId);
         return optionalImage.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.IMAGE_NOT_FOUND));
     }

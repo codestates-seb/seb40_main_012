@@ -51,9 +51,7 @@ public class PairingController {
     public ResponseEntity postPairing(
             @PathVariable("isbn13") @Positive String isbn13,
             @RequestPart(value = "image") @Nullable MultipartFile file,
-            @RequestPart(value = "postPairingDto") PairingDto.Post postPairing) throws IOException {
-//            @RequestParam(value = "image", required = false) MultipartFile file,
-//            @Valid @RequestBody PairingDto.Post postPairing) throws IOException {
+            @Valid @RequestPart(value = "postPairingDto") PairingDto.Post postPairing) throws IOException {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
         Pairing createPairing = pairingService.createPairing(pairing, isbn13);
@@ -66,32 +64,55 @@ public class PairingController {
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED);
-
-//        EntityModel<Pairing> entityModel = EntityModel.of(pairingService.createPairing(pairing, bookId),
-//                linkTo(methodOn(PairingDto.Post.class).getOutLinkPath()).withRel("link"));
-
-//        return ResponseEntity
-//                .created(entityModel.getRequiredLink(IanaLinkRelations.SEARCH).toUri())
-//                .body(entityModel);
     }
 
     @PatchMapping("/pairings/{pairing_id}/edit")
-    public ResponseEntity patchPairing(@PathVariable("pairing_id") @Positive long pairingId,
-                                       @Valid @RequestBody PairingDto.Patch patchPairing) {
+    public ResponseEntity patchPairing(
+            @PathVariable("pairing_id") @Positive long pairingId,
+            @RequestPart(value = "image") @Nullable MultipartFile file,
+            @Valid @RequestPart(value = "patchPairingDto") PairingDto.Patch patchPairing) throws IOException {
 
-        Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
-        Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
-        PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
+        if (pairingService.findPairing(pairingId).getImage() == null && file == null) {
 
-        return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.OK);
+            Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
+            Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
+            PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
 
-//        EntityModel<Pairing> entityModel = EntityModel.of(pairingService.updatePairing(pairing, pairingId),
-//                linkTo(methodOn(PairingDto.Patch.class).getOutLinkPath()).withRel("link"));
-//
-//        return ResponseEntity
-//                .ok()
-//                .body(entityModel);
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.OK);
+
+        } else if (pairingService.findPairing(pairingId).getImage() == null && file != null) {
+
+            Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
+            Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
+            imageService.savePairingImage(file, updatedPairing); // 이미지 새로 저장
+            PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.OK);
+
+        } else if (pairingService.findPairing(pairingId).getImage() != null && file == null) {
+
+            Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
+            Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
+            PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.OK);
+
+        } else if (pairingService.findPairing(pairingId).getImage() != null && file != null) {
+
+            imageService.deletePairingImage(pairingId); // 기존 이미지 삭제
+            Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
+            Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
+            imageService.savePairingImage(file, updatedPairing); // 새 이미지 저장
+            PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.OK);
+
+        } else return new ResponseEntity(null,HttpStatus.I_AM_A_TEAPOT);
+
     }
 
     @PatchMapping("/pairings/{pairing_id}/like")
@@ -164,7 +185,7 @@ public class PairingController {
             pairing.setIsBookmarked(null);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
-            if(pairing.getImage() != null) {
+            if (pairing.getImage() != null) {
                 response.setImagePath(pairing.getImage().getStoredPath());
             }
 
@@ -177,7 +198,7 @@ public class PairingController {
             Pairing isLikedComments = pairingService.isLikedComments(pairingId);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
-            if(pairing.getImage() != null) {
+            if (pairing.getImage() != null) {
                 response.setImagePath(pairing.getImage().getStoredPath());
             }
 
@@ -186,7 +207,7 @@ public class PairingController {
         }
     }
 
-//    --------------------------------------------------------------------------------------------
+    //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    조회 API 세분화
 //    --------------------------------------------------------------------------------------------
@@ -357,7 +378,7 @@ public class PairingController {
 
     @PostMapping("/pairings/{pairing-id}/bookmark")
     @ResponseStatus(HttpStatus.OK)
-    public PairingDto.Response bookmarkPairing(@PathVariable("pairing-id") Long pairingId){
+    public PairingDto.Response bookmarkPairing(@PathVariable("pairing-id") Long pairingId) {
         bookmarkService.bookmarkPairing(pairingId);
         Pairing findPairing = pairingService.findVerifiedPairing(pairingId);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(findPairing);
