@@ -1,11 +1,17 @@
+/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import StarBorderRoundedIcon from '@mui/icons-material/StarBorderRounded';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import MyCommentBook from './MyCommentBook';
 // import { useState } from 'react';
+import axios from '../../../api/axios';
+import MyCommentPairing from './MyCommentPairing';
+import MyCommentCollection from './MyCommentCollection';
+
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
   input {
@@ -28,8 +34,8 @@ const ContentContainer = styled.div`
     align-items: center;
     justify-content: center;
     align-content: center;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
   }
   .fixed {
     position: fixed;
@@ -93,28 +99,31 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ commentLength, data, setData }) => {
-  // const [data, setData] = useState({
-  //   content: dataArray,
-  //   hasMore: true,
-  // });
-
+const Content = ({ commentLength, content, setContent }) => {
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
     if (commentLength >= 100) {
-      setData({
-        content: data.content,
+      setContent({
+        bookComment: content.bookComment,
+        pairingComment: content.pairingComment,
+        collectionComment: content.collectionComment,
         hasMore: false,
+        listCount: 0,
       });
       return;
     }
     if (commentLength < 10) {
-      setData({
-        content: data.content,
+      setContent({
+        bookComment: content.bookComment,
+        pairingComment: content.pairingComment,
+        collectionComment: content.collectionComment,
         hasMore: false,
+        listCount: 0,
       });
+
       return;
     }
+
     ////// 나중에 통신하는 거 붙여주기
     // setTimeout(() => {
     //   setInfiniteData({
@@ -129,53 +138,28 @@ const Content = ({ commentLength, data, setData }) => {
     //   });
     // }, 800);
     setTimeout(() => {
-      setData({
-        content: data.content.concat(data.content),
+      setContent({
+        bookComment: content.bookComment.concat(content.bookComment),
+        pairingComment: content.pairingComment.concat(content.pairingComment),
+        collectionComment: content.collectionComment.concat(
+          content.collectionComment
+        ),
         hasMore: true,
+        listCount: 0,
       });
     }, 800);
     /////
   };
 
-  const onRemove = (targetId) => {
-    // const newBookCommentList = infiniteData.bookComment.filter(
-    //   (el) => el.commentId !== targetId
-    // );
-    // const newPairingCommentList = infiniteData.pairingComment.filter(
-    //   (el) => el.commentId !== targetId
-    // );
-    // const newCollectionCommentList = infiniteData.collectionComment.filter(
-    //   (el) => el.commentId !== targetId
-    // );
-    // setInfiniteData({
-    //   bookComment: newBookCommentList,
-    //   pairingComment: newPairingCommentList,
-    //   collectionComment: newCollectionCommentList,
-    //   hasMore: true,
-    // });
-    const newCommentList = data.content.filter(
-      (el) => el.commentId !== targetId
-    );
-    setData({
-      content: newCommentList,
-      hasMore: true,
-    });
-  };
-
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      // setInfiniteData({
-      //   bookComment: [],
-      //   pairingComment: [],
-      //   collectionComment: [],
-      //   hasMore: false,
-      // });
-      setData({
-        content: [],
-        hasMore: false,
-      });
+      axios
+        .delete(`api/comments/delete`)
+        .then(location.reload())
+        .catch((error) => console.log('에러', error));
     }
   };
+  console.log('hasmore상태', content.hasMore);
 
   return (
     <>
@@ -212,11 +196,11 @@ const Content = ({ commentLength, data, setData }) => {
         </Grid>
 
         <InfiniteScroll
-          dataLength={data.content.length}
+          dataLength={content.bookComment.length}
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
-          next={data.content && fetchMoreData}
-          hasMore={data.hasMore} // 스크롤 막을지 말지 결정
+          next={content && fetchMoreData}
+          hasMore={content.hasMore} // 스크롤 막을지 말지 결정
           loader={
             <p
               style={{
@@ -227,151 +211,20 @@ const Content = ({ commentLength, data, setData }) => {
                 src={'/images/cherrypick_loading.gif'}
                 alt="loading cherrypick"
               ></img>
+              <div>열심히 읽어오는 중..</div>
             </p>
           }
           height={400}
           endMessage={
             <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
+              <b>Yayy! 모든 코멘트를 다 읽었어요!</b>
             </p>
           }
         >
           <div>
-            {data.content ? (
-              data.content.map((data, key) => (
-                <ItemContainer key={key}>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }}
-                  >
-                    <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
-
-                    <Grid item xs={2}>
-                      {data && (
-                        <BookImg>
-                          <img
-                            className="resize"
-                            src={
-                              data.cover.length !== 0
-                                ? data.cover
-                                : '/images/cherrypick_loading.gif'
-                            }
-                            alt="book thumbnail"
-                          ></img>
-                        </BookImg>
-                      )}
-                    </Grid>
-                    <Grid item xs={9}>
-                      <FlexBox>
-                        <Typography
-                          color="#232627"
-                          sx={{
-                            height: 125,
-                            fontWeight: 200,
-                          }}
-                          variant="body2"
-                          gutterBottom
-                        >
-                          {data.content}
-                        </Typography>
-
-                        <div className="heart-star-title">
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                            color="#BFBFBF"
-                          >
-                            {data.commentType === 'BOOK' ? (
-                              <StarBorderRoundedIcon
-                                align="center"
-                                style={{ color: 'FFF599' }}
-                              />
-                            ) : (
-                              <>
-                                <FavoriteTwoToneIcon
-                                  sx={{ width: 19.5, height: 19.5 }}
-                                  align="center"
-                                  style={{ color: 'FFD8D8' }}
-                                />
-                                <>{data.commentLike}</>
-                              </>
-                            )}
-                          </Grid>
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                            color="#BFBFBF"
-                          >
-                            {data.commentType === 'BOOK' ? (
-                              <>
-                                <FavoriteTwoToneIcon
-                                  sx={{ width: 19.5, height: 19.5 }}
-                                  align="center"
-                                  style={{ color: 'FFD8D8' }}
-                                />
-                                {data.commentLike}
-                              </>
-                            ) : null}
-                          </Grid>
-                          <Grid
-                            item
-                            xs={6}
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row-reverse',
-                            }}
-                            align="right"
-                            color="#737373"
-                          >
-                            <div>
-                              {data.bookName ? data.bookName : null},
-                              {data.author ? data.author : null}
-                            </div>
-                          </Grid>
-                        </div>
-                      </FlexBox>
-                    </Grid>
-                    <Grid
-                      item
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row-reverse',
-                      }}
-                    >
-                      <Remove
-                        onClick={() => {
-                          // 현재 작동 안됨 (코멘트 아이디 없음)
-                          if (
-                            window.confirm(
-                              `${data.commentId}번째 코멘트를 삭제하시겠습니까?`
-                            )
-                          ) {
-                            onRemove(data.commentId);
-                          }
-                        }}
-                      >
-                        <DeleteOutlinedIcon />
-                      </Remove>
-                    </Grid>
-                  </Grid>
-                </ItemContainer>
-              ))
-            ) : (
-              <div>데이터없어용</div>
-            )}
+            <MyCommentBook content={content} setContent={setContent} />
+            <MyCommentPairing content={content} setContent={setContent} />
+            <MyCommentCollection content={content} setContent={setContent} />
           </div>
         </InfiniteScroll>
       </ContentContainer>

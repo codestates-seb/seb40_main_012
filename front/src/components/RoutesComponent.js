@@ -31,6 +31,7 @@ import {
 //임시 페이지!
 import ReduxPage from 'pages/TestPage/Temp_Redux';
 import ButtonTest from 'pages/TestPage/ButtonTest';
+import ImgTest from 'pages/TestPage/ImgTest';
 
 const RoutesComponent = () => {
   const isLogin = useSelector(selectIsLogin);
@@ -102,6 +103,7 @@ const RoutesComponent = () => {
       <Route path="/redux" element={<ReduxPage />} />
       <Route path="/button-test" element={<ButtonTest />} />
       <Route path="*" element={getElement(NoMatch, null)} />
+      <Route path="/img-test" element={<ImgTest />} />
     </Routes>
   );
 };

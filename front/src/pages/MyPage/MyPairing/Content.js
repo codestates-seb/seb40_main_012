@@ -4,6 +4,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import axios from '../../../api/axios';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -27,8 +28,8 @@ const ContentContainer = styled.div`
     align-items: center;
     justify-content: center;
     align-content: center;
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
   }
   .fixed {
     position: fixed;
@@ -131,16 +132,19 @@ const Content = ({ setInfiniteData, infiniteData }) => {
     /////
   };
 
-  const onRemove = (targetId) => {
-    const newCommentList = infiniteData.content.data.filter(
-      (el) => el.commentId !== targetId
-    );
-    setInfiniteData({ content: { data: newCommentList }, hasMore: true });
+  const onRemove = (id) => {
+    axios
+      .delete(`/api/books/pairings/${id}/delete`)
+      .then(location.reload())
+      .catch((error) => console.log('에러', error));
   };
 
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      setInfiniteData({ content: { data: [] }, hasMore: false });
+      axios
+        .delete(`/api/books/pairings/delete`)
+        .then(location.reload())
+        .catch((error) => console.log('에러', error));
     }
   };
 
@@ -194,12 +198,13 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                 src={'/images/cherrypick_loading.gif'}
                 alt="loading cherrypick"
               ></img>
+              <div>열심히 읽어오는 중..</div>
             </p>
           }
           height={400}
           endMessage={
             <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
+              <b>Yayy! 모든 페어링을 다 읽었어요!</b>
             </p>
           }
         >
@@ -298,7 +303,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                           // 현재 작동 안됨 (코멘트 아이디 없음)
                           if (
                             window.confirm(
-                              `${data.commentId}번째 코멘트를 삭제하시겠습니까?`
+                              `${data.commentId}번째 페어링을 삭제하시겠습니까?`
                             )
                           ) {
                             onRemove(data.commentId);
