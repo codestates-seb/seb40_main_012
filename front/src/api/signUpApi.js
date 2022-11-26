@@ -11,7 +11,7 @@ const signUpApi = {
     return new Promise((resolve, reject) => {
       return axios
         .post(USERS_URL, params)
-        .then(() => resolve())
+        .then((response) => resolve(response))
         .catch((error) => reject(error));
     });
   },
