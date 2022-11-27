@@ -7,10 +7,10 @@ import BodyInput from './BodyInput';
 import OutLinkInput from './OutLinkInput';
 import useInput from '../../../util/useInput';
 import { ContainedButton } from '../../../components/Buttons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import axios from '../../../api/axios';
+import { useState, useEffect } from 'react';
+import { asyncPostPairing } from '../../../store/modules/pairingSlice';
 
 const Wrapper = styled.div`
   display: flex;
@@ -116,8 +116,26 @@ const PairingWrite = () => {
   const [outLink, outLinkBind, outLinkReset] = useInput('');
   const [imgData, setImgData] = useState({});
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const curBookData = useSelector((state) => state.book.data);
+  console.log(curBookData);
+  const preventClose = (e) => {
+    e.preventDefault();
+    e.returnValue = '\\o/';
+  };
+  useEffect(() => {
+    if (!curBookData.title) {
+      alert('작성 중인 글이 취소되었습니다. 메인 페이지로 이동합니다');
+      navigate('/pairing');
+    }
+    (() => {
+      window.addEventListener('beforeunload', preventClose);
+    })();
+    return () => {
+      window.removeEventListener('beforeunload', preventClose);
+    };
+  }, []);
 
   const onChangeImg = (e) => {
     e.preventDefault();
@@ -140,23 +158,18 @@ const PairingWrite = () => {
     const formData = new FormData();
     formData.append('image', imgData);
     formData.append(
-      'postParingDto',
+      'postPairingDto',
       new Blob([JSON.stringify(pairingPostBody)], {
         type: 'application/json',
       })
     );
-    // dispatch(asyncPostPairing({ pairingPostBody, isbn: curBookData.isbn13 }));
-    const isbn = curBookData.isbn13;
-    await axios.post(`/api/books/${isbn}/pairings/add`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    dispatch(asyncPostPairing({ formData, isbn: curBookData.isbn13 }));
     navigate('/pairing', { replace: true });
     categoryReset();
     titleReset();
     bodyReset();
     outLinkReset();
+    setImgData({});
   };
 
   return (
