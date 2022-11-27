@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import PageContainer from '../../components/PageContainer';
+import { PageContainer } from 'containers';
 import PairingOriginBook from '../PairingPage/PairingDetail/PairingOriginBook';
 import RateModal from './RateModal';
 import BestPairing from '../MainPage/BestPairing';

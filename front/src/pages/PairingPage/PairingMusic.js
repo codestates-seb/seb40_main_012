@@ -1,4 +1,4 @@
-import PageContainer from '../../components/PageContainer';
+import { PageContainer } from 'containers';
 import PairingTab from './PairingComponents/PairingTab';
 import PairingCuration from './PairingComponents/PairingCuration';
 import { useSelector, useDispatch } from 'react-redux';

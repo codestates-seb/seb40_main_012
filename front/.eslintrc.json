@@ -29,5 +29,12 @@
         "labelAttributes": ["htmlFor"]
       }
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "moduleDirectory": ["node_modules", "src/"]
+      }
+    }
   }
 }

@@ -12,18 +12,17 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import styled from 'styled-components';
-import PageContainer from '../../../components/PageContainer';
-import { OutlinedButton } from '../../../components/Buttons';
-import ValidationTextFields from '../../../components/ValidationTextFields';
-import { getUserInfoApi } from '../../../api/myPageApi';
-import { patchUserInfoAsync } from '../../../store/modules/authSlice';
+import { PageContainer } from 'containers';
+import { OutlinedButton, ValidationTextFields } from 'components';
+import { myPageApi } from 'api';
+import { patchUserInfoAsync } from 'store/modules/authSlice';
 import {
   validationCheck,
   duplicationCheck,
   genderData,
   ageGroupData,
   genreData,
-} from '../../../util/util';
+} from 'util/util';
 import WithDrawal from './WithDrawalModal';
 
 const WrapperStyled = styled.div`
@@ -134,7 +133,7 @@ const EditProfile = () => {
 
   const getUserInfo = async () => {
     try {
-      const response = await getUserInfoApi();
+      const response = await myPageApi.getUserInfo();
       const { age, category, gender, introduction, nickname, profileImage } =
         response;
       const categoryObj = {};
@@ -147,8 +146,8 @@ const EditProfile = () => {
         nickName: nickname,
         introduction: introduction,
       });
-      setGender(gender);
-      setAge(age);
+      setGender(gender === 'NONE' ? '' : gender);
+      setAge(age === 'NONE' ? '' : age);
       setChecked({ ...checked, ...categoryObj });
       setProfileImage(profileImage);
     } catch (error) {

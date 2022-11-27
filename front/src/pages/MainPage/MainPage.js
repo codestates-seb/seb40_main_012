@@ -1,4 +1,4 @@
-import PageContainer from '../../components/PageContainer';
+import { PageContainer } from 'containers';
 import Guide from './Guide';
 import MainBooks from './MainBooks';
 import BestBooks from './BestBooks';

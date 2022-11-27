@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import PageContainer from '../../components/PageContainer';
+import { PageContainer } from 'containers';
 import CollectionInfoInput from './CollectionInfoInput';
 import CollectionWriteBtns from './CollectionWriteBtns';
 import CollectionBookInput from './BookInput/CollectionBookInput';

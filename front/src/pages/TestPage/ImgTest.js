@@ -15,24 +15,8 @@ const Div = styled.div`
 
 const ImgTest = () => {
   const [imgData, setImgData] = useState({});
-  // const onChangeImg = async (e) => {
-  //   e.preventDefault();
 
-  //   if (e.target.files) {
-  //     const uploadFile = e.target.files[0];
-  //     console.log('uploadFile', uploadFile);
-  //     const formData = new FormData();
-  //     formData.append('image', uploadFile);
-  //     console.log('formData', formData);
-
-  //     await axios.post('/api/images/upload', formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-  //   }
-  // };
-  const onChangeImg = (e) => {
+  const onChangeImg = async (e) => {
     e.preventDefault();
 
     if (e.target.files) {

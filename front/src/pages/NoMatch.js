@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import PageContainer from '../components/PageContainer';
+import { PageContainer } from 'containers';
 
 const ImgContainer = styled.div`
   width: 450px;
