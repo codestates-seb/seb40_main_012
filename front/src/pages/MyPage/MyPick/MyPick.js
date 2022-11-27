@@ -39,19 +39,19 @@ const MyPick = () => {
   console.log('마이픽 시작');
   const [view, setView] = useState(4);
   const [content, setContent] = useState({
-    listCount: '',
+    listCount: 0,
     data: [],
     hasMore: true,
   });
 
   const [pairingContent, setPairingContent] = useState({
-    listCount: '',
+    listCount: 0,
     data: [],
     hasMore: true,
   });
 
   const [collectionContent, setCollectionContent] = useState({
-    listCount: '',
+    listCount: 0,
     data: [],
     hasMore: true,
   });
@@ -60,16 +60,6 @@ const MyPick = () => {
     data: [],
     hasMore: true,
   });
-
-  // 테스트용
-  const fetchDataTest = async () => {
-    axios
-      .get(COMMENT_URL)
-      .then((response) => {
-        console.log('response를 알아보장', response);
-      })
-      .catch((error) => console.log('에러', error));
-  };
 
   // 책 북마크 데이터 가져오기
   const fetchData = async () => {
@@ -112,12 +102,17 @@ const MyPick = () => {
       .get(MY_PICK_COLLECTION)
       .then((response) => {
         setCollectionContent({
-          listCount: response.data.listCount,
+          listCount:
+            content.listCount +
+            pairingContent.listCount +
+            response.data.listCount,
           data: response.data.data,
           hasMore: true,
         });
+
         console.log('collectionContent 현재값', collectionContent);
       })
+
       .catch((error) => console.log('에러', error));
   };
 
@@ -127,10 +122,6 @@ const MyPick = () => {
     fetchPairingData();
     fetchCollectionData();
   }, []);
-
-  useEffect(() => {
-    console.log('infiniteData 변경', infiniteData);
-  }, [infiniteData]);
 
   return (
     <Scroll>
@@ -146,6 +137,9 @@ const MyPick = () => {
               setPairingContent={setPairingContent}
               collectionContent={collectionContent}
               setCollectionContent={setCollectionContent}
+              fetchCollectionData={fetchCollectionData}
+              fetchPairingData={fetchPairingData}
+              fetchData={fetchData}
             ></Content>
           </Container>
         ) : (

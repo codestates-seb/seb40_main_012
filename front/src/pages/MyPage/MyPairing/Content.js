@@ -1,10 +1,11 @@
+/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from '../../../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -36,6 +37,7 @@ const ContentContainer = styled.div`
   }
 `;
 const BookImg = styled.div`
+  cursor: pointer;
   .resize {
     box-sizing: inherit;
     width: 108px !important;
@@ -49,6 +51,7 @@ const CommentContainer = styled.div`
   flex-direction: row;
 `;
 const FlexBox = styled.div`
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   margin-left: 20px;
@@ -62,6 +65,11 @@ const FlexBox = styled.div`
   .heart-star-title {
     display: flex;
     flex-direction: row;
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 2px;
+    }
   }
 `;
 const ButtonCSS = styled.button`
@@ -93,11 +101,12 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ setInfiniteData, infiniteData }) => {
+const Content = ({ setInfiniteData, infiniteData, fetchData }) => {
   // const [data, setData] = useState({
   //   content: content.data,
   //   hasMore: true,
   // });
+  const navigate = useNavigate();
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
@@ -135,7 +144,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
   const onRemove = (id) => {
     axios
       .delete(`/api/books/pairings/${id}/delete`)
-      .then(location.reload())
+      .then(() => fetchData())
       .catch((error) => console.log('에러', error));
   };
 
@@ -143,7 +152,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
       axios
         .delete(`/api/books/pairings/delete`)
-        .then(location.reload())
+        .then(() => fetchData())
         .catch((error) => console.log('에러', error));
     }
   };
@@ -173,8 +182,9 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                   mt: 1,
                   mb: 1,
                 }}
-                variant="body2"
                 gutterBottom
+                component="div"
+                variant="body2"
               >
                 전체 삭제
               </Typography>
@@ -189,7 +199,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
           next={infiniteData.content.data && fetchMoreData}
           hasMore={infiniteData.hasMore} // 스크롤 막을지 말지 결정
           loader={
-            <p
+            <div
               style={{
                 textAlign: 'center',
               }}
@@ -199,7 +209,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                 alt="loading cherrypick"
               ></img>
               <div>열심히 읽어오는 중..</div>
-            </p>
+            </div>
           }
           height={400}
           endMessage={
@@ -223,7 +233,11 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                   >
                     <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
 
-                    <Grid item xs={2}>
+                    <Grid
+                      item
+                      xs={2}
+                      onClick={() => navigate(`/pairing/${data.pairingId}`)}
+                    >
                       {data && (
                         <BookImg>
                           <img
@@ -234,7 +248,13 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                         </BookImg>
                       )}
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid
+                      item
+                      xs={9}
+                      onClick={() =>
+                        navigate(`/pairing/books/${data.pairingId}`)
+                      }
+                    >
                       <FlexBox>
                         <Typography
                           color="#232627"
@@ -243,6 +263,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                             fontWeight: 200,
                           }}
                           variant="body2"
+                          component="div"
                           gutterBottom
                         >
                           {data.content}
@@ -258,10 +279,12 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                             }}
                             color="#BFBFBF"
                           >
-                            <FavoriteTwoToneIcon
-                              sx={{ width: 19.5, height: 19.5 }}
-                              align="center"
-                              style={{ color: 'FFD8D8' }}
+                            <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                '/images/p_heart_filled_icon.svg'
+                              }
+                              alt="heart icon"
                             />
                             {data.pairingLike}
                           </Grid>
@@ -303,10 +326,10 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                           // 현재 작동 안됨 (코멘트 아이디 없음)
                           if (
                             window.confirm(
-                              `${data.commentId}번째 페어링을 삭제하시겠습니까?`
+                              `${data.pairingId}번째 페어링을 삭제하시겠습니까?`
                             )
                           ) {
-                            onRemove(data.commentId);
+                            onRemove(data.pairingId);
                           }
                         }}
                       >

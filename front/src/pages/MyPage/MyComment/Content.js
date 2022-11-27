@@ -99,30 +99,46 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ commentLength, content, setContent }) => {
+const Content = ({ content, setContent }) => {
+  const nextArray = content.data;
+
+  const sliceContent = () => {
+    for (let i = 3; i < content.data.length; i + 2) {
+      content.data.slice(i, i + 2);
+    }
+
+    // data 배열 길이 = 12
+    // 처음 : 0 - 2
+    // 다음 : 3 - 5 ...
+    console.log(content.data.slice(0, 2).concat(content.data.slice(3, 5)));
+  };
+
+  console.log('슬라이스', content.data.slice(0, 2).concat.content.data);
+
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
     if (commentLength >= 100) {
-      setContent({
-        bookComment: content.bookComment,
-        pairingComment: content.pairingComment,
-        collectionComment: content.collectionComment,
-        hasMore: false,
-        listCount: 0,
-      });
-      return;
+      // setContent({
+      //   bookComment: content.bookComment,
+      //   pairingComment: content.pairingComment,
+      //   collectionComment: content.collectionComment,
+      //   hasMore: false,
+      //   listCount: 0,
+      // });
+      // return;
     }
     if (commentLength < 10) {
-      setContent({
-        bookComment: content.bookComment,
-        pairingComment: content.pairingComment,
-        collectionComment: content.collectionComment,
-        hasMore: false,
-        listCount: 0,
-      });
-
-      return;
+      // setContent({
+      //   bookComment: content.bookComment,
+      //   pairingComment: content.pairingComment,
+      //   collectionComment: content.collectionComment,
+      //   hasMore: false,
+      //   listCount: 0,
+      // });
+      // return;
     }
+
+    //content.data 배열
 
     ////// 나중에 통신하는 거 붙여주기
     // setTimeout(() => {
@@ -138,15 +154,11 @@ const Content = ({ commentLength, content, setContent }) => {
     //   });
     // }, 800);
     setTimeout(() => {
-      setContent({
-        bookComment: content.bookComment.concat(content.bookComment),
-        pairingComment: content.pairingComment.concat(content.pairingComment),
-        collectionComment: content.collectionComment.concat(
-          content.collectionComment
-        ),
-        hasMore: true,
-        listCount: 0,
-      });
+      // setContent({
+      //   data: content.bookComment.concat(data.content),
+      //   hasMore: true,
+      //   listCount: 0,
+      // });
     }, 800);
     /////
   };
@@ -196,7 +208,7 @@ const Content = ({ commentLength, content, setContent }) => {
         </Grid>
 
         <InfiniteScroll
-          dataLength={content.bookComment.length}
+          dataLength={content.listCount}
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
           next={content && fetchMoreData}
@@ -222,9 +234,7 @@ const Content = ({ commentLength, content, setContent }) => {
           }
         >
           <div>
-            <MyCommentBook content={content} setContent={setContent} />
-            <MyCommentPairing content={content} setContent={setContent} />
-            <MyCommentCollection content={content} setContent={setContent} />
+            {/* <MyCommentBook content={content} setContent={setContent} /> */}
           </div>
         </InfiniteScroll>
       </ContentContainer>

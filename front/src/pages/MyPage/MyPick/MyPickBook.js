@@ -1,27 +1,37 @@
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import axios from '../../../api/axios';
 import Typography from '@mui/material/Typography';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
+import { useNavigate } from 'react-router-dom';
 
 const Remove = styled.div`
   color: #dee2e6;
-  font-size: 24px;
-  cursor: pointer;
   opacity: 0;
-  &:hover {
-    color: #6741ff;
-  }
 `;
+
+const RemoveButton = styled.button`
+  all: unset;
+  border: 0;
+  outline: 0;
+  cursor: pointer;
+`;
+
 const ItemContainer = styled.div`
   &:hover {
     ${Remove} {
-      opacity: 1;
+      opacity: 0.3;
+      img {
+        width: 17px;
+        height: 17px;
+        margin-right: 5px;
+        margin-top: 8px;
+      }
     }
   }
 `;
 
 const BookImg = styled.div`
+  cursor: pointer;
   .resize {
     box-sizing: inherit;
     width: 108px !important;
@@ -36,6 +46,7 @@ const FlexBox = styled.div`
   margin-right: 10px;
   font-size: 13px;
   border-bottom: 1px solid #e9e9e9;
+  cursor: pointer;
   .comment {
     height: 125px;
     color: #232627;
@@ -43,16 +54,34 @@ const FlexBox = styled.div`
   .heart-star-title {
     display: flex;
     flex-direction: row;
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 2px;
+    }
   }
 `;
 
-const MyPickBook = ({ content, setContent }) => {
+const MyPickBook = ({ content, fetchData }) => {
+  const navigate = useNavigate();
+
+  // useEffect(
+  //   (id) => {
+  //     navigate(`/book/${id}`);
+  //   },
+  //   [handleBookClick(id)]
+  // );
+
+  // const handleBookClick = (id) => {
+  //   navigate(`/book/${id}`);
+  // };
+
   console.log('받아온 content', content);
-  const onRemove = (targetId) => {
-    const newCommentList = content.data.filter(
-      (el) => el.commentId !== targetId
-    );
-    setContent({ data: newCommentList, hasMore: true });
+  const onRemove = (id) => {
+    axios
+      .post(`/api/books/${id}/bookmark`)
+      .then(() => fetchData())
+      .catch((error) => console.log('에러', error));
   };
   return (
     <div>
@@ -70,7 +99,12 @@ const MyPickBook = ({ content, setContent }) => {
             >
               <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
 
-              <Grid item xs={2}>
+              <Grid
+                item
+                xs={2}
+                onClick={() => navigate(`/book/${data.isbn13}`)}
+                aria-hidden="true"
+              >
                 {data && (
                   <BookImg>
                     <img
@@ -86,7 +120,10 @@ const MyPickBook = ({ content, setContent }) => {
                 )}
               </Grid>
               <Grid item xs={9}>
-                <FlexBox>
+                <FlexBox
+                  onClick={() => navigate(`/book/${data.isbn13}`)}
+                  aria-hidden="true"
+                >
                   <Typography
                     sx={{
                       display: 'flex',
@@ -123,11 +160,14 @@ const MyPickBook = ({ content, setContent }) => {
                       }}
                       color="#BFBFBF"
                     >
-                      <FavoriteTwoToneIcon
-                        sx={{ width: 19.5, height: 19.5 }}
-                        align="center"
-                        style={{ color: 'FFD8D8' }}
+                      <img
+                        src={
+                          process.env.PUBLIC_URL +
+                          '/images/p_heart_filled_icon.svg'
+                        }
+                        alt="heart icon"
                       />
+
                       {data.ratingCount}
                     </Grid>
                     <Grid
@@ -151,33 +191,42 @@ const MyPickBook = ({ content, setContent }) => {
                       color="#737373"
                     >
                       <div>
-                        {data.bookName ? data.bookName : null},
+                        {data.bookName ? data.bookName : null}
                         {data.author ? data.author : null}
                       </div>
                     </Grid>
                   </div>
                 </FlexBox>
               </Grid>
+
               <Grid
                 item
+                xs={0.5}
                 sx={{
                   display: 'flex',
                   flexDirection: 'row-reverse',
                 }}
               >
-                <Remove
-                  onClick={() => {
-                    // 현재 작동 안됨 (코멘트 아이디 없음)
-                    if (
-                      window.confirm(
-                        `${data.collectionId}번째 컬렉션을 삭제하시겠습니까?`
-                      )
-                    ) {
-                      onRemove(data.collectionId);
-                    }
-                  }}
-                >
-                  <DeleteOutlinedIcon />
+                <Remove>
+                  <RemoveButton
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          `${data.isbn13}번째 컬렉션을 삭제하시겠습니까?`
+                        )
+                      ) {
+                        onRemove(data.isbn13);
+                      }
+                    }}
+                  >
+                    <img
+                      src={
+                        process.env.PUBLIC_URL +
+                        '/images/bookmark_filled_icon.svg'
+                      }
+                      alt="bookmark icon"
+                    />
+                  </RemoveButton>
                 </Remove>
               </Grid>
             </Grid>

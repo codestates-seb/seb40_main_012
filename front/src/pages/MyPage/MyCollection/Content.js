@@ -1,10 +1,21 @@
+/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
+// import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import CollectionThumbnail from './CollectionThumbnail';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
+import {
+  asyncPairingLike,
+  asyncPairingDislike,
+} from '../../../store/modules/pairingSlice';
+import LikeButton from '../../../pages/PairingPage/PairingDetail/LikeButton';
+// import { asyncGetOnePairing } from '../../../store/modules/pairingSlice';
+import axios from '../../../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -55,6 +66,7 @@ const FlexBox = styled.div`
   margin-right: 10px;
   font-size: 13px;
   border-bottom: 1px solid #e9e9e9;
+  cursor: pointer;
   .comment {
     height: 125px;
     color: #232627;
@@ -62,6 +74,15 @@ const FlexBox = styled.div`
   .heart-star-title {
     display: flex;
     flex-direction: row;
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 2px;
+    }
+    /* &:hover {
+      cursor: pointer;
+      background-color: #e8e8e8;
+    } */
   }
 `;
 const ButtonCSS = styled.button`
@@ -93,11 +114,26 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ infiniteData, setContent, content }) => {
+const Content = ({ infiniteData, setContent, content, fetchData }) => {
+  const [hasMore, setHasMore] = useState(true);
+  const navigate = useNavigate();
+
   // const [data, setData] = useState({
   //   content: content.data,
   //   hasMore: true,
   // });
+  // const setFilledHeart = () => {
+  //   LikePlus();
+  // };
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(asyncGetOnePairing(1));
+  // }, [dispatch]);
+
+  // const handlePairingDislike = () => {
+  //   dispatch(asyncPairingDislike(pairingId));
+  // };
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
@@ -105,7 +141,6 @@ const Content = ({ infiniteData, setContent, content }) => {
       setContent({
         listCount: content.listCount,
         data: content.data,
-        hasMore: false,
       });
       return;
     }
@@ -113,7 +148,6 @@ const Content = ({ infiniteData, setContent, content }) => {
       setContent({
         listCount: content.listCount,
         data: content.data,
-        hasMore: false,
       });
       return;
     }
@@ -122,7 +156,6 @@ const Content = ({ infiniteData, setContent, content }) => {
       setContent({
         listCount: content.listCount.concat(content.listCount),
         data: content.data.concat(content.data),
-        hasMore: true,
       });
     }, 800);
     /////
@@ -130,18 +163,30 @@ const Content = ({ infiniteData, setContent, content }) => {
 
   console.log('content.data', content.data);
 
-  const onRemove = (targetId) => {
-    const newCommentList = content.data.filter(
-      (el) => el.commentId !== targetId
-    );
-    setContent({ data: newCommentList, hasMore: true });
+  const onRemove = (id) => {
+    axios
+      .delete(`/api/collections/${id}`)
+      .then(() => fetchData())
+      .catch((error) => console.log('에러', error));
   };
 
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      setContent({ data: [], hasMore: false });
+      axios
+        .delete(`/api/mypage/userCollection/delete`)
+        .then(() => fetchData())
+        .catch((error) => console.log('에러', error));
     }
+    // fetchData();
   };
+
+  // // 좋아요 버튼
+  // const handleLike = (id) => {
+  //   axios
+  //     .post(`/api/collections/${id}/like`)
+  //     .then(fetchData())
+  //     .catch((error) => console.log('에러', error));
+  // };
 
   return (
     <>
@@ -182,9 +227,9 @@ const Content = ({ infiniteData, setContent, content }) => {
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
           next={content.data && fetchMoreData}
-          hasMore={content.hasMore} // 스크롤 막을지 말지 결정
+          hasMore={true} // 스크롤 막을지 말지 결정
           loader={
-            <p
+            <div
               style={{
                 textAlign: 'center',
               }}
@@ -194,7 +239,7 @@ const Content = ({ infiniteData, setContent, content }) => {
                 alt="loading cherrypick"
               ></img>
               <div>열심히 읽어오는 중..</div>
-            </p>
+            </div>
           }
           height={400}
           endMessage={
@@ -218,14 +263,26 @@ const Content = ({ infiniteData, setContent, content }) => {
                   >
                     <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
 
-                    <Grid item xs={2}>
+                    <Grid
+                      item
+                      xs={2}
+                      onClick={() =>
+                        navigate(`/collection/${data.collectionId}`)
+                      }
+                    >
                       {data && (
                         <>
                           <CollectionThumbnail books={data.books} />
                         </>
                       )}
                     </Grid>
-                    <Grid item xs={9}>
+                    <Grid
+                      item
+                      xs={9}
+                      onClick={() =>
+                        navigate(`/collection/${data.collectionId}`)
+                      }
+                    >
                       <FlexBox>
                         <Typography
                           sx={{
@@ -263,11 +320,54 @@ const Content = ({ infiniteData, setContent, content }) => {
                             }}
                             color="#BFBFBF"
                           >
-                            <FavoriteTwoToneIcon
-                              sx={{ width: 19.5, height: 19.5 }}
-                              align="center"
-                              style={{ color: 'FFD8D8' }}
-                            />
+                            <>
+                              {/* <CollectionHeart onClick={handleClickLikeBtn}>
+                                {isLiked ? ( */}
+                              <img
+                                src={
+                                  process.env.PUBLIC_URL +
+                                  '/images/p_heart_filled_icon.svg'
+                                }
+                                alt="heart icon"
+                              />
+                              {/* ) : (
+                                  <img
+                                    src={
+                                      process.env.PUBLIC_URL +
+                                      '/images/p_heart_unfilled_icon.svg'
+                                    }
+                                    alt="heart icon"
+                                  />
+                                )} */}
+
+                              {/* </CollectionHeart> */}
+                              {/* {pairingData ? (
+                                <LikeButton
+                                  isLiked={pairingData.isLiked}
+                                  LikePlus={() =>
+                                    dispatch(
+                                      asyncPairingLike(data.collectionId)
+                                    )
+                                  }
+                                  LikeMinus={() =>
+                                    dispatch(
+                                      asyncPairingDislike(data.collectionId)
+                                    )
+                                  }
+                                >
+                                  {data.collectionLike}
+                                </LikeButton>
+                              ) : null} */}
+                            </>
+
+                            {/* <img
+                              src={
+                                process.env.PUBLIC_URL +
+                                '/images/p_heart_filled_icon.svg'
+                              }
+                              alt="heart icon"
+                            /> */}
+
                             {data.collectionLike}
                           </Grid>
                           <Grid
@@ -304,7 +404,6 @@ const Content = ({ infiniteData, setContent, content }) => {
                     >
                       <Remove
                         onClick={() => {
-                          // 현재 작동 안됨 (코멘트 아이디 없음)
                           if (
                             window.confirm(
                               `${data.collectionId}번째 컬렉션을 삭제하시겠습니까?`

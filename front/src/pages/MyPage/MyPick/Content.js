@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 // import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -5,8 +6,9 @@ import Typography from '@mui/material/Typography';
 // import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import MyPickBook from './MyPickBook';
 import InfiniteScroll from 'react-infinite-scroll-component';
-// import MyPickPairing from './MyPickPairing';
-// import MyPickCollection from './MyPickCollection';
+import MyPickPairing from './MyPickPairing';
+import MyPickCollection from './MyPickCollection';
+import { useState } from 'react';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -98,15 +100,20 @@ const ButtonCSS = styled.button`
 const Content = ({
   setContent,
   content,
-  // pairingContent,
-  // setPairingContent,
-  // collectionContent,
-  // setCollectionContent,
+  pairingContent,
+  setPairingContent,
+  collectionContent,
+  setCollectionContent,
+  fetchCollectionData,
+  fetchPairingData,
+  fetchData,
 }) => {
   // const [data, setData] = useState({
   //   content: content.data,
   //   hasMore: true,
   // });
+
+  const [view, setView] = useState(1);
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
@@ -146,16 +153,10 @@ const Content = ({
   //   setContent({ data: newCommentList, hasMore: true });
   // };
 
-  const removeAll = () => {
-    if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      setContent({ data: [], hasMore: false });
-    }
-  };
-
   return (
     <>
       <ContentContainer>
-        <Grid container style={{ backgroundColor: '#f7f4ff' }}>
+        <Grid container>
           <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
           <Grid item xs={5} sx={{ mt: 1, mb: 1 }}>
             <CommentContainer>
@@ -167,11 +168,27 @@ const Content = ({
                 variant="body2"
                 gutterBottom
               >
-                <input type="checkbox" defaultChecked={true} name="xxx" />
+                <input
+                  type="radio"
+                  onChange={() => setView(1)}
+                  defaultChecked={true}
+                  name="xxx"
+                />
                 페어링
-                <input type="checkbox" defaultChecked={true} name="xxx" />
+                <input
+                  type="radio"
+                  onChange={() => setView(2)}
+                  defaultChecked={false}
+                  name="xxx"
+                />
                 컬렉션
-                <input type="checkbox" defaultChecked={true} name="xxx" />책
+                <input
+                  type="radio"
+                  onChange={() => setView(3)}
+                  defaultChecked={false}
+                  name="xxx"
+                />
+                책
               </Typography>
             </CommentContainer>
           </Grid>
@@ -183,13 +200,7 @@ const Content = ({
               display: 'flex',
               flexDirection: 'row-reverse',
             }}
-          >
-            <ButtonCSS onClick={removeAll}>
-              <Typography color="#737373" variant="body2" gutterBottom>
-                전체 삭제
-              </Typography>
-            </ButtonCSS>
-          </Grid>
+          ></Grid>
         </Grid>
 
         <InfiniteScroll
@@ -199,7 +210,7 @@ const Content = ({
           next={content.data && fetchMoreData}
           hasMore={content.hasMore} // 스크롤 막을지 말지 결정
           loader={
-            <p
+            <div
               style={{
                 textAlign: 'center',
               }}
@@ -209,7 +220,7 @@ const Content = ({
                 alt="loading cherrypick"
               ></img>
               <div>열심히 읽어오는 중..</div>
-            </p>
+            </div>
           }
           height={400}
           endMessage={
@@ -219,16 +230,23 @@ const Content = ({
           }
         >
           <div>
-            <MyPickBook content={content} setContent={setContent} />
+            {view === 1 ? (
+              <MyPickPairing
+                content={pairingContent}
+                fetchPairingData={fetchPairingData}
+              />
+            ) : null}
 
-            {/* <MyPickPairing
-              content={pairingContent}
-              setContent={setPairingContent}
-            />
-            <MyPickCollection
-              content={collectionContent}
-              setContent={setCollectionContent}
-            /> */}
+            {view === 2 ? (
+              <MyPickCollection
+                content={collectionContent}
+                fetchCollectionData={fetchCollectionData}
+              />
+            ) : null}
+
+            {view === 3 ? (
+              <MyPickBook content={content} fetchData={fetchData} />
+            ) : null}
           </div>
         </InfiniteScroll>
       </ContentContainer>

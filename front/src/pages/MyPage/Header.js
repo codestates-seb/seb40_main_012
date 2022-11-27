@@ -41,7 +41,6 @@ const Header = () => {
       .get(USER_INFO_URL)
 
       .then((response) => {
-        console.log('response', response);
         setUserInfo({
           introduction: response.data.introduction,
           gender: response.data.gender,
@@ -50,7 +49,6 @@ const Header = () => {
           temp: response.data.temp,
           category: response.data.category,
         });
-        console.log('userInfo', userInfo);
       })
       .catch((error) => console.log('에러', error));
   };

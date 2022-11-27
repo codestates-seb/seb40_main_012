@@ -12,8 +12,6 @@ import axios from '../../../api/axios';
 import { COMMENT_URL } from '../../../api/requests';
 import Scroll from '../Scroll';
 
-// 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
-
 const Void = styled.div`
   min-width: 50vw;
   min-height: 100vh;
@@ -32,55 +30,70 @@ const Void = styled.div`
 const MyComment = () => {
   console.log('마이코멘트 시작');
   const [view, setView] = useState(1);
+
+  // commentCount: 0,
+  // commentId: 0,
+  // contentId: 0,
+  // likeCount: 0,
+  // title: '',
+  // cover: '',
+  // collectionCover: null,
+  // myBookRating: 0,
+  // author: '',
+  // commentType: '',
+  // body: '',
+  // createdAt: '',
+  // hasMore: false,
+  // listCount: 0,
+
   const [content, setContent] = useState({
-    bookComment: [],
-    pairingComment: [],
-    collectionComment: [],
-    hasMore: true,
-    listCount: 7,
+    data: [],
+    listCount: 0,
+    hasMore: false,
   });
 
   const fetchData = async () => {
     axios
       .get(COMMENT_URL)
       .then((response) => {
-        console.log(response);
+        console.log('response확인', response.data);
         setContent({
-          bookComment: response.data.bookComment,
-          pairingComment: response.data.pairingComment,
-          collectionComment: response.data.collectionComment,
-          hasMore: true,
-          listCount: 0,
+          data: response.data.data,
+          listCount: response.data.listCount,
         });
+        // author: response.data.data.author,
+        // body: response.data.data.body,
+        // collectionCover: response.data.data.collectionCover,
+        // commentCount: response.data.data.commentCount,
+        // commentId: response.data.data.commentId,
+        // commentType: response.data.data.commentType,
+        // contentId: response.data.data.contentId,
+        // cover: response.data.data.cover,
+        // createdAt: response.data.data.createdAt,
+        // likeCount: response.data.data.likeCount,
+        // myBookRating: response.data.data.myBookRating,
+        // title: response.data.data.title,
+        // hasMore: false,
+        // listCount: 0,
       })
       .catch((error) => console.log('에러', error));
   };
-
-  const dataArray = content.bookComment
-    .concat(content.pairingComment)
-    .concat(content.collectionComment);
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  console.log('content확인', content);
-  console.log('dataArray', dataArray);
+  console.log('나와랑', content);
   return (
     <Scroll>
       <PageContainer header footer>
-        {content ? (
-          <Container maxWidth="md">
-            <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
-            <Content
-              commentLength={content.listCount}
-              dataArray={dataArray}
-              content={content}
-              setContent={setContent}
-            ></Content>
-          </Container>
-        ) : (
+        {/* {content ? ( */}
+        <Container maxWidth="md">
+          <Header></Header>
+          <Nav view={view} setView={setView} content={content}></Nav>
+          <Content content={content} setContent={setContent}></Content>
+        </Container>
+        {/* ) : (
           <Container maxWidth="md">
             <Header></Header>
             <Void>
@@ -91,7 +104,7 @@ const MyComment = () => {
               더 읽어올 데이터가 없군요 📕
             </Void>
           </Container>
-        )}
+        )} */}
       </PageContainer>
     </Scroll>
   );

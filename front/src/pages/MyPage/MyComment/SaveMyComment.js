@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import Header from '../Header';
 import { PageContainer } from 'containers';
 import Nav from '../Nav';
@@ -8,8 +9,9 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 // import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import axios from '../../../api/axios';
-import { MY_PAIRING_URL } from '../../../api/requests';
+import { COMMENT_URL } from '../../../api/requests';
 import Scroll from '../Scroll';
+
 // 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
 
 const Void = styled.div`
@@ -27,41 +29,43 @@ const Void = styled.div`
   }
 `;
 
-const MyPairing = () => {
-  console.log('마이페어링 시작');
-  const [view, setView] = useState(2);
+const MyComment = () => {
+  console.log('마이코멘트 시작');
+  const [view, setView] = useState(1);
   const [content, setContent] = useState({
-    listCount: '',
-    data: [],
-  });
-  const [infiniteData, setInfiniteData] = useState({
-    content: {
-      data: [],
-    },
+    bookComment: [],
+    pairingComment: [],
+    collectionComment: [],
     hasMore: true,
+    listCount: 7,
   });
 
   const fetchData = async () => {
     axios
-      .get(MY_PAIRING_URL)
+      .get(COMMENT_URL)
       .then((response) => {
-        setContent(response.data);
-        setInfiniteData({
-          content: response.data,
+        console.log(response);
+        setContent({
+          bookComment: response.data.bookComment,
+          pairingComment: response.data.pairingComment,
+          collectionComment: response.data.collectionComment,
           hasMore: true,
+          listCount: 0,
         });
       })
       .catch((error) => console.log('에러', error));
   };
 
+  const dataArray = content.bookComment
+    .concat(content.pairingComment)
+    .concat(content.collectionComment);
+
   useEffect(() => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log('infiniteData 변경', infiniteData);
-  }, [infiniteData]);
-
+  console.log('content확인', content);
+  console.log('dataArray', dataArray);
   return (
     <Scroll>
       <PageContainer header footer>
@@ -70,12 +74,10 @@ const MyPairing = () => {
             <Header></Header>
             <Nav view={view} setView={setView} content={content}></Nav>
             <Content
-              view={view}
-              setView={setView}
+              commentLength={content.listCount}
+              dataArray={dataArray}
               content={content}
-              fetchData={fetchData}
-              setInfiniteData={setInfiniteData}
-              infiniteData={infiniteData}
+              setContent={setContent}
             ></Content>
           </Container>
         ) : (
@@ -95,4 +97,4 @@ const MyPairing = () => {
   );
 };
 
-export default MyPairing;
+export default MyComment;
