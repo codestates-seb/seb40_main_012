@@ -26,12 +26,13 @@ export const asyncGetOnePairing = createAsyncThunk(
 
 export const asyncPostPairing = createAsyncThunk(
   'pairingSlice/asyncPostPairing',
-  async ({ pairingPostBody, isbn }) => {
+  async ({ formData, isbn }) => {
     try {
-      return await axios.post(
-        `/api/books/${isbn}/pairings/add`,
-        pairingPostBody
-      );
+      return await axios.post(`/api/books/${isbn}/pairings/add`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
     } catch (error) {
       console.log('페어링 post 실패', error);
     }
@@ -51,11 +52,16 @@ export const asyncDeletePairing = createAsyncThunk(
 
 export const asyncPatchPairing = createAsyncThunk(
   'pairingSlice/asyncPatchPairing',
-  async ({ pairingPatchBody, pairingId }) => {
+  async ({ formData, pairingId }) => {
     try {
-      const pairingRes = await axios.patch(
+      const pairingRes = await axios.post(
         `${PAIRING_URL}/${pairingId}/edit`,
-        pairingPatchBody
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
       const isbn = pairingRes.data.data.isbn13;
       const bookRes = await axios.get(`api/books/${isbn}`);

@@ -142,7 +142,7 @@ const BookDetail = () => {
         </DescContainer>
         <DescContainer>
           <h1>코멘트</h1>
-          {bookData.comments && bookData.comments.empty !== true ? (
+          {bookData.comments?.empty !== true ? (
             // <Comment data={bookData.comments.contents} />
             <h1>코멘트</h1>
           ) : null}
@@ -150,9 +150,7 @@ const BookDetail = () => {
         <DescContainer>
           <h1>이 책과 같이 보면 좋은 페어링</h1>
           <PairingStyled>
-            {bookData.pairings &&
-            bookData.pairings.contents &&
-            bookData.pairings.empty !== true
+            {bookData.pairings?.contents && bookData.pairings?.empty !== true
               ? bookData.pairings.contents.map((el) => {
                   return (
                     <BestPairing

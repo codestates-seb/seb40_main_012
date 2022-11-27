@@ -102,6 +102,7 @@ const RoutesComponent = () => {
       />
       <Route path="/redux" element={<ReduxPage />} />
       <Route path="/button-test" element={<ButtonTest />} />
+      <Route path="/img-test" element={<ImgTest />} />
       <Route path="*" element={getElement(NoMatch, null)} />
       <Route path="/img-test" element={<ImgTest />} />
     </Routes>
