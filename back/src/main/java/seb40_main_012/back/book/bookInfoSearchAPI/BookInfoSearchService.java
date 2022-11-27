@@ -208,7 +208,7 @@ public class BookInfoSearchService {
 //        }
     }
 
-    @Async
+//    @Async
     public BookInfoSearchDto.BookList cherryPickSearchForAsync(String title, String sort, Integer page, Integer size) {
 
         String ttbkey = "ttbgcnb871441001";

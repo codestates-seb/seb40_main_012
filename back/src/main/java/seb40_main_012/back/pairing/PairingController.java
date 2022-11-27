@@ -364,10 +364,21 @@ public class PairingController {
 
     @GetMapping("/pairing/best")
     public ResponseEntity bestTenPairings() {
-        List<Pairing> response = pairingService.findBestPairingsLikes();
+        List<Pairing> bestPairingsLikes = pairingService.findBestPairingsLikes();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(bestPairingsLikes);
 
         return new ResponseEntity<>(
-                new SingleResponseDto<>(response), HttpStatus.OK
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairing/random")
+    public ResponseEntity randomPairings() {
+        List<Pairing> bestPairingsLikes = pairingService.findBestPairingsLikes();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(bestPairingsLikes);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
         );
     }
 
