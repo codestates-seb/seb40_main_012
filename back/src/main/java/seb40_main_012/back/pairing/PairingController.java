@@ -273,6 +273,18 @@ public class PairingController {
         );
     }
 
+    @GetMapping("/pairings/film/random") // 필름 카테고리 무작위
+    public ResponseEntity getFilmPairingsRandom() {
+
+        List<Pairing> pairingList = pairingService.findFilmPairingsRandom();
+        Collections.shuffle(pairingList);
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
     @GetMapping("/pairings/cuisine/likes") // 음식/장소 카테고리 좋아요 순 슬라이스로 받기
     public ResponseEntity getCuisinePairingsLikes() {
 
@@ -288,6 +300,18 @@ public class PairingController {
     public ResponseEntity getCuisinePairingsNewest() {
 
         List<Pairing> pairingList = pairingService.findCuisinePairingsNewest();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/cuisine/random") // 음식/장소 카테고리 무작위
+    public ResponseEntity getCuisinePairingsRandom() {
+
+        List<Pairing> pairingList = pairingService.findCuisinePairingsRandom();
+        Collections.shuffle(pairingList);
         SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
 
         return new ResponseEntity<>(
@@ -317,6 +341,18 @@ public class PairingController {
         );
     }
 
+    @GetMapping("/pairings/music/random") // 음악 카테고리 무작위
+    public ResponseEntity getMusicPairingsRandom() {
+
+        List<Pairing> pairingList = pairingService.findMusicPairingsRandom();
+        Collections.shuffle(pairingList);
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
     @GetMapping("/pairings/book/likes") // 책 카테고리 좋아요 순 슬라이스로 받기
     public ResponseEntity getBookPairingsLikes() {
 
@@ -328,10 +364,22 @@ public class PairingController {
         );
     }
 
-    @GetMapping("/pairings/book/newest") // 책 카테고리 좋아요 순 슬라이스로 받기
+    @GetMapping("/pairings/book/newest") // 책 카테고리 작성일 순 슬라이스로 받기
     public ResponseEntity getBookPairingsNewest() {
 
         List<Pairing> pairingList = pairingService.findBookPairingsNewest();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/book/random") // 책 카테고리 무작위
+    public ResponseEntity getBookPairingsRandom() {
+
+        List<Pairing> pairingList = pairingService.findBookPairingsRandom();
+        Collections.shuffle(pairingList);
         SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
 
         return new ResponseEntity<>(
@@ -354,6 +402,18 @@ public class PairingController {
     public ResponseEntity getEtcPairingsNewest() {
 
         List<Pairing> pairingList = pairingService.findEtcPairingsNewest();
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @GetMapping("/pairings/etc/random") // 기타 카테고리 무작위
+    public ResponseEntity getEtcPairingsRandom() {
+
+        List<Pairing> pairingList = pairingService.findEtcPairingsRandom();
+        Collections.shuffle(pairingList);
         SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(pairingList);
 
         return new ResponseEntity<>(
