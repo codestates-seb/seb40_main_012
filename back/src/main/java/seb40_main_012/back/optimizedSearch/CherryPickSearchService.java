@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
@@ -12,6 +13,8 @@ import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -34,22 +37,40 @@ public class CherryPickSearchService {
 
     public List<BookInfoSearchDto.BookList.Item> cherryPickSearch(String title, String sort, Integer page, Integer size) {
 
-        BookInfoSearchDto.BookList totalResult1 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 25);
+        List<BookInfoSearchDto.BookList> resultList = new ArrayList<>();
+
+        for (int i = 0; i < 10; i++) {
+            BookInfoSearchDto.BookList totalResult = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", i, 10);
+            resultList.add(totalResult);
+        }
+
+        resultList.stream()
+                .flatMap(a -> a.getItem().stream())
+                .filter(a -> a.isbn13 != "")
+                .distinct().collect(Collectors.toList());
+
+//        BookInfoSearchDto.BookList totalResult1 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 10);
 //        BookInfoSearchDto.BookList totalResult2 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 25);
 //        BookInfoSearchDto.BookList totalResult3 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 25);
 //        BookInfoSearchDto.BookList totalResult4 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 4, 25);
-
-//        List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(
+//
+//        List<BookInfoSearchDto.BookList.Item> result2 = new ArrayList<>();
+//
+//        result2 = Stream.concat(
 //                        (Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
 //                                totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
 //                        (Stream.concat(totalResult3.getItem().stream().filter(a -> a.isbn13 != ""),
 //                                totalResult4.getItem().stream().filter(a -> a.isbn13 != "")))
 //                )
-//
 //                .distinct().collect(Collectors.toList());
 
 
 //        return result2;
-        return totalResult1.getItem();
+//        return totalResult1.getItem();
+
+        return resultList.stream()
+                .flatMap(a -> a.getItem().stream())
+                .filter(a -> a.isbn13 != "")
+                .distinct().collect(Collectors.toList());
     }
 }
