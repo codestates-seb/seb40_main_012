@@ -33,7 +33,7 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "from Comment " +
             "where User_Id = :userId "
             + "order by " + "created_at desc, created_at " + "desc")
-    List<Comment> findByUserId(@Param("userId") long userId);
+    List<Comment> findByUserId(long userId);
 
     Long countByUser(User user);
 
