@@ -72,7 +72,7 @@ public class PairingController {
                 new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
 
-    @PostMapping("/pairings/{pairing_id}/edit")
+    @PatchMapping("/pairings/{pairing_id}/edit")
     public ResponseEntity patchPairing(
             @PathVariable("pairing_id") @Positive long pairingId,
             @RequestParam(value = "image") @Nullable MultipartFile file,
