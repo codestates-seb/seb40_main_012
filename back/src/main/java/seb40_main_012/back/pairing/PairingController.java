@@ -51,14 +51,34 @@ public class PairingController {
     public ResponseEntity postPairing(
             @PathVariable("isbn13") @Positive String isbn13,
             @RequestParam(value = "image") @Nullable MultipartFile file,
-            @Valid @RequestPart(value = "postPairingDto") PairingDto.Post postPairing) throws IOException {
+            @Valid @RequestPart(value = "postPairingDto") PairingDto.Post postPairing) throws IOException, InterruptedException {
 
         Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
         Pairing createPairing = pairingService.createPairing(pairing, isbn13);
 
+        String imagePath = null;
+
         if (file != null) {
-            imageService.savePairingImage(file, createPairing);
+            long imageId = imageService.savePairingImage(file, createPairing);
+            imagePath = imageService.findImage(imageId).getStoredPath();
         }
+
+
+        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
+        System.out.println(imagePath);
+        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
+        System.out.println("--------------------------------------------------");
+
+        createPairing.setImagePath(imagePath);
 
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
 
@@ -85,7 +105,8 @@ public class PairingController {
 
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
             Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
-            imageService.savePairingImage(file, updatedPairing); // 이미지 새로 저장
+            long imageId = imageService.savePairingImage(file, updatedPairing); // 이미지 새로 저장
+            updatedPairing.setImagePath(imageService.findImage(imageId).getStoredPath());
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
 
             return new ResponseEntity<>(
@@ -106,7 +127,8 @@ public class PairingController {
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
             imageService.deletePairingImage(pairingId); // 기존 이미지 삭제
             Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
-            imageService.savePairingImage(file, updatedPairing); // 새 이미지 저장
+            long imageId = imageService.savePairingImage(file, updatedPairing); // 이미지 새로 저장
+            updatedPairing.setImagePath(imageService.findImage(imageId).getStoredPath());
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
 
             return new ResponseEntity<>(
