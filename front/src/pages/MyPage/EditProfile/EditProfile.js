@@ -41,16 +41,6 @@ const ItemWrapperStyled = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  height: 40px;
-`;
-
-const ItemWrapperWithHelperTextStyled = styled(ItemWrapperStyled)`
-  height: 65px;
-`;
-
-const ItemWrapperWithHelperCheckBox = styled(ItemWrapperStyled)`
-  height: 110px;
-  margin-top: 10px;
 `;
 
 const ItemTextStyled = styled(Typography)`
@@ -251,7 +241,7 @@ const EditProfile = () => {
         <TitleTextStyled component="h2" variant="h5" gutterBottom>
           기본정보
         </TitleTextStyled>
-        <ItemWrapperWithHelperTextStyled>
+        <ItemWrapperStyled>
           <ItemTextStyled component="h4">닉네임</ItemTextStyled>
           <ValidationTextFields
             inputRef={inputRef}
@@ -268,8 +258,8 @@ const EditProfile = () => {
             size="small"
             required
           />
-        </ItemWrapperWithHelperTextStyled>
-        <ItemWrapperWithHelperTextStyled>
+        </ItemWrapperStyled>
+        <ItemWrapperStyled>
           <ItemTextStyled component="h4">이메일</ItemTextStyled>
           <ValidationTextFields
             inputRef={inputRef}
@@ -284,8 +274,8 @@ const EditProfile = () => {
             size="small"
             disabled
           />
-        </ItemWrapperWithHelperTextStyled>
-        <ItemWrapperWithHelperTextStyled>
+        </ItemWrapperStyled>
+        <ItemWrapperStyled>
           <ItemTextStyled component="h4">한 줄 소개</ItemTextStyled>
           <ValidationTextFields
             inputRef={inputRef}
@@ -301,7 +291,7 @@ const EditProfile = () => {
             inputHelperText={inputHelperText.introduction}
             size="small"
           />
-        </ItemWrapperWithHelperTextStyled>
+        </ItemWrapperStyled>
         <ItemWrapperChangePasswordStyled>
           <Link to="/mypage/profile/password">
             <ItemTextStyled component="h4">비밀번호 변경</ItemTextStyled>
@@ -354,7 +344,7 @@ const EditProfile = () => {
             </Select>
           </FormControl>
         </ItemWrapperStyled>
-        <ItemWrapperWithHelperCheckBox>
+        <ItemWrapperStyled>
           <ItemTextStyled component="h4">선호 장르</ItemTextStyled>
           <CheckboxFormControlStyled
             component="fieldset"
@@ -379,7 +369,7 @@ const EditProfile = () => {
               ))}
             </CheckboxFormGroupStyled>
           </CheckboxFormControlStyled>
-        </ItemWrapperWithHelperCheckBox>
+        </ItemWrapperStyled>
       </WrapperStyled>
       <ButtonWrapperStyled>
         <ButtonItemStyled component="h4" onClick={handleOpenModal}>
