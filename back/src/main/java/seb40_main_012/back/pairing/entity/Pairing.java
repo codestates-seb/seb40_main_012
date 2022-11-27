@@ -18,9 +18,12 @@ import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.user.entity.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Long.MAX_VALUE;
 
 @Data
 @Builder

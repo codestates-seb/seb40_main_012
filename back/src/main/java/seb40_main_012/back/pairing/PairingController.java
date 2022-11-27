@@ -55,16 +55,15 @@ public class PairingController {
             @RequestParam(value = "image") @Nullable MultipartFile file,
             @Valid @RequestPart(value = "postPairingDto") PairingDto.Post postPairing) throws IOException, InterruptedException {
 
-        Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
-        Pairing createPairing = pairingService.createPairing(pairing, isbn13);
-
         String imagePath = null;
 
         if (file != null) {
             imagePath = awsS3Service.uploadToS3(file);
         }
 
-        createPairing.setImagePath(imagePath);
+        Pairing pairing = pairingMapper.pairingPostToPairing(postPairing);
+        pairing.setImagePath(imagePath);
+        Pairing createPairing = pairingService.createPairing(pairing, isbn13);
 
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(createPairing);
 
@@ -89,11 +88,12 @@ public class PairingController {
 
         } else if (pairingService.findPairing(pairingId).getImage() == null && file != null) {
 
+            String imagePath = awsS3Service.uploadToS3(file);
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
+            pairing.setImagePath(imagePath);
             Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
 //            long imageId = imageService.savePairingImage(file, updatedPairing); // 이미지 새로 저장
-            String imagePath = awsS3Service.uploadToS3(file);
-            updatedPairing.setImagePath(imagePath);
+
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
 
             return new ResponseEntity<>(
@@ -110,11 +110,12 @@ public class PairingController {
 
         } else if (pairingService.findPairing(pairingId).getImage() != null && file != null) {
 
-            Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
             awsS3Service.removeFromS3(pairingService.findPairing(pairingId).getImagePath()); // 기존 이미지 삭제
+            String imagePath = awsS3Service.uploadToS3(file); // 새 이미지 저장
+            Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
+            pairing.setImagePath(imagePath);
             Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
-            String imagePath = awsS3Service.uploadToS3(file);
-            updatedPairing.setImagePath(imagePath);
+
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
 
             return new ResponseEntity<>(
