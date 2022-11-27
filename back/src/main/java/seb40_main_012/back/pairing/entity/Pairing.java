@@ -73,7 +73,7 @@ public class Pairing {
 
     @Nullable
     @JsonManagedReference
-    @OneToOne(mappedBy = "pairing")
+    @OneToOne(mappedBy = "pairing", cascade = CascadeType.REMOVE)
     private Image image;
 
     @JsonManagedReference
