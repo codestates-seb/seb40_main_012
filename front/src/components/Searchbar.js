@@ -1,36 +1,32 @@
+import Box from '@mui/material/Box';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-const SearchbarContainer = styled.div`
-  width: 300px;
+const SearchbarContainer = styled(Box)`
   height: 40px;
   background-color: #f5f5f5;
   border-radius: 3px;
   display: flex;
-  @media screen and (max-width: 780px) {
-    display: none;
-  }
 `;
 
 const SearchIconContainer = styled.div`
-  margin: 0 12px 0 12px;
+  padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
 const SearchbarInput = styled.input`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
   width: 100%;
   height: 100%;
   border: none;
   background-color: transparent;
   &:focus {
     outline: none;
-  }
-  @media screen and (max-width: 981px) {
-    display: flex;
-    min-width: 200px;
   }
 `;
 
@@ -49,7 +45,7 @@ const Searchbar = () => {
   };
 
   return (
-    <SearchbarContainer>
+    <SearchbarContainer sx={{ width: { xs: '100%', sm: '300px' } }}>
       <SearchIconContainer>
         <img
           src={process.env.PUBLIC_URL + '/images/Search_Icon.svg'}
