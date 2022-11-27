@@ -290,7 +290,12 @@ public class PairingService {
         return pairingRepository.findCategorySliceByNewestDesc("ETC", pageRequest);
     }
 
-    public List<Pairing> findBestPairingsLikes() { // 기타 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
+    public List<Pairing> findBestPairingsLikes() {
+
+        return pairingRepository.findBestTenCategory();
+    }
+
+    public List<Pairing> findRandomPairings() {
 
         return pairingRepository.findBestTenCategory();
     }
