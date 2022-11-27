@@ -1,11 +1,6 @@
 package seb40_main_012.back.search;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
@@ -14,12 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.optimizedSearch.CherryPickSearchService;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.Valid;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Validated
 @RestController
@@ -27,6 +22,7 @@ import java.util.stream.Stream;
 @RequestMapping("/api/search")
 public class SearchController {
 
+    private final CherryPickSearchService cherryPickSearchService;
     private final BookInfoSearchService bookInfoSearchService;
     private final SearchService searchService;
 

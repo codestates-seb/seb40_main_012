@@ -1,14 +1,12 @@
 package seb40_main_012.back.book.bookInfoSearchAPI;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.book.BookRepository;
 
 import java.net.URI;
@@ -29,12 +27,10 @@ public class BookInfoSearchService {
     @Value("${aladin.ttb}")
     private String ttbkey;
 
-    @Value("${aladin.url")
+    @Value("${aladin.url}")
     private String pageUrl;
     private final String getItemLookUpUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx";
     private final String itemLookUpUrl = "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx";
-
-    @Async
     public BookInfoSearchDto.BookList listSearch(String title, String sort, Integer page, Integer size) {
 
         RestTemplate restTemplate = new RestTemplate();
@@ -152,15 +148,29 @@ public class BookInfoSearchService {
 ////            if (51 <= list1Size && list1Size <= 100)
 //            {
 //
-            BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
-            BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
+        BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 25);
+        BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 25);
+        BookInfoSearchDto.BookList totalResult3 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 25);
+        BookInfoSearchDto.BookList totalResult4 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 4, 25);
 
-            List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
-                    totalResult2.getItem().stream().filter(a -> a.isbn13 != "")).distinct().collect(Collectors.toList());
+        List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(
+                (Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
+                                totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
+                (Stream.concat(totalResult3.getItem().stream().filter(a -> a.isbn13 != ""),
+                                totalResult4.getItem().stream().filter(a -> a.isbn13 != "")))
+                )
+
+                        .distinct().collect(Collectors.toList());
+
+//        BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+//        BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
+//
+//        List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
+//                totalResult2.getItem().stream().filter(a -> a.isbn13 != "")).distinct().collect(Collectors.toList());
 
 //            List<BookInfoSearchDto.BookList.Item> pageResult2 = makePageable(result2, page, size);
 
-            return result2;
+        return result2;
 //        }
 
 //        else if (101 <= list1Size && list1Size <= 150) {
