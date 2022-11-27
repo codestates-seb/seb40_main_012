@@ -2,6 +2,7 @@ package seb40_main_012.back.email;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -16,6 +17,7 @@ public class EmailSenderService {
 
     private String title = "[가입을 환영합니다] Cherry Pick에 오신 것을 환영합니다.";
 
+    @Async
     public void sendEmail(String toAddress) throws GeneralSecurityException {
         try {
             String body =
