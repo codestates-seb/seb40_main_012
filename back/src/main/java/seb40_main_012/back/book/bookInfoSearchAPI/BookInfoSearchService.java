@@ -3,6 +3,7 @@ package seb40_main_012.back.book.bookInfoSearchAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@EnableAsync
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BookInfoSearchService {
@@ -229,19 +231,11 @@ public class BookInfoSearchService {
                 .build()
                 .encode(StandardCharsets.UTF_8)
                 .toUri();
-
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println(restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class).getItem());
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println("----------------------------------------------------------------------");
-        System.out.println("----------------------------------------------------------------------");
-
-
-
+        try {
+            BookInfoSearchDto.BookList result = restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class);
     }
 
