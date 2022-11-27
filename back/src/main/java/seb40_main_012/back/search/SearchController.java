@@ -5,11 +5,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
-import seb40_main_012.back.optimizedSearch.CherryPickSearchService;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.Valid;
@@ -22,7 +24,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/search")
 public class SearchController {
 
-    private final CherryPickSearchService cherryPickSearchService;
     private final BookInfoSearchService bookInfoSearchService;
     private final SearchService searchService;
 
