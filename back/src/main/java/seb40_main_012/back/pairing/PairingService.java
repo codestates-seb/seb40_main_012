@@ -297,7 +297,7 @@ public class PairingService {
 
     public List<Pairing> findRandomPairings() {
 
-        return pairingRepository.findBestTenCategory();
+        return pairingRepository.findAll();
     }
 
 //    --------------------------------------------------------------------------------------------
