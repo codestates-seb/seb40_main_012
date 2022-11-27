@@ -232,6 +232,13 @@ public class PairingService {
         return pairingRepository.findCategorySliceByNewestDesc("FILM", pageRequest);
     }
 
+    public List<Pairing> findFilmPairingsRandom() { // 영화 카테고리 무작위
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        return pairingRepository.findAllByCategory("FILM", pageRequest);
+    }
+
     public List<Pairing> findCuisinePairingsLikes() { // 음식/장소 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
@@ -245,6 +252,14 @@ public class PairingService {
 
 
         return pairingRepository.findCategorySliceByNewestDesc("CUISINE", pageRequest);
+    }
+
+    public List<Pairing> findCuisinePairingsRandom() { // 음식/장소 카테고리 무작위
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+
+        return pairingRepository.findAllByCategory("CUISINE", pageRequest);
     }
 
     public List<Pairing> findMusicPairingsLikes() { // 음악 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
@@ -262,6 +277,14 @@ public class PairingService {
         return pairingRepository.findCategorySliceByNewestDesc("MUSIC", pageRequest);
     }
 
+    public List<Pairing> findMusicPairingsRandom() { // 음악 카테고리 무작위
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+
+        return pairingRepository.findAllByCategory("MUSIC", pageRequest);
+    }
+
     public List<Pairing> findBookPairingsLikes() { // 책 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
@@ -276,6 +299,13 @@ public class PairingService {
         return pairingRepository.findCategorySliceByNewestDesc("BOOK", pageRequest);
     }
 
+    public List<Pairing> findBookPairingsRandom() { // 책 카테고리 무작위
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        return pairingRepository.findAllByCategory("BOOK", pageRequest);
+    }
+
     public List<Pairing> findEtcPairingsLikes() { // 기타 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
@@ -288,6 +318,13 @@ public class PairingService {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
 
         return pairingRepository.findCategorySliceByNewestDesc("ETC", pageRequest);
+    }
+
+    public List<Pairing> findEtcPairingsRandom() { // 기타 카테고리 무작위
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        return pairingRepository.findAllByCategory("ETC", pageRequest);
     }
 
     public List<Pairing> findBestPairingsLikes() {
