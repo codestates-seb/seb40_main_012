@@ -6,9 +6,11 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.user.entity.User;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,8 +33,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "from Comment " +
             "where User_Id = :userId "
             + "order by " + "created_at desc, created_at " + "desc")
-    List<Comment> findByUserId(long userId);
+    List<Comment> findByUserId(@Param("userId") long userId);
 
-    Long countBy();
+    Long countByUser(User user);
 
 }

@@ -148,13 +148,12 @@ public class UserController {
 
     @GetMapping("/mypage/userComment")
     public ResponseEntity getUserComment() {
-
+        User findUser = userService.getLoginUser();
         List<Comment> findComments = commentService.findMyCommentAll();
-
         List<CommentDto.myPageResponse> responses = commentMapper.commentsToMyPageResponse(findComments);
-
+        Long listCount = commentRepository.countByUser(findUser);
         return new ResponseEntity<>(
-                new SingleResponseDto<>(responses), HttpStatus.OK);
+                new ListResponseDto<>(listCount,responses), HttpStatus.OK);
     }
 
 //    @GetMapping("/mypage/userComment")
