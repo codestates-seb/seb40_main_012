@@ -88,7 +88,8 @@ public class CommentService {
         return commentRepository.save(savedPairingComment);
     }
 
-    public Comment createBookCollectionComment(Comment comment,Long collectionId) {
+    public Comment createBookCollectionComment(Comment comment, Long collectionId) {
+
         User findUser = userService.getLoginUser();
         BookCollection collection = collectionService.findVerifiedCollection(collectionId);
         Comment savedComment = Comment.builder()
@@ -107,9 +108,12 @@ public class CommentService {
         User findUser = userService.getLoginUser();
 
         Comment findComment = findVerifiedComment(commentId);
-        findComment.setBody(comment.getBody());
-        findComment.setModifiedAt(LocalDateTime.now());
-        return commentRepository.save(findComment);
+
+        if (findUser == comment.getUser()) {
+            findComment.setBody(comment.getBody());
+            findComment.setModifiedAt(LocalDateTime.now());
+            return commentRepository.save(findComment);
+        } else throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
     public Comment addLike(long commentId) {
@@ -229,7 +233,9 @@ public class CommentService {
 
         Comment findComment = findVerifiedComment(commentId);
 
-        commentRepository.delete(findComment);
+        if (findUser == findComment.getUser()) {
+            commentRepository.delete(findComment);
+        } else throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
     public void deleteComments() {

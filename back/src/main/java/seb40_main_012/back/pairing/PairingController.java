@@ -102,6 +102,7 @@ public class PairingController {
         } else if (pairingService.findPairing(pairingId).getImage() != null && file == null) {
 
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
+            pairing.setImagePath(null);
             Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
 

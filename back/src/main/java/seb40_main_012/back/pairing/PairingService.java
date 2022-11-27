@@ -68,26 +68,29 @@ public class PairingService {
 
         Pairing findPairing = findVerifiedPairing(pairingId);
 
-        Pairing updatedPairing =
-                Pairing.builder()
-                        .book(findPairing.getBook())
-                        .user(findPairing.getUser())
-                        .pairingId(findPairing.getPairingId())
-                        .imagePath(pairing.getImagePath())
-                        .title(pairing.getTitle())
-                        .body(pairing.getBody())
-                        .pairingCategory(pairing.getPairingCategory())
-                        .outLinkPath(pairing.getOutLinkPath())
-                        .likeCount(findPairing.getLikeCount())
-                        .view(findPairing.getView())
-                        .image(findPairing.getImage())
-                        .comments(findPairing.getComments())
-                        .likes(findPairing.getLikes())
-                        .createdAt(findPairing.getCreatedAt())
-                        .modifiedAt(LocalDateTime.now())
-                        .build();
+        if (findUser == findPairing.getUser()) {
 
-        return pairingRepository.save(updatedPairing);
+            Pairing updatedPairing =
+                    Pairing.builder()
+                            .book(findPairing.getBook())
+                            .user(findPairing.getUser())
+                            .pairingId(findPairing.getPairingId())
+                            .imagePath(pairing.getImagePath())
+                            .title(pairing.getTitle())
+                            .body(pairing.getBody())
+                            .pairingCategory(pairing.getPairingCategory())
+                            .outLinkPath(pairing.getOutLinkPath())
+                            .likeCount(findPairing.getLikeCount())
+                            .view(findPairing.getView())
+                            .image(findPairing.getImage())
+                            .comments(findPairing.getComments())
+                            .likes(findPairing.getLikes())
+                            .createdAt(findPairing.getCreatedAt())
+                            .modifiedAt(LocalDateTime.now())
+                            .build();
+
+            return pairingRepository.save(updatedPairing);
+        } else throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
     public Pairing addLike(long pairingId) {
@@ -311,7 +314,9 @@ public class PairingService {
 
         Pairing findPairing = findVerifiedPairing(pairingId);
 
-        pairingRepository.delete(findPairing);
+        if (findUser == findPairing.getUser()) {
+            pairingRepository.delete(findPairing);
+        } else throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
     public void deletePairings() {
