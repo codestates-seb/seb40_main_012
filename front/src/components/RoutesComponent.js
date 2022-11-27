@@ -104,7 +104,6 @@ const RoutesComponent = () => {
       <Route path="/button-test" element={<ButtonTest />} />
       <Route path="/img-test" element={<ImgTest />} />
       <Route path="*" element={getElement(NoMatch, null)} />
-      <Route path="/img-test" element={<ImgTest />} />
     </Routes>
   );
 };
