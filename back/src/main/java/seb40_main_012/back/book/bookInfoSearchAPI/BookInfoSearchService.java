@@ -206,6 +206,45 @@ public class BookInfoSearchService {
 //        }
     }
 
+    @Async
+    public BookInfoSearchDto.BookList cherryPickSearchForAsync(String title, String sort, Integer page, Integer size) {
+
+        String ttbkey = "ttbgcnb871441001";
+
+        final String getItemLookUpUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        URI targetUrl = UriComponentsBuilder
+                .fromUriString(getItemLookUpUrl)
+                .queryParam("ttbkey", ttbkey)
+                .queryParam("Query", title)
+                .queryParam("QueryType", "Keyword")
+                .queryParam("MaxResults", size)
+                .queryParam("start", page)
+                .queryParam("SearchTarget", "Book")
+                .queryParam("output", "JS")
+                .queryParam("Version", 20131101)
+                .queryParam("Sort", sort)
+                .build()
+                .encode(StandardCharsets.UTF_8)
+                .toUri();
+
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println(restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class).getItem());
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------");
+
+
+
+        return restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class);
+    }
+
     public static <T> List<T> makePageable(List<T> sourceList, int page, int pageSize) {
         if (pageSize <= 0 || page <= 0) {
             throw new IllegalArgumentException("invalid page size: " + pageSize);
