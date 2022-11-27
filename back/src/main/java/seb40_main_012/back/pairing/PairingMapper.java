@@ -116,7 +116,7 @@ public interface PairingMapper {
                                             .body(pairing.getBody())
                                             .likeCount(pairing.getLikeCount())
                                             .view(pairing.getView())
-                                            .imagePath(pairing.getImage() != null ? pairing.getImagePath() : null)
+                                            .imagePath(pairing.getImagePath() != null ? pairing.getImagePath() : null)
                                             .outLinkPath(pairing.getOutLinkPath())
                                             .comments(
                                                     pairing.getComments().stream()
