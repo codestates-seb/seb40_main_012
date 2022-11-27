@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
+import seb40_main_012.back.common.image.AwsS3Service;
 import seb40_main_012.back.common.image.ImageController;
 import seb40_main_012.back.common.image.ImageService;
 import seb40_main_012.back.common.like.LikeService;
@@ -41,6 +42,7 @@ public class PairingController {
     private final BookService bookService;
     private final LikeService likeService;
     private final ImageController imageController;
+    private final AwsS3Service awsS3Service;
     private final ImageService imageService;
     private final MultipartResolver multipartResolver;
     //    ------------------------------------------------------------
@@ -59,24 +61,8 @@ public class PairingController {
         String imagePath = null;
 
         if (file != null) {
-            long imageId = imageService.savePairingImage(file, createPairing);
-            imagePath = imageService.findImage(imageId).getStoredPath();
+            imagePath = awsS3Service.uploadToS3(file);
         }
-
-
-        System.out.println("--------------------------------------------------");
-        System.out.println("--------------------------------------------------");
-        System.out.println("--------------------------------------------------");
-        System.out.println("--------------------------------------------------");
-        System.out.println("--------------------------------------------------");
-        System.out.println("--------------------------------------------------");
-        System.out.println(imagePath);
-        System.out.println("--------------------------------------------------");
-        System.out.println("--------------------------------------------------");
-        System.out.println("--------------------------------------------------");
-        System.out.println("--------------------------------------------------");
-        System.out.println("--------------------------------------------------");
-        System.out.println("--------------------------------------------------");
 
         createPairing.setImagePath(imagePath);
 
@@ -86,7 +72,7 @@ public class PairingController {
                 new SingleResponseDto<>(response), HttpStatus.CREATED);
     }
 
-    @PostMapping("/pairings/{pairing_id}/edit")
+    @PatchMapping("/pairings/{pairing_id}/edit")
     public ResponseEntity patchPairing(
             @PathVariable("pairing_id") @Positive long pairingId,
             @RequestParam(value = "image") @Nullable MultipartFile file,
@@ -105,8 +91,9 @@ public class PairingController {
 
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
             Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
-            long imageId = imageService.savePairingImage(file, updatedPairing); // 이미지 새로 저장
-            updatedPairing.setImagePath(imageService.findImage(imageId).getStoredPath());
+//            long imageId = imageService.savePairingImage(file, updatedPairing); // 이미지 새로 저장
+            String imagePath = awsS3Service.uploadToS3(file);
+            updatedPairing.setImagePath(imagePath);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
 
             return new ResponseEntity<>(
@@ -123,12 +110,11 @@ public class PairingController {
 
         } else if (pairingService.findPairing(pairingId).getImage() != null && file != null) {
 
-
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
-            imageService.deletePairingImage(pairingId); // 기존 이미지 삭제
+            awsS3Service.removeFromS3(pairingService.findPairing(pairingId).getImagePath()); // 기존 이미지 삭제
             Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
-            long imageId = imageService.savePairingImage(file, updatedPairing); // 이미지 새로 저장
-            updatedPairing.setImagePath(imageService.findImage(imageId).getStoredPath());
+            String imagePath = awsS3Service.uploadToS3(file);
+            updatedPairing.setImagePath(imagePath);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
 
             return new ResponseEntity<>(
