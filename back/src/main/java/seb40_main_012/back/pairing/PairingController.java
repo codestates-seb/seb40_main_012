@@ -28,6 +28,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Validated
@@ -372,10 +374,13 @@ public class PairingController {
         );
     }
 
-    @GetMapping("/pairing/random")
+    @GetMapping("/pairings/random")
     public ResponseEntity randomPairings() {
-        List<Pairing> bestPairingsLikes = pairingService.findBestPairingsLikes();
-        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(bestPairingsLikes);
+        List<Pairing> randomPairings = pairingService.findRandomPairings();
+        Collections.shuffle(randomPairings);
+        SliceImpl<PairingDto.Response> responses = pairingMapper.pairingsToPairingResponses(randomPairings);
+
+        Collections.shuffle(randomPairings);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(responses), HttpStatus.OK
