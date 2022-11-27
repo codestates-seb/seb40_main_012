@@ -53,7 +53,7 @@ public class PairingController {
     public ResponseEntity postPairing(
             @PathVariable("isbn13") @Positive String isbn13,
             @RequestParam(value = "image") @Nullable MultipartFile file,
-            @Valid @RequestPart(value = "postPairingDto") PairingDto.Post postPairing) throws IOException, InterruptedException {
+            @Valid @RequestPart(value = "postPairingDto") PairingDto.Post postPairing) throws Exception {
 
         String imagePath = null;
 
@@ -75,7 +75,7 @@ public class PairingController {
     public ResponseEntity patchPairing(
             @PathVariable("pairing_id") @Positive long pairingId,
             @RequestParam(value = "image") @Nullable MultipartFile file,
-            @Valid @RequestPart(value = "patchPairingDto") PairingDto.Patch patchPairing) throws IOException {
+            @Valid @RequestPart(value = "patchPairingDto") PairingDto.Patch patchPairing) throws Exception {
 
         if (pairingService.findPairing(pairingId).getImage() == null && file == null) {
 

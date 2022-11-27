@@ -1,6 +1,7 @@
 package seb40_main_012.back.optimizedSearch;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,38 +34,22 @@ public class CherryPickSearchService {
 
     public List<BookInfoSearchDto.BookList.Item> cherryPickSearch(String title, String sort, Integer page, Integer size) {
 
-        RestTemplate restTemplate = new RestTemplate();
+        BookInfoSearchDto.BookList totalResult1 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 25);
+//        BookInfoSearchDto.BookList totalResult2 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 25);
+//        BookInfoSearchDto.BookList totalResult3 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 25);
+//        BookInfoSearchDto.BookList totalResult4 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 4, 25);
 
-        URI targetUrl = UriComponentsBuilder
-                .fromUriString(getItemLookUpUrl)
-                .queryParam("ttbkey", ttbkey)
-                .queryParam("Query", title)
-                .queryParam("QueryType", "Keyword")
-                .queryParam("MaxResults", 1)
-                .queryParam("start", 1)
-                .queryParam("SearchTarget", "Book")
-                .queryParam("output", "JS")
-                .queryParam("Version", 20131101)
-                .queryParam("Sort", sort)
-                .build()
-                .encode(StandardCharsets.UTF_8)
-                .toUri();
-
-        BookInfoSearchDto.BookList totalResult1 = bookInfoSearchService.listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 25);
-        BookInfoSearchDto.BookList totalResult2 = bookInfoSearchService.listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 25);
-        BookInfoSearchDto.BookList totalResult3 = bookInfoSearchService.listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 25);
-        BookInfoSearchDto.BookList totalResult4 = bookInfoSearchService.listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 4, 25);
-
-        List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(
-                        (Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
-                                totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
-                        (Stream.concat(totalResult3.getItem().stream().filter(a -> a.isbn13 != ""),
-                                totalResult4.getItem().stream().filter(a -> a.isbn13 != "")))
-                )
-
-                .distinct().collect(Collectors.toList());
+//        List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(
+//                        (Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
+//                                totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
+//                        (Stream.concat(totalResult3.getItem().stream().filter(a -> a.isbn13 != ""),
+//                                totalResult4.getItem().stream().filter(a -> a.isbn13 != "")))
+//                )
+//
+//                .distinct().collect(Collectors.toList());
 
 
-        return result2;
+//        return result2;
+        return totalResult1.getItem();
     }
 }
