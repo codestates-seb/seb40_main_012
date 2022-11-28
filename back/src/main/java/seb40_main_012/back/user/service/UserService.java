@@ -1,6 +1,9 @@
 package seb40_main_012.back.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -12,6 +15,7 @@ import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepositorySupport;
 import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
@@ -49,6 +53,7 @@ public class UserService {
     private final PairingRepository pairingRepository;
     private final BookCollectionRepository collectionRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final BookCollectionRepositorySupport collectionRepositorySupport;
     private final ApplicationEventPublisher publisher;
     private final CustomAuthorityUtils authorityUtils;
 
@@ -153,9 +158,17 @@ public class UserService {
         return pairingRepository.findByUser_UserId(findUser.getUserId());
     }
 
+
     public List<BookCollection> getUserCollection() {
         User findUser = getLoginUser();
         return collectionRepository.findByUserUserId(findUser.getUserId());
+    }
+
+    /** 무한 스크롤 */
+    public Slice<BookCollection> getUserCollectionDsl(Long lastStoreId) {
+        User findUser = getLoginUser();
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        return collectionRepositorySupport.findCollectionByNoOffset(pageRequest,lastStoreId);
 
     }
 

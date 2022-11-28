@@ -2,12 +2,15 @@ package seb40_main_012.back.user.controller;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepositorySupport;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.common.bookmark.BookmarkType;
 import seb40_main_012.back.common.comment.CommentMapper;
@@ -34,6 +37,7 @@ import seb40_main_012.back.user.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import javax.websocket.server.PathParam;
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +56,7 @@ public class UserController {
     private final BookCollectionRepository collectionRepository;
     private final BookRepository bookRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final BookCollectionRepositorySupport collectionRepositorySupport;
     private final EmailSenderService emailSenderService;
 
 
@@ -189,16 +194,26 @@ public class UserController {
         return new ListResponseDto<>(listCount, pairingDto);
     }
 
-
-    @GetMapping("/mypage/userCollection")
+    /** 무한스크롤 queryDsl */
+    @GetMapping("/mypage/userCollectionDsl")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {
-        List<BookCollection> collections = userService.getUserCollection();
-        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
-        User findUser = userService.getLoginUser();
-        Long listCount = collectionRepository.countByUser(findUser);
-        return new ListResponseDto<>(listCount, collectionDto);
+    public SingleResponseDto getUserBookCollection(@PathParam("lastId") Long lastId) {
+        Slice<BookCollection> collections = userService.getUserCollectionDsl(lastId);
+        Slice<BookCollectionDto.UserCollection> collectionDto = new SliceImpl<>(collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList()));
+        return new SingleResponseDto<>(collectionDto);
     }
+
+//    @GetMapping("/mypage/userCollection")
+//    @ResponseStatus(HttpStatus.OK)
+//    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {
+//        List<BookCollection> collections = userService.getUserCollection();
+//        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
+//        User findUser = userService.getLoginUser();
+//        Long listCount = collectionRepository.countByUser(findUser);
+//        return new ListResponseDto<>(listCount, collectionDto);
+//    }
+
+
 
     @DeleteMapping("/mypage/userCollection/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
