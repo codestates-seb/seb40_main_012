@@ -74,6 +74,18 @@ public class BookCollectionController {
     }
 
 
+//    @GetMapping("/userCollection")
+//    @ResponseStatus(HttpStatus.OK)
+//    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {
+//        User findUser = userService.getLoginUser();
+//        Long userId = findUser.getUserId();
+//        List<BookCollection> collections = userService.getUserCollection();
+//        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
+//        Long listCount = collectionRepository.countByUser(findUser);
+//        return new ListResponseDto<>(listCount, collectionDto);
+//    }
+
+    /** 무한스크롤 queryDsl */
     @GetMapping("/userCollection")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {

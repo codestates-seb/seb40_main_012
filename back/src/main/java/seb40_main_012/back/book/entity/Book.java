@@ -134,7 +134,7 @@ public class Book {
     //    --------------------------------------------------------------------------------------------
     /*북마크*/
     //    --------------------------------------------------------------------------------------------
-    @OneToMany(mappedBy = "book",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book",cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Bookmark> bookmarks = new ArrayList<>();
 }

@@ -54,6 +54,11 @@ public class BookCollectionService {
 
         collection.setCollectionTag();
 
+        if (tags.size() == 0) {
+            findUser.addBookCollection(collection);
+            collection.addUser(findUser);
+        }
+
 
         tags.forEach(
                 x -> {

@@ -35,8 +35,11 @@ public class BookCollection {
     private String title;
     private String content;
     private Long likeCount;
+    @Transient
     private boolean userLike;
+    @Transient
     private boolean userBookmark;
+    @Transient
     private boolean userCollection;
     private Long view;
 
