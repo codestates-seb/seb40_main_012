@@ -146,6 +146,7 @@ const PairingDetail = () => {
           pairingData.userInformation && pairingData.userInformation.nickName
         }
         update={new Date(pairingData.modifiedAt).toLocaleDateString()}
+        taglist={[]}
       />
       <BtnStyleBox>
         {isMine ? (

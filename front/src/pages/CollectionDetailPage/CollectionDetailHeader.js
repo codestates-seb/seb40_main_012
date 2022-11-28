@@ -1,9 +1,11 @@
 import styled from 'styled-components';
+import CollectionTags from './CollectionTags';
 
 const CollectionDetailHeaderContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  padding: 0 10px;
 `;
 
 const CollectionTitle = styled.div`
@@ -31,10 +33,18 @@ const CollectionUpdate = styled.div`
   color: ${({ theme }) => theme.colors.gray};
 `;
 
-const CollectionDetailHeader = ({ title, writer, update }) => {
+const TitleTagContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CollectionDetailHeader = ({ title, writer, update, taglist }) => {
   return (
     <CollectionDetailHeaderContainer>
-      <CollectionTitle>{title}</CollectionTitle>
+      <TitleTagContainer>
+        <CollectionTitle>{title}</CollectionTitle>
+        <CollectionTags taglist={taglist} />
+      </TitleTagContainer>
       <CollectionWriter>
         <img
           src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}

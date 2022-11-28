@@ -86,23 +86,59 @@ const ModalBox = styled.div`
   }
 `;
 
-//TODO: 내가 작성한 컬렉션만 삭제 버튼 노출
-const CollectionHeaderBtns = ({
-  likeCount,
-  userLike,
-  userBookmark,
-  userCollection,
-  handleCollectionLike,
-  handleCollectionBookmark,
-  handleCollectionDelete,
-}) => {
-  const [isLiked, setIsLiked] = useState(userLike);
-  const [isBookmarked, setIsBookmarked] = useState(userBookmark);
-
+export const DeleteEditBtns = ({ userCollection, handleCollectionDelete }) => {
   //Delete Modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  return (
+    <CollectionHeaderBtnsContainer>
+      {userCollection ? (
+        <>
+          <CollectionDelete onClick={handleOpen}>삭제하기</CollectionDelete>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <ModalBox>
+              <div className="info">정말 삭제하시겠습니까?</div>
+              <div className="container">
+                <div
+                  className="close"
+                  onClick={handleClose}
+                  role="presentation"
+                >
+                  취소
+                </div>
+                <div
+                  className="delete"
+                  onClick={handleCollectionDelete}
+                  role="presentation"
+                >
+                  삭제하기
+                </div>
+              </div>
+            </ModalBox>
+          </Modal>
+        </>
+      ) : null}
+    </CollectionHeaderBtnsContainer>
+  );
+};
+
+export const CollectionHeaderBtns = ({
+  likeCount,
+  userLike,
+  userBookmark,
+  handleCollectionLike,
+  handleCollectionBookmark,
+}) => {
+  const [isLiked, setIsLiked] = useState(userLike);
+  const [isBookmarked, setIsBookmarked] = useState(userBookmark);
+
   //LinkCopy Modal
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
@@ -169,39 +205,6 @@ const CollectionHeaderBtns = ({
         link={location.pathname}
         type="마음에 드는 컬렉션을"
       />
-      {userCollection ? (
-        <>
-          <CollectionDelete onClick={handleOpen}>삭제하기</CollectionDelete>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <ModalBox>
-              <div className="info">정말 삭제하시겠습니까?</div>
-              <div className="container">
-                <div
-                  className="close"
-                  onClick={handleClose}
-                  role="presentation"
-                >
-                  취소
-                </div>
-                <div
-                  className="delete"
-                  onClick={handleCollectionDelete}
-                  role="presentation"
-                >
-                  삭제하기
-                </div>
-              </div>
-            </ModalBox>
-          </Modal>
-        </>
-      ) : null}
     </CollectionHeaderBtnsContainer>
   );
 };
-
-export default CollectionHeaderBtns;
