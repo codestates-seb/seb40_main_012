@@ -24,4 +24,6 @@ export { default as EditProfile } from './MyPage/EditProfile/EditProfile';
 export { default as ChangePassWd } from './MyPage/EditProfile/ChangePassWd';
 export { default as MyCollection } from './MyPage/MyCollection/MyCollection';
 
+export { default as SearchBookPage } from './SearchPage/SearchBookPage';
+
 export { default as NoMatch } from './NoMatch';

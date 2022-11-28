@@ -40,7 +40,8 @@ const Searchbar = () => {
 
   const handleOnKeyPressEnter = (e) => {
     if (e.key === 'Enter') {
-      navigate(`/search?query=${input}&category=book`);
+      navigate(`/search/book/${input}`);
+      window.location.reload();
     }
   };
 
