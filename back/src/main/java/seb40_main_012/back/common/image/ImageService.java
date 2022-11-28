@@ -12,8 +12,11 @@ import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -83,7 +86,7 @@ public class ImageService {
                 .pairing(pairing)
                 .build();
 
-        files.transferTo(new File(storedPath)); // 로컬에 uuid 파일명으로 저장
+        files.transferTo(new File(storedPath)); // uuid 파일명으로 저장
 
         Image storedImage = imageRepository.save(image);
 
@@ -122,4 +125,6 @@ public class ImageService {
         return optionalImage.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.IMAGE_NOT_FOUND));
     }
+
+
 }

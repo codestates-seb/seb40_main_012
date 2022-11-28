@@ -3,6 +3,7 @@ package seb40_main_012.back.book.bookInfoSearchAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
+@EnableAsync
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class BookInfoSearchService {
@@ -204,6 +206,37 @@ public class BookInfoSearchService {
 //
 //            return pageResult4;
 //        }
+    }
+
+//    @Async
+    public BookInfoSearchDto.BookList cherryPickSearchForAsync(String title, String sort, Integer page, Integer size) {
+
+        String ttbkey = "ttbgcnb871441001";
+
+        final String getItemLookUpUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        URI targetUrl = UriComponentsBuilder
+                .fromUriString(getItemLookUpUrl)
+                .queryParam("ttbkey", ttbkey)
+                .queryParam("Query", title)
+                .queryParam("QueryType", "Keyword")
+                .queryParam("MaxResults", size)
+                .queryParam("start", page)
+                .queryParam("SearchTarget", "Book")
+                .queryParam("output", "JS")
+                .queryParam("Version", 20131101)
+                .queryParam("Sort", sort)
+                .build()
+                .encode(StandardCharsets.UTF_8)
+                .toUri();
+        try {
+            BookInfoSearchDto.BookList result = restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class);
     }
 
     public static <T> List<T> makePageable(List<T> sourceList, int page, int pageSize) {

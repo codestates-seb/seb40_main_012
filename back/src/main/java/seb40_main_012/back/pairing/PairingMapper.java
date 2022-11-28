@@ -108,6 +108,7 @@ public interface PairingMapper {
                                                             .email(pairing.getUser().getEmail())
                                                             .nickName(pairing.getUser().getNickName())
                                                             .roles(pairing.getUser().getRoles())
+                                                            .bookTemp(pairing.getUser().getBookTemp())
                                                             .build()
                                             )
                                             .pairingCategory(pairing.getPairingCategory())
@@ -115,7 +116,7 @@ public interface PairingMapper {
                                             .body(pairing.getBody())
                                             .likeCount(pairing.getLikeCount())
                                             .view(pairing.getView())
-                                            .imagePath(pairing.getImage() != null ? pairing.getImage().getStoredPath() : null)
+                                            .imagePath(pairing.getImagePath() != null ? pairing.getImagePath() : null)
                                             .outLinkPath(pairing.getOutLinkPath())
                                             .comments(
                                                     pairing.getComments().stream()

@@ -18,6 +18,7 @@ public class AsyncConfig extends AsyncConfigurerSupport {
         executor.setQueueCapacity(500); // CorePool이 초과될때 Queue에 저장하는 최대 개수
         executor.setThreadNamePrefix("CherryPick_Async-"); // Thread 이름 접두사
         executor.initialize();
+        executor.shutdown();
         return executor;
     }
 }
