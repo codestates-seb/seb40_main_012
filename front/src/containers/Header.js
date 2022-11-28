@@ -122,7 +122,7 @@ function Header(props) {
   );
 
   const loginUserItems = [
-    { text: '마이페이지', icon: userAvatar },
+    { text: '마이페이지', icon: <AccountCircle /> },
     { text: '로그아웃', icon: <LogoutIcon /> },
   ];
   const nonMembersItems = [
