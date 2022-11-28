@@ -1,5 +1,6 @@
 package seb40_main_012.back.bookCollection.repository;
 
+import com.querydsl.core.QueryResults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,15 +20,6 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection, 
     List<BookCollection> findByUserUserId(Long userId);
     void deleteAllByUser(User user);
 
-//    Page<BookCollection> findCollectionByNoOffset(Pageable pageable, Long collectionId, Long userId){
-//        QueryResul<BookCollection>
-//         return queryFactory
-//    }
-
-
-
-    //    @Query()
-//    List<BookCollection> findByTag(List<Tag> tags);
 
     @Query(nativeQuery = true,
             value = "SELECT * FROM BOOK_COLLECTION " +
