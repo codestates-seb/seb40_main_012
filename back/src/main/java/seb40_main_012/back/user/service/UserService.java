@@ -2,10 +2,11 @@ package seb40_main_012.back.user.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -15,7 +16,7 @@ import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
-import seb40_main_012.back.bookCollection.repository.BookCollectionRepositorySupport;
+import seb40_main_012.back.common.mypage.MyPageRepositorySupport;
 import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
@@ -34,8 +35,6 @@ import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -53,7 +52,7 @@ public class UserService {
     private final PairingRepository pairingRepository;
     private final BookCollectionRepository collectionRepository;
     private final BookmarkRepository bookmarkRepository;
-    private final BookCollectionRepositorySupport collectionRepositorySupport;
+    private final MyPageRepositorySupport myPageRepositorySupport;
     private final ApplicationEventPublisher publisher;
     private final CustomAuthorityUtils authorityUtils;
 
@@ -153,22 +152,24 @@ public class UserService {
         return comments;
     }
 
-    public List<Pairing> getUserPairing() {
+    public Slice<Pairing> getUserPairing(Long lastStoreId) {
         User findUser = getLoginUser();
-        return pairingRepository.findByUser_UserId(findUser.getUserId());
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        return myPageRepositorySupport.findUserPairing(pageRequest,lastStoreId,findUser.getUserId());
     }
 
 
-    public List<BookCollection> getUserCollection() {
+    public Slice<BookCollection> getUserCollection(Long lastStoreId) {
         User findUser = getLoginUser();
-        return collectionRepository.findByUserUserId(findUser.getUserId());
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        return myPageRepositorySupport.findUserCollection(pageRequest,lastStoreId,findUser.getUserId());
     }
 
-    /** 무한 스크롤 */
+    /** 무한 스크롤 test */
     public Slice<BookCollection> getUserCollectionDsl(Long lastStoreId) {
         User findUser = getLoginUser();
         PageRequest pageRequest = PageRequest.of(0, 5);
-        return collectionRepositorySupport.findCollectionByNoOffset(pageRequest,lastStoreId);
+        return myPageRepositorySupport.findCollectionByNoOffset(pageRequest,lastStoreId);
 
     }
 
@@ -184,42 +185,41 @@ public class UserService {
         return findUser;
     }
 
-    public List<BookCollection> getBookmarkByBookCollection() {
+//    public List<BookCollection> getBookmarkByBookCollection() {
+//        User findUser = getLoginUser();
+//        PageRequest pageRequest = PageRequest.of(0,5)
+//        List<Bookmark> allBookmarks = bookmarkRepository.findByUser(findUser);
+//        List<Bookmark> bookmarks = new ArrayList<>();
+//        allBookmarks.forEach(
+//                x -> {
+//                    if (x.getBookCollection()!=null) bookmarks.add(x);
+//                }
+//        );
+//        List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
+//        return collections;
+//    }
+
+    public Slice<BookCollection> getBookmarkByBookCollection(Long lastStoreId) {
         User findUser = getLoginUser();
-        List<Bookmark> allBookmarks = bookmarkRepository.findByUser(findUser);
-        List<Bookmark> bookmarks = new ArrayList<>();
-        allBookmarks.forEach(
-                x -> {
-                    if (x.getBookCollection()!=null) bookmarks.add(x);
-                }
-        );
-        List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkCollection(pageRequest,lastStoreId,findUser.getUserId());
+        Slice<BookCollection> collections = new SliceImpl<>(bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList()));
         return collections;
     }
 
-    public List<Pairing> getBookmarkByPairing() {
+    public Slice<Pairing> getBookmarkByPairing(Long lastStoreId) {
         User findUser = getLoginUser();
-        List<Bookmark> allBookmarks = bookmarkRepository.findByUser(findUser);
-        List<Bookmark> bookmarks = new ArrayList<>();
-        allBookmarks.forEach(
-                x -> {
-                    if(x.getPairing()!=null) bookmarks.add(x);
-                }
-        );
-        List<Pairing> pairings = bookmarks.stream().map(x -> x.getPairing()).collect(Collectors.toList());
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkPairing(pageRequest,lastStoreId,findUser.getUserId());
+        Slice<Pairing> pairings = new SliceImpl<>(bookmarks.stream().map(x -> x.getPairing()).collect(Collectors.toList()));
         return pairings;
     }
 
-    public List<Book> getBookmarkByBook() {
+    public Slice<Book> getBookmarkByBook(Long lastStoreId) {
         User findUser = getLoginUser();
-        List<Bookmark> allBookmarks = bookmarkRepository.findByUser(findUser);
-        List<Bookmark> bookmarks = new ArrayList<>();
-        allBookmarks.forEach(
-                x -> {
-                    if(x.getBook()!=null) bookmarks.add(x);
-                }
-        );
-        List<Book> books = bookmarks.stream().map(x -> x.getBook()).collect(Collectors.toList());
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkBook(pageRequest,lastStoreId,findUser.getUserId());
+        Slice<Book> books = new SliceImpl<>(bookmarks.stream().map(x -> x.getBook()).collect(Collectors.toList()));
         return books;
     }
 
