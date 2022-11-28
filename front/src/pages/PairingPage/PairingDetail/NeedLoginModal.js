@@ -13,7 +13,6 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  boxShadow: 24,
   p: 4,
 };
 
@@ -28,6 +27,27 @@ const BtnStyleBox = styled.div`
 
 const Btns = styled.div`
   display: flex;
+  align-items: center;
+  padding: 3px 7px;
+  border: none;
+  border-radius: 3px;
+  background-color: transparent;
+  color: ${({ theme }) => theme.colors.darkgray};
+  font-size: 15px;
+  font-weight: 500;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
   align-items: center;
 `;
 
@@ -47,12 +67,14 @@ export default function NeedLoginModal({ children }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            로그인이 필요한 서비스입니다.
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            로그인 또는 회원가입 하시겠습니까?
-          </Typography>
+          <InfoContainer>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              로그인이 필요한 서비스입니다.
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              로그인 또는 회원가입 하시겠습니까?
+            </Typography>
+          </InfoContainer>
           <BtnStyleBox>
             <TextButton width={'100px'} onClick={handleClose}>
               창 닫기

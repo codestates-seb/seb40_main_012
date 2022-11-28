@@ -3,7 +3,7 @@ import { Tag } from '../../components/tag';
 
 const CollectionTagsContainer = styled.div`
   display: flex;
-  padding: 15px 0 25px 0;
+  margin: 20px 0 0 20px;
 `;
 
 const CollectionTags = ({ taglist }) => {
