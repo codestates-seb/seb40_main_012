@@ -9,20 +9,43 @@ const SearchBooksContainer = styled.div`
   flex-wrap: wrap;
 `;
 
+const LoadingContainer = styled.div`
+  width: 100%;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  img {
+    width: 50px;
+    height: 50px;
+  }
+  &.hide {
+    display: none;
+  }
+`;
+
 const SearchBooks = () => {
   const { keyword } = useParams();
   const [books, setBooks] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     axios
       .get(`/api/search/collectionbooks?Query=${keyword}`)
       .then((res) => {
         setBooks(res.data);
+        setIsLoading(false);
       })
       .catch((error) => console.error(error));
   }, []);
   return (
     <SearchBooksContainer>
+      <LoadingContainer className={isLoading ? 'show' : 'hide'}>
+        <img
+          src={process.env.PUBLIC_URL + '/images/spinner.gif'}
+          alt="spinner"
+        />
+      </LoadingContainer>
       {books.map((el, idx) => {
         return (
           <SearchBook
