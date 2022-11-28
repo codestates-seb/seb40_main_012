@@ -28,7 +28,20 @@ import { authApi } from 'api';
 const drawerWidth = 240;
 const PAIRING = '페어링';
 const COLLECTION = '컬렉션';
+const MY_PAGE = '마이페이지';
+const LOGOUT = '로그아웃';
+const SIGN_IN = '로그인';
+const SIGN_UP = '회원가입';
+
 const navItems = [PAIRING, COLLECTION];
+const loginUserItems = [
+  { text: MY_PAGE, icon: <AccountCircle /> },
+  { text: LOGOUT, icon: <LogoutIcon /> },
+];
+const nonMembersItems = [
+  { text: SIGN_IN, icon: <LoginIcon /> },
+  { text: SIGN_UP, icon: <AccountCircle /> },
+];
 
 const HeaderContainerStyled = styled(AppBar)`
   height: 60px;
@@ -113,23 +126,6 @@ function Header(props) {
   const isLogin = useSelector(selectIsLogin);
   const profileImage = useSelector(selectProfileImage);
 
-  const userAvatar = (
-    <Avatar
-      alt="Mypage Icon"
-      src={profileImage ? profileImage : dummyUserImgUrl}
-      sx={{ width: 32, height: 32 }}
-    />
-  );
-
-  const loginUserItems = [
-    { text: '마이페이지', icon: <AccountCircle /> },
-    { text: '로그아웃', icon: <LogoutIcon /> },
-  ];
-  const nonMembersItems = [
-    { text: '로그인', icon: <LoginIcon /> },
-    { text: '회원가입', icon: <AccountCircle /> },
-  ];
-
   const userNavListItem = (arr) =>
     arr.map(({ text, icon }, index) => (
       <ListItem key={text} disablePadding>
@@ -142,6 +138,14 @@ function Header(props) {
         </DrawerListItemButtonStyled>
       </ListItem>
     ));
+
+  const userAvatar = (
+    <Avatar
+      alt="Mypage Icon"
+      src={profileImage ? profileImage : dummyUserImgUrl}
+      sx={{ width: 32, height: 32 }}
+    />
+  );
 
   const { window } = props;
   const [drawerOpen, setDrawerOpen] = useState({
@@ -185,16 +189,16 @@ function Header(props) {
       case COLLECTION:
         navigate('/collection');
         break;
-      case '로그인':
+      case SIGN_IN:
         navigate('/user/signin');
         break;
-      case '회원가입':
+      case SIGN_UP:
         navigate('/user/signup');
         break;
-      case '마이페이지':
+      case MY_PAGE:
         navigate('/mypage');
         break;
-      case '로그아웃':
+      case LOGOUT:
         handleClickLogoutButton();
         break;
       default:
@@ -265,7 +269,7 @@ function Header(props) {
               {isLogin ? (
                 <>
                   <AuthButtounStyled onClick={handleClickLogoutButton}>
-                    로그아웃
+                    {LOGOUT}
                   </AuthButtounStyled>
                   <MyPageIconContainer to="/mypage">
                     {userAvatar}
@@ -276,12 +280,12 @@ function Header(props) {
                   <AuthButtounStyled
                     onClick={() => handleClickNavigateButton('/user/signin')}
                   >
-                    로그인
+                    {SIGN_IN}
                   </AuthButtounStyled>
                   <AuthButtounStyled
                     onClick={() => handleClickNavigateButton('/user/signup')}
                   >
-                    회원가입
+                    {SIGN_UP}
                   </AuthButtounStyled>
                 </>
               )}
