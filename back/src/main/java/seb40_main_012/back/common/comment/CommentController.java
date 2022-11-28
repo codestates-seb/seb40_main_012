@@ -33,7 +33,7 @@ public class CommentController {
     private final LikeService likeService;
 
     //    ------------------------------------------------------------
-    private final NotificationService noticeService;
+    private final NotificationService noticeService; // 알림 설정을 위한 의존성 주입
     //    ------------------------------------------------------------
 
     @PostMapping("/books/{isbn13}/comments/add")
@@ -73,6 +73,11 @@ public class CommentController {
         Comment comment = commentMapper.commentPostToComment(request);
         Comment createdComment = commentService.createBookCollectionComment(comment, collectionId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
+
+//        ------------------------------------------------------------
+        noticeService.notifyPostBookCollectionCommentEvent(createdComment);
+//        ------------------------------------------------------------
+
         return response;
     }
 
