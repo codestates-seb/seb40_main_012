@@ -26,6 +26,7 @@ import {
   ChangePassWd,
   MyCollection,
   NoMatch,
+  SearchBookPage,
 } from 'pages';
 
 //임시 페이지!
@@ -100,6 +101,7 @@ const RoutesComponent = () => {
         path="/mypage/profile/password"
         element={getElement(ChangePassWd, true)}
       />
+      <Route path="/search/book" element={getElement(SearchBookPage, null)} />
       <Route path="/redux" element={<ReduxPage />} />
       <Route path="/button-test" element={<ButtonTest />} />
       <Route path="/img-test" element={<ImgTest />} />
