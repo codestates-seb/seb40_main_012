@@ -22,7 +22,7 @@ jobs:
           echo "REACT_APP_API_URL=$REACT_APP_API_URL" >> .env.development
         working-directory: ./front
         env:
-          REACT_APP_SERVICE_VERSION: 0.0.7
+          REACT_APP_SERVICE_VERSION: 0.0.8
           REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
       - name: Build
         run: npm run build
