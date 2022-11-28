@@ -46,6 +46,7 @@ const DeleteBtn = styled.button`
   color: ${({ theme }) => theme.colors.dark};
   font-weight: 700;
   border: none;
+  z-index: 100;
   &:hover {
     cursor: pointer;
     background-color: ${({ theme }) => theme.colors.mainColor};
