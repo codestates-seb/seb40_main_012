@@ -58,6 +58,11 @@ const CommentBorderCSS = styled.button`
   content: '';
   border-bottom: solid 3px ${({ theme }) => theme.colors.mainColor};
   align-items: center;
+  img {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+  }
 `;
 const Circle = styled.div`
   width: 30px;
@@ -175,7 +180,13 @@ const Nav = ({ content, view, setView }) => {
           {view === 4 ? (
             <>
               <CommentBorderCSS>
-                <Typography variant="h6">나의 픽</Typography>
+                <Typography variant="h6">
+                  <img
+                    src={process.env.PUBLIC_URL + '/images/cherry.png'}
+                    alt="bookmark icon"
+                  />
+                  나의 픽
+                </Typography>
               </CommentBorderCSS>
               <Circle className="circle">
                 <Typography variant="h6" style={{ color: 'white' }}>

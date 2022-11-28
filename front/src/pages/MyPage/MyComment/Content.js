@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import MyCommentBook from './MyCommentBook';
+import MyCommentDetail from './MyCommentDetail';
 // import { useState } from 'react';
 import axios from '../../../api/axios';
 import MyCommentPairing from './MyCommentPairing';
@@ -100,24 +100,9 @@ const ItemContainer = styled.div`
 `;
 
 const Content = ({ content, setContent }) => {
-  const nextArray = content.data;
-
-  const sliceContent = () => {
-    for (let i = 3; i < content.data.length; i + 2) {
-      content.data.slice(i, i + 2);
-    }
-
-    // data 배열 길이 = 12
-    // 처음 : 0 - 2
-    // 다음 : 3 - 5 ...
-    console.log(content.data.slice(0, 2).concat(content.data.slice(3, 5)));
-  };
-
-  console.log('슬라이스', content.data.slice(0, 2).concat.content.data);
-
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    if (commentLength >= 100) {
+    if (content.listCount >= 100) {
       // setContent({
       //   bookComment: content.bookComment,
       //   pairingComment: content.pairingComment,
@@ -127,7 +112,7 @@ const Content = ({ content, setContent }) => {
       // });
       // return;
     }
-    if (commentLength < 10) {
+    if (content.listCount < 10) {
       // setContent({
       //   bookComment: content.bookComment,
       //   pairingComment: content.pairingComment,
@@ -154,11 +139,10 @@ const Content = ({ content, setContent }) => {
     //   });
     // }, 800);
     setTimeout(() => {
-      // setContent({
-      //   data: content.bookComment.concat(data.content),
-      //   hasMore: true,
-      //   listCount: 0,
-      // });
+      setContent({
+        data: content.data.concat(content.data),
+        listCount: 0,
+      });
     }, 800);
     /////
   };
@@ -212,9 +196,9 @@ const Content = ({ content, setContent }) => {
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
           next={content && fetchMoreData}
-          hasMore={content.hasMore} // 스크롤 막을지 말지 결정
+          hasMore={true} // 스크롤 막을지 말지 결정
           loader={
-            <p
+            <div
               style={{
                 textAlign: 'center',
               }}
@@ -224,7 +208,7 @@ const Content = ({ content, setContent }) => {
                 alt="loading cherrypick"
               ></img>
               <div>열심히 읽어오는 중..</div>
-            </p>
+            </div>
           }
           height={400}
           endMessage={
@@ -234,7 +218,11 @@ const Content = ({ content, setContent }) => {
           }
         >
           <div>
-            {/* <MyCommentBook content={content} setContent={setContent} /> */}
+            {content.data
+              ? content.data.map((data, key) => (
+                  <MyCommentDetail key={data.commentId} data={data} />
+                ))
+              : null}
           </div>
         </InfiniteScroll>
       </ContentContainer>

@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
@@ -9,21 +10,24 @@ import axios from '../../../api/axios';
 const Remove = styled.div`
   color: #dee2e6;
   font-size: 24px;
-  cursor: pointer;
   opacity: 0;
-  &:hover {
-    color: #6741ff;
-  }
 `;
 const ItemContainer = styled.div`
   &:hover {
     ${Remove} {
       opacity: 1;
+      img {
+        width: 17px;
+        height: 17px;
+        margin-right: 5px;
+        margin-top: 8px;
+      }
     }
   }
 `;
 
 const BookImg = styled.div`
+  cursor: pointer;
   .resize {
     box-sizing: inherit;
     width: 108px !important;
@@ -38,6 +42,7 @@ const FlexBox = styled.div`
   margin-right: 10px;
   font-size: 13px;
   border-bottom: 1px solid #e9e9e9;
+  cursor: pointer;
   .comment {
     height: 125px;
     color: #232627;
@@ -45,11 +50,16 @@ const FlexBox = styled.div`
   .heart-star-title {
     display: flex;
     flex-direction: row;
+    img {
+      width: 20px;
+      height: 20px;
+      margin-right: 2px;
+    }
   }
 `;
 
-const MyCommentBook = ({ content }) => {
-  console.log('받아온 content', content);
+const MyCommentBook = ({ data }) => {
+  console.log('디테일에서 받아온 data', data);
   const onRemove = (id) => {
     axios
       .delete(`/api/comments/${id}/delete`)
@@ -57,10 +67,10 @@ const MyCommentBook = ({ content }) => {
       .catch((error) => console.log('에러', error));
   };
   return (
-    <div>
-      {content.bookComment ? (
-        content.bookComment.map((data, key) => (
-          <ItemContainer key={key}>
+    <>
+      {data ? (
+        <>
+          <ItemContainer key={data.commentId}>
             <Grid
               container
               item
@@ -100,7 +110,7 @@ const MyCommentBook = ({ content }) => {
                     variant="body2"
                     gutterBottom
                   >
-                    {data.bookName}
+                    {data.title}
                   </Typography>
                   <Typography
                     color="#232627"
@@ -111,7 +121,7 @@ const MyCommentBook = ({ content }) => {
                     variant="body2"
                     gutterBottom
                   >
-                    {data.content}
+                    {data.body}
                   </Typography>
 
                   <div className="heart-star-title">
@@ -124,30 +134,59 @@ const MyCommentBook = ({ content }) => {
                       }}
                       color="#BFBFBF"
                     >
-                      <StarRoundedIcon
-                        align="center"
-                        style={{ color: 'FFF599' }}
-                      />
-                      {data.rating}
+                      {data.commentType === 'BOOK' ? (
+                        <>
+                          <Typography
+                            color="#6741ff"
+                            sx={{
+                              fontSize: 22,
+                              marginBottom: 0,
+                              marginRight: 0.3,
+                            }}
+                            variant="body2"
+                            gutterBottom
+                          >
+                            ★
+                          </Typography>
+
+                          {data.myBookRating !== null
+                            ? data.myBookRating
+                            : null}
+                        </>
+                      ) : (
+                        <>
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              '/images/p_heart_filled_icon.svg'
+                            }
+                            alt="heart icon"
+                          />
+                          {data.likeCount}
+                        </>
+                      )}
                     </Grid>
                     <Grid
                       item
                       xs={3}
                       sx={{
                         display: 'flex',
-
                         alignItems: 'center',
                       }}
                       color="#BFBFBF"
                     >
-                      <>
-                        <FavoriteTwoToneIcon
-                          sx={{ width: 19.5, height: 19.5 }}
-                          align="center"
-                          style={{ color: 'FFD8D8' }}
-                        />
-                        {data.commentLike}
-                      </>
+                      {data.commentType === 'BOOK' ? (
+                        <>
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              '/images/p_heart_filled_icon.svg'
+                            }
+                            alt="heart icon"
+                          />
+                          {data.likeCount}
+                        </>
+                      ) : null}
                     </Grid>
                     <Grid
                       item
@@ -160,8 +199,8 @@ const MyCommentBook = ({ content }) => {
                       color="#737373"
                     >
                       <div>
-                        {data.bookName ? data.bookName : null},
-                        {data.author ? data.author : null}
+                        {data.commentType === 'BOOK' ? data.title : null},
+                        {data.commentType === 'BOOK' ? data.author : null}
                       </div>
                     </Grid>
                   </div>
@@ -187,11 +226,11 @@ const MyCommentBook = ({ content }) => {
               </Grid>
             </Grid>
           </ItemContainer>
-        ))
+        </>
       ) : (
         <div>데이터없어용</div>
       )}
-    </div>
+    </>
   );
 };
 export default MyCommentBook;

@@ -251,9 +251,7 @@ const Content = ({ setInfiniteData, infiniteData, fetchData }) => {
                     <Grid
                       item
                       xs={9}
-                      onClick={() =>
-                        navigate(`/pairing/books/${data.pairingId}`)
-                      }
+                      onClick={() => navigate(`/pairing/${data.pairingId}`)}
                     >
                       <FlexBox>
                         <Typography

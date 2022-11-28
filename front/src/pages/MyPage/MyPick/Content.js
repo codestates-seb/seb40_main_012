@@ -9,6 +9,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import MyPickPairing from './MyPickPairing';
 import MyPickCollection from './MyPickCollection';
 import { useState } from 'react';
+import MyPickGuide from './MyPickGuide';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -156,7 +157,13 @@ const Content = ({
   return (
     <>
       <ContentContainer>
-        <Grid container>
+        <Grid
+          container
+          style={{
+            textAlign: 'center',
+            alignItems: 'center',
+          }}
+        >
           <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
           <Grid item xs={5} sx={{ mt: 1, mb: 1 }}>
             <CommentContainer>
@@ -200,7 +207,13 @@ const Content = ({
               display: 'flex',
               flexDirection: 'row-reverse',
             }}
-          ></Grid>
+            style={{
+              textAlign: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <MyPickGuide />
+          </Grid>
         </Grid>
 
         <InfiniteScroll

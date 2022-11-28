@@ -160,14 +160,18 @@ const MyPickBook = ({ content, fetchData }) => {
                       }}
                       color="#BFBFBF"
                     >
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          '/images/p_heart_filled_icon.svg'
-                        }
-                        alt="heart icon"
-                      />
-
+                      <Typography
+                        color="#6741ff"
+                        sx={{
+                          fontSize: 22,
+                          marginBottom: 0,
+                          marginRight: 0.3,
+                        }}
+                        variant="body2"
+                        gutterBottom
+                      >
+                        ★
+                      </Typography>
                       {data.ratingCount}
                     </Grid>
                     <Grid

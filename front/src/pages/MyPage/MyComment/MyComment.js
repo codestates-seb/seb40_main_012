@@ -49,7 +49,6 @@ const MyComment = () => {
   const [content, setContent] = useState({
     data: [],
     listCount: 0,
-    hasMore: false,
   });
 
   const fetchData = async () => {
