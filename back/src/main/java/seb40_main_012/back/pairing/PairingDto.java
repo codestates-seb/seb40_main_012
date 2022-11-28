@@ -146,7 +146,7 @@ public class PairingDto {
 
         public static PairingDto.BookmarkedPairing of(Pairing pairing){
             return BookmarkedPairing.builder()
-                    .pairingId(builder().pairingId)
+                    .pairingId(pairing.getPairingId())
                     .content(pairing.getBody())
                     .bookName(pairing.getBook().getTitle())
                     .author(pairing.getBook().getAuthor())
