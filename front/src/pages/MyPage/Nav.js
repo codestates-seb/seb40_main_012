@@ -1,8 +1,7 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import styled, { ThemeProvider } from 'styled-components';
+import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import theme from '../../styles/theme';
 
 const BorderCSS = styled.button`
   outline: none;
@@ -72,130 +71,128 @@ const Nav = ({ content, view, setView }) => {
 
   return (
     <div>
-      <ThemeProvider theme={theme}>
-        <Grid container justifyContent="space-around">
-          <Grid
-            item
-            align="center"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onClick={() => setView(1)}
-          >
-            {view === 1 ? (
-              <>
-                <CommentBorderCSS>
-                  <Typography variant="h6">나의 코멘트</Typography>
-                </CommentBorderCSS>
-                <Circle className="circle">
-                  <Typography variant="h6" style={{ color: 'white' }}>
-                    {content?.listCount}
-                  </Typography>
-                </Circle>
-              </>
-            ) : (
-              <Link to="/mypage/mycomment">
-                <BorderCSS>
-                  <Typography variant="h6">나의 코멘트</Typography>
-                </BorderCSS>
-              </Link>
-            )}
-          </Grid>
-
-          <Grid
-            item
-            align="center"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onClick={() => setView(2)}
-          >
-            {view === 2 ? (
-              <>
-                <CommentBorderCSS>
-                  <Typography variant="h6">나의 페어링</Typography>
-                </CommentBorderCSS>
-                <Circle className="circle">
-                  <Typography variant="h6" style={{ color: 'white' }}>
-                    {content?.listCount}
-                  </Typography>
-                </Circle>
-              </>
-            ) : (
-              <Link to="/mypage/mypairing">
-                <BorderCSS>
-                  <Typography variant="h6">나의 페어링</Typography>
-                </BorderCSS>
-              </Link>
-            )}
-          </Grid>
-
-          <Grid
-            item
-            align="center"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onClick={() => setView(3)}
-          >
-            {view === 3 ? (
-              <>
-                <CommentBorderCSS>
-                  <Typography variant="h6">나의 컬렉션</Typography>
-                </CommentBorderCSS>
-                <Circle className="circle">
-                  <Typography variant="h6" style={{ color: 'white' }}>
-                    {content?.listCount}
-                  </Typography>
-                </Circle>
-              </>
-            ) : (
-              <Link to="/mypage/mycollection">
-                <BorderCSS>
-                  <Typography variant="h6">나의 컬렉션</Typography>
-                </BorderCSS>
-              </Link>
-            )}
-          </Grid>
-
-          <Grid
-            item
-            align="center"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-            onClick={() => setView(4)}
-          >
-            {view === 4 ? (
-              <>
-                <CommentBorderCSS>
-                  <Typography variant="h6">나의 픽</Typography>
-                </CommentBorderCSS>
-                <Circle className="circle">
-                  <Typography variant="h6" style={{ color: 'white' }}>
-                    {content?.listCount}
-                  </Typography>
-                </Circle>
-              </>
-            ) : (
-              <Link to="/mypage/mypick">
-                <BorderCSS>
-                  <Typography variant="h6">나의 픽</Typography>
-                </BorderCSS>
-              </Link>
-            )}
-          </Grid>
+      <Grid container justifyContent="space-around">
+        <Grid
+          item
+          align="center"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onClick={() => setView(1)}
+        >
+          {view === 1 ? (
+            <>
+              <CommentBorderCSS>
+                <Typography variant="h6">나의 코멘트</Typography>
+              </CommentBorderCSS>
+              <Circle className="circle">
+                <Typography variant="h6" style={{ color: 'white' }}>
+                  {content?.listCount}
+                </Typography>
+              </Circle>
+            </>
+          ) : (
+            <Link to="/mypage/mycomment">
+              <BorderCSS>
+                <Typography variant="h6">나의 코멘트</Typography>
+              </BorderCSS>
+            </Link>
+          )}
         </Grid>
-        <BottomBorder />
-      </ThemeProvider>
+
+        <Grid
+          item
+          align="center"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onClick={() => setView(2)}
+        >
+          {view === 2 ? (
+            <>
+              <CommentBorderCSS>
+                <Typography variant="h6">나의 페어링</Typography>
+              </CommentBorderCSS>
+              <Circle className="circle">
+                <Typography variant="h6" style={{ color: 'white' }}>
+                  {content?.listCount}
+                </Typography>
+              </Circle>
+            </>
+          ) : (
+            <Link to="/mypage/mypairing">
+              <BorderCSS>
+                <Typography variant="h6">나의 페어링</Typography>
+              </BorderCSS>
+            </Link>
+          )}
+        </Grid>
+
+        <Grid
+          item
+          align="center"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onClick={() => setView(3)}
+        >
+          {view === 3 ? (
+            <>
+              <CommentBorderCSS>
+                <Typography variant="h6">나의 컬렉션</Typography>
+              </CommentBorderCSS>
+              <Circle className="circle">
+                <Typography variant="h6" style={{ color: 'white' }}>
+                  {content?.listCount}
+                </Typography>
+              </Circle>
+            </>
+          ) : (
+            <Link to="/mypage/mycollection">
+              <BorderCSS>
+                <Typography variant="h6">나의 컬렉션</Typography>
+              </BorderCSS>
+            </Link>
+          )}
+        </Grid>
+
+        <Grid
+          item
+          align="center"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+          onClick={() => setView(4)}
+        >
+          {view === 4 ? (
+            <>
+              <CommentBorderCSS>
+                <Typography variant="h6">나의 픽</Typography>
+              </CommentBorderCSS>
+              <Circle className="circle">
+                <Typography variant="h6" style={{ color: 'white' }}>
+                  {content?.listCount}
+                </Typography>
+              </Circle>
+            </>
+          ) : (
+            <Link to="/mypage/mypick">
+              <BorderCSS>
+                <Typography variant="h6">나의 픽</Typography>
+              </BorderCSS>
+            </Link>
+          )}
+        </Grid>
+      </Grid>
+      <BottomBorder />
     </div>
   );
 };

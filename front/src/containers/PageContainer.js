@@ -2,9 +2,8 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import theme from '../styles/theme';
-import Header from './Header';
-import Footer from './Footer';
+import theme from 'styles/theme';
+import { Header, Footer } from 'containers';
 
 const PageContainer = ({
   children,

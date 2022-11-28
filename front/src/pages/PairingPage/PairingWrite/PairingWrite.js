@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import PageContainer from '../../../components/PageContainer';
+import { PageContainer } from 'containers';
 import PairingOriginBook from '../PairingDetail/PairingOriginBook';
 import BasicSelect from './Select';
 import TitleInput from './TitleInput';
@@ -8,9 +8,9 @@ import OutLinkInput from './OutLinkInput';
 import useInput from '../../../util/useInput';
 import { ContainedButton } from '../../../components/Buttons';
 import { useDispatch, useSelector } from 'react-redux';
-import { asyncPostPairing } from '../../../store/modules/pairingSlice';
-import { selectIsLogin } from '../../../store/modules/authSlice';
 import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { asyncPostPairing } from '../../../store/modules/pairingSlice';
 
 const Wrapper = styled.div`
   display: flex;
@@ -46,6 +46,53 @@ const BookWrapperStyled = styled.div`
   margin: 15px;
 `;
 
+const LinkAndImgWrapperStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  @media screen and (min-width: 641px) {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .imgLabel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 7px;
+    margin-bottom: 10px;
+  }
+  .imgName {
+    margin-left: 10px;
+    color: ${({ theme }) => theme.colors.gray};
+  }
+  input[type='file'] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+`;
+
+const Imgbtn = styled.div`
+  background-color: ${({ theme }) => theme.colors.purple_3};
+  padding: 15px 60px;
+  font-size: 14px;
+  border-radius: 5px;
+  margin-top: 5px;
+  @media screen and (min-width: 641px) {
+    padding: 15px 30px;
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.mainColor};
+    color: white;
+  }
+`;
+
 const WarningMsg = styled.div`
   display: flex;
   justify-content: center;
@@ -67,30 +114,62 @@ const PairingWrite = () => {
   const [title, titleBind, titleReset] = useInput('');
   const [body, bodyBind, bodyReset] = useInput('');
   const [outLink, outLinkBind, outLinkReset] = useInput('');
+  const [imgData, setImgData] = useState({});
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isLogin = useSelector(selectIsLogin);
   const curBookData = useSelector((state) => state.book.data);
+  console.log(curBookData);
+  const preventClose = (e) => {
+    e.preventDefault();
+    e.returnValue = '\\o/';
+  };
+  useEffect(() => {
+    if (!curBookData.title) {
+      alert('작성 중인 글이 취소되었습니다. 메인 페이지로 이동합니다');
+      navigate('/pairing');
+    }
+    (() => {
+      window.addEventListener('beforeunload', preventClose);
+    })();
+    return () => {
+      window.removeEventListener('beforeunload', preventClose);
+    };
+  }, []);
 
-  const handleSubmit = (e) => {
+  const onChangeImg = (e) => {
+    e.preventDefault();
+
+    if (e.target.files) {
+      const uploadFile = e.target.files[0];
+      console.log('uploadFile', uploadFile);
+      setImgData(uploadFile);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const pairingPostBody = {
       title: title,
       body: body,
       pairingCategory: category,
-      imagePath: 'img',
       outLinkPath: outLink,
     };
-    dispatch(asyncPostPairing({ pairingPostBody, isbn: curBookData.isbn13 }));
-    console.log(pairingPostBody);
-    console.log('isbn', curBookData.isbn13);
-    console.log(isLogin);
+    const formData = new FormData();
+    formData.append('image', imgData);
+    formData.append(
+      'postPairingDto',
+      new Blob([JSON.stringify(pairingPostBody)], {
+        type: 'application/json',
+      })
+    );
+    dispatch(asyncPostPairing({ formData, isbn: curBookData.isbn13 }));
     navigate('/pairing', { replace: true });
     categoryReset();
     titleReset();
     bodyReset();
     outLinkReset();
+    setImgData({});
   };
 
   return (
@@ -117,7 +196,19 @@ const PairingWrite = () => {
           />
         </BookWrapperStyled>
         <BodyInput bodyBind={bodyBind} />
-        <OutLinkInput outLinkBind={outLinkBind} />
+        <LinkAndImgWrapperStyled>
+          <OutLinkInput outLinkBind={outLinkBind} />
+          <label htmlFor="upload" className="imgLabel">
+            <Imgbtn>이미지 업로드</Imgbtn>
+            <span className="imgName">{imgData?.name}</span>
+          </label>
+          <input
+            id="upload"
+            type="file"
+            accept=".jpeg, .jpg, .png"
+            onChange={onChangeImg}
+          />
+        </LinkAndImgWrapperStyled>
         {category === '' || title === '' ? (
           <WarningMsg>
             <div>카테고리와 제목을 입력해주세요</div>

@@ -1,7 +1,4 @@
-import {
-  dupilicationCheckNickName,
-  dupilicationCheckEmail,
-} from '../api/duplicationCheckApi';
+import { duplicationCheckApi } from 'api';
 
 const validationCheck = (type, value, required) => {
   let regExp = null;
@@ -37,12 +34,12 @@ const duplicationCheck = (type, value) => {
   let errorMsg = '';
   switch (type) {
     case 'nickName':
-      api = dupilicationCheckNickName;
+      api = duplicationCheckApi.dupilicationCheckNickName;
       successMsg = message.duplicate.nickNameSuccess;
       errorMsg = message.duplicate.nickNameError;
       break;
     case 'email':
-      api = dupilicationCheckEmail;
+      api = duplicationCheckApi.dupilicationCheckEmail;
       successMsg = message.duplicate.emailNameSuccess;
       errorMsg = message.duplicate.emailNameError;
       break;

@@ -12,18 +12,17 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import Checkbox from '@mui/material/Checkbox';
 import styled from 'styled-components';
-import PageContainer from '../../../components/PageContainer';
-import { OutlinedButton } from '../../../components/Buttons';
-import ValidationTextFields from '../../../components/ValidationTextFields';
-import { getUserInfoApi } from '../../../api/myPageApi';
-import { patchUserInfoAsync } from '../../../store/modules/authSlice';
+import { PageContainer } from 'containers';
+import { OutlinedButton, ValidationTextFields } from 'components';
+import { myPageApi } from 'api';
+import { patchUserInfoAsync } from 'store/modules/authSlice';
 import {
   validationCheck,
   duplicationCheck,
   genderData,
   ageGroupData,
   genreData,
-} from '../../../util/util';
+} from 'util/util';
 import WithDrawal from './WithDrawalModal';
 
 const WrapperStyled = styled.div`
@@ -42,16 +41,6 @@ const ItemWrapperStyled = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
-  height: 40px;
-`;
-
-const ItemWrapperWithHelperTextStyled = styled(ItemWrapperStyled)`
-  height: 65px;
-`;
-
-const ItemWrapperWithHelperCheckBox = styled(ItemWrapperStyled)`
-  height: 110px;
-  margin-top: 10px;
 `;
 
 const ItemTextStyled = styled(Typography)`
@@ -134,7 +123,7 @@ const EditProfile = () => {
 
   const getUserInfo = async () => {
     try {
-      const response = await getUserInfoApi();
+      const response = await myPageApi.getUserInfo();
       const { age, category, gender, introduction, nickname, profileImage } =
         response;
       const categoryObj = {};
@@ -147,8 +136,8 @@ const EditProfile = () => {
         nickName: nickname,
         introduction: introduction,
       });
-      setGender(gender);
-      setAge(age);
+      setGender(gender === 'NONE' ? '' : gender);
+      setAge(age === 'NONE' ? '' : age);
       setChecked({ ...checked, ...categoryObj });
       setProfileImage(profileImage);
     } catch (error) {
@@ -252,7 +241,7 @@ const EditProfile = () => {
         <TitleTextStyled component="h2" variant="h5" gutterBottom>
           기본정보
         </TitleTextStyled>
-        <ItemWrapperWithHelperTextStyled>
+        <ItemWrapperStyled>
           <ItemTextStyled component="h4">닉네임</ItemTextStyled>
           <ValidationTextFields
             inputRef={inputRef}
@@ -269,8 +258,8 @@ const EditProfile = () => {
             size="small"
             required
           />
-        </ItemWrapperWithHelperTextStyled>
-        <ItemWrapperWithHelperTextStyled>
+        </ItemWrapperStyled>
+        <ItemWrapperStyled>
           <ItemTextStyled component="h4">이메일</ItemTextStyled>
           <ValidationTextFields
             inputRef={inputRef}
@@ -285,8 +274,8 @@ const EditProfile = () => {
             size="small"
             disabled
           />
-        </ItemWrapperWithHelperTextStyled>
-        <ItemWrapperWithHelperTextStyled>
+        </ItemWrapperStyled>
+        <ItemWrapperStyled>
           <ItemTextStyled component="h4">한 줄 소개</ItemTextStyled>
           <ValidationTextFields
             inputRef={inputRef}
@@ -302,7 +291,7 @@ const EditProfile = () => {
             inputHelperText={inputHelperText.introduction}
             size="small"
           />
-        </ItemWrapperWithHelperTextStyled>
+        </ItemWrapperStyled>
         <ItemWrapperChangePasswordStyled>
           <Link to="/mypage/profile/password">
             <ItemTextStyled component="h4">비밀번호 변경</ItemTextStyled>
@@ -355,7 +344,7 @@ const EditProfile = () => {
             </Select>
           </FormControl>
         </ItemWrapperStyled>
-        <ItemWrapperWithHelperCheckBox>
+        <ItemWrapperStyled>
           <ItemTextStyled component="h4">선호 장르</ItemTextStyled>
           <CheckboxFormControlStyled
             component="fieldset"
@@ -380,7 +369,7 @@ const EditProfile = () => {
               ))}
             </CheckboxFormGroupStyled>
           </CheckboxFormControlStyled>
-        </ItemWrapperWithHelperCheckBox>
+        </ItemWrapperStyled>
       </WrapperStyled>
       <ButtonWrapperStyled>
         <ButtonItemStyled component="h4" onClick={handleOpenModal}>

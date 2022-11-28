@@ -58,11 +58,15 @@ const PickButton = ({ isBookmarked, handleBookmark }) => {
         </div>
       ) : (
         <NeedLoginModal>
-          <img
-            src={process.env.PUBLIC_URL + '/images/bookmark_unfilled_icon.svg'}
-            alt="bookmark icon"
-          />
-          <span>나의 Pick</span>
+          <Btns>
+            <img
+              src={
+                process.env.PUBLIC_URL + '/images/bookmark_unfilled_icon.svg'
+              }
+              alt="bookmark icon"
+            />
+            <span>나의 Pick</span>
+          </Btns>
         </NeedLoginModal>
       )}
     </div>

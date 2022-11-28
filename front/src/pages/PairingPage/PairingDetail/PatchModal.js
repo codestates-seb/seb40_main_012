@@ -73,6 +73,53 @@ const BookWrapperStyled = styled.div`
   margin: 15px;
 `;
 
+const LinkAndImgWrapperStyled = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  @media screen and (min-width: 641px) {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .imgLabel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 7px;
+    margin-bottom: 10px;
+  }
+  .imgName {
+    margin-left: 10px;
+    color: ${({ theme }) => theme.colors.gray};
+  }
+  input[type='file'] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+`;
+
+const Imgbtn = styled.div`
+  background-color: ${({ theme }) => theme.colors.purple_3};
+  padding: 15px 60px;
+  font-size: 14px;
+  border-radius: 5px;
+  margin-top: 5px;
+  @media screen and (min-width: 641px) {
+    padding: 15px 30px;
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.colors.mainColor};
+    color: white;
+  }
+`;
+
 const WarningMsg = styled.div`
   padding: 0 10px;
   font-size: 13px;
@@ -121,6 +168,17 @@ export default function DeleteModal() {
   const [outLink, outLinkBind, outLinkReset] = useInput(
     pairingData.outLinkPath
   );
+  const [imgData, setImgData] = useState({});
+
+  const onChangeImg = (e) => {
+    e.preventDefault();
+
+    if (e.target.files) {
+      const uploadFile = e.target.files[0];
+      console.log('uploadFile', uploadFile);
+      setImgData(uploadFile);
+    }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -131,9 +189,15 @@ export default function DeleteModal() {
       imagePath: 'img',
       outLinkPath: outLink,
     };
-    dispatch(asyncPatchPairing({ pairingPatchBody, pairingId: pairingId }));
-    console.log('pairingCategory', category);
-    console.log('pairingPatchBody', pairingPatchBody);
+    const formData = new FormData();
+    formData.append('image', imgData);
+    formData.append(
+      'patchPairingDto',
+      new Blob([JSON.stringify(pairingPatchBody)], {
+        type: 'application/json',
+      })
+    );
+    dispatch(asyncPatchPairing({ formData, pairingId: pairingId }));
     handleClose();
     categoryReset();
     titleReset();
@@ -189,7 +253,19 @@ export default function DeleteModal() {
               />
             </BookWrapperStyled>
             <BodyInput bodyBind={bodyBind} />
-            <OutLinkInput outLinkBind={outLinkBind} />
+            <LinkAndImgWrapperStyled>
+              <OutLinkInput outLinkBind={outLinkBind} />
+              <label htmlFor="upload" className="imgLabel">
+                <Imgbtn>이미지 업로드</Imgbtn>
+                <span className="imgName">{imgData?.name}</span>
+              </label>
+              <input
+                id="upload"
+                type="file"
+                accept=".jpeg, .jpg, .png"
+                onChange={onChangeImg}
+              />
+            </LinkAndImgWrapperStyled>
           </Wrapper>
           <BtnStyleBox>
             <TextButton width={'120px'} onClick={handleClose}>

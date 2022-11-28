@@ -26,12 +26,13 @@ export const asyncGetOnePairing = createAsyncThunk(
 
 export const asyncPostPairing = createAsyncThunk(
   'pairingSlice/asyncPostPairing',
-  async ({ pairingPostBody, isbn }) => {
+  async ({ formData, isbn }) => {
     try {
-      return await axios.post(
-        `/api/books/${isbn}/pairings/add`,
-        pairingPostBody
-      );
+      return await axios.post(`/api/books/${isbn}/pairings/add`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
     } catch (error) {
       console.log('페어링 post 실패', error);
     }
@@ -51,11 +52,16 @@ export const asyncDeletePairing = createAsyncThunk(
 
 export const asyncPatchPairing = createAsyncThunk(
   'pairingSlice/asyncPatchPairing',
-  async ({ pairingPatchBody, pairingId }) => {
+  async ({ formData, pairingId }) => {
     try {
       const pairingRes = await axios.patch(
         `${PAIRING_URL}/${pairingId}/edit`,
-        pairingPatchBody
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        }
       );
       const isbn = pairingRes.data.data.isbn13;
       const bookRes = await axios.get(`api/books/${isbn}`);
@@ -155,8 +161,8 @@ export const asyncLikePairingComment = createAsyncThunk(
   }
 );
 
-export const asyncDisikePairingComment = createAsyncThunk(
-  'pairingSlice/asyncDisikePairingComment',
+export const asyncDislikePairingComment = createAsyncThunk(
+  'pairingSlice/asyncDislikePairingComment',
   async (commentId) => {
     return await axios
       .patch(`api/comments/${commentId}/dislike`)
@@ -252,7 +258,7 @@ export const pairingSlice = createSlice({
       state.status = 'pending';
     });
     builder.addCase(asyncPostPairingComment.fulfilled, (state, action) => {
-      state.data.comments.push(action.payload);
+      state.data.pairingRes.comments.push(action.payload);
       state.status = 'fulfilled';
     });
     builder.addCase(asyncPostPairingComment.rejected, (state) => {
@@ -263,7 +269,7 @@ export const pairingSlice = createSlice({
       state.status = 'pending';
     });
     builder.addCase(asyncDeletePairingComment.fulfilled, (state, action) => {
-      state.data.comments = state.data.comments.filter(
+      state.data.pairingRes.comments = state.data.pairingRes.comments.filter(
         (el) => el.commentId !== action.payload
       );
       state.status = 'fulfilled';
@@ -276,11 +282,13 @@ export const pairingSlice = createSlice({
       state.status = 'pending';
     });
     builder.addCase(asyncEditPairingComment.fulfilled, (state, action) => {
-      state.data.comments = state.data.comments.map((el) => {
-        if (el.commentId === action.payload.commentId) {
-          return action.payload;
-        } else return el;
-      });
+      state.data.pairingRes.comments = state.data.pairingRes.comments.map(
+        (el) => {
+          if (el.commentId === action.payload.commentId) {
+            return action.payload;
+          } else return el;
+        }
+      );
       state.status = 'fulfilled';
     });
     builder.addCase(asyncEditPairingComment.rejected, (state) => {
@@ -291,29 +299,33 @@ export const pairingSlice = createSlice({
       state.status = 'pending';
     });
     builder.addCase(asyncLikePairingComment.fulfilled, (state, action) => {
-      state.data.comments = state.data.comments.map((el) => {
-        if (el.commentId === action.payload.commentId) {
-          return action.payload;
-        } else return el;
-      });
+      state.data.pairingRes.comments = state.data.pairingRes.comments.map(
+        (el) => {
+          if (el.commentId === action.payload.commentId) {
+            return action.payload;
+          } else return el;
+        }
+      );
       state.status = 'fulfilled';
     });
     builder.addCase(asyncLikePairingComment.rejected, (state) => {
       state.status = 'rejected';
     });
     //comment 좋아요 취소
-    builder.addCase(asyncDisikePairingComment.pending, (state) => {
+    builder.addCase(asyncDislikePairingComment.pending, (state) => {
       state.status = 'pending';
     });
-    builder.addCase(asyncDisikePairingComment.fulfilled, (state, action) => {
-      state.data.comments = state.data.comments.map((el) => {
-        if (el.commentId === action.payload.commentId) {
-          return action.payload;
-        } else return el;
-      });
+    builder.addCase(asyncDislikePairingComment.fulfilled, (state, action) => {
+      state.data.pairingRes.comments = state.data.pairingRes.comments.map(
+        (el) => {
+          if (el.commentId === action.payload.commentId) {
+            return action.payload;
+          } else return el;
+        }
+      );
       state.status = 'fulfilled';
     });
-    builder.addCase(asyncDisikePairingComment.rejected, (state) => {
+    builder.addCase(asyncDislikePairingComment.rejected, (state) => {
       state.status = 'rejected';
     });
   },

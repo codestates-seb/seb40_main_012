@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 
 const FooterContainer = styled.div`
   width: 100%;
@@ -49,17 +49,21 @@ const FooterContent_3 = styled(FooterContent)`
   }
 `;
 
+const VersionStyled = styled.div`
+  display: none;
+`;
+
 const Footer = () => {
   return (
     <FooterContainer>
       <FooterContent_1>
         <div className="copyright">Copyright Ⓒ Running_Potatoes 2022.</div>
-        <Link to="/pairing">
+        {/* <Link to="/pairing">
           <button>페어링</button>
         </Link>
         <Link to="/collection">
           <button>컬렉션</button>
-        </Link>
+        </Link> */}
       </FooterContent_1>
       <FooterContent_2>
         <img
@@ -74,6 +78,7 @@ const Footer = () => {
           alt="Footer Logo"
         />
       </FooterContent_3>
+      <VersionStyled>{process.env.REACT_APP_SERVICE_VERSION}</VersionStyled>
     </FooterContainer>
   );
 };

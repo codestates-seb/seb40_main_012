@@ -5,14 +5,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
-import PageContainer from '../../../components/PageContainer';
-import { ContainedButton } from '../../../components/Buttons';
-import ValidationTextFields from '../../../components/ValidationTextFields';
-import { validationCheck } from '../../../util/util';
-import {
-  currentPasswordCheckApi,
-  passwordUpdateApi,
-} from '../../../api/myPageApi';
+import { PageContainer } from 'containers';
+import { ContainedButton, ValidationTextFields } from 'components';
+import { validationCheck } from 'util/util';
+import { myPageApi } from 'api';
 import { useNavigate } from 'react-router-dom';
 
 const inputInfo = [
@@ -97,7 +93,7 @@ const ChangePassWd = () => {
 
   const isValidCurrentPassword = async (id, value) => {
     try {
-      const response = await currentPasswordCheckApi(value);
+      const response = await myPageApi.currentPasswordCheck(value);
       if (!response) {
         setInputStatus({ ...inputStatus, [id]: 'error' });
         setInputHelperText({
@@ -145,7 +141,7 @@ const ChangePassWd = () => {
       return;
     // 비밀번호 변경 api
     try {
-      await passwordUpdateApi(inputValue.newPasswordCheck);
+      await myPageApi.passwordUpdate(inputValue.newPasswordCheck);
       // 성공 메시지
       navigate('/mypage', { replace: true });
     } catch (error) {

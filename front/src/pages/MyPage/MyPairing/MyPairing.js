@@ -1,5 +1,5 @@
 import Header from '../Header';
-import PageContainer from '../../../components/PageContainer';
+import { PageContainer } from 'containers';
 import Nav from '../Nav';
 import Content from './Content';
 import Container from '@mui/material/Container';
@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 // import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import axios from '../../../api/axios';
 import { MY_PAIRING_URL } from '../../../api/requests';
+import Scroll from '../Scroll';
 // 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
 
 const Void = styled.div`
@@ -62,31 +63,34 @@ const MyPairing = () => {
   }, [infiniteData]);
 
   return (
-    <PageContainer header footer>
-      {content ? (
-        <Container maxWidth="md">
-          <Header></Header>
-          <Nav view={view} setView={setView} content={content}></Nav>
-          <Content
-            view={view}
-            setView={setView}
-            content={content}
-            setInfiniteData={setInfiniteData}
-            infiniteData={infiniteData}
-          ></Content>
-        </Container>
-      ) : (
-        <Container maxWidth="md">
-          <Header></Header>
-          <Void>
-            <img
-              src={'/images/cherrypick_loading.gif'}
-              alt="loading cherrypick"
-            ></img>
-          </Void>
-        </Container>
-      )}
-    </PageContainer>
+    <Scroll>
+      <PageContainer header footer>
+        {content ? (
+          <Container maxWidth="md">
+            <Header></Header>
+            <Nav view={view} setView={setView} content={content}></Nav>
+            <Content
+              view={view}
+              setView={setView}
+              content={content}
+              setInfiniteData={setInfiniteData}
+              infiniteData={infiniteData}
+            ></Content>
+          </Container>
+        ) : (
+          <Container maxWidth="md">
+            <Header></Header>
+            <Void>
+              <img
+                src={'/images/cherrypick_loading.gif'}
+                alt="loading cherrypick"
+              ></img>
+              더 읽어올 데이터가 없군요 📕
+            </Void>
+          </Container>
+        )}
+      </PageContainer>
+    </Scroll>
   );
 };
 

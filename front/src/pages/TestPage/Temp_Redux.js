@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import PageContainer from '../../components/PageContainer';
-import { Counter } from '../../components/Counter/Counter';
-import BasicModalTest from '../../components/TestComponent/BasicModalTest';
-import BasicSelectTest from '../../components/TestComponent/BasicSelectTest';
+import { PageContainer } from 'containers';
+import { Counter } from 'components/Counter/Counter';
+import BasicModalTest from 'components/TestComponent/BasicModalTest';
+import BasicSelectTest from 'components/TestComponent/BasicSelectTest';
 
 const Btn = styled.button`
   background-color: ${({ theme }) => theme.colors.mainColor};

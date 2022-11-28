@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import PageContainer from '../../../components/PageContainer';
+import { PageContainer } from 'containers';
 import CollectionDetailHeader from '../../CollectionDetailPage/CollectionDetailHeader';
 import PairingOriginBook from './PairingOriginBook';
 
@@ -15,7 +15,7 @@ import {
   asyncDeletePairingComment,
   asyncEditPairingComment,
   asyncLikePairingComment,
-  asyncDisikePairingComment,
+  asyncDislikePairingComment,
 } from '../../../store/modules/pairingSlice';
 import { selectEmail } from '../../../store/modules/authSlice';
 import Comments from '../../../components/Comments/Comments';
@@ -72,15 +72,34 @@ const InfoTitle = styled.div`
   }
 `;
 const InfoContent = styled.div`
+  display: flex;
+  flex-direction: column;
   margin: 10px 0px 0px 20px;
   font-size: 15px;
   color: ${({ theme }) => theme.colors.darkgray};
+  @media screen and (min-width: 981px) {
+    flex-direction: row;
+  }
+`;
+const InfoBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  color: ${({ theme }) => theme.colors.darkgray};
+  margin-top: 20px;
+  @media screen and (min-width: 981px) {
+    margin-left: 20px;
+  }
 `;
 
 const BtnsContainer = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 10px;
+`;
+
+const ImgBox = styled.div`
+  width: max-content;
 `;
 
 const PairingDetail = () => {
@@ -93,6 +112,7 @@ const PairingDetail = () => {
   }, [dispatch]);
 
   const pairingData = useSelector((state) => state.pairing.data.pairingRes);
+  console.log('여기보세여!', pairingData);
   const bookData = useSelector((state) => state.pairing.data.bookRes);
 
   useEffect(() => {
@@ -132,7 +152,7 @@ const PairingDetail = () => {
   };
 
   const handleCommentDislike = (commentId) => {
-    dispatch(asyncDisikePairingComment(commentId));
+    dispatch(asyncDislikePairingComment(commentId));
   };
 
   return (
@@ -143,6 +163,7 @@ const PairingDetail = () => {
           pairingData.userInformation && pairingData.userInformation.nickName
         }
         update={new Date(pairingData.modifiedAt).toLocaleDateString()}
+        taglist={[]}
       />
       <BtnStyleBox>
         {isMine ? (
@@ -187,14 +208,21 @@ const PairingDetail = () => {
           With this&nbsp; <p>{pairingData.pairingCategory}</p>
         </InfoTitle>
         <InfoContent>
-          <p>{pairingData.body}</p>
-          <a
-            href={pairingData.outLinkPath}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {pairingData.outLinkPath}
-          </a>
+          {pairingData.imagePath ? (
+            <ImgBox>
+              <img src={pairingData.imagePath} alt="pairing img" />
+            </ImgBox>
+          ) : null}
+          <InfoBody>
+            <p>{pairingData.body}</p>
+            <a
+              href={pairingData.outLinkPath}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {pairingData.outLinkPath}
+            </a>
+          </InfoBody>
         </InfoContent>
       </MainBody>
       <Comments
@@ -203,7 +231,7 @@ const PairingDetail = () => {
         commentDelete={handleCommentDelete}
         commentEdit={handleCommentEdit}
         commentLike={handleCommentLike}
-        commentDisLike={handleCommentDislike}
+        commentDislike={handleCommentDislike}
       />
     </PageContainer>
   );

@@ -61,12 +61,18 @@ const FirstPhotoContents = styled.div`
   width: 100%;
   height: 300px;
   margin: 5px;
-  background-color: ${({ theme }) => theme.colors.purple_2};
+  background-image: url(${(props) => props.img});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: ${(props) => props.color || 'rgba(0,0,0,0.5)'};
+  background-blend-mode: multiply;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
+  color: white;
   &:hover {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
@@ -76,12 +82,19 @@ const OtherPhotoContents = styled.div`
   width: 100%;
   height: 145px;
   margin: 5px;
-  background-color: ${({ theme }) => theme.colors.purple_2};
+  background-image: url(${(props) => props.img});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: ${(props) => props.color || 'rgba(0,0,0,0.5)'};
+  background-blend-mode: multiply;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
+  color: white;
   &:hover {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
@@ -91,12 +104,19 @@ const LineContents = styled.div`
   width: 100%;
   height: 52px;
   margin: 5px;
-  background-color: ${({ theme }) => theme.colors.purple_3};
+  background-image: url(${(props) => props.img});
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-color: ${(props) => props.color || 'rgba(0,0,0,0.5)'};
+  background-blend-mode: multiply;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-weight: bold;
+  color: white;
   &:hover {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
@@ -104,6 +124,8 @@ const LineContents = styled.div`
 
 const PairingCuration = ({ title, pairingData }) => {
   const navigate = useNavigate();
+  const twoToThree = pairingData.slice(1, 3);
+  const fourToEight = pairingData.slice(3, 8);
   const onClickPairing = (pairingId) => {
     navigate(`/pairing/${pairingId}`);
   };
@@ -113,49 +135,40 @@ const PairingCuration = ({ title, pairingData }) => {
       <PairingCurationWrapper>
         <PhotoContainer>
           <FirstPhotoContents
-            onClick={() => onClickPairing(pairingData[0].pairingId)}
+            img={pairingData[0]?.imagePath}
+            color={pairingData[0]?.imagePath ? null : '#A28BFF'}
+            onClick={() => onClickPairing(pairingData[0]?.pairingId)}
           >
-            <h1>{pairingData[0] && pairingData[0].title}</h1>
+            <h1>{pairingData[0]?.title}</h1>
           </FirstPhotoContents>
           <SecondContainer>
-            <OtherPhotoContents
-              onClick={() => onClickPairing(pairingData[1].pairingId)}
-            >
-              <h1>{pairingData[1] && pairingData[1].title}</h1>
-            </OtherPhotoContents>
-            <OtherPhotoContents
-              onClick={() => onClickPairing(pairingData[2].pairingId)}
-            >
-              <h1>{pairingData[2] && pairingData[2].title}</h1>
-            </OtherPhotoContents>
+            {twoToThree.map((el) => {
+              return (
+                <OtherPhotoContents
+                  key={el.pairingId}
+                  img={el.imagePath}
+                  color={el.imagePath ? null : '#A28BFF'}
+                  onClick={() => onClickPairing(el.pairingId)}
+                >
+                  <h1>{el?.title}</h1>
+                </OtherPhotoContents>
+              );
+            })}
           </SecondContainer>
         </PhotoContainer>
         <ColumnContainer>
-          <LineContents
-            onClick={() => onClickPairing(pairingData[3].pairingId)}
-          >
-            <h1>{pairingData[3] && pairingData[3].title}</h1>
-          </LineContents>
-          <LineContents
-            onClick={() => onClickPairing(pairingData[4].pairingId)}
-          >
-            <h1>{pairingData[4] && pairingData[4].title}</h1>
-          </LineContents>
-          <LineContents
-            onClick={() => onClickPairing(pairingData[5].pairingId)}
-          >
-            <h1>{pairingData[5] && pairingData[5].title}</h1>
-          </LineContents>
-          <LineContents
-            onClick={() => onClickPairing(pairingData[6].pairingId)}
-          >
-            <h1>{pairingData[6] && pairingData[6].title}</h1>
-          </LineContents>
-          <LineContents
-            onClick={() => onClickPairing(pairingData[7].pairingId)}
-          >
-            <h1>{pairingData[7] && pairingData[7].title}</h1>
-          </LineContents>
+          {fourToEight.map((el) => {
+            return (
+              <LineContents
+                key={el.pairingId}
+                img={el.imagePath}
+                color={el.imagePath ? null : '#A28BFF'}
+                onClick={() => onClickPairing(el.pairingId)}
+              >
+                <h1>{el?.title}</h1>
+              </LineContents>
+            );
+          })}
         </ColumnContainer>
       </PairingCurationWrapper>
     </Wrapper>
