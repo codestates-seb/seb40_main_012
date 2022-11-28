@@ -42,7 +42,6 @@ const Btns = styled.div`
   }
   &:hover {
     cursor: pointer;
-    background-color: #e8e8e8;
   }
 `;
 
