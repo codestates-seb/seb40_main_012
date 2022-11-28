@@ -14,5 +14,6 @@ const GlobalStyle = createGlobalStyle`
     letter-spacing: 0.01071em;
     font-weight: 400
   }
+  
 `;
 export default GlobalStyle;

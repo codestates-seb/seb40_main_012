@@ -177,7 +177,6 @@ const Content = ({ infiniteData, setContent, content, fetchData }) => {
         .then(() => fetchData())
         .catch((error) => console.log('에러', error));
     }
-    // fetchData();
   };
 
   // // 좋아요 버튼

@@ -40,8 +40,7 @@ const BottomBorder = styled.div`
     display: block;
     position: absolute;
     top: 0;
-    width: 94.2%;
-    left: 5.8%;
+    width: 100%;
     border-bottom: solid 1px #eaeaea;
   }
 `;

@@ -9,8 +9,6 @@ import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import MyCommentDetail from './MyCommentDetail';
 // import { useState } from 'react';
 import axios from '../../../api/axios';
-import MyCommentPairing from './MyCommentPairing';
-import MyCommentCollection from './MyCommentCollection';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -99,7 +97,7 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ content, setContent }) => {
+const Content = ({ content, setContent, fetchData }) => {
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
     if (content.listCount >= 100) {
@@ -151,7 +149,7 @@ const Content = ({ content, setContent }) => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
       axios
         .delete(`api/comments/delete`)
-        .then(location.reload())
+        .then(() => fetchData())
         .catch((error) => console.log('에러', error));
     }
   };
@@ -162,7 +160,7 @@ const Content = ({ content, setContent }) => {
       <ContentContainer>
         <Grid container>
           <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
-            <CommentContainer></CommentContainer>
+            {/* <CommentContainer></CommentContainer> */}
           </Grid>
 
           <Grid
@@ -183,7 +181,7 @@ const Content = ({ content, setContent }) => {
                   mb: 1,
                 }}
                 variant="body2"
-                gutterBottom
+                component={'span'}
               >
                 전체 삭제
               </Typography>
@@ -219,8 +217,12 @@ const Content = ({ content, setContent }) => {
         >
           <div>
             {content.data
-              ? content.data.map((data, key) => (
-                  <MyCommentDetail key={data.commentId} data={data} />
+              ? content.data.map((data) => (
+                  <MyCommentDetail
+                    key={data.commentId}
+                    data={data}
+                    fetchData={fetchData}
+                  />
                 ))
               : null}
           </div>

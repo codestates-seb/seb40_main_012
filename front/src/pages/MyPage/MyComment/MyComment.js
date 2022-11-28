@@ -31,21 +31,6 @@ const MyComment = () => {
   console.log('마이코멘트 시작');
   const [view, setView] = useState(1);
 
-  // commentCount: 0,
-  // commentId: 0,
-  // contentId: 0,
-  // likeCount: 0,
-  // title: '',
-  // cover: '',
-  // collectionCover: null,
-  // myBookRating: 0,
-  // author: '',
-  // commentType: '',
-  // body: '',
-  // createdAt: '',
-  // hasMore: false,
-  // listCount: 0,
-
   const [content, setContent] = useState({
     data: [],
     listCount: 0,
@@ -55,25 +40,10 @@ const MyComment = () => {
     axios
       .get(COMMENT_URL)
       .then((response) => {
-        console.log('response확인', response.data);
         setContent({
           data: response.data.data,
           listCount: response.data.listCount,
         });
-        // author: response.data.data.author,
-        // body: response.data.data.body,
-        // collectionCover: response.data.data.collectionCover,
-        // commentCount: response.data.data.commentCount,
-        // commentId: response.data.data.commentId,
-        // commentType: response.data.data.commentType,
-        // contentId: response.data.data.contentId,
-        // cover: response.data.data.cover,
-        // createdAt: response.data.data.createdAt,
-        // likeCount: response.data.data.likeCount,
-        // myBookRating: response.data.data.myBookRating,
-        // title: response.data.data.title,
-        // hasMore: false,
-        // listCount: 0,
       })
       .catch((error) => console.log('에러', error));
   };
@@ -82,17 +52,20 @@ const MyComment = () => {
     fetchData();
   }, []);
 
-  console.log('나와랑', content);
   return (
     <Scroll>
       <PageContainer header footer>
-        {/* {content ? ( */}
-        <Container maxWidth="md">
-          <Header></Header>
-          <Nav view={view} setView={setView} content={content}></Nav>
-          <Content content={content} setContent={setContent}></Content>
-        </Container>
-        {/* ) : (
+        {content ? (
+          <Container maxWidth="md">
+            <Header></Header>
+            <Nav view={view} setView={setView} content={content}></Nav>
+            <Content
+              content={content}
+              setContent={setContent}
+              fetchData={fetchData}
+            ></Content>
+          </Container>
+        ) : (
           <Container maxWidth="md">
             <Header></Header>
             <Void>
@@ -103,7 +76,7 @@ const MyComment = () => {
               더 읽어올 데이터가 없군요 📕
             </Void>
           </Container>
-        )} */}
+        )}
       </PageContainer>
     </Scroll>
   );
