@@ -28,7 +28,7 @@ const TitleInput = styled.input`
 const TagInputContainer = styled.div`
   width: 100%;
   margin: 5px 0;
-  padding: 20px;
+  padding: 10px;
   display: flex;
   flex-wrap: wrap;
   background-color: white;
@@ -37,6 +37,7 @@ const TagInputContainer = styled.div`
 const Tags = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const TagContainer = styled.div`
@@ -54,7 +55,7 @@ const TagContainer = styled.div`
 
 const TagInput = styled.input`
   border: none;
-  margin-left: 10px;
+  margin: 10px 0 10px 10px;
   &:focus {
     outline: none;
   }
@@ -104,7 +105,7 @@ const CollectionInfoInput = ({ data, setData }) => {
   };
 
   const handleOnKeyPressTag = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && newTag.length <= 20 && data.tags.length <= 9) {
       setData({ ...data, tags: [...data.tags, newTag] });
       setNewTag('');
     }
@@ -165,7 +166,7 @@ const CollectionInfoInput = ({ data, setData }) => {
       </TagInputContainer>
       <TagInfo className={isOnKeyUpTag ? 'show' : 'hidden'}>
         <div>
-          엔터를 입력하여 태그를 등록할 수 있습니다.
+          엔터를 입력하여 태그를 등록할 수 있습니다. (최대 10개, 1개당 20자)
           <br />
           등록된 태그를 클릭하면 삭제됩니다.
         </div>

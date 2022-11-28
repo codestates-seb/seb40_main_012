@@ -89,7 +89,6 @@ const BookSearch = ({
     }
   };
 
-  //TODO: 무한스크롤로 수정되어야 함
   const handleSearchBook = (e) => {
     setIsLoading(true);
     if (e.key === 'Enter') {
@@ -104,7 +103,7 @@ const BookSearch = ({
   };
 
   const handleSetNewBooks = (isbn) => {
-    if (!newBooks.includes(isbn)) {
+    if (!newBooks.includes(isbn) && newBooks.length <= 30) {
       setNewBooks([...newBooks, isbn]);
       axios.get(`/api/books/${isbn}`).then((res) => {
         setNewBooksInfo([...newBooksInfo, res.data.data]);

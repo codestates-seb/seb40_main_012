@@ -55,7 +55,7 @@ const MyBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
   }, []);
 
   const handleSetNewBooks = (isbn) => {
-    if (!newBooks.includes(isbn)) {
+    if (!newBooks.includes(isbn) && newBooks.length <= 30) {
       setNewBooks([...newBooks, isbn]);
       axios.get(`/api/books/${isbn}`).then((res) => {
         setNewBooksInfo([...newBooksInfo, res.data.data]);
