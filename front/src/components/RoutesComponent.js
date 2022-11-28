@@ -96,10 +96,10 @@ const RoutesComponent = () => {
         element={getElement(MyCollection, true)}
       />
       <Route path="/mypage/mypick" element={getElement(MyPick, true)} />
-      <Route path="/mypage/profile" element={getElement(EditProfile, true)} />
+      <Route path="/mypage/profile" element={getElement(EditProfile, null)} />
       <Route
         path="/mypage/profile/password"
-        element={getElement(ChangePassWd, true)}
+        element={getElement(ChangePassWd, null)}
       />
       <Route path="/search/book" element={getElement(SearchBookPage, null)} />
       <Route
