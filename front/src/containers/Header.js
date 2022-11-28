@@ -130,6 +130,19 @@ function Header(props) {
     { text: '회원가입', icon: <AccountCircle /> },
   ];
 
+  const userNavListItem = (arr) =>
+    arr.map(({ text, icon }, index) => (
+      <ListItem key={text} disablePadding>
+        <DrawerListItemButtonStyled
+          onClick={handleClickDrawerListItem}
+          className={selectedIndex.right === index ? 'selected' : ''}
+        >
+          <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemText primary={text} />
+        </DrawerListItemButtonStyled>
+      </ListItem>
+    ));
+
   const { window } = props;
   const [drawerOpen, setDrawerOpen] = useState({
     left: false,
@@ -353,32 +366,8 @@ function Header(props) {
           >
             <List>
               {isLogin
-                ? loginUserItems.map(({ text, icon }, index) => (
-                    <ListItem key={text} disablePadding>
-                      <DrawerListItemButtonStyled
-                        onClick={handleClickDrawerListItem}
-                        className={
-                          selectedIndex.right === index ? 'selected' : ''
-                        }
-                      >
-                        <ListItemIcon>{icon}</ListItemIcon>
-                        <ListItemText primary={text} />
-                      </DrawerListItemButtonStyled>
-                    </ListItem>
-                  ))
-                : nonMembersItems.map(({ text, icon }, index) => (
-                    <ListItem key={text} disablePadding>
-                      <DrawerListItemButtonStyled
-                        onClick={handleClickDrawerListItem}
-                        className={
-                          selectedIndex.right === index ? 'selected' : ''
-                        }
-                      >
-                        <ListItemIcon>{icon}</ListItemIcon>
-                        <ListItemText primary={text} />
-                      </DrawerListItemButtonStyled>
-                    </ListItem>
-                  ))}
+                ? userNavListItem(loginUserItems)
+                : userNavListItem(nonMembersItems)}
             </List>
           </Box>
         </Drawer>
