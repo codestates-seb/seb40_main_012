@@ -44,7 +44,7 @@ public class SearchController {
 
         if (category.equals("books") && sort.equals("accuracy")) {
 
-            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "Accuracy", 1, 100 );
+            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "Accuracy", 1, 100);
 //            BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", page, size);
 //            SliceImpl<BookInfoSearchDto.BookList.Item> bookSlice = new SliceImpl<>(bookResult.getItem());
 //            return new ResponseEntity<>(bookSlice, HttpStatus.OK);

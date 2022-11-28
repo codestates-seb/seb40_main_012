@@ -11,7 +11,6 @@ import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -27,7 +26,7 @@ public class CherryPickSearchService {
 
         List<ListenableFuture<BookInfoSearchDto.BookList>> resultList = new ArrayList<>();
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 1; i <= 5; i++) {
             ListenableFuture<BookInfoSearchDto.BookList> totalResult =
                     bookInfoSearchService.cherryPickSearchForAsync(title, sort, i, 20);
 
@@ -55,7 +54,9 @@ public class CherryPickSearchService {
                 })
                 .map(BookInfoSearchDto.BookList::getItem)
                 .flatMap(Collection::stream)
-                .filter(c -> c.isbn13 != "")
+                .filter(c -> c.isbn13 != "") // ISBN 없는거 거르기
+                .filter(d -> d.isbn13.startsWith(String.valueOf(9))) // 책이 아닌거 거르기
+                .filter(e -> !e.isbn13.startsWith(String.valueOf(977))) // 잡지, 신문 등 거르기
                 .distinct()
                 .collect(Collectors.toList());
 
