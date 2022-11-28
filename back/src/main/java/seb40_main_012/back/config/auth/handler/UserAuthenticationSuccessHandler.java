@@ -18,4 +18,8 @@ public class UserAuthenticationSuccessHandler implements AuthenticationSuccessHa
                                         Authentication authentication) throws IOException {
         log.info("# Authenticated successfully!");
     }
+
+    public void testAop() {
+        log.info("# Test Method");
+    }
 }

@@ -33,34 +33,37 @@ public class SearchController {
     public ResponseEntity getSearchRequests(
             @RequestParam("Category") @Valid @Nullable String category,
             @RequestParam("Query") @Valid String queryParam,
-            @RequestParam("Sort") @Valid @Nullable String sort,
-            @RequestParam("Page") @Valid @Nullable Integer page,
-            @RequestParam("Size") @Valid @Nullable Integer size
+            @RequestParam("Sort") @Valid @Nullable String sort
+//            @RequestParam("Page") @Valid @Nullable Integer page,
+//            @RequestParam("Size") @Valid @Nullable Integer size
     ) {
 
 //        BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), sort, page, size);
-        List<Pairing> pairingsResult = searchService.findAllPairingByQuery(queryParam.toLowerCase(), page, size);
-        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), page, size);
+        List<Pairing> pairingsResult = searchService.findAllPairingByQuery(queryParam.toLowerCase(), 1, 100);
+        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), 1, 100);
 
         if (category.equals("books") && sort.equals("accuracy")) {
 
-            BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", page, size);
+            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "Accuracy", 1, 100 );
+//            BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", page, size);
 //            SliceImpl<BookInfoSearchDto.BookList.Item> bookSlice = new SliceImpl<>(bookResult.getItem());
 //            return new ResponseEntity<>(bookSlice, HttpStatus.OK);
-            List<BookInfoSearchDto.BookList.Item> bookPage = new ArrayList<>(bookResult.getItem());
-            return new ResponseEntity<>(bookPage, HttpStatus.OK);
+//            List<BookInfoSearchDto.BookList.Item> bookPage = new ArrayList<>(bookResult.getItem());
+            return new ResponseEntity<>(bookResult, HttpStatus.OK);
 
         } else if (category.equals("books") && sort.equals("title")) {
 
-            BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Title", page, size);
-            List<BookInfoSearchDto.BookList.Item> bookPage = new ArrayList<>(bookResult.getItem());
-            return new ResponseEntity<>(bookPage, HttpStatus.OK);
+            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "Title", 1, 100 );
+//            BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Title", page, size);
+//            List<BookInfoSearchDto.BookList.Item> bookPage = new ArrayList<>(bookResult.getItem());
+            return new ResponseEntity<>(bookResult, HttpStatus.OK);
 
         } else if (category.equals("books") && sort.equals("new")) {
 
-            BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "PublishTime", page, size);
-            List<BookInfoSearchDto.BookList.Item> bookPage = new ArrayList<>(bookResult.getItem());
-            return new ResponseEntity<>(bookPage, HttpStatus.OK);
+            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "PublishTime", 1, 100 );
+//            BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "PublishTime", page, size);
+//            List<BookInfoSearchDto.BookList.Item> bookPage = new ArrayList<>(bookResult.getItem());
+            return new ResponseEntity<>(bookResult, HttpStatus.OK);
 
 
         } else if (category.equals("pairings") && sort == null) { // 페어링 기본 - 좋아요
@@ -128,7 +131,7 @@ public class SearchController {
 //            @RequestParam("Page") Integer page
     ) {
 
-        List<BookInfoSearchDto.BookList.Item> result = cherryPickSearchService.cherryPickSearchForCollection(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+        List<BookInfoSearchDto.BookList.Item> result = cherryPickSearchService.cherryPickSearchForBooks(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

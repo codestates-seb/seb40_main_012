@@ -166,7 +166,7 @@ public class Stub {
         user22.setNickName("봄날의 햇살");
         user22.setBookTemp(99.9);
         user22.setPassword(encoder.encode("1234"));
-        user22.setRoles(List.of("인증 요정", "풀스택 마스터"));
+        user22.setRoles(List.of("인증 요정", "풀스택 마스터", "고정 성애자"));
         user22.setCategories(List.of(userCategory22));
 
         log.info("USER STUB " +
