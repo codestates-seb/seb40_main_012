@@ -77,12 +77,29 @@ const InfoContent = styled.div`
   margin: 10px 0px 0px 20px;
   font-size: 15px;
   color: ${({ theme }) => theme.colors.darkgray};
+  @media screen and (min-width: 981px) {
+    flex-direction: row;
+  }
+`;
+const InfoBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  font-size: 15px;
+  color: ${({ theme }) => theme.colors.darkgray};
+  margin-top: 20px;
+  @media screen and (min-width: 981px) {
+    margin-left: 20px;
+  }
 `;
 
 const BtnsContainer = styled.div`
   display: flex;
   align-items: center;
   padding-bottom: 10px;
+`;
+
+const ImgBox = styled.div`
+  width: max-content;
 `;
 
 const PairingDetail = () => {
@@ -191,17 +208,21 @@ const PairingDetail = () => {
           With this&nbsp; <p>{pairingData.pairingCategory}</p>
         </InfoTitle>
         <InfoContent>
-          <p>{pairingData.body}</p>
           {pairingData.imagePath ? (
-            <img src={pairingData.imagePath} alt="pairing img" />
+            <ImgBox>
+              <img src={pairingData.imagePath} alt="pairing img" />
+            </ImgBox>
           ) : null}
-          <a
-            href={pairingData.outLinkPath}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {pairingData.outLinkPath}
-          </a>
+          <InfoBody>
+            <p>{pairingData.body}</p>
+            <a
+              href={pairingData.outLinkPath}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {pairingData.outLinkPath}
+            </a>
+          </InfoBody>
         </InfoContent>
       </MainBody>
       <Comments

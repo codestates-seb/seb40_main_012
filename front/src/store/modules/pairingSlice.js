@@ -54,7 +54,7 @@ export const asyncPatchPairing = createAsyncThunk(
   'pairingSlice/asyncPatchPairing',
   async ({ formData, pairingId }) => {
     try {
-      const pairingRes = await axios.post(
+      const pairingRes = await axios.patch(
         `${PAIRING_URL}/${pairingId}/edit`,
         formData,
         {

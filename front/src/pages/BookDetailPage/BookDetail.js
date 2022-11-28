@@ -83,8 +83,6 @@ const BookDetail = () => {
   }, [dispatch]);
   const bookData = useSelector((state) => state.book.data);
 
-  console.log('bookData', bookData);
-
   const navToWrite = () => {
     navigate('/pairing/write');
   };
@@ -110,7 +108,7 @@ const BookDetail = () => {
         />
         <ButtonContainer>
           <div>
-            <RateModal />
+            <RateModal isbn={isbn} />
             {isLogin ? (
               <BasicButton onClick={navToWrite}>페어링 작성하기</BasicButton>
             ) : (
