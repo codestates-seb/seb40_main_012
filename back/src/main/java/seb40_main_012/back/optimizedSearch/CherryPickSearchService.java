@@ -23,13 +23,13 @@ public class CherryPickSearchService {
 
     private final BookInfoSearchService bookInfoSearchService;
 
-    public List<BookInfoSearchDto.BookList.Item> cherryPickSearchForCollection(String title, String sort, Integer page, Integer size) {
+    public List<BookInfoSearchDto.BookList.Item> cherryPickSearchForBooks(String title, String sort, Integer page, Integer size) {
 
         List<ListenableFuture<BookInfoSearchDto.BookList>> resultList = new ArrayList<>();
 
         for (int i = 0; i < 5; i++) {
             ListenableFuture<BookInfoSearchDto.BookList> totalResult =
-                    bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", i, 20);
+                    bookInfoSearchService.cherryPickSearchForAsync(title, sort, i, 20);
 
             resultList.add(totalResult);
         }
