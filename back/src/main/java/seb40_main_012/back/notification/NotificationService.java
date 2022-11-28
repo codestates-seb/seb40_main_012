@@ -2,8 +2,11 @@ package seb40_main_012.back.notification;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.pairing.PairingService;
@@ -17,6 +20,7 @@ import java.util.Map;
 
 @Slf4j
 @Service
+@EnableAsync
 @RequiredArgsConstructor
 public class NotificationService {
 
@@ -103,11 +107,12 @@ public class NotificationService {
         }
     }
 
-    //    ------------------------------------------------------------------------------------------------
 //    ------------------------------------------------------------------------------------------------
 //    ------------------------------------------------------------------------------------------------
 //    ------------------------------------------------------------------------------------------------
 //    ------------------------------------------------------------------------------------------------
+//    ------------------------------------------------------------------------------------------------
+    @Async
     public void notifyUpdateLikeCommentEvent(Comment comment) { // 코멘트 좋아요 알림
 
         User findUser = userService.getLoginUser();
@@ -129,6 +134,7 @@ public class NotificationService {
         }
     }
 
+    @Async
     public void notifyUpdateLikePairingEvent(Pairing pairing) { // 페어링 좋아요 알림
 
         User findUser = userService.getLoginUser();
@@ -149,6 +155,7 @@ public class NotificationService {
         }
     }
 
+    @Async
     public void notifyPostPairingCommentEvent(Comment comment) { // 페어링 댓글 알림
 
         User findUser = userService.getLoginUser();
@@ -167,6 +174,52 @@ public class NotificationService {
                         .data("작성하신 페어링 <" + comment.getPairing().getTitle() + ">에 " + findUser.getNickName() + "님이 새로운 댓글을 달았습니다."
                                 + ": " + comment.getBody()
                                 + "http://localhost:8080/api/comments/" + comment.getCommentId()));
+            } catch (Exception e) {
+                SseController.sseEmitters.remove(userId);
+            }
+        }
+    }
+
+    @Async
+    public void notifyPostBookCollectionCommentEvent(Comment comment) { // 컬렉션 댓글 알림
+
+        User findUser = userService.getLoginUser();
+
+        Pairing pairing = comment.getPairing();
+
+        long userId = pairing.getUser().getUserId();
+
+        if (SseController.sseEmitters.containsKey(userId)) {
+            SseEmitter sseEmitter = SseController.sseEmitters.get(userId);
+            try {
+                log.info("작성하신 컬렉션 <" + comment.getBookCollection().getTitle() + ">에 " + findUser.getNickName() + "님이 새로운 댓글을 달았습니다.");
+                log.info("http://localhost:8080/api/comments/" + comment.getCommentId());
+                log.info("\"" + comment.getBody() + "\"");
+                sseEmitter.send(SseEmitter.event().name("postPairingComment")
+                        .data("작성하신 컬렉션 <" + comment.getBookCollection().getTitle() + ">에 " + findUser.getNickName() + "님이 새로운 댓글을 달았습니다."
+                                + ": " + comment.getBody()
+                                + "http://localhost:8080/api/comments/" + comment.getCommentId()));
+            } catch (Exception e) {
+                SseController.sseEmitters.remove(userId);
+            }
+        }
+    }
+
+    @Async
+    public void notifyLikeCollectionEvent(BookCollection bookCollection) { // 컬렉션 좋아요 알림
+
+        User findUser = userService.getLoginUser();
+
+        long userId = bookCollection.getUser().getUserId();
+
+        if (SseController.sseEmitters.containsKey(userId)) {
+            SseEmitter sseEmitter = SseController.sseEmitters.get(userId);
+            try {
+                log.info("작성하신 컬렉션 <" + bookCollection.getTitle() + ">에 " + findUser.getNickName() + "님이 좋아요를 눌렀습니다.");
+                log.info("http://localhost:8080/api/books/pairings/" + bookCollection.getCollectionId());
+                sseEmitter.send(SseEmitter.event().name("updateLikePairing")
+                        .data("작성하신 컬렉션 <" + bookCollection.getTitle() + ">에 " + findUser.getNickName() + "님이 좋아요를 눌렀습니다.\n"
+                                + "http://localhost:8080/api/books/pairings/" + bookCollection.getCollectionId()));
             } catch (Exception e) {
                 SseController.sseEmitters.remove(userId);
             }

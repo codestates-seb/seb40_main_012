@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.optimizedSearch.CherryPickSearchService;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.validation.Valid;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class SearchController {
 
     private final BookInfoSearchService bookInfoSearchService;
+    private final CherryPickSearchService cherryPickSearchService;
     private final SearchService searchService;
 
     @GetMapping
@@ -126,42 +128,10 @@ public class SearchController {
 //            @RequestParam("Page") Integer page
     ) {
 
-        List<BookInfoSearchDto.BookList.Item> result = bookInfoSearchService.cherryPickSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+        List<BookInfoSearchDto.BookList.Item> result = cherryPickSearchService.cherryPickSearchForCollection(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
-    @GetMapping("/test")
-    public ResponseEntity getBookSearchRequests(
-
-            @RequestParam("Query") String queryParam) {
-
-        List<BookCollection> result = searchService.findTest(queryParam);
-
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-//    @GetMapping("/pairing")
-//    public ResponseEntity getPairingSearchRequests(
-//            @RequestParam("Category") @Valid String category,
-//            @RequestParam("Query") @Valid String queryParam
-//    ) {
-//
-//        List<Pairing> result = searchService.findAllPairingByQuery(queryParam);
-//
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
-//
-//    @GetMapping("/collection")
-//    public ResponseEntity getCollectionSearchRequests(
-//            @RequestParam("Query") @Valid String queryParam
-//    ) {
-//
-//        List<BookCollection> result = searchService.findAllBookCollectionsByQuery(queryParam);
-//
-//        return new ResponseEntity<>(result, HttpStatus.OK);
-//    }
-
 
     public static <T> List<T> makePageable(List<T> sourceList, int page, int pageSize) {
         if (pageSize <= 0 || page <= 0) {
@@ -176,8 +146,6 @@ public class SearchController {
         // toIndex exclusive
         return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
     }
-
-
 }
 
 

@@ -1,22 +1,18 @@
 package seb40_main_012.back.optimizedSearch;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
+import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 
-import java.net.URI;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -27,50 +23,42 @@ public class CherryPickSearchService {
 
     private final BookInfoSearchService bookInfoSearchService;
 
-    @Value("${aladin.ttb}")
-    private String ttbkey;
+    public List<BookInfoSearchDto.BookList.Item> cherryPickSearchForCollection(String title, String sort, Integer page, Integer size) {
 
-    @Value("${aladin.url}")
-    private String pageUrl;
-    private final String getItemLookUpUrl = "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx";
-    private final String itemLookUpUrl = "http://www.aladin.co.kr/ttb/api/ItemLookUp.aspx";
+        List<ListenableFuture<BookInfoSearchDto.BookList>> resultList = new ArrayList<>();
 
-    public List<BookInfoSearchDto.BookList.Item> cherryPickSearch(String title, String sort, Integer page, Integer size) {
+        for (int i = 0; i < 5; i++) {
+            ListenableFuture<BookInfoSearchDto.BookList> totalResult =
+                    bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", i, 20);
 
-        List<BookInfoSearchDto.BookList> resultList = new ArrayList<>();
-
-        for (int i = 0; i < 10; i++) {
-            BookInfoSearchDto.BookList totalResult = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", i, 10);
             resultList.add(totalResult);
         }
 
+        for (ListenableFuture<BookInfoSearchDto.BookList> totalResult : resultList) {
+            try {
+                assert totalResult.isDone();
+            } catch (BusinessLogicException e) {
+                e.printStackTrace();
+            }
+        }
+
+        List<BookInfoSearchDto.BookList.Item> result =
         resultList.stream()
-                .flatMap(a -> a.getItem().stream())
-                .filter(a -> a.isbn13 != "")
-                .distinct().collect(Collectors.toList());
+                .flatMap(a -> {
+                    try {
+                        return Stream.of(a.get());
+                    } catch (ExecutionException e) {
+                        throw new RuntimeException(e);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .map(BookInfoSearchDto.BookList::getItem)
+                .flatMap(Collection::stream)
+                .filter(c -> c.isbn13 != "")
+                .distinct()
+                .collect(Collectors.toList());
 
-//        BookInfoSearchDto.BookList totalResult1 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 10);
-//        BookInfoSearchDto.BookList totalResult2 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 25);
-//        BookInfoSearchDto.BookList totalResult3 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 25);
-//        BookInfoSearchDto.BookList totalResult4 = bookInfoSearchService.cherryPickSearchForAsync(title.toLowerCase(Locale.ROOT), "Accuracy", 4, 25);
-//
-//        List<BookInfoSearchDto.BookList.Item> result2 = new ArrayList<>();
-//
-//        result2 = Stream.concat(
-//                        (Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
-//                                totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
-//                        (Stream.concat(totalResult3.getItem().stream().filter(a -> a.isbn13 != ""),
-//                                totalResult4.getItem().stream().filter(a -> a.isbn13 != "")))
-//                )
-//                .distinct().collect(Collectors.toList());
-
-
-//        return result2;
-//        return totalResult1.getItem();
-
-        return resultList.stream()
-                .flatMap(a -> a.getItem().stream())
-                .filter(a -> a.isbn13 != "")
-                .distinct().collect(Collectors.toList());
+        return result;
     }
 }

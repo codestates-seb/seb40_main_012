@@ -21,6 +21,7 @@ import seb40_main_012.back.bookCollection.repository.TagRepository;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
+import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.UserCategory;
 import seb40_main_012.back.user.repository.CategoryRepository;
@@ -45,6 +46,7 @@ public class BookCollectionService {
     private final UserCategoryRepository userCategoryRepository;
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
+    private final NotificationService noticeService;
 
     public BookCollection postCollection(BookCollection collection, List<String> tags) {
 
@@ -163,6 +165,10 @@ public class BookCollectionService {
                 count += 1L;
                 findCollection.setLikeCount(count);
             }
+
+//        ------------------------------------------------------------
+            noticeService.notifyLikeCollectionEvent(findCollection);
+//        ------------------------------------------------------------
 
             return true;
         } catch (BusinessLogicException e) {

@@ -130,7 +130,7 @@ public class Stub {
         user20.setNickName("김꼼꼼");
         user20.setBookTemp(99.9);
         user20.setPassword(encoder.encode("1234"));
-        user20.setRoles(List.of("디자인 실장", "염탐 복숭아"));
+        user20.setRoles(List.of("디자인 실장", "염탐 복숭아", "코딩 테레사"));
         user20.setCategories(List.of(userCategory20));
 
         log.info("USER STUB " +
