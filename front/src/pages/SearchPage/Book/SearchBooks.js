@@ -40,24 +40,29 @@ const SearchBooks = () => {
   }, []);
   return (
     <SearchBooksContainer>
-      <LoadingContainer className={isLoading ? 'show' : 'hide'}>
-        <img
-          src={process.env.PUBLIC_URL + '/images/spinner.gif'}
-          alt="spinner"
-        />
-      </LoadingContainer>
-      {books.map((el, idx) => {
-        return (
-          <SearchBook
-            key={idx}
-            cover={el.cover}
-            title={el.title}
-            author={el.author}
-            year={el.pubDate}
-            isbn={el.isbn13}
+      {isLoading ? (
+        <LoadingContainer className={isLoading ? 'show' : 'hide'}>
+          <img
+            src={process.env.PUBLIC_URL + '/images/spinner.gif'}
+            alt="spinner"
           />
-        );
-      })}
+        </LoadingContainer>
+      ) : (
+        <>
+          {books.map((el, idx) => {
+            return (
+              <SearchBook
+                key={idx}
+                cover={el.cover}
+                title={el.title}
+                author={el.author}
+                year={el.pubDate}
+                isbn={el.isbn13}
+              />
+            );
+          })}
+        </>
+      )}
     </SearchBooksContainer>
   );
 };

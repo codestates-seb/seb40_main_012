@@ -45,6 +45,7 @@ const Searchbar = () => {
   const handleOnKeyPressEnter = (e) => {
     if (e.key === 'Enter') {
       navigate(`/search/book/${input}`);
+      window.location.reload();
     }
   };
 
