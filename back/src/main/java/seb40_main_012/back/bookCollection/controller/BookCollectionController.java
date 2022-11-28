@@ -14,6 +14,7 @@ import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.dto.ListResponseDto;
 import seb40_main_012.back.dto.MultiResponseDto;
+import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 

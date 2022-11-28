@@ -1,7 +1,6 @@
 package seb40_main_012.back.pairing;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +9,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.image.AwsS3Service;
@@ -18,17 +16,11 @@ import seb40_main_012.back.common.image.ImageController;
 import seb40_main_012.back.common.image.ImageService;
 import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
-//import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.entity.Pairing;
-import seb40_main_012.back.user.entity.User;
-import seb40_main_012.back.user.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -125,7 +117,7 @@ public class PairingController {
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
 
-        } else return new ResponseEntity(null,HttpStatus.I_AM_A_TEAPOT);
+        } else return new ResponseEntity<>(null,HttpStatus.I_AM_A_TEAPOT);
 
     }
 
@@ -163,31 +155,6 @@ public class PairingController {
         );
     }
 
-//    @PatchMapping("/pairings/{pairing_id}/like")
-//    public ResponseEntity updateLikePairing(@RequestHeader("Authorization") long userId,
-//                                            @PathVariable("pairing_id") @Positive long pairingId,
-//                                            @Valid @RequestBody PairingDto.Like likePairing) {
-//
-//        likeService.createPairingLike(likePairing);
-//
-//        Pairing pairing = pairingService.updateLike(pairingMapper.pairingLikeToPairing(likePairing));
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(pairingMapper.pairingToPairingResponse(pairing)), HttpStatus.OK
-//        );
-//    }
-
-//    @PatchMapping("/pairings/{pairing_id}") // 조회 기능에 통합
-//    public ResponseEntity updateViewPairing(@PathVariable("pairing_id") @Positive long pairingId) {
-//
-//        Pairing viewedPairing = pairingService.updateView(pairingId);
-//        PairingDto.Response response = pairingMapper.pairingToPairingResponse(viewedPairing);
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(response), HttpStatus.OK
-//        );
-//    }
-
     @GetMapping("/pairings/{pairing_id}")
     public ResponseEntity getPairing(
             @RequestHeader("Authorization") @Valid @Nullable String token,
@@ -221,7 +188,7 @@ public class PairingController {
         }
     }
 
-    //    --------------------------------------------------------------------------------------------
+//    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    조회 API 세분화
 //    --------------------------------------------------------------------------------------------

@@ -61,7 +61,7 @@ public class AwsS3Service {
 
         InputStream inputStream = resizedFile.getInputStream();
 
-        amazonS3Client.putObject(new PutObjectRequest(bucketName, storedImageName, inputStream, objectMetadata)
+        amazonS3Client.putObject(new PutObjectRequest(bucketName, "pairingImages/" + storedImageName, inputStream, objectMetadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
 
         return amazonS3Client.getUrl(bucketName, storedImageName).toString();

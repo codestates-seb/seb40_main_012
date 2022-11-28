@@ -38,8 +38,4 @@ public class SearchService {
 
         return result;
     }
-
-    public List<BookCollection> findTest(String queryParam) {
-        return bookCollectionRepository.findTest(queryParam);
-    }
 }

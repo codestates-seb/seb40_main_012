@@ -103,4 +103,5 @@ public class Pairing {
     @Column(nullable = false, name = "MODIFIED_AT")
     private LocalDateTime modifiedAt = LocalDateTime.now();
 
+
 }

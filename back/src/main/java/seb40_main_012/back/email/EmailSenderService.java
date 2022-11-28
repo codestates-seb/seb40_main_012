@@ -18,7 +18,7 @@ public class EmailSenderService {
     private String title = "[가입을 환영합니다] Cherry Pick에 오신 것을 환영합니다.";
 
     @Async
-    public void sendEmail(String toAddress) throws GeneralSecurityException {
+    public void sendSignupEmail(String toAddress) throws GeneralSecurityException {
         try {
             String body =
                     "<img src=\"https://user-images.githubusercontent.com/13742045/203527798-844b9a71-ecb5-441d-a52f-4abb337f07f3.png\" width=\"700\">" +

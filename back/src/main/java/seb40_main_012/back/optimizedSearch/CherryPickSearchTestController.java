@@ -17,16 +17,16 @@ import java.util.Locale;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/search")
-public class CherryPickSearchController {
+public class CherryPickSearchTestController {
 
     private final CherryPickSearchService cherryPickSearchService;
 
-    @GetMapping("/test2")
+    @GetMapping("/test")
     public ResponseEntity getCollectionBooksSearchRequests(
             @RequestParam("Query") String queryParam
     ) {
 
-        List<BookInfoSearchDto.BookList.Item> result = cherryPickSearchService.cherryPickSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+        List<BookInfoSearchDto.BookList.Item> result = cherryPickSearchService.cherryPickSearchForBooks(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

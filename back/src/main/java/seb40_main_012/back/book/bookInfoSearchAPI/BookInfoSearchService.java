@@ -3,9 +3,11 @@ package seb40_main_012.back.book.bookInfoSearchAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import seb40_main_012.back.book.BookRepository;
@@ -208,8 +210,9 @@ public class BookInfoSearchService {
 //        }
     }
 
-//    @Async
-    public BookInfoSearchDto.BookList cherryPickSearchForAsync(String title, String sort, Integer page, Integer size) {
+//    @Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = true)
+    @Async
+    public ListenableFuture<BookInfoSearchDto.BookList> cherryPickSearchForAsync(String title, String sort, Integer page, Integer size) {
 
         String ttbkey = "ttbgcnb871441001";
 
@@ -231,12 +234,8 @@ public class BookInfoSearchService {
                 .build()
                 .encode(StandardCharsets.UTF_8)
                 .toUri();
-        try {
-            BookInfoSearchDto.BookList result = restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class);
+
+        return new AsyncResult<>(restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class));
     }
 
     public static <T> List<T> makePageable(List<T> sourceList, int page, int pageSize) {
