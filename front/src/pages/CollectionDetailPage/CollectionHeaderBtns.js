@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import LinkCopyModal from '../../components/LinkCopyModal';
@@ -7,6 +7,9 @@ import LinkCopyModal from '../../components/LinkCopyModal';
 const CollectionHeaderBtnsContainer = styled.div`
   display: flex;
   align-items: center;
+  a {
+    text-decoration: none;
+  }
 `;
 
 const CollectionBtns = styled.div`
@@ -36,6 +39,7 @@ const CollectionDelete = styled(CollectionBtns)`
     color: #850000;
   }
 `;
+const CollectionEdit = styled(CollectionBtns)``;
 
 const ModalBox = styled.div`
   width: 300px;
@@ -92,10 +96,15 @@ export const DeleteEditBtns = ({ userCollection, handleCollectionDelete }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const { collectionId } = useParams();
+
   return (
     <CollectionHeaderBtnsContainer>
       {userCollection ? (
         <>
+          <Link to={`/collection/edit/${collectionId}`}>
+            <CollectionEdit>수정하기</CollectionEdit>
+          </Link>
           <CollectionDelete onClick={handleOpen}>삭제하기</CollectionDelete>
           <Modal
             open={open}
