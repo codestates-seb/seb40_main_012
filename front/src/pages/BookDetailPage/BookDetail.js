@@ -3,7 +3,6 @@ import { PageContainer } from 'containers';
 import PairingOriginBook from '../PairingPage/PairingDetail/PairingOriginBook';
 import RateModal from './RateModal';
 import BestPairing from '../MainPage/BestPairing';
-// import Comment from '../../components/Comments/Comment';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -133,10 +132,10 @@ const BookDetail = () => {
         </ButtonContainer>
         <DescContainer>
           <h1>기본 정보</h1>
-          <p>부제: {bookData.subTitle}</p>
-          <p>페이지: {bookData.itemPage}</p>
-          <p>설명: {`${bookData.description}`}</p>
-          {bookData.adult === true ? <p>19세 이상 독서 가능</p> : null}
+          {bookData.subTitle ? <p>부제: {bookData.subTitle}</p> : null}
+          {bookData.itemPage ? <p>페이지: {bookData.itemPage}</p> : null}
+          {bookData.description ? <p>{bookData.description}</p> : null}
+          {bookData.adult === true ? <p>🔞19세 이상 독서 가능</p> : null}
         </DescContainer>
         <DescContainer>
           <h1>코멘트</h1>
