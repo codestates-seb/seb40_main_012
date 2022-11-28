@@ -78,6 +78,7 @@ const HeaderItemButtonStyled = styled(HeaderBtn)`
   border-bottom: 3px solid transparent;
   height: 60px;
   border-top: 3px solid transparent;
+  border-radius: 0;
   &:hover,
   &.selected {
     border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor};
