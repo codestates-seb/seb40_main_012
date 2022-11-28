@@ -13,6 +13,8 @@ const CollectionSmallBooksContainer = styled.div`
 
 const BookColumn = styled.div`
   display: flex;
+  aspect-ratio: 1.38;
+  background-color: #f5f5f5;
 `;
 
 const CollectionSmallInfo = styled.div`

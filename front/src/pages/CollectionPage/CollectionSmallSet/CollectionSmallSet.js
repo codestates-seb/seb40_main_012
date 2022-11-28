@@ -70,47 +70,6 @@ const CollectionSmallSet = () => {
             bookCover:
               'https://image.aladin.co.kr/product/2584/37/cover/8998441012_2.jpg',
           },
-          {
-            isbn13: '9788965880783',
-            title:
-              '원미동 시인 「양귀자」 - 원미동 시인, 비 오는 날이면 가리봉동에 가야 한다, 한계령',
-            author: '양귀자 (지은이), 김양선 (엮은이), 이경하 (그림)',
-            ratingCount: 0,
-            bookCover:
-              'https://image.aladin.co.kr/product/1522/60/cover/8965880785_1.jpg',
-          },
-          {
-            isbn13: '9788998441074',
-            title: '나는 소망한다 내게 금지된 것을',
-            author: '양귀자 (지은이)',
-            ratingCount: 0,
-            bookCover:
-              'https://image.aladin.co.kr/product/18936/52/cover/8998441071_1.jpg',
-          },
-          {
-            isbn13: '9788998441005',
-            title: '원미동 사람들',
-            author: '양귀자 (지은이)',
-            ratingCount: 0,
-            bookCover:
-              'https://image.aladin.co.kr/product/2187/40/cover/8998441004_2.jpg',
-          },
-          {
-            isbn13: '9788998441029',
-            title: '천년의 사랑 - 개정판',
-            author: '양귀자 (지은이)',
-            ratingCount: 0,
-            bookCover:
-              'https://image.aladin.co.kr/product/2585/74/cover/8998441020_1.jpg',
-          },
-          {
-            isbn13: '9788998441043',
-            title: '슬픔도 힘이 된다 - 개정판',
-            author: '양귀자 (지은이)',
-            ratingCount: 0,
-            bookCover:
-              'https://image.aladin.co.kr/product/4877/74/cover/8998441047_1.jpg',
-          },
         ],
       },
       {
