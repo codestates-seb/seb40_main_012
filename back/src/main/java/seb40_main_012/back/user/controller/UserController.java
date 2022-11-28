@@ -1,6 +1,5 @@
 package seb40_main_012.back.user.controller;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
@@ -10,19 +9,18 @@ import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.entity.Book;
-import seb40_main_012.back.bookCollection.repository.BookCollectionRepositorySupport;
-import seb40_main_012.back.common.bookmark.BookmarkRepository;
-import seb40_main_012.back.common.bookmark.BookmarkType;
-import seb40_main_012.back.common.comment.CommentMapper;
-import seb40_main_012.back.common.comment.CommentService;
-import seb40_main_012.back.common.comment.entity.CommentType;
-import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.common.mypage.MyPageRepositorySupport;
+import seb40_main_012.back.common.bookmark.BookmarkRepository;
+import seb40_main_012.back.common.bookmark.BookmarkType;
 import seb40_main_012.back.common.comment.CommentDto;
+import seb40_main_012.back.common.comment.CommentMapper;
 import seb40_main_012.back.common.comment.CommentRepository;
+import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.dto.ListResponseDto;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.email.EmailSenderService;
@@ -38,8 +36,6 @@ import seb40_main_012.back.user.service.UserService;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.websocket.server.PathParam;
-import java.security.GeneralSecurityException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -56,7 +52,7 @@ public class UserController {
     private final BookCollectionRepository collectionRepository;
     private final BookRepository bookRepository;
     private final BookmarkRepository bookmarkRepository;
-    private final BookCollectionRepositorySupport collectionRepositorySupport;
+    private final MyPageRepositorySupport collectionRepositorySupport;
     private final EmailSenderService emailSenderService;
 
 
@@ -80,12 +76,6 @@ public class UserController {
     public boolean verifyEmail(@Valid @RequestBody UserDto.EmailDto emailDto) {
         return userService.verifyEmail(emailDto.getEmail());
     }
-
-//    @PatchMapping("/mypage/nickname")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void patchNickName(@RequestBody UserDto.Profile request) {
-//        userService.updateNickName(request.getNickName());
-//    }
 
     @PostMapping("/mypage/password/current")
     @ResponseStatus(HttpStatus.OK)
@@ -120,29 +110,22 @@ public class UserController {
         );
     }
 
-    //    @PatchMapping
-//    public void patchImage(){}
-//
-//    @PatchMapping //프사 수정
-//    public UserDto.ResponseDto patchProfileImage(){}
-//
     @DeleteMapping("/mypage")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public boolean deleteUser() {
         return userService.deleteUser();
     }
 
+    @DeleteMapping("/mypage/userCollection/delete")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAllUserCollection(){
+        userService.deleteAllUserCollection();
+    }
 
     /**
      * 조회 API
      */
-//    @GetMapping("/mypage/nickName")
-//    @ResponseStatus(HttpStatus.OK)
-//    public UserDto.ProfileResponse getNickName(){
-//        User findUser = userService.getLoginUser();
-//        User user = userService.findVerifiedUser(findUser.getUserId());
-//        return new UserDto.ProfileResponse(user.getNickName());
-//    }
+
     @GetMapping("/mypage/userInfo")
     @ResponseStatus(HttpStatus.OK)
     public UserInfoDto.Response getUserInfo() {
@@ -186,69 +169,52 @@ public class UserController {
 
     @GetMapping("/mypage/userPairing")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<PairingDto.UserPairing> getUserPairing() {
-        User findUser = userService.getLoginUser();
-        List<Pairing> pairings = userService.getUserPairing();
-        List<PairingDto.UserPairing> pairingDto = pairings.stream().map(x -> PairingDto.UserPairing.of(x)).collect(Collectors.toList());
-        Long listCount = pairingRepository.countByUser(findUser);
-        return new ListResponseDto<>(listCount, pairingDto);
+    public SingleResponseDto getUserPairing(@PathParam("lastId") Long lastId) {
+        Slice<Pairing> pairings = userService.getUserPairing(lastId);
+        Slice<PairingDto.UserPairing> pairingDto = new SliceImpl<>(pairings.stream().map(x -> PairingDto.UserPairing.of(x)).collect(Collectors.toList()));
+        return new SingleResponseDto<>(pairingDto);
     }
 
-    /** 무한스크롤 queryDsl */
+    /** 무한스크롤 queryDsl test */
     @GetMapping("/mypage/userCollectionDsl")
     @ResponseStatus(HttpStatus.OK)
-    public SingleResponseDto getUserBookCollection(@PathParam("lastId") Long lastId) {
+    public SingleResponseDto getUserBookCollectionDsl(@PathParam("lastId") Long lastId) {
         Slice<BookCollection> collections = userService.getUserCollectionDsl(lastId);
         Slice<BookCollectionDto.UserCollection> collectionDto = new SliceImpl<>(collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList()));
         return new SingleResponseDto<>(collectionDto);
     }
 
-//    @GetMapping("/mypage/userCollection")
-//    @ResponseStatus(HttpStatus.OK)
-//    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {
-//        List<BookCollection> collections = userService.getUserCollection();
-//        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
-//        User findUser = userService.getLoginUser();
-//        Long listCount = collectionRepository.countByUser(findUser);
-//        return new ListResponseDto<>(listCount, collectionDto);
-//    }
-
-
-
-    @DeleteMapping("/mypage/userCollection/delete")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAllUserCollection(){
-        userService.deleteAllUserCollection();
+    @GetMapping("/mypage/userCollection")
+    @ResponseStatus(HttpStatus.OK)
+    public SingleResponseDto getUserBookCollection(@PathParam("lastId") Long lastId) {
+        Slice<BookCollection> collections = userService.getUserCollection(lastId);
+        Slice<BookCollectionDto.UserCollection> collectionDto = new SliceImpl<>(collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList()));
+        return new SingleResponseDto(collectionDto);
     }
+
 
     @GetMapping("/mypage/bookmark/collection")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<BookCollectionDto.BookmarkedCollection> getBookmarkByBookCollection() {
-        List<BookCollection> collections = userService.getBookmarkByBookCollection();
-        List<BookCollectionDto.BookmarkedCollection> bookmarkedCollectionDto = collections.stream().map(x -> BookCollectionDto.BookmarkedCollection.of(x)).collect(Collectors.toList());
-        User findUser = userService.getLoginUser();
-        Long listCount = bookmarkRepository.countByUserAndBookmarkType(findUser, BookmarkType.COLLECTION);
-        return new ListResponseDto<>(listCount, bookmarkedCollectionDto);
+    public SingleResponseDto getBookmarkByBookCollection(@PathParam("lastId") Long lastId) {
+        Slice<BookCollection> collections = userService.getBookmarkByBookCollection(lastId);
+        Slice<BookCollectionDto.BookmarkedCollection> bookmarkedCollectionDto = new SliceImpl<>(collections.stream().map(x -> BookCollectionDto.BookmarkedCollection.of(x)).collect(Collectors.toList()));
+        return new SingleResponseDto<>(bookmarkedCollectionDto);
     }
 
     @GetMapping("/mypage/bookmark/pairing")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<PairingDto.BookmarkedPairing> getBookMarkByPairing() {
-        User findUser = userService.getLoginUser();
-        List<Pairing> pairings = userService.getBookmarkByPairing();
-        List<PairingDto.BookmarkedPairing> pairingDto = pairings.stream().map(x -> PairingDto.BookmarkedPairing.of(x)).collect(Collectors.toList());
-        Long listCount = bookmarkRepository.countByUserAndBookmarkType(findUser, BookmarkType.PAIRING);
-        return new ListResponseDto<>(listCount, pairingDto);
+    public SingleResponseDto getBookMarkByPairing(@PathParam("lastId") Long lastId) {
+        Slice<Pairing> pairings = userService.getBookmarkByPairing(lastId);
+        Slice<PairingDto.BookmarkedPairing> pairingDto = new SliceImpl<>(pairings.stream().map(x -> PairingDto.BookmarkedPairing.of(x)).collect(Collectors.toList()));
+        return new SingleResponseDto<>(pairingDto);
     }
 
     @GetMapping("/mypage/bookmark/book")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<BookDto.BookmarkedBook> getBookMarkByBook() {
-        User findUser = userService.getLoginUser();
-        List<Book> books = userService.getBookmarkByBook();
-        List<BookDto.BookmarkedBook> bookDto = books.stream().map(x -> BookDto.BookmarkedBook.of(x)).collect(Collectors.toList());
-        Long listCount = bookmarkRepository.countByUserAndBookmarkType(findUser, BookmarkType.BOOK);
-        return new ListResponseDto<>(listCount, bookDto);
+    public SingleResponseDto getBookMarkByBook(@PathParam("lastId") Long lastId) {
+        Slice<Book> books = userService.getBookmarkByBook(lastId);
+        Slice<BookDto.BookmarkedBook> bookDto = new SliceImpl<>(books.stream().map(x -> BookDto.BookmarkedBook.of(x)).collect(Collectors.toList()));
+        return new SingleResponseDto<>(bookDto);
     }
 
 
