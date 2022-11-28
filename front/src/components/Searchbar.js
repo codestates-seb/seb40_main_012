@@ -8,6 +8,7 @@ const SearchbarContainer = styled(Box)`
   background-color: #f5f5f5;
   border-radius: 3px;
   display: flex;
+  margin-right: 10px;
 `;
 
 const SearchIconContainer = styled.div`

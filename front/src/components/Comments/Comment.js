@@ -43,6 +43,9 @@ const BodyContainer = styled.div`
     width: 100%;
     margin: 3px 8px 0 0;
   }
+  div.bookcomment {
+    display: none;
+  }
 `;
 
 const UserNickname = styled.div`
@@ -144,6 +147,7 @@ const Comment = ({
   commentEdit,
   commentLike,
   commentDislike,
+  type,
 }) => {
   const [isMyComment, setIsMyComment] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -208,7 +212,7 @@ const Comment = ({
               <CommentContent>{data.body}</CommentContent>
             )}
           </div>
-          <div className={`edit ${isMyComment ? 'show' : 'hide'}`}>
+          <div className={`edit ${isMyComment ? 'show' : 'hide'} ${type}`}>
             {isEditMode ? (
               <CheckBtn onClick={handleClickCheckBtn}>
                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none">

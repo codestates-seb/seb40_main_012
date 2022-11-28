@@ -176,7 +176,7 @@ export const CollectionHeaderBtns = ({
             alt="bookmark icon"
           />
         )}
-        북마크
+        나의 픽
       </CollectionBookmark>
       <CollectionHeart onClick={handleClickLikeBtn}>
         {isLiked ? (
