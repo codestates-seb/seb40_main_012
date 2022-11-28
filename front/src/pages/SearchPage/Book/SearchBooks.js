@@ -31,13 +31,16 @@ const SearchBooks = () => {
 
   useEffect(() => {
     axios
-      .get(`/api/search/collectionbooks?Query=${keyword}`)
+      .get(
+        `/api/search?Category=books&Query=${keyword}&Sort=accuracy&Page=1&Size=20`
+      )
       .then((res) => {
         setBooks(res.data);
         setIsLoading(false);
       })
       .catch((error) => console.error(error));
   }, []);
+
   return (
     <SearchBooksContainer>
       {isLoading ? (
