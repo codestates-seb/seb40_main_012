@@ -45,7 +45,7 @@ const BestCollections = () => {
 
   return (
     <BestCollectionsContainer>
-      <MainBooksTitle title="요즘 뜨는 컬렉션" />
+      <MainBooksTitle title="요즘 뜨는 컬렉션" type="collection" />
       <BestCollectionCarousel>
         <Slider {...settings}>
           <BestCollection title="컬렉션1" collectionId="1" />
