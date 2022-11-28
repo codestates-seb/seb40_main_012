@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Guide from './Guide';
 
 const MainBooksTitleContainer = styled.div`
   width: 100%;
@@ -9,8 +10,13 @@ const MainBooksTitleContainer = styled.div`
   color: ${({ theme }) => theme.colors.dark};
 `;
 
-const MainBooksTitle = ({ title }) => {
-  return <MainBooksTitleContainer>{title}</MainBooksTitleContainer>;
+const MainBooksTitle = ({ title, type }) => {
+  return (
+    <MainBooksTitleContainer>
+      {title}
+      {type ? <Guide type={type} /> : null}
+    </MainBooksTitleContainer>
+  );
 };
 
 export default MainBooksTitle;
