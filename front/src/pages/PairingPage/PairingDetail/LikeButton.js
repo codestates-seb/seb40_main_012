@@ -59,11 +59,13 @@ const LikeButton = ({ isLiked, LikePlus, LikeMinus, children }) => {
         </div>
       ) : (
         <NeedLoginModal>
-          <img
-            src={process.env.PUBLIC_URL + '/images/p_heart_unfilled_icon.svg'}
-            alt="heart icon"
-          />
-          <span>{children}</span>
+          <Btns>
+            <img
+              src={process.env.PUBLIC_URL + '/images/p_heart_unfilled_icon.svg'}
+              alt="heart icon"
+            />
+            <span>{children}</span>
+          </Btns>
         </NeedLoginModal>
       )}
     </div>
