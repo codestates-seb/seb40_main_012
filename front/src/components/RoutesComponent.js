@@ -102,6 +102,10 @@ const RoutesComponent = () => {
         element={getElement(ChangePassWd, true)}
       />
       <Route path="/search/book" element={getElement(SearchBookPage, null)} />
+      <Route
+        path="/search/book/:keyword"
+        element={getElement(SearchBookPage, null)}
+      />
       <Route path="/redux" element={<ReduxPage />} />
       <Route path="/button-test" element={<ButtonTest />} />
       <Route path="/img-test" element={<ImgTest />} />

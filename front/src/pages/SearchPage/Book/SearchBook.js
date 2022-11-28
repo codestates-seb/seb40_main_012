@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const SearchBookContainer = styled.div`
@@ -11,6 +12,9 @@ const SearchBookContainer = styled.div`
   }
   @media screen and (max-width: 640px) {
     width: 100%;
+  }
+  &:hover {
+    cursor: pointer;
   }
 `;
 
@@ -26,29 +30,32 @@ const BookInfoContainer = styled.div`
   margin-left: 12px;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
   font-weight: 400;
-  white-space: nowrap;
+  word-break: keep-all;
   .title {
     color: ${({ theme }) => theme.colors.dark};
-    font-size: 17px;
+    font-size: 16px;
   }
   .author {
     color: ${({ theme }) => theme.colors.gray};
-    font-size: 14px;
+    font-size: 13px;
   }
 `;
 
-const SearchBook = () => {
+const SearchBook = ({ cover, title, author, year, isbn }) => {
+  const navigate = useNavigate();
+
   return (
-    <SearchBookContainer>
+    <SearchBookContainer
+      onClick={() => {
+        navigate(`/book/${isbn}`);
+      }}
+    >
       <BookCoverContainer>
-        <img
-          src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-          alt="cover"
-        />
+        <img src={cover} alt="book cover" />
       </BookCoverContainer>
       <BookInfoContainer>
-        <div className="title">책 제목</div>
-        <div className="author">{`${2022} · ${`저자-----`}`}</div>
+        <div className="title">{title}</div>
+        <div className="author">{`${year.slice(0, 4)} · ${author}`}</div>
       </BookInfoContainer>
     </SearchBookContainer>
   );
