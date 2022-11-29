@@ -31,9 +31,7 @@ const SearchBooks = () => {
 
   useEffect(() => {
     axios
-      .get(
-        `/api/search?Category=books&Query=${keyword}&Sort=accuracy&Page=1&Size=20`
-      )
+      .get(`/api/search?Category=books&Query=${keyword}&Sort=accuracy`)
       .then((res) => {
         setBooks(res.data);
         setIsLoading(false);
