@@ -6,6 +6,7 @@ import org.aspectj.lang.annotation.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import seb40_main_012.back.email.EmailSenderService;
+import seb40_main_012.back.statistics.Statistics;
 import seb40_main_012.back.statistics.StatisticsRepository;
 import seb40_main_012.back.statistics.StatisticsService;
 import seb40_main_012.back.user.dto.UserDto;
@@ -22,6 +23,22 @@ public class CherriPickAop {
     private final EmailSenderService emailSenderService;
     private final StatisticsService statisticsService;
     private final StatisticsRepository statisticsRepository;
+
+
+
+    @After(value = "execution(* seb40_main_012.back.book.BookController.carouselBooks())")
+    public void createTable(JoinPoint joinPoint) {
+
+//        Statistics statistics = statisticsService.findByDate(LocalDate.now());
+
+        if (statisticsRepository.findByDate(LocalDate.now()) == null) {
+            statisticsService.createTable(LocalDate.now());
+            Statistics statistics = statisticsService.findByDate(LocalDate.now());
+            statistics.setTotalVisitor(1);
+            statisticsRepository.save(statistics);
+        }
+//        statistics.setTotalVisitor(statistics.getTotalVisitor() + 1);
+    }
 
     @AfterReturning(value = "execution(* seb40_main_012.back.user.controller.UserController.postUser(..)) && args(postDto))", returning = "response")
     public void sendSignUpEmail(JoinPoint joinPoint, UserDto.PostDto postDto, ResponseEntity response) {
