@@ -84,6 +84,9 @@ dependencies {
 //	QueryDsl
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
+	//    --------------------------------------------------------------------------------------------
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 임시 사용
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // OAuth2
 }
 
 //tasks.named('test') {
