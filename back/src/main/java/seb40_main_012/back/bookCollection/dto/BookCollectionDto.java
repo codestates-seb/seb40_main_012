@@ -152,6 +152,7 @@ public class BookCollectionDto {
                     .build();
         }
     }
+
     @Getter
     @Builder
     @AllArgsConstructor
@@ -163,9 +164,8 @@ public class BookCollectionDto {
         private String userName;
         private Long collectionLike;
         private List<BookDto.CollectionBook> books;
-//        private Image bookCover;
 
-        public static BookCollectionDto.BookmarkedCollection of(BookCollection collection){
+        public static BookmarkedCollection of(BookCollection collection){
             return BookmarkedCollection.builder()
                     .collectionId(collection.getCollectionId())
                     .title(collection.getTitle())
@@ -176,6 +176,7 @@ public class BookCollectionDto {
                     .build();
         }
     }
+
 //    @Getter
 //    @Builder
 //    @AllArgsConstructor

@@ -288,10 +288,11 @@ public class BookCollectionService {
     }
 
     public BookCollection findCollectionByCritic() {
-        return findVerifiedCollection(53L);
+        return findVerifiedCollection(3L);
 
     }
 
+    // 컬렉션 작성용 북마크 책 조회 api
     public List<Book> getBookmarkByBook() {
         User findUser = userService.getLoginUser();
         List<Bookmark> allBookmarks = bookmarkRepository.findByUser(findUser);

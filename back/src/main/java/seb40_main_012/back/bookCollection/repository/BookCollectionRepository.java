@@ -37,4 +37,10 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection, 
                     "OR LOWER(CONTENT) LIKE %:queryParam%")
     List<BookCollection> findTest(@Param("queryParam") String queryParam);
 
+
+
+    //================================ queryDsl ================================
+
+
+
 }

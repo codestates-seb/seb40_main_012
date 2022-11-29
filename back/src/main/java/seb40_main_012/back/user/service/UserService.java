@@ -199,28 +199,25 @@ public class UserService {
 //        return collections;
 //    }
 
-    public Slice<BookCollection> getBookmarkByBookCollection(Long lastStoreId) {
+    public Slice<Bookmark> getBookmarkByBookCollection(Long lastStoreId) {
         User findUser = getLoginUser();
         PageRequest pageRequest = PageRequest.of(0, 5);
         Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkCollection(pageRequest,lastStoreId,findUser.getUserId());
-        Slice<BookCollection> collections = new SliceImpl<>(bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList()));
-        return collections;
+        return bookmarks;
     }
 
-    public Slice<Pairing> getBookmarkByPairing(Long lastStoreId) {
+    public Slice<Bookmark> getBookmarkByPairing(Long lastStoreId) {
         User findUser = getLoginUser();
         PageRequest pageRequest = PageRequest.of(0, 5);
         Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkPairing(pageRequest,lastStoreId,findUser.getUserId());
-        Slice<Pairing> pairings = new SliceImpl<>(bookmarks.stream().map(x -> x.getPairing()).collect(Collectors.toList()));
-        return pairings;
+        return bookmarks;
     }
 
-    public Slice<Book> getBookmarkByBook(Long lastStoreId) {
+    public Slice<Bookmark> getBookmarkByBook(Long lastStoreId) {
         User findUser = getLoginUser();
         PageRequest pageRequest = PageRequest.of(0, 5);
         Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkBook(pageRequest,lastStoreId,findUser.getUserId());
-        Slice<Book> books = new SliceImpl<>(bookmarks.stream().map(x -> x.getBook()).collect(Collectors.toList()));
-        return books;
+        return bookmarks;
     }
 
 
