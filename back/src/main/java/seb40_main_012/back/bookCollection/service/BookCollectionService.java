@@ -1,6 +1,8 @@
 package seb40_main_012.back.bookCollection.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import seb40_main_012.back.advice.BusinessLogicException;
@@ -20,6 +22,7 @@ import seb40_main_012.back.bookCollection.repository.BookCollectionTagRepository
 import seb40_main_012.back.bookCollection.repository.TagRepository;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
+import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.user.entity.User;
@@ -40,7 +43,7 @@ public class BookCollectionService {
     private final BookCollectionRepository collectionRepository;
     private final BookCollectionTagRepository collectionTagRepository;
     private final BookCollectionLikeRepository collectionLikeRepository;
-    private final BookmarkRepository collectionBookmarkRepository;
+    private final BookmarkRepository bookmarkRepository;
     private final BookCollectionBookRepository collectionBookRepository;
     private final BookRepository bookRepository;
     private final UserCategoryRepository userCategoryRepository;
@@ -64,7 +67,7 @@ public class BookCollectionService {
 
         tags.forEach(
                 x -> {
-                    if(tagRepository.findByTagName(x).isEmpty()){
+                    if (tagRepository.findByTagName(x).isEmpty()) {
                         Tag newTag = new Tag(x);
                         tagRepository.save(newTag);
                         BookCollectionTag collectionTag = new BookCollectionTag(collection, newTag);
@@ -73,7 +76,7 @@ public class BookCollectionService {
                         collection.addCollectionTag(collectionTag);
                         findUser.addBookCollection(collection);
                         collection.addUser(findUser);
-                    }else {
+                    } else {
                         Tag tag = tagRepository.findByTagName(x).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
                         BookCollectionTag collectionTag = new BookCollectionTag(collection, tag);
                         collectionRepository.save(collection);
@@ -89,7 +92,7 @@ public class BookCollectionService {
         isbn.forEach(
                 x -> {
                     Book newBook = bookService.updateView(x);
-                    BookCollectionBook findCollectionBook = new BookCollectionBook(newBook,collection);
+                    BookCollectionBook findCollectionBook = new BookCollectionBook(newBook, collection);
                     collectionBookRepository.save(findCollectionBook);
                     collection.addCollectionBook(findCollectionBook);
                 }
@@ -110,7 +113,7 @@ public class BookCollectionService {
 
         tags.forEach(
                 x -> {
-                    if(tagRepository.findByTagName(x).isEmpty()){
+                    if (tagRepository.findByTagName(x).isEmpty()) {
                         Tag newTag = new Tag(x);
                         tagRepository.save(newTag);
                         BookCollectionTag collectionTag = new BookCollectionTag(collection, newTag);
@@ -119,7 +122,7 @@ public class BookCollectionService {
                         collection.addCollectionTag(collectionTag);
                         findUser.addBookCollection(collection);
                         collection.addUser(findUser);
-                    }else {
+                    } else {
                         Tag tag = tagRepository.findByTagName(x).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
                         BookCollectionTag collectionTag = new BookCollectionTag(collection, tag);
                         collectionRepository.save(collection);
@@ -184,38 +187,43 @@ public class BookCollectionService {
         collectionRepository.deleteById(collectionId);
     }
 
-    public void isUserLike(Long collectionId){
+    public void isUserLike(Long collectionId) {
         User findUser = userService.getLoginUser();
         BookCollection bookCollection = findVerifiedCollection(collectionId);
-        if(collectionLikeRepository.findByUserUserIdAndBookCollectionCollectionId(findUser.getUserId(),collectionId)==null)
+        if (collectionLikeRepository.findByUserUserIdAndBookCollectionCollectionId(findUser.getUserId(), collectionId) == null)
             bookCollection.setUserLike(false);
         else bookCollection.setUserLike(true);
     }
 
-    public void isUserBookmark(Long collectionId){
+    public void isUserBookmark(Long collectionId) {
         User findUser = userService.getLoginUser();
         BookCollection bookCollection = findVerifiedCollection(collectionId);
-        if(collectionBookmarkRepository.findByUserAndBookCollection(findUser,bookCollection)==null)
+        if (bookmarkRepository.findByUserAndBookCollection(findUser, bookCollection) == null)
             bookCollection.setUserBookmark(false);
         else bookCollection.setUserBookmark(true);
     }
-    public void isUserCollection(Long collectionId){
+
+    public void isUserCollection(Long collectionId) {
         User findUser = userService.getLoginUser();
         BookCollection bookCollection = findVerifiedCollection(collectionId);
         User collectionUser = bookCollection.getUser();
 
-        if(findUser.getUserId()==collectionUser.getUserId())
+        if (findUser.getUserId() == collectionUser.getUserId())
             bookCollection.setUserCollection(true);
         else bookCollection.setUserCollection(false);
     }
 
+    public List<BookCollection> findUserCollection() {
+        User findUser = userService.getLoginUser();
+        return collectionRepository.findByUserUserId(findUser.getUserId());
+    }
 
     public BookCollection findVerifiedCollection(Long collectionId) {
         BookCollection collection = collectionRepository.findById(collectionId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
         return collection;
     }
 
-    public List<BookCollection> findCollectionByUserCategory(){
+    public List<BookCollection> findCollectionByUserCategory() {
         User findUser = userService.getLoginUser();
 
         Long userId = findUser.getUserId();
@@ -244,7 +252,7 @@ public class BookCollectionService {
     }
 
 
-    public BookCollection findCollectionByAuthor(){
+    public BookCollection findCollectionByAuthor() {
         String author = "양귀자 (지은이)";
 
         String title = "양귀자 모음";
@@ -268,24 +276,26 @@ public class BookCollectionService {
                 .build();
     }
 
-    public BookCollection findCollectionByCritic(){
+    public BookCollection findCollectionByCritic() {
         return findVerifiedCollection(53L);
 
     }
 
-
-    public List<Book> findBooks(List<String> isbn) {
-        List<Book> findBooks = new ArrayList<>();
-        isbn.forEach(
+    public List<Book> getBookmarkByBook() {
+        User findUser = userService.getLoginUser();
+        List<Bookmark> allBookmarks = bookmarkRepository.findByUser(findUser);
+        List<Bookmark> bookmarks = new ArrayList<>();
+        allBookmarks.forEach(
                 x -> {
-                    findBooks.add(bookService.findBook(x));
-                    //save()
+                    if (x.getBook() != null) bookmarks.add(x);
                 }
         );
-        return findBooks;
+        List<Book> books = bookmarks.stream().map(x -> x.getBook()).collect(Collectors.toList());
+        return books;
     }
 
-    public List<BookCollection> findCollectionByUserCategory2(){
+
+    public List<BookCollection> findCollectionByUserCategory2() {
         User loginUser = userService.getLoginUser();
         List<UserCategory> userCategory = userCategoryRepository.findAllByUser(loginUser);
         List<Genre> genres = userCategory.stream()
@@ -293,7 +303,7 @@ public class BookCollectionService {
                 .collect(Collectors.toList());
 
         Specification<Book> bookSpec = null;
-        for(Genre genre : genres) {
+        for (Genre genre : genres) {
             Specification<Book> bookSpecWithGenre = BookSpecification.findBookByGenre(genre);
             bookSpec = (bookSpec == null) ? bookSpecWithGenre : bookSpec.or(bookSpecWithGenre);
         }
@@ -301,7 +311,7 @@ public class BookCollectionService {
         List<Book> books = bookRepository.findAll(bookSpec);
 
         List<BookCollection> bookCollections = new ArrayList<>();
-        for(Book book : books) {
+        for (Book book : books) {
             bookCollections.addAll(collectionBookRepository.findAllByBook(book).stream()
                     .map(bookCollectionBook -> bookCollectionBook.getBookCollection())
                     .filter(bcb -> !bookCollections.contains(bcb))
