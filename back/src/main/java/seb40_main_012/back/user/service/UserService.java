@@ -273,13 +273,6 @@ public class UserService {
     }
 
     public User getLoginUser() { // 로그인된 유저 가져오기
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-
-        }
-
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || authentication.getName() == null || authentication.getName().equals("anonymousUser"))
