@@ -3,6 +3,7 @@ package seb40_main_012.back.user.dto;
 import lombok.*;
 import seb40_main_012.back.config.auth.entity.enums.ProviderType;
 
+import javax.persistence.Entity;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
