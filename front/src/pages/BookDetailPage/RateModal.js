@@ -50,8 +50,8 @@ export default function RateModal({ isbn }) {
     setComment(e.target.value);
   };
 
-  console.log('별점', star);
-  console.log('코멘트', comment);
+  // console.log('별점', star);
+  // console.log('코멘트', comment);
 
   const handleSubmit = () => {
     if (comment.length > 4) {

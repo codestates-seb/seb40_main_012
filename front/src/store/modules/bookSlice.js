@@ -21,11 +21,27 @@ export const getBookAsync = createAsyncThunk(
   }
 );
 
+export const postBookPick = createAsyncThunk(
+  'bookSlice/postBookPick',
+  async (isbn) => {
+    try {
+      const res = await axios.post(`${BOOKS_URL}/${isbn}/bookmark`);
+      return res.data.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 export const postBookComment = createAsyncThunk(
   'bookSlice/postBookComment',
   async ({ isbn, commentBody }) => {
     try {
-      return await axios.post(`${BOOKS_URL}/${isbn}/comments/add`, commentBody);
+      return await axios
+        .post(`${BOOKS_URL}/${isbn}/comments/add`, commentBody)
+        .then((res) => {
+          return res.data.data;
+        });
     } catch (error) {
       console.log(error);
     }
@@ -36,6 +52,21 @@ export const patchBookStarRating = createAsyncThunk(
   async ({ isbn, ratingBody }) => {
     try {
       return await axios.patch(`${BOOKS_URL}/${isbn}/rating`, ratingBody);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const deleteBookComment = createAsyncThunk(
+  'bookSlice/deleteBookComment',
+  async (commentId) => {
+    try {
+      return await axios
+        .delete(`/api/comments/${commentId}/delete`)
+        .then(() => {
+          return commentId;
+        });
     } catch (error) {
       console.log(error);
     }
@@ -58,15 +89,27 @@ export const bookSlice = createSlice({
       state.data = [];
       state.status = 'getBookAsync/rejected';
     });
+    //북마크
+    builder.addCase(postBookPick.pending, (state) => {
+      state.status = 'postBookPick/pending';
+    });
+    builder.addCase(postBookPick.fulfilled, (state, action) => {
+      state.data = action.payload;
+      state.status = 'postBookPick/fulfilled';
+    });
+    builder.addCase(postBookPick.rejected, (state) => {
+      state.data = [];
+      state.status = 'postBookPick/rejected';
+    });
     // 책 코멘트
     builder.addCase(postBookComment.pending, (state) => {
       state.status = 'postBookComment/pending';
     });
-    builder.addCase(postBookComment.fulfilled, (state) => {
+    builder.addCase(postBookComment.fulfilled, (state, action) => {
+      state.data.comments.content.push(action.payload);
       state.status = 'postBookComment/fulfilled';
     });
     builder.addCase(postBookComment.rejected, (state) => {
-      state.data = [];
       state.status = 'postBookComment/rejected';
     });
     //책 별점
@@ -77,8 +120,20 @@ export const bookSlice = createSlice({
       state.status = 'postBookStarRating/fulfilled';
     });
     builder.addCase(patchBookStarRating.rejected, (state) => {
-      state.data = [];
       state.status = 'postBookStarRating/rejected';
+    });
+    //
+    builder.addCase(deleteBookComment.pending, (state) => {
+      state.status = 'postBookComment/pending';
+    });
+    builder.addCase(deleteBookComment.fulfilled, (state, action) => {
+      state.data.comments.content = state.data.comments.content.filter(
+        (el) => el.commentId !== action.payload
+      );
+      state.status = 'postBookComment/fulfilled';
+    });
+    builder.addCase(deleteBookComment.rejected, (state) => {
+      state.status = 'postBookComment/rejected';
     });
   },
 });

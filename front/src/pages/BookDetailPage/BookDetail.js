@@ -339,13 +339,16 @@ const BookDetail = () => {
               );
             })
           )}
-          <CommentBtnStyled>
-            <BookCommentsModal
-              data={bookData?.comments?.content}
-              isLogin={isLogin}
-              userEmail={userEmail}
-            />
-          </CommentBtnStyled>
+          {commentsTopThree?.length === 0 ||
+          bookData?.comments?.content?.length < 4 ? null : (
+            <CommentBtnStyled>
+              <BookCommentsModal
+                data={bookData?.comments?.content}
+                isLogin={isLogin}
+                userEmail={userEmail}
+              />
+            </CommentBtnStyled>
+          )}
         </DescContainer>
         <DescContainer>
           <h1>이 책과 같이 보면 좋은 페어링 {bookData?.pairingCount}</h1>
