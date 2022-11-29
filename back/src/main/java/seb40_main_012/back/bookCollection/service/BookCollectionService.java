@@ -1,17 +1,15 @@
 package seb40_main_012.back.bookCollection.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.BookService;
+import seb40_main_012.back.book.BookSpecification;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
-import seb40_main_012.back.book.BookSpecification;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
 import seb40_main_012.back.bookCollection.entity.BookCollectionTag;
@@ -31,12 +29,14 @@ import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.service.UserService;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookCollectionService {
     private final UserService userService;
     private final BookService bookService;
@@ -52,18 +52,13 @@ public class BookCollectionService {
     private final NotificationService noticeService;
 
     public BookCollection postCollection(BookCollection collection, List<String> tags) {
-
         User findUser = userService.getLoginUser();
-
-        Long userId = findUser.getUserId();
-
         collection.setCollectionTag();
 
         if (tags.size() == 0) {
             findUser.addBookCollection(collection);
             collection.addUser(findUser);
         }
-
 
         tags.forEach(
                 x -> {
@@ -102,35 +97,51 @@ public class BookCollectionService {
     }
 
     public BookCollection patchCollection(Long collectionId, BookCollection collection, List<String> tags) {
-
-
         User findUser = userService.getLoginUser();
-
         Long userId = findUser.getUserId();
 
         BookCollection bookCollection = findVerifiedCollection(collectionId);
+        bookCollection.editCollection(collection);
+        collectionTagRepository.deleteAllByBookCollection(bookCollection);
+        collectionBookRepository.deleteAllByBookCollection(bookCollection);
+
 //        collection.setCollectionTag();
+
+        if (tags.size() == 0) {
+            findUser.addBookCollection(bookCollection);
+//            bookCollection.addUser(findUser);
+        }
 
         tags.forEach(
                 x -> {
                     if (tagRepository.findByTagName(x).isEmpty()) {
                         Tag newTag = new Tag(x);
                         tagRepository.save(newTag);
-                        BookCollectionTag collectionTag = new BookCollectionTag(collection, newTag);
-                        collectionRepository.save(collection);
+                        BookCollectionTag collectionTag = new BookCollectionTag(bookCollection, newTag);
+                        collectionRepository.save(bookCollection);
                         collectionTagRepository.save(collectionTag);
-                        collection.addCollectionTag(collectionTag);
-                        findUser.addBookCollection(collection);
-                        collection.addUser(findUser);
+                        bookCollection.addCollectionTag(collectionTag);
+                        findUser.addBookCollection(bookCollection);
+//                        bookCollection.addUser(findUser);
                     } else {
                         Tag tag = tagRepository.findByTagName(x).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
-                        BookCollectionTag collectionTag = new BookCollectionTag(collection, tag);
-                        collectionRepository.save(collection);
+                        BookCollectionTag collectionTag = new BookCollectionTag(bookCollection, tag);
+                        collectionRepository.save(bookCollection);
                         collectionTagRepository.save(collectionTag);
-                        collection.addCollectionTag(collectionTag);
-                        findUser.addBookCollection(collection);
-                        collection.addUser(findUser);
+                        bookCollection.addCollectionTag(collectionTag);
+                        findUser.addBookCollection(bookCollection);
+//                        collection.addUser(findUser);
                     }
+                }
+        );
+
+        List<String> isbn = bookCollection.getBookIsbn13();
+        isbn.forEach(
+                x -> {
+                    Book newBook = bookService.updateView(x);
+                    BookCollectionBook findCollectionBook = new BookCollectionBook(newBook, bookCollection);
+                    collectionBookRepository.save(findCollectionBook);
+                    bookCollection.addCollectionBook(findCollectionBook);
                 }
         );
         return bookCollection;
