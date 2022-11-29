@@ -16,9 +16,9 @@ const CollectionMediumBooksContainer = styled.div`
 `;
 
 const CollectionMediumInfo = styled.div`
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.mainColor};
+  color: ${({ theme }) => theme.colors.dark};
   word-break: break-all;
   @media screen and (max-width: 640px) {
     font-size: 14px;
@@ -33,6 +33,7 @@ const MediumHeader = styled.div`
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  margin-bottom: 5px;
 `;
 
 const MediumBooks = styled.div`

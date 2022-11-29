@@ -32,6 +32,7 @@ const CollectionSmallInfo = styled.div`
   font-size: 16px;
   font-weight: 700;
   word-break: break-all;
+  margin-top: 10px;
   color: ${({ theme }) => theme.colors.darkgray};
   @media screen and (max-width: 640px) {
     font-size: 12px;
