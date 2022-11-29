@@ -14,7 +14,7 @@ public class BookCollectionRepositorySupport extends QuerydslRepositorySupport {
     QBookCollection bookCollection = QBookCollection.bookCollection;
 
     public BookCollectionRepositorySupport(JPAQueryFactory queryFactory) {
-        super(BookCollection.class);    //설정 domain 클래스로 하면 왜 di 안되나
+        super(BookCollection.class);    //설정 domain 클래스로 하면 왜 di 안되
         this.queryFactory = queryFactory;
     }
 
@@ -28,5 +28,16 @@ public class BookCollectionRepositorySupport extends QuerydslRepositorySupport {
                         .fetch();
         return collections;
     }
+
+    public List<BookCollection> findUserFitCollection(){
+        List<BookCollection> collections =
+                queryFactory.selectFrom(bookCollection)
+                        .where(bookCollection.collectionTags.any().tag.tagName
+                                .contains(bookCollection.user.categories.any().category.genre.toString()))
+                        .orderBy()
+                        .fetch();
+        return collections;
+    }
+
 
 }

@@ -109,16 +109,31 @@ public class BookCollectionController {
     }
 
 
+//    @GetMapping("/category")
+//    @ResponseStatus(HttpStatus.OK)
+//
+//    public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory() {
+//
+//        List<BookCollection> collections = collectionService.findCollectionByUserCategory();
+//
+//        List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
+//        return new ListResponseDto<>(tagCollectionDto);
+//    }
+
     @GetMapping("/category")
     @ResponseStatus(HttpStatus.OK)
 
     public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory() {
 
-        List<BookCollection> collections = collectionService.findCollectionByUserCategory();
+        List<BookCollection> collections = collectionService.findUserFitCollection();
 
         List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
         return new ListResponseDto<>(tagCollectionDto);
     }
+
+
+
+
 
     @GetMapping("/tag")
     @ResponseStatus(HttpStatus.OK)

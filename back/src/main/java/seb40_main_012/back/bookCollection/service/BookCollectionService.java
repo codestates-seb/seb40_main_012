@@ -231,10 +231,10 @@ public class BookCollectionService {
         return collectionRepositorySupport.findBestCollection();
     }
 
-    public BookCollection findVerifiedCollection(Long collectionId) {
-        BookCollection collection = collectionRepository.findById(collectionId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
-        return collection;
+    public List<BookCollection> findUserFitCollection() {
+        return collectionRepositorySupport.findUserFitCollection();
     }
+
 
     public List<BookCollection> findCollectionByUserCategory() {
         User findUser = userService.getLoginUser();
@@ -333,6 +333,11 @@ public class BookCollectionService {
         }
 
         return bookCollections;
+    }
+
+    public BookCollection findVerifiedCollection(Long collectionId) {
+        BookCollection collection = collectionRepository.findById(collectionId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
+        return collection;
     }
 
 }
