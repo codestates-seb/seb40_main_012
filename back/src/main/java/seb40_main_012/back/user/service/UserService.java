@@ -38,6 +38,7 @@ import seb40_main_012.back.user.repository.UserRepository;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,6 +70,7 @@ public class UserService {
         user.setRoles(roles);
         user.setBookTemp(36.5);
         user.setFirstLogin(true);
+        //user.setProviderType(ProviderType.LOCAL);
         User savedUser = userRepository.save(user);
 
 //        UserRegistrationApplicationEvent signupEvent = new UserRegistrationApplicationEvent(this, savedUser);
@@ -282,6 +284,13 @@ public class UserService {
     }
 
     public User getLoginUser() { // 로그인된 유저 가져오기
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+
+        }
+
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || authentication.getName() == null || authentication.getName().equals("anonymousUser"))
