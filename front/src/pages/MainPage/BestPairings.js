@@ -39,7 +39,7 @@ const BestPairings = () => {
     <BestPairingsContainer>
       <MainBooksTitle title="요즘 뜨는 페어링" type="pairing" />
       <PairingsContainer>
-        {bestpairings.slice(0, 5).map((el) => {
+        {bestpairings?.slice(0, 5).map((el) => {
           return (
             <BestPairing
               key={el.pairingId}
