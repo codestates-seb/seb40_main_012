@@ -89,7 +89,11 @@ const InputWaringMsg = styled.div`
   }
 `;
 
-const CollectionWriteBtns = ({ handleCollectionWrite, isFilled }) => {
+const CollectionWriteBtns = ({
+  handleCollectionWrite,
+  isFilled,
+  type = 'write',
+}) => {
   const [isHoverExit, setIsHoverExit] = useState(false);
 
   const handleFocusExit = () => setIsHoverExit(true);
@@ -115,11 +119,15 @@ const CollectionWriteBtns = ({ handleCollectionWrite, isFilled }) => {
           </Link>
         </ExitBtn>
         <CollectionWriteBtn onClick={handleCollectionWrite}>
-          생성하기
+          {type === 'write' ? `생성하기` : `수정완료`}
         </CollectionWriteBtn>
       </Buttons>
       <WarningMsg className={isHoverExit ? 'show' : 'hide'}>
-        <div>작성 중이던 컬렉션이 사라집니다</div>
+        <div>
+          {type === 'write'
+            ? `작성 중이던 컬렉션이 사라집니다`
+            : `수정 중이던 컬렉션이 저장되지 않습니다`}
+        </div>
       </WarningMsg>
     </CollectionWriteBtnsContainer>
   );

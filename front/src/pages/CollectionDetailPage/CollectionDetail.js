@@ -75,7 +75,6 @@ const CollectionDetailPage = () => {
     //컬렉션 삭제
     axios.delete(`/api/collections/${collectionId}`).then(() => {
       navigate('/collection');
-      console.log('삭제');
     });
   };
 

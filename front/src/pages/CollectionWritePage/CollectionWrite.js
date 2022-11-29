@@ -50,10 +50,7 @@ const CollectionWritePage = () => {
     <PageContainer footer>
       <CollectionWritePageContainer>
         <div className="content">
-          <CollectionInfoInput
-            data={data}
-            setData={setData}
-          ></CollectionInfoInput>
+          <CollectionInfoInput data={data} setData={setData} />
           <CollectionBookInput data={data} setData={setData} />
         </div>
         <CollectionWriteBtns

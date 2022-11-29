@@ -66,7 +66,7 @@ const CheckBoxFormControlLabelStyled = styled(FormControlLabel)`
 `;
 
 const ButtonWrapperStyled = styled.div`
-  margin-top: 30px;
+  margin-top: 50px;
   display: flex;
   align-items: center;
 `;

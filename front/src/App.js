@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { GlobalStyle } from 'styles';
 import { authApi } from 'api';
 import { selectIsLogin } from 'store/modules/authSlice';
-import { ScrollToTop } from 'components';
+import { ScrollToTop, LoadingComponent } from 'components';
 
 const RoutesComponent = lazy(() => import('components/RoutesComponent'));
 
@@ -29,14 +29,7 @@ const App = () => {
     <BrowserRouter>
       <ScrollToTop />
       <GlobalStyle />
-      <Suspense
-        fallback={
-          <img
-            src={'/images/cherrypick_loading.gif'}
-            alt="loading cherrypick"
-          ></img>
-        }
-      >
+      <Suspense fallback={<LoadingComponent />}>
         <RoutesComponent />
       </Suspense>
     </BrowserRouter>

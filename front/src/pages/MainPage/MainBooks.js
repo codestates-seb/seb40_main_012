@@ -63,7 +63,7 @@ const MainBooks = () => {
     <MainBooksContainer>
       <MainCarousel>
         <Slider {...settings}>
-          {mainBooks.map((el, idx) => {
+          {mainBooks?.map((el, idx) => {
             return (
               <MainBook
                 key={el.isbn13}
