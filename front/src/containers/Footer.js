@@ -49,6 +49,10 @@ const FooterContent_3 = styled(FooterContent)`
   }
 `;
 
+const VersionStyled = styled.div`
+  display: none;
+`;
+
 const Footer = () => {
   return (
     <FooterContainer>
@@ -74,6 +78,7 @@ const Footer = () => {
           alt="Footer Logo"
         />
       </FooterContent_3>
+      <VersionStyled>{process.env.REACT_APP_SERVICE_VERSION}</VersionStyled>
     </FooterContainer>
   );
 };
