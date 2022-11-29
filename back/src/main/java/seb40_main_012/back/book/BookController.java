@@ -15,6 +15,7 @@ import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.rating.RatingService;
 import seb40_main_012.back.dto.SingleResponseDto;
+import seb40_main_012.back.user.dto.UserDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
