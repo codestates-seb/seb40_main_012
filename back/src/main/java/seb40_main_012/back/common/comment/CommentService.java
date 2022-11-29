@@ -2,7 +2,9 @@ package seb40_main_012.back.common.comment;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,15 +56,31 @@ public class CommentService {
 
         Book findBook = bookService.findVerifiedBook(isbn13);
 
-        Comment savedBookComment =
-                Comment.builder()
-                        .commentType(CommentType.BOOK)
-                        .book(findBook)
-                        .user(findUser)
-                        .body(comment.getBody())
-                        .createdAt(LocalDateTime.now())
-                        .modifiedAt(LocalDateTime.now())
-                        .build();
+        Comment savedBookComment = new Comment();
+
+        if (findMyComment(isbn13) == null) {
+            savedBookComment =
+                    Comment.builder()
+                            .commentType(CommentType.BOOK)
+                            .book(findBook)
+                            .user(findUser)
+                            .body(comment.getBody())
+                            .createdAt(LocalDateTime.now())
+                            .modifiedAt(LocalDateTime.now())
+                            .build();
+        } else {
+
+            savedBookComment =
+                    Comment.builder()
+                            .commentId(findMyComment(isbn13).getCommentId())
+                            .commentType(CommentType.BOOK)
+                            .book(findBook)
+                            .user(findUser)
+                            .body(comment.getBody())
+                            .createdAt(LocalDateTime.now())
+                            .modifiedAt(LocalDateTime.now())
+                            .build();
+        }
 
         findBook.getComments().add(savedBookComment);
         return commentRepository.save(savedBookComment);
@@ -190,6 +208,13 @@ public class CommentService {
         return commentRepository.findByIsbn13AndUserId(isbn13, findUser.getUserId());
     }
 
+    public Comment findMyCommentByEmail(String isbn13) {
+
+        User findUser = userService.getLoginUser();
+
+        return commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, findUser.getEmail());
+    }
+
     public List<Comment> findMyCommentAll() {
 
         User findUser = userService.getLoginUser();
@@ -215,17 +240,28 @@ public class CommentService {
 
     public List<Comment> findComments() { // 리스트 처리 및 좋아요 내림차순 정렬
 
-        PageRequest pageRequest = PageRequest.of(1, 10, Sort.by(Sort.Direction.DESC, "likeCount"));
+        PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "likeCount"));
 
 //        SliceImpl<Comment> result = commentRepository.findSliceBy(pageRequest);
 
         return commentRepository.findSliceBy(pageRequest);
     }
 
-//    public List<Comment> findComments() { // 리스트 처리 및 좋아요 내림차순 정렬
-//
-//        return commentRepository.findAll(Sort.by("likeCount").descending());
-//    }
+    public Page<Comment> findBookComments(String isbn13) { // 책 코멘트
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        Page<Comment> findComments = commentRepository.findBookCommentsSlice(isbn13, pageRequest);
+
+        return findComments;
+    }
+
+    public List<Comment> findBookCommentsWithoutPage(String isbn13) { // 책 코멘트
+
+        List<Comment> findComments = commentRepository.findBookComments(isbn13);
+
+        return findComments;
+    }
 
     public void deleteComment(long commentId) {
 
@@ -257,15 +293,3 @@ public class CommentService {
                 new BusinessLogicException(ExceptionCode.COMMENT_NOT_FOUND));
     }
 }
-
-
-//    public Comment updateLike(Comment comment, long commentId) { // Like Count 값만 변경
-//
-//        User findUser = userService.getLoginUser();
-//
-//        Comment findComment = findVerifiedComment(commentId);
-//
-//        findComment.setLikeCount(comment.getLikeCount());
-//
-//        return commentRepository.save(findComment);
-//    }

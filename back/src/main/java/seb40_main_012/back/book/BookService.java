@@ -2,6 +2,8 @@ package seb40_main_012.back.book;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.advice.BusinessLogicException;
@@ -13,6 +15,8 @@ import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
+import seb40_main_012.back.common.comment.CommentService;
+import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.PairingRepository;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
@@ -97,7 +101,7 @@ public class BookService {
 
             BookInfoSearchDto.BookInfo.Item bookItem = bookInfoSearchService.bookSearch(isbn13).getItem().get(0);
 
-            LinkedHashMap map = (LinkedHashMap<String ,String>)bookItem.subInfo;
+            LinkedHashMap map = (LinkedHashMap<String, String>) bookItem.subInfo;
 
             String categoryName = bookItem.categoryName;
 
@@ -131,14 +135,32 @@ public class BookService {
                             .build();
 
 
-
             System.out.println(map.get("itemPage"));
-            
+
             return bookRepository.save(savedBook);
 
         } else {
 
             Book findBook = optionalBook.get();
+
+            Comment myComment;
+
+            if (Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")) {
+                myComment = null;
+            } else {
+                myComment = commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, "spring_sunshine@email.com");
+//                myComment = commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, SecurityContextHolder.getContext().getAuthentication().getName().toString());
+            }
+
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println(commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, SecurityContextHolder.getContext().getAuthentication().getName().toString()));
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
 
             long commentCount = findBook.getComments().size();
 
@@ -154,71 +176,6 @@ public class BookService {
             return bookRepository.save(findBook);
         }
     }
-
-//    public Book updateRating(BookDto.Rating ratingBook, String isbn13) {
-//
-//        User findUser = userService.getLoginUser();
-//
-//        double rating = ratingBook.getRating(); // 입력받은 별점
-//
-//        Book findBook = findVerifiedBook(isbn13);
-//
-//        double averageRating = findBook.getAverageRating(); // 현재 평균 별점
-//        long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
-//
-//        double numerator = (averageRating * ratingCount) + rating; // 분자
-//        long denominator = ratingCount + 1; // 분모
-//
-//        double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
-//
-//        findBook.setAverageRating(newAverageRating); // 별점 업데이트
-//
-//        return bookRepository.save(findBook);
-
-//        Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
-//
-//        if (optionalBook.isEmpty()) {
-//
-//            String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
-//
-//            Book savedBook =
-//                    Book.builder()
-//                            .isbn13(isbn13)
-//                            .build();
-//
-//            if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
-//            else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
-//            else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
-//            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
-//            else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
-//            else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
-//            else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
-//            else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
-//            else savedBook.setGenre(Genre.ETC);
-//
-//            bookRepository.save(savedBook);
-//
-//            savedBook.setAverageRating(rating);
-//
-//            return bookRepository.save(savedBook);
-//
-//        } else {
-//
-//            Book findBook = optionalBook.get();
-//
-//            double averageRating = findBook.getAverageRating(); // 현재 평균 별점
-//            long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
-//
-//            double numerator = (averageRating * ratingCount) + rating; // 분자
-//            long denominator = ratingCount + 1; // 분모
-//
-//            double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
-//
-//            findBook.setAverageRating(newAverageRating); // 별점 업데이트
-//
-//            return bookRepository.save(findBook);
-//        }
-//    }
 
     public Book findBook(String isbn13) {
         return findVerifiedBook(isbn13);
