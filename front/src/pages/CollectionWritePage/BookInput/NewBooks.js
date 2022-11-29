@@ -25,7 +25,9 @@ const Books = styled.div`
 
 const NewBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
   const handleDeleteBook = (isbn) => {
+    console.log('delete', isbn);
     const tmp = newBooks.filter((el) => {
+      console.log(el, isbn, el === isbn);
       return String(el) !== String(isbn);
     });
     setNewBooks(tmp);
@@ -45,7 +47,7 @@ const NewBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
               key={idx}
               title={el.title}
               author={el.author}
-              cover={el.cover}
+              cover={el.cover ? el.cover : el.bookCover}
               isbn={el.isbn13}
               remove={true}
               handleDeleteBook={handleDeleteBook}
