@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Guide from '../../MainPage/Guide';
 import { Link } from 'react-router-dom';
 
 const TabBar = styled.ul`
@@ -75,6 +76,7 @@ const PairingTab = ({ pathname = navObj.all }) => {
         <HeadTitle>
           깊고 넓은 즐거움, <span>Cherry Pick</span> 페어링
         </HeadTitle>
+        <Guide type="pairing" />
       </HeadContainer>
       <TabBar>
         <StyledLink to={`${navObj.all}`}>
