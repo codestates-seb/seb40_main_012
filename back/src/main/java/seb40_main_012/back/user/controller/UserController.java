@@ -4,7 +4,9 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.entity.Book;
@@ -13,6 +15,7 @@ import seb40_main_012.back.common.bookmark.BookmarkType;
 import seb40_main_012.back.common.comment.CommentMapper;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.common.image.AwsS3Service;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
@@ -52,8 +55,7 @@ public class UserController {
     private final BookCollectionRepository collectionRepository;
     private final BookRepository bookRepository;
     private final BookmarkRepository bookmarkRepository;
-    private final EmailSenderService emailSenderService;
-
+    private final AwsS3Service awsS3Service;
 
     @PostMapping("/users")
     public ResponseEntity postUser(@Valid @RequestBody UserDto.PostDto postDto) {
@@ -96,8 +98,32 @@ public class UserController {
 
     @PatchMapping("/mypage/userInfo")
     @ResponseStatus(HttpStatus.OK)
-    public UserInfoDto.Response patchUserInfo(@RequestBody UserInfoDto.Post request) {
+    public UserInfoDto.Response patchUserInfo(
+            @RequestParam(value = "image") @Nullable MultipartFile file,
+            @RequestPart UserInfoDto.Post request) throws Exception {
+
         User editedUser = userService.editUserInfo(request.toEntity(), request.getCategory());
+
+        if (editedUser.getS3ProfileImage() == null && file == null) {
+
+            editedUser.setProfileImage(null);
+
+        } else if (editedUser.getS3ProfileImage() == null && file != null) {
+
+            String imagePath = awsS3Service.uploadProfileImageToS3(file);
+            editedUser.setProfileImage(imagePath);
+
+        } else if (editedUser.getS3ProfileImage() != null && file == null) {
+
+            editedUser.setProfileImage(null);
+
+        } else if (editedUser.getS3ProfileImage() != null && file != null) {
+
+//            awsS3Service.removeFromS3(pairingService.findPairing(pairingId).getImagePath()); // 기존 이미지 삭제
+            String imagePath = awsS3Service.uploadProfileImageToS3(file); // 새 이미지 저장
+            editedUser.setProfileImage(imagePath);
+        }
+
         userService.updateNickName(request.getNickname());
         return UserInfoDto.Response.of(editedUser);
     }

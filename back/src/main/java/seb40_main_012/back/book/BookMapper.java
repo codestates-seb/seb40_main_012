@@ -1,9 +1,13 @@
 package seb40_main_012.back.book;
 
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.SliceImpl;
+import org.springframework.stereotype.Component;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.entity.Pairing;
 
@@ -47,9 +51,9 @@ public interface BookMapper {
         response.pairingCount( book.getPairingCount() );
         response.bookCollectionCount( book.getBookCollectionCount() );
         List<Comment> list = book.getComments();
-        if ( list != null ) {
-            response.comments( new SliceImpl<>( list.stream().sorted(Comparator.comparing(Comment::getLikeCount).reversed()).collect(Collectors.toList())));
-        }
+//        if ( list != null ) { // 이 부분 주석처리 하면 무한스크롤
+//            response.comments( new PageImpl<>( list.stream().sorted(Comparator.comparing(Comment::getLikeCount).reversed()).collect(Collectors.toList())));
+//        }
         List<Pairing> list1 = book.getPairings();
         if ( list1 != null ) {
             response.pairings( new SliceImpl<>( list1.stream().sorted(Comparator.comparing(Pairing::getLikeCount).reversed()).collect(Collectors.toList())));

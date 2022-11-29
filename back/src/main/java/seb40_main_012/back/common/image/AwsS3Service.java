@@ -64,7 +64,42 @@ public class AwsS3Service {
         amazonS3Client.putObject(new PutObjectRequest(bucketName, "pairingImages/" + storedImageName, inputStream, objectMetadata)
                 .withCannedAcl(CannedAccessControlList.PublicRead));
 
-        return amazonS3Client.getUrl(bucketName, storedImageName).toString();
+        return amazonS3Client.getUrl(bucketName, "pairingImages/" + storedImageName).toString();
+    }
+
+    public String uploadProfileImageToS3(MultipartFile files) throws Exception {
+        validateFileExists(files);
+
+        if (files.isEmpty()) {
+            return null;
+        }
+
+        String originalImageName = files.getOriginalFilename(); // 원래 파일 이름
+
+        String uuid = UUID.randomUUID().toString(); // 파일 이름으로 사용할 UUID 생성
+
+        String extension = files.getContentType().substring(files.getContentType().lastIndexOf("/") + 1); // 확장자 추출
+
+        String[] extensions = {"png", "jpg", "jpeg"};
+
+        if (!Arrays.asList(extensions).contains(extension)) {
+            throw new IllegalArgumentException("지원하지 않는 포맷입니다.");
+        }
+
+        String storedImageName = uuid +'.'+ extension; // 파일 이름 + 확장자
+
+        MultipartFile resizedFile = resizeImage(files, extension, storedImageName, 160);
+
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(resizedFile.getSize());
+        objectMetadata.setContentType(resizedFile.getContentType());
+
+        InputStream inputStream = resizedFile.getInputStream();
+
+        amazonS3Client.putObject(new PutObjectRequest(bucketName, "profileImages/" + storedImageName, inputStream, objectMetadata)
+                .withCannedAcl(CannedAccessControlList.PublicRead));
+
+        return amazonS3Client.getUrl(bucketName, "profileImages/" + storedImageName).toString();
     }
 
     public void removeFromS3(String imagePath) {

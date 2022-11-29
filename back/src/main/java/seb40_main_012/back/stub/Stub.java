@@ -409,11 +409,11 @@ public class Stub {
         // 세린님 전용 STUB DATA
 //        ------------------------------------------------------------------------------------------
 //        ------------------------------------------------------------------------------------------
-        for (long i = 1; i <= 13; i++) {
+        for (long i = 1; i <= 15; i++) {
 
             long rand = (long) (Math.random() * 35) + 1;
 
-            log.info("PAIRING_COMMENT STUB " +
+            log.info("BOOK_COMMENT STUB " +
                     commentRepository.save(
                             Comment.builder()
                                     .commentType(CommentType.BOOK)

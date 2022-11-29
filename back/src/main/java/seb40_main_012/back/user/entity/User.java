@@ -9,6 +9,7 @@ import org.hibernate.annotations.NotFoundAction;
 import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookWiki.BookWiki;
 import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
 import seb40_main_012.back.common.comment.entity.Comment;
@@ -18,6 +19,7 @@ import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.common.rating.Rating;
 //import seb40_main_012.back.notification.Notification;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
@@ -79,6 +81,11 @@ public class User {
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Image> images = new ArrayList<>();
+
+    @Nullable
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Image s3ProfileImage;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
