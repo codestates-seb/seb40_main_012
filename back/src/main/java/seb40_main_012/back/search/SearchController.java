@@ -45,7 +45,7 @@ public class SearchController {
         if (category.equals("books") && sort.equals("accuracy")) {
 
             List<BookInfoSearchDto.BookList.Item> bookResult = bookInfoSearchService.cherryPickSearch(queryParam, "Accuracy");
-//            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "Accuracy", 1, 100);
+//            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "Accuracy");
 //            BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy", page, size);
 //            SliceImpl<BookInfoSearchDto.BookList.Item> bookSlice = new SliceImpl<>(bookResult.getItem());
 //            return new ResponseEntity<>(bookSlice, HttpStatus.OK);
@@ -55,7 +55,7 @@ public class SearchController {
         } else if (category.equals("books") && sort.equals("title")) {
 
             List<BookInfoSearchDto.BookList.Item> bookResult = bookInfoSearchService.cherryPickSearch(queryParam, "Title");
-//            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "Title", 1, 100 );
+//            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "Title");
 //            BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "Title", page, size);
 //            List<BookInfoSearchDto.BookList.Item> bookPage = new ArrayList<>(bookResult.getItem());
             return new ResponseEntity<>(bookResult, HttpStatus.OK);
@@ -63,7 +63,7 @@ public class SearchController {
         } else if (category.equals("books") && sort.equals("new")) {
 
             List<BookInfoSearchDto.BookList.Item> bookResult = bookInfoSearchService.cherryPickSearch(queryParam, "PublishTime");
-//            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "PublishTime", 1, 100 );
+//            List<BookInfoSearchDto.BookList.Item> bookResult = cherryPickSearchService.cherryPickSearchForBooks(queryParam, "PublishTime");
 //            BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), "PublishTime", page, size);
 //            List<BookInfoSearchDto.BookList.Item> bookPage = new ArrayList<>(bookResult.getItem());
             return new ResponseEntity<>(bookResult, HttpStatus.OK);
@@ -134,7 +134,8 @@ public class SearchController {
 //            @RequestParam("Page") Integer page
     ) {
 
-        List<BookInfoSearchDto.BookList.Item> result = cherryPickSearchService.cherryPickSearchForBooks(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+//        List<BookInfoSearchDto.BookList.Item> result = cherryPickSearchService.cherryPickSearchForBooks(queryParam.toLowerCase(Locale.ROOT), "Accuracy");
+        List<BookInfoSearchDto.BookList.Item> result = bookInfoSearchService.cherryPickSearch(queryParam.toLowerCase(Locale.ROOT), "Accuracy");
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
