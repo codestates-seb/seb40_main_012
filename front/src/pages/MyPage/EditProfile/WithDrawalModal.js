@@ -57,7 +57,7 @@ const ModalBoxStyled = styled.form`
 `;
 
 const ContainedButtonStyled = styled(ContainedButton)`
-  margin-top: 20px;
+  margin: 10px 0 15px;
 `;
 
 const PasswordErrorMessageStyled = styled.p`
@@ -117,9 +117,11 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
         </div>
         <div className="title">회원 탈퇴</div>
         <p className="info">
-          체리픽에서 작성한 모든 글과 활동 내역이 삭제됩니다. <br />
-          삭제된 정보는 다시 복구할 수 없습니다. <br />
-          현재 비밀번호를 입력 후 탈퇴하기 버튼을 클릭해주세요.
+          탈퇴 후에는 회원정보 및 서비스 이용기록이
+          <br />
+          모두 삭제되어 복구할 수 없습니다.
+          {/* <br />
+          안내 사항을 모두 확인하였으며, 이에 동의합니다. */}
         </p>
         <div className="password-check">비밀번호</div>
         <PasswordCheckInputStyled
