@@ -36,7 +36,8 @@ public interface BookMapper {
         BookDto.Response.ResponseBuilder response = BookDto.Response.builder();
 
         response.isbn13(book.getIsbn13());
-        if (!Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")){
+        if (!Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")
+        && book.getRatings() != null){
         response.myRating(book.getRatings().stream()
                 .filter(rating -> Objects.equals(rating.getUser().getEmail(), SecurityContextHolder.getContext().getAuthentication().getName()))
                 .mapToDouble(Rating::getUserBookRating).sum());
