@@ -107,6 +107,7 @@ public class BookService {
 
             Genre genre = null;
 
+
             if (categoryName.matches(".*소설/시/희곡>.*소설")) genre = Genre.NOVEL;
             else if (categoryName.matches(".*에세이>.*에세이")) genre = Genre.ESSAY;
             else if (categoryName.matches(".*소설/시/희곡>.*시")) genre = Genre.POEM;
@@ -143,24 +144,28 @@ public class BookService {
 
             Book findBook = optionalBook.get();
 
-            Comment myComment;
 
-            if (Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")) {
-                myComment = null;
-            } else {
-                myComment = commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, "spring_sunshine@email.com");
-//                myComment = commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, SecurityContextHolder.getContext().getAuthentication().getName().toString());
-            }
 
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println(commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, SecurityContextHolder.getContext().getAuthentication().getName().toString()));
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
+//            if (Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")) {
+//                myComment = null;
+//            }
+//            if (!Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")){
+//                myComment = commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13).stream()
+//                        .filter(comment -> comment.getUser().getEmail() == "spring_sunshine@email.com")
+//                        .findFirst().get();
+////                myComment = commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, SecurityContextHolder.getContext().getAuthentication().getName().toString());
+//            }
+//
+//            System.out.println("------------------------------------------");
+//            System.out.println("------------------------------------------");
+//            System.out.println("------------------------------------------");
+//            System.out.println("------------------------------------------");
+//            System.out.println(commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13).stream()
+//                    .filter(comment -> comment.getUser().getEmail() == "spring_sunshine@email.com").findFirst());
+//            System.out.println("------------------------------------------");
+//            System.out.println("------------------------------------------");
+//            System.out.println("------------------------------------------");
+//            System.out.println("------------------------------------------");
 
             long commentCount = findBook.getComments().size();
 
