@@ -209,14 +209,6 @@ public class UserController {
         return new SingleResponseDto<>(pairingDto);
     }
 
-    /** 무한스크롤 queryDsl test */
-    @GetMapping("/mypage/userCollectionDsl")
-    @ResponseStatus(HttpStatus.OK)
-    public SingleResponseDto getUserBookCollectionDsl(@PathParam("lastId") Long lastId) {
-        Slice<BookCollection> collections = userService.getUserCollectionDsl(lastId);
-        Slice<BookCollectionDto.UserCollection> collectionDto = new SliceImpl<>(collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList()));
-        return new SingleResponseDto<>(collectionDto);
-    }
 
     @GetMapping("/mypage/userCollection")
     @ResponseStatus(HttpStatus.OK)

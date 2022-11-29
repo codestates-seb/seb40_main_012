@@ -165,14 +165,6 @@ public class UserService {
         return myPageRepositorySupport.findUserCollection(pageRequest,lastStoreId,findUser.getUserId());
     }
 
-    /** 무한 스크롤 test */
-    public Slice<BookCollection> getUserCollectionDsl(Long lastStoreId) {
-        User findUser = getLoginUser();
-        PageRequest pageRequest = PageRequest.of(0, 5);
-        return myPageRepositorySupport.findCollectionByNoOffset(pageRequest,lastStoreId);
-
-    }
-
     public User findUser() {
         User findUser = getLoginUser();
         findUser.setBookTemp(calcBookTemp()); // 유저 테이블에 컬렉션 & 좋아요 추가된 후에 주석 풀기
