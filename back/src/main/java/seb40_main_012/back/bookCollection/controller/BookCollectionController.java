@@ -79,7 +79,7 @@ public class BookCollectionController {
         return bookmarkService.bookmarkCollection(collectionId);
     }
 
-    @GetMapping("/collections/bookmark/book")
+    @GetMapping("/bookmark/book")
     @ResponseStatus(HttpStatus.OK)
     public SingleResponseDto getBookMarkByBook() {
         List<Book> books = collectionService.getBookmarkByBook();

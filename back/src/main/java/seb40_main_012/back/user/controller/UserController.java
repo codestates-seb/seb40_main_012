@@ -12,8 +12,7 @@ import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.BookRepository;
 import seb40_main_012.back.book.entity.Book;
 
-import seb40_main_012.back.common.bookmark.BookmarkRepository;
-import seb40_main_012.back.common.bookmark.BookmarkType;
+import seb40_main_012.back.common.bookmark.*;
 import seb40_main_012.back.common.comment.CommentMapper;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.CommentType;
@@ -228,27 +227,35 @@ public class UserController {
     }
 
 
+//    @GetMapping("/mypage/bookmark/collection")
+//    @ResponseStatus(HttpStatus.OK)
+//    public SingleResponseDto getBookmarkByBookCollection(@PathParam("lastId") Long lastId) {
+//        Slice<BookCollection> collections = userService.getBookmarkByBookCollection(lastId);
+//        Slice<BookmarkDto.BookmarkedCollection> bookmarkedCollectionDto = new SliceImpl<>(collections.stream().map(x -> BookmarkDto.BookmarkedCollection.of(x)).collect(Collectors.toList()));
+//        return new SingleResponseDto<>(bookmarkedCollectionDto);
+//    }
+
     @GetMapping("/mypage/bookmark/collection")
     @ResponseStatus(HttpStatus.OK)
     public SingleResponseDto getBookmarkByBookCollection(@PathParam("lastId") Long lastId) {
-        Slice<BookCollection> collections = userService.getBookmarkByBookCollection(lastId);
-        Slice<BookCollectionDto.BookmarkedCollection> bookmarkedCollectionDto = new SliceImpl<>(collections.stream().map(x -> BookCollectionDto.BookmarkedCollection.of(x)).collect(Collectors.toList()));
+        Slice<Bookmark> bookmarks = userService.getBookmarkByBookCollection(lastId);
+        Slice<BookmarkDto.Collection> bookmarkedCollectionDto = new SliceImpl<>(bookmarks.stream().map(x -> BookmarkDto.Collection.of(x)).collect(Collectors.toList()));
         return new SingleResponseDto<>(bookmarkedCollectionDto);
     }
 
     @GetMapping("/mypage/bookmark/pairing")
     @ResponseStatus(HttpStatus.OK)
     public SingleResponseDto getBookMarkByPairing(@PathParam("lastId") Long lastId) {
-        Slice<Pairing> pairings = userService.getBookmarkByPairing(lastId);
-        Slice<PairingDto.BookmarkedPairing> pairingDto = new SliceImpl<>(pairings.stream().map(x -> PairingDto.BookmarkedPairing.of(x)).collect(Collectors.toList()));
+        Slice<Bookmark> pairings = userService.getBookmarkByPairing(lastId);
+        Slice<BookmarkDto.Pairing> pairingDto = new SliceImpl<>(pairings.stream().map(x -> BookmarkDto.Pairing.of(x)).collect(Collectors.toList()));
         return new SingleResponseDto<>(pairingDto);
     }
 
     @GetMapping("/mypage/bookmark/book")
     @ResponseStatus(HttpStatus.OK)
     public SingleResponseDto getBookMarkByBook(@PathParam("lastId") Long lastId) {
-        Slice<Book> books = userService.getBookmarkByBook(lastId);
-        Slice<BookDto.BookmarkedBook> bookDto = new SliceImpl<>(books.stream().map(x -> BookDto.BookmarkedBook.of(x)).collect(Collectors.toList()));
+        Slice<Bookmark> books = userService.getBookmarkByBook(lastId);
+        Slice<BookmarkDto.Book> bookDto = new SliceImpl<>(books.stream().map(x -> BookmarkDto.Book.of(x)).collect(Collectors.toList()));
         return new SingleResponseDto<>(bookDto);
     }
 
