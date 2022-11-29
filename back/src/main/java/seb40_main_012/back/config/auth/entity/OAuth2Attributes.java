@@ -68,7 +68,7 @@ public class OAuth2Attributes {
         user.setBookTemp(0.0);
         user.setProfileImage(picture);
         user.setRoles(List.of("USER"));
-        user.setProviderType(ProviderType.valueOf(site.toUpperCase()));
+//        user.setProviderType(ProviderType.valueOf(site.toUpperCase()));
 
         return user;
     }
