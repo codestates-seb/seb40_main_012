@@ -218,15 +218,6 @@ public class UserController {
         return new SingleResponseDto(collectionDto);
     }
 
-
-//    @GetMapping("/mypage/bookmark/collection")
-//    @ResponseStatus(HttpStatus.OK)
-//    public SingleResponseDto getBookmarkByBookCollection(@PathParam("lastId") Long lastId) {
-//        Slice<BookCollection> collections = userService.getBookmarkByBookCollection(lastId);
-//        Slice<BookmarkDto.BookmarkedCollection> bookmarkedCollectionDto = new SliceImpl<>(collections.stream().map(x -> BookmarkDto.BookmarkedCollection.of(x)).collect(Collectors.toList()));
-//        return new SingleResponseDto<>(bookmarkedCollectionDto);
-//    }
-
     @GetMapping("/mypage/bookmark/collection")
     @ResponseStatus(HttpStatus.OK)
     public SingleResponseDto getBookmarkByBookCollection(@PathParam("lastId") Long lastId) {
