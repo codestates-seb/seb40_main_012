@@ -15,7 +15,6 @@ import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.rating.RatingService;
 import seb40_main_012.back.dto.SingleResponseDto;
-import seb40_main_012.back.user.dto.UserDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -35,17 +34,6 @@ public class BookController {
     private final BookmarkService bookmarkService;
     private final BookMapper bookMapper;
     private final RatingService ratingService;
-
-//    @PostMapping("/{add}")
-//    public ResponseEntity postBook(@Valid @RequestBody BookDto.Post postBook) {
-//
-//        Book book = bookMapper.bookPostToBook(postBook);
-//        Book createBook = bookService.createBook(book);
-//        BookDto.Response response = bookMapper.bookToBookResponse(createBook);
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(response), HttpStatus.CREATED);
-//    }
 
     @GetMapping("/{isbn13}")
     public ResponseEntity getBook(
