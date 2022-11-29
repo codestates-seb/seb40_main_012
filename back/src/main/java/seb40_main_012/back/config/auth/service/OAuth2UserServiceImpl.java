@@ -8,14 +8,14 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.stereotype.Service;
+//import org.springframework.stereotype.Service;
 import seb40_main_012.back.config.auth.entity.OAuth2Attributes;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.repository.UserRepository;
 
 @Slf4j
-@Service
+//@Service // OAuth2 반영 안함
 @RequiredArgsConstructor
 public class OAuth2UserServiceImpl implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final UserRepository userRepository;

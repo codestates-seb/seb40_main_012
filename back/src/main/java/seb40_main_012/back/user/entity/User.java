@@ -16,9 +16,8 @@ import seb40_main_012.back.common.like.entity.Like;
 //import seb40_main_012.back.notification.Notification;
 import seb40_main_012.back.common.rating.Rating;
 //import seb40_main_012.back.notification.Notification;
-import seb40_main_012.back.config.auth.entity.enums.ProviderType;
+//import seb40_main_012.back.config.auth.entity.enums.ProviderType;
 import seb40_main_012.back.pairing.entity.Pairing;
-import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
@@ -119,7 +118,7 @@ public class User {
     private boolean firstLogin = true; // 첫 로그인 여부
 
 //    @Enumerated(EnumType.STRING)
-//    private ProviderType providerType;
+//    private ProviderType providerType; // OAuth2 반영 안함
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;
