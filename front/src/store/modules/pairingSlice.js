@@ -20,6 +20,9 @@ export const asyncGetOnePairing = createAsyncThunk(
       return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
     } catch (error) {
       console.log(error);
+      if (error.status === 404) {
+        window.location.replace('/404');
+      }
     }
   }
 );
