@@ -6,26 +6,9 @@ import { ContainedButton } from 'components';
 import { myPageApi, authApi } from 'api';
 import { useNavigate } from 'react-router-dom';
 
-const ContainerStyled = styled.div`
-  color: ${({ theme }) => theme.colors.gray};
-  display: flex;
-  margin-top: 2rem;
-  margin-bottom: 4rem;
-  .with-drawal-text {
-    cursor: pointer;
-    width: 100%;
-    font-size: 15px;
-    font-weight: 300;
-    margin-top: 10px;
-    color: #737373;
-  }
-`;
-
 const PasswordCheckInputStyled = styled.input`
-  // design fluff
   width: 100%;
   display: block;
-  -webkit-appearance: none;
   border: 1px solid white;
   border-radius: 50px;
   padding: 10px;
@@ -49,7 +32,6 @@ const ModalBoxStyled = styled.form`
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  border-radius: 25px;
 
   .title {
     font-size: 18px;
@@ -113,50 +95,48 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
   };
 
   return (
-    <ContainerStyled>
-      <Modal
-        open={open}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <ModalBoxStyled onSubmit={hadleClickSubmit}>
-          <div className="close-icon">
-            <CloseIcon
-              width="100%"
-              style={{ textAlign: 'right' }}
-              sx={{
-                align: 'right',
-                flexDirection: 'row-reverse',
-              }}
-              align="right"
-              onClick={handleCloseModal}
-              color="disabled"
-            ></CloseIcon>
-          </div>
-          <div className="title">회원 탈퇴</div>
-          <div className="info">
-            정말로 회원을 탈퇴 하시겠어요? <br />
-            즉시 로그아웃 되며
-            <br />
-            다시 로그인 하실 수 없어요.
-            <br />
-          </div>
-          <div className="password-check">비밀번호</div>
-          <PasswordCheckInputStyled
-            type="password"
-            value={passwordValue}
-            onChange={handleChangePasswordValue}
-          ></PasswordCheckInputStyled>
-          <PasswordErrorMessageStyled>
-            {passwordErrMsg}
-          </PasswordErrorMessageStyled>
-          <ContainedButtonStyled size="medium" onClick={hadleClickSubmit}>
-            탈퇴하기
-          </ContainedButtonStyled>
-        </ModalBoxStyled>
-      </Modal>
-    </ContainerStyled>
+    <Modal
+      open={open}
+      onClose={handleCloseModal}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <ModalBoxStyled onSubmit={hadleClickSubmit}>
+        <div className="close-icon">
+          <CloseIcon
+            width="100%"
+            style={{ textAlign: 'right' }}
+            sx={{
+              align: 'right',
+              flexDirection: 'row-reverse',
+            }}
+            align="right"
+            onClick={handleCloseModal}
+            color="disabled"
+          ></CloseIcon>
+        </div>
+        <div className="title">회원 탈퇴</div>
+        <div className="info">
+          정말로 회원을 탈퇴 하시겠어요? <br />
+          즉시 로그아웃 되며
+          <br />
+          다시 로그인 하실 수 없어요.
+          <br />
+        </div>
+        <div className="password-check">비밀번호</div>
+        <PasswordCheckInputStyled
+          type="password"
+          value={passwordValue}
+          onChange={handleChangePasswordValue}
+        ></PasswordCheckInputStyled>
+        <PasswordErrorMessageStyled>
+          {passwordErrMsg}
+        </PasswordErrorMessageStyled>
+        <ContainedButtonStyled size="medium" onClick={hadleClickSubmit}>
+          탈퇴하기
+        </ContainedButtonStyled>
+      </ModalBoxStyled>
+    </Modal>
   );
 };
 
