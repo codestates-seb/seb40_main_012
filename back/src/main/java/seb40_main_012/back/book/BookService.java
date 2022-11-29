@@ -144,29 +144,6 @@ public class BookService {
 
             Book findBook = optionalBook.get();
 
-
-
-//            if (Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")) {
-//                myComment = null;
-//            }
-//            if (!Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")){
-//                myComment = commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13).stream()
-//                        .filter(comment -> comment.getUser().getEmail() == "spring_sunshine@email.com")
-//                        .findFirst().get();
-////                myComment = commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, SecurityContextHolder.getContext().getAuthentication().getName().toString());
-//            }
-//
-//            System.out.println("------------------------------------------");
-//            System.out.println("------------------------------------------");
-//            System.out.println("------------------------------------------");
-//            System.out.println("------------------------------------------");
-//            System.out.println(commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13).stream()
-//                    .filter(comment -> comment.getUser().getEmail() == "spring_sunshine@email.com").findFirst());
-//            System.out.println("------------------------------------------");
-//            System.out.println("------------------------------------------");
-//            System.out.println("------------------------------------------");
-//            System.out.println("------------------------------------------");
-
             long commentCount = findBook.getComments().size();
 
             long pairingCount = findBook.getPairings().size();
