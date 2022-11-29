@@ -23,6 +23,13 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             "where isbn13 = :isbn13 AND User_Id = :userId")
     Comment findByIsbn13AndUserId(String isbn13, long userId);
 
+    @Query(nativeQuery = true, value = "select * from comment " +
+            "INNER JOIN USERS " +
+            "ON COMMENT.USER_ID = USERS.USER_ID " +
+            "where comment_type = 'book' " +
+            "AND isbn13 = :isbn13 AND email = ':email'")
+    Comment findMyBookCommentByIsbn13AndEmail(String isbn13, String email);
+
     PageRequest pageRequest = PageRequest.of(0, 10);
     @Query(nativeQuery = true, value = "select * from comment " +
             "where isbn13 = :isbn13 "+ "order by " + "like_count " + "desc")

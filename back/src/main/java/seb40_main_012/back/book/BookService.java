@@ -3,6 +3,7 @@ package seb40_main_012.back.book;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.advice.BusinessLogicException;
@@ -144,20 +145,22 @@ public class BookService {
 
             Comment myComment;
 
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println(userService.getLoginUser());
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
-            System.out.println("------------------------------------------");
+            if (Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")) {
+                myComment = null;
+            } else {
+                myComment = commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, "spring_sunshine@email.com");
+//                myComment = commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, SecurityContextHolder.getContext().getAuthentication().getName().toString());
+            }
 
-
-//            if (userService.getLoginUser() == null) {
-//                myComment = null;
-//            }
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println(commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, SecurityContextHolder.getContext().getAuthentication().getName().toString()));
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
+            System.out.println("------------------------------------------");
 
             long commentCount = findBook.getComments().size();
 
