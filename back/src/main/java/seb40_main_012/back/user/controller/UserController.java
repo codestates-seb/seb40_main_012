@@ -103,7 +103,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public UserInfoDto.Response patchUserInfo(
             @RequestParam(value = "image") @Nullable MultipartFile file,
-            @RequestPart UserInfoDto.Post request) throws Exception {
+            @RequestPart(value = "request") UserInfoDto.Post request) throws Exception {
 
         User editedUser = userService.editUserInfo(request.toEntity(), request.getCategory());
 
