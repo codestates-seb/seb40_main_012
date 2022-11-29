@@ -30,7 +30,7 @@ public class CherriPickAop {
         }
     }
 
-    @AfterReturning(value = "execution(* seb40_main_012.back.config.auth.userdetails.UserDetailsServiceImpl.loadUserByUsername(..)) && args(email)", returning = "findUser")
+    @AfterReturning(value = "execution(* seb40_main_012.back.config.auth.service.UserDetailsServiceImpl.loadUserByUsername(..)) && args(email)", returning = "findUser")
     public void signInStatistics(JoinPoint joinPoint, String email, User findUser) {
 
         System.out.println("----------------------------------------------------");
@@ -51,4 +51,15 @@ public class CherriPickAop {
         System.out.println("----------------------------------------------------");
         System.out.println("----------------------------------------------------");
     }
+
+    @AfterReturning(value = "execution(* seb40_main_012.back.user.controller.UserController.emailConfirm(..)) && args(emailDto))", returning = "response")
+    public void sendAuthCodeEmail(JoinPoint joinPoint, UserDto.EmailDto emailDto, String response) {
+        String authCode = response;
+        try {
+            emailSenderService.sendAuthCode(emailDto.getEmail(), authCode);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
