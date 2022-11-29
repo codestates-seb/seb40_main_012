@@ -26,7 +26,7 @@ public class CherryPickSearchTestController {
             @RequestParam("Query") String queryParam
     ) {
 
-        List<BookInfoSearchDto.BookList.Item> result = cherryPickSearchService.cherryPickSearchForBooks(queryParam.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+        List<BookInfoSearchDto.BookList.Item> result = cherryPickSearchService.cherryPickSearchForBooks(queryParam.toLowerCase(Locale.ROOT), "Accuracy");
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }

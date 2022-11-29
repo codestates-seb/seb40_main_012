@@ -1,8 +1,7 @@
 package seb40_main_012.back.user.entity.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Getter;
-import org.springframework.lang.Nullable;
+
 
 public enum AgeType {
     TEENAGER(),

@@ -121,7 +121,7 @@ public class UserService {
                 value -> {
                     Category category = categoryRepository.findByGenre(value);
 
-                    if(categoryRepository.findByGenre(value)!=null){
+                    if (categoryRepository.findByGenre(value) != null) {
                         UserCategory userCategory = new UserCategory(category, findUser);
                         userCategoryRepository.save(userCategory);
                         findUser.addUserCategory(userCategory);
@@ -143,12 +143,11 @@ public class UserService {
         User findUser = getLoginUser();
         List<Comment> comments = findUser.getComments();
         comments.forEach(
-                x ->{
-                    if(x.getCommentType()== CommentType.BOOK) {
+                x -> {
+                    if (x.getCommentType() == CommentType.BOOK) {
 
-                    }
-                    else if(x.getCommentType()==CommentType.PAIRING);
-                    else if(x.getCommentType()==CommentType.BOOK_COLLECTION);
+                    } else if (x.getCommentType() == CommentType.PAIRING) ;
+                    else if (x.getCommentType() == CommentType.BOOK_COLLECTION) ;
                 }
         );
         return comments;
@@ -157,15 +156,16 @@ public class UserService {
     public Slice<Pairing> getUserPairing(Long lastStoreId) {
         User findUser = getLoginUser();
         PageRequest pageRequest = PageRequest.of(0, 5);
-        return myPageRepositorySupport.findUserPairing(pageRequest,lastStoreId,findUser.getUserId());
+        return myPageRepositorySupport.findUserPairing(pageRequest, lastStoreId, findUser.getUserId());
     }
 
 
     public Slice<BookCollection> getUserCollection(Long lastStoreId) {
         User findUser = getLoginUser();
         PageRequest pageRequest = PageRequest.of(0, 5);
-        return myPageRepositorySupport.findUserCollection(pageRequest,lastStoreId,findUser.getUserId());
+        return myPageRepositorySupport.findUserCollection(pageRequest, lastStoreId, findUser.getUserId());
     }
+
 
     public User findUser() {
         User findUser = getLoginUser();
@@ -196,21 +196,21 @@ public class UserService {
     public Slice<Bookmark> getBookmarkByBookCollection(Long lastStoreId) {
         User findUser = getLoginUser();
         PageRequest pageRequest = PageRequest.of(0, 5);
-        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkCollection(pageRequest,lastStoreId,findUser.getUserId());
+        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkCollection(pageRequest, lastStoreId, findUser.getUserId());
         return bookmarks;
     }
 
     public Slice<Bookmark> getBookmarkByPairing(Long lastStoreId) {
         User findUser = getLoginUser();
         PageRequest pageRequest = PageRequest.of(0, 5);
-        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkPairing(pageRequest,lastStoreId,findUser.getUserId());
+        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkPairing(pageRequest, lastStoreId, findUser.getUserId());
         return bookmarks;
     }
 
     public Slice<Bookmark> getBookmarkByBook(Long lastStoreId) {
         User findUser = getLoginUser();
         PageRequest pageRequest = PageRequest.of(0, 5);
-        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkBook(pageRequest,lastStoreId,findUser.getUserId());
+        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkBook(pageRequest, lastStoreId, findUser.getUserId());
         return bookmarks;
     }
 
@@ -235,7 +235,7 @@ public class UserService {
         else return Math.round(temperature * 10) / 10.0;
     }
 
-    public void deleteAllUserCollection(){
+    public void deleteAllUserCollection() {
         User findUser = getLoginUser();
         collectionRepository.deleteAllByUser(findUser);
     }
@@ -273,12 +273,6 @@ public class UserService {
     }
 
     public User getLoginUser() { // 로그인된 유저 가져오기
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-
-        }
-
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -289,6 +283,12 @@ public class UserService {
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         return user;
+    }
+
+    public List<String> getAllGenre(User user) { // AOP에서 로그인한 사용자만 사용하는 용도
+
+        return categoryRepository.findAllGenreByUserId(user.getUserId());
+
     }
 
     public User findUserByEmail(String email) { // 이메일로 유저 찾기

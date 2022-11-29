@@ -44,7 +44,7 @@ public class User {
     private String password;
     private String introduction;
 
-    private String profileImage; // 프로필 이미지
+    private String profileImage; // 프로필 이미지 경로
 
     @Enumerated(EnumType.STRING)
     private GenderType gender;
