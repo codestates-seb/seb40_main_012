@@ -30,7 +30,7 @@ const UserBooks = ({ nickname }) => {
     <UserBooksContainer>
       <MainBooksTitle title={`${nickname}님을 위한 책`} />
       <BooksContainer>
-        {userBooks.map((el) => {
+        {userBooks?.map((el) => {
           return (
             <Book
               key={el.isbn13}
