@@ -137,6 +137,7 @@ const CollectionInfoInput = ({ data, setData }) => {
         placeholder="컬렉션 제목"
         maxLength="30"
         onChange={handleOnChangeTitle}
+        value={data.title}
       ></TitleInput>
       <TagInputContainer>
         <Tags>
@@ -177,6 +178,7 @@ const CollectionInfoInput = ({ data, setData }) => {
           placeholder="컬렉션을 소개해 보세요."
           maxLength="250"
           onChange={handleOnChangeContent}
+          value={data.content}
         />
       </ContentInputContainer>
     </CollectionInfoInputContainer>
