@@ -79,6 +79,6 @@ public class UserDto {
         private double bookTemp;
         private List<String> roles;
         private String profileImage;
-        private ProviderType providerType;
+        //private ProviderType providerType;
     }
 }
