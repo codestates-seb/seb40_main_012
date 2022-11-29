@@ -10,6 +10,9 @@ const CollectionTag = styled.div`
   color: ${({ theme }) => theme.colors.darkgray};
   margin: 0 3px;
   white-space: nowrap;
+  @media screen and (max-width: 500px) {
+    display: none;
+  }
 `;
 
 const CollectionTags = ({ tagList }) => {

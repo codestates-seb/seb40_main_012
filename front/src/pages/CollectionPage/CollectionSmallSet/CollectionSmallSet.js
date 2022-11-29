@@ -292,7 +292,7 @@ const CollectionSmallSet = () => {
             <CollectionBooks>
               <SlickSlider>
                 <Slider {...settings}>
-                  {data.map((el) => {
+                  {data?.map((el) => {
                     return (
                       <CollectionSmallBooks
                         key={el.collectionId}
@@ -307,7 +307,7 @@ const CollectionSmallSet = () => {
             </CollectionBooks>
           ) : (
             <BooksContainer>
-              {data.map((el) => {
+              {data?.map((el) => {
                 return (
                   <CollectionSmallBooks
                     key={el.collectionId}
@@ -327,7 +327,7 @@ const CollectionSmallSet = () => {
           <CollectionBooks>
             <SlickSlider>
               <Slider {...settings}>
-                {data.map((el) => {
+                {data?.map((el) => {
                   return (
                     <CollectionSmallBooks
                       key={el.collectionId}

@@ -13,16 +13,20 @@ const CollectionMediumBookContainer = styled.div`
 const CollectionBookTitle = styled.div`
   font-size: 14px;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.darkgray};
+  color: ${({ theme }) => theme.colors.dark};
+  @media screen and (max-width: 500px) {
+    font-size: 11px;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+    font-weight: 500;
+  }
 `;
 
-const CollectonMediumBook = ({ bookTitle }) => {
+const CollectonMediumBook = ({ bookTitle, cover }) => {
   return (
     <CollectionMediumBookContainer>
-      <img
-        src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-        alt="book cover"
-      />
+      <img src={cover} alt="book cover" />
       <CollectionBookTitle>{bookTitle}</CollectionBookTitle>
     </CollectionMediumBookContainer>
   );

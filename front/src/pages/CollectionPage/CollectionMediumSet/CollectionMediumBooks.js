@@ -10,13 +10,19 @@ const CollectionMediumBooksContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 500px) {
+    margin: 0 5px;
+  }
 `;
 
 const CollectionMediumInfo = styled.div`
   font-size: 13px;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.gray};
+  color: ${({ theme }) => theme.colors.mainColor};
   white-space: nowrap;
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 
 const MediumHeader = styled.div`
@@ -30,23 +36,29 @@ const MediumBooks = styled.div`
   display: flex;
 `;
 
-const CollectonMediumBooks = () => {
+const CollectonMediumBooks = ({ collection }) => {
   const navigate = useNavigate();
 
-  const onClickCollection = (collectionID) => {
-    navigate(`/collection/${collectionID}`);
+  const onClickCollection = () => {
+    navigate(`/collection/${collection.collectionId}`);
   };
 
   return (
-    <CollectionMediumBooksContainer onClick={() => onClickCollection(1)}>
+    <CollectionMediumBooksContainer onClick={onClickCollection}>
       <MediumHeader>
-        <CollectionMediumInfo>김뫄뫄님의 컬렉션</CollectionMediumInfo>
+        <CollectionMediumInfo>{collection?.title ?? ''}</CollectionMediumInfo>
         <CollectionTags tagList={['소설', 'sf']} />
       </MediumHeader>
       <MediumBooks>
-        <CollectonMediumBook bookTitle="책 제목1" />
-        <CollectonMediumBook bookTitle="책 제목2" />
-        <CollectonMediumBook bookTitle="책 제목3" />
+        {collection?.books.slice(0, 3).map((el, idx) => {
+          return (
+            <CollectonMediumBook
+              key={idx}
+              bookTitle={el.title}
+              cover={el.bookCover}
+            />
+          );
+        })}
       </MediumBooks>
     </CollectionMediumBooksContainer>
   );
