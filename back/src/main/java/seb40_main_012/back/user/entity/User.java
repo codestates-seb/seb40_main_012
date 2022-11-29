@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
@@ -18,6 +16,7 @@ import seb40_main_012.back.common.like.entity.Like;
 //import seb40_main_012.back.notification.Notification;
 import seb40_main_012.back.common.rating.Rating;
 //import seb40_main_012.back.notification.Notification;
+import seb40_main_012.back.config.auth.entity.enums.ProviderType;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.entity.enums.AgeType;
@@ -118,6 +117,9 @@ public class User {
 //    private final List<Like> likes = new ArrayList<>();
 
     private boolean firstLogin = true; // 첫 로그인 여부
+
+//    @Enumerated(EnumType.STRING)
+//    private ProviderType providerType;
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;
