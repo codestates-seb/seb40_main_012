@@ -33,12 +33,12 @@ public class CherriPickAop {
         }
     }
 
-    @AfterReturning(value = "execution(* seb40_main_012.back.config.auth.userdetails.UserDetailsServiceImpl.loadUserByUsername(..))", returning = "findUser")
-    public void signInStatistics(JoinPoint joinPoint, User findUser) {
-
-        if (statisticsRepository.findByDate(LocalDate.now()) == null) {
-            statisticsService.createTable(LocalDate.now());
-        }
+//    @AfterReturning(value = "execution(* seb40_main_012.back.config.auth.userdetails.UserDetailsServiceImpl.loadUserByUsername(..))", returning = "findUser")
+//    public void signInStatistics(JoinPoint joinPoint, User findUser) {
+//
+//        if (statisticsRepository.findByDate(LocalDate.now()) == null) {
+//            statisticsService.createTable(LocalDate.now());
+//        }
 
 //        System.out.println("----------------------------------------------------");
 //        System.out.println("----------------------------------------------------");
@@ -57,5 +57,5 @@ public class CherriPickAop {
 //        System.out.println("----------------------------------------------------");
 //        System.out.println("----------------------------------------------------");
 //        System.out.println("----------------------------------------------------");
-    }
+//    }
 }
