@@ -1,7 +1,7 @@
 package seb40_main_012.back.user.dto;
 
 import lombok.*;
-import seb40_main_012.back.config.auth.entity.enums.ProviderType;
+//import seb40_main_012.back.config.auth.entity.enums.ProviderType; // OAuth2 반영 안함
 
 import javax.persistence.Entity;
 import javax.validation.constraints.Email;
@@ -80,6 +80,6 @@ public class UserDto {
         private double bookTemp;
         private List<String> roles;
         private String profileImage;
-        //private ProviderType providerType;
+        //private ProviderType providerType; // OAuth2 반영 안함
     }
 }
