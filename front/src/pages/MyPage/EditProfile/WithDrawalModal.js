@@ -116,13 +116,11 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
           ></CloseIcon>
         </div>
         <div className="title">회원 탈퇴</div>
-        <div className="info">
-          정말로 회원을 탈퇴 하시겠어요? <br />
-          즉시 로그아웃 되며
-          <br />
-          다시 로그인 하실 수 없어요.
-          <br />
-        </div>
+        <p className="info">
+          체리픽에서 작성한 모든 글과 활동 내역이 삭제됩니다. <br />
+          삭제된 정보는 다시 복구할 수 없습니다. <br />
+          현재 비밀번호를 입력 후 탈퇴하기 버튼을 클릭해주세요.
+        </p>
         <div className="password-check">비밀번호</div>
         <PasswordCheckInputStyled
           type="password"
