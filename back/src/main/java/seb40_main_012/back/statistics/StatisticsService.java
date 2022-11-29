@@ -20,7 +20,7 @@ public class StatisticsService {
         statisticsRepository.save(statistics);
     }
 
-    Statistics findByDate(LocalDate date) {
+    public Statistics findByDate(LocalDate date) {
         return statisticsRepository.findByDate(date);
     }
 }
