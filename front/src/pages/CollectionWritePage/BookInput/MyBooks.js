@@ -49,13 +49,18 @@ const MyBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
   const [myBooks, setMyBooks] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/mypage/bookmark/book').then((res) => {
-      setMyBooks(res.data.data);
-    });
+    axios
+      .get('/api/collections/bookmark/book')
+      .then((res) => {
+        setMyBooks(res.data.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
 
   const handleSetNewBooks = (isbn) => {
-    if (!newBooks.includes(isbn)) {
+    if (!newBooks.includes(isbn) && newBooks.length <= 30) {
       setNewBooks([...newBooks, isbn]);
       axios.get(`/api/books/${isbn}`).then((res) => {
         setNewBooksInfo([...newBooksInfo, res.data.data]);
@@ -88,7 +93,7 @@ const MyBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
         )}
       </MyBooksTitle>
       <Books className={isOpen ? 'open' : 'hide'}>
-        {myBooks.map((el, idx) => {
+        {myBooks?.map((el, idx) => {
           return (
             <Booklist
               key={idx}
