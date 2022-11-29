@@ -40,34 +40,22 @@ public class CherriPickAop {
             statisticsService.createTable(LocalDate.now());
         }
 
-
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println(findUser);
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
-        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println(findUser);
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
+//        System.out.println("----------------------------------------------------");
     }
-
-    /*@AfterReturning(value = "execution(* seb40_main_012.back.user.controller.UserController.emailConfirm(..)) && args(emailDto))", returning = "response")
-    public void sendAuthCodeEmail(JoinPoint joinPoint, UserDto.EmailDto emailDto, String response) {
-        String authCode = response;
-        try {
-            emailSenderService.sendAuthCode(emailDto.getEmail(), authCode);
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
 }

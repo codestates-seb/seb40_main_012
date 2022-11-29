@@ -208,6 +208,13 @@ public class CommentService {
         return commentRepository.findByIsbn13AndUserId(isbn13, findUser.getUserId());
     }
 
+    public Comment findMyCommentByEmail(String isbn13) {
+
+        User findUser = userService.getLoginUser();
+
+        return commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, findUser.getEmail());
+    }
+
     public List<Comment> findMyCommentAll() {
 
         User findUser = userService.getLoginUser();
