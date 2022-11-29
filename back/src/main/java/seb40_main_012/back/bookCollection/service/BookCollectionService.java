@@ -105,11 +105,9 @@ public class BookCollectionService {
         collectionTagRepository.deleteAllByBookCollection(bookCollection);
         collectionBookRepository.deleteAllByBookCollection(bookCollection);
 
-//        collection.setCollectionTag();
 
         if (tags.size() == 0) {
             findUser.addBookCollection(bookCollection);
-//            bookCollection.addUser(findUser);
         }
 
         tags.forEach(
@@ -224,10 +222,16 @@ public class BookCollectionService {
         else bookCollection.setUserCollection(false);
     }
 
+    //================================================ 컬렉션 메인 ================================================
+
     public List<BookCollection> findUserCollection() {
         User findUser = userService.getLoginUser();
         return collectionRepository.findByUserUserId(findUser.getUserId());
     }
+
+//    public List<BookCollection> findBestCollection() {
+//        return collectionRepository.findByUserUserId(findUser.getUserId());
+//    }
 
     public BookCollection findVerifiedCollection(Long collectionId) {
         BookCollection collection = collectionRepository.findById(collectionId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
