@@ -70,6 +70,9 @@ public class Book {
     @Column
     private long bookCollectionCount;
 
+    @Transient
+    private boolean isBookmarked;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "genre")
     private Genre genre;
@@ -148,4 +151,9 @@ public class Book {
     @OneToMany(mappedBy = "book",cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Bookmark> bookmarks = new ArrayList<>();
+
+    public void setIsBookmarked(boolean bookmark){
+        this.isBookmarked = bookmark;
+    }
+
 }

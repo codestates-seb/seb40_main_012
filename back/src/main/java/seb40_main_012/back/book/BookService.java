@@ -14,10 +14,12 @@ import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.PairingRepository;
+import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
@@ -31,6 +33,7 @@ public class BookService {
 
     private final BookInfoSearchController bookInfoSearchController;
     private final BookInfoSearchService bookInfoSearchService;
+    private final BookmarkRepository bookmarkRepository;
     private final BookRepository bookRepository;
     private final CommentRepository commentRepository;
     private final PairingRepository pairingRepository;
@@ -205,4 +208,17 @@ public class BookService {
         return optionalBook.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
     }
+
+    public void isBookMarkedBook(Book book) {
+        User findUser = userService.getLoginUser();
+        Boolean isBookmarked;
+
+        if (bookmarkRepository.findByUserAndBook(findUser,book) == null) { //북마크 안 누른 경우
+            isBookmarked = false;
+        } else {
+            isBookmarked = true;
+        }
+        book.setIsBookmarked(isBookmarked);
+    }
+
 }

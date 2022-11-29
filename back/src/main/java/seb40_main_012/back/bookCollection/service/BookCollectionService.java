@@ -14,10 +14,7 @@ import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
 import seb40_main_012.back.bookCollection.entity.BookCollectionTag;
 import seb40_main_012.back.bookCollection.entity.Tag;
-import seb40_main_012.back.bookCollection.repository.BookCollectionLikeRepository;
-import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
-import seb40_main_012.back.bookCollection.repository.BookCollectionTagRepository;
-import seb40_main_012.back.bookCollection.repository.TagRepository;
+import seb40_main_012.back.bookCollection.repository.*;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
 import seb40_main_012.back.common.bookmark.Bookmark;
@@ -49,6 +46,7 @@ public class BookCollectionService {
     private final UserCategoryRepository userCategoryRepository;
     private final CategoryRepository categoryRepository;
     private final TagRepository tagRepository;
+    private final BookCollectionRepositorySupport collectionRepositorySupport;
     private final NotificationService noticeService;
 
     public BookCollection postCollection(BookCollection collection, List<String> tags) {
@@ -229,9 +227,9 @@ public class BookCollectionService {
         return collectionRepository.findByUserUserId(findUser.getUserId());
     }
 
-//    public List<BookCollection> findBestCollection() {
-//        return collectionRepository.findByUserUserId(findUser.getUserId());
-//    }
+    public List<BookCollection> findBestCollection() {
+        return collectionRepositorySupport.findBestCollection();
+    }
 
     public BookCollection findVerifiedCollection(Long collectionId) {
         BookCollection collection = collectionRepository.findById(collectionId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));

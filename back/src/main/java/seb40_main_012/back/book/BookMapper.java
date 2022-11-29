@@ -41,6 +41,7 @@ public interface BookMapper {
         response.myRating(book.getRatings().stream()
                 .filter(rating -> Objects.equals(rating.getUser().getEmail(), SecurityContextHolder.getContext().getAuthentication().getName()))
                 .mapToDouble(Rating::getUserBookRating).sum());
+        response.isBookmarked(book.isBookmarked());
 
         response.myComment(book.getComments().stream()
                 .filter(comment -> Objects.equals(comment.getUser().getEmail(), SecurityContextHolder.getContext().getAuthentication().getName()))
