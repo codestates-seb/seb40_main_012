@@ -1,7 +1,6 @@
 # seb40_main_012
 
-
-📄 **Commit Messeage Rules**
+it Messeage Rules\*\*
 
 - feat: 첫 구현
 - fix: 이후 수정
@@ -12,17 +11,14 @@
 - chore: 자잘한 것
 
 > [reference]
-> 
+>
 > - [Conventional Commits](https://www.conventionalcommits.org/ko/v1.0.0/)
-
 
 📄 **브랜치 명명 규칙**
 
 <code>front/[commit messeage rules]/[github username]/[구현할 기능]</code>
 
 <code>back/[commit messeage rules]/[github username]/[구현할 기능]</code>
-
-
 
 📄 **PR 컨벤션**
 
