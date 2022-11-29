@@ -22,7 +22,7 @@ public class CherryPickSearchService {
 
     private final BookInfoSearchService bookInfoSearchService;
 
-    public List<BookInfoSearchDto.BookList.Item> cherryPickSearchForBooks(String title, String sort, Integer page, Integer size) {
+    public List<BookInfoSearchDto.BookList.Item> cherryPickSearchForBooks(String title, String sort) {
 
         List<ListenableFuture<BookInfoSearchDto.BookList>> resultList = new ArrayList<>();
 
@@ -42,23 +42,23 @@ public class CherryPickSearchService {
         }
 
         List<BookInfoSearchDto.BookList.Item> result =
-        resultList.stream()
-                .flatMap(a -> {
-                    try {
-                        return Stream.of(a.get());
-                    } catch (ExecutionException e) {
-                        throw new RuntimeException(e);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .map(BookInfoSearchDto.BookList::getItem)
-                .flatMap(Collection::stream)
-                .filter(c -> c.isbn13 != "") // ISBN 없는거 거르기
-                .filter(d -> d.isbn13.startsWith(String.valueOf(9))) // 책이 아닌거 거르기
-                .filter(e -> !e.isbn13.startsWith(String.valueOf(977))) // 잡지, 신문 등 거르기
-                .distinct()
-                .collect(Collectors.toList());
+                resultList.stream()
+                        .flatMap(a -> {
+                            try {
+                                return Stream.of(a.get());
+                            } catch (ExecutionException e) {
+                                throw new RuntimeException(e);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .map(BookInfoSearchDto.BookList::getItem)
+                        .flatMap(Collection::stream)
+                        .filter(c -> c.isbn13 != "") // ISBN 없는거 거르기
+                        .filter(d -> d.isbn13.startsWith(String.valueOf(9))) // 책이 아닌거 거르기
+                        .filter(e -> !e.isbn13.startsWith(String.valueOf(977))) // 잡지, 신문 등 거르기
+                        .distinct()
+                        .collect(Collectors.toList());
 
         return result;
     }
