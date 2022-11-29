@@ -26,7 +26,7 @@ export const postBookPick = createAsyncThunk(
   async (isbn) => {
     try {
       const res = await axios.post(`${BOOKS_URL}/${isbn}/bookmark`);
-      return res.data.data;
+      return res.data;
     } catch (error) {
       console.log(error);
     }
