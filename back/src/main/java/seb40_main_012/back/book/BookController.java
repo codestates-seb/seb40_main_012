@@ -41,6 +41,7 @@ public class BookController {
             @PathVariable("isbn13") @Positive String isbn13) {
 
         Book book = bookService.updateView(isbn13);
+        bookService.isBookMarkedBook(book);
 
         if (token == null && book.getComments() != null) { // 로그인 안 했을 때 isLiked == null
 
@@ -151,10 +152,12 @@ public class BookController {
     }
     @PostMapping("/{isbn13}/bookmark")
     @ResponseStatus(HttpStatus.OK)
-    public BookDto.BookmarkResponse bookmarkBook(@PathVariable("isbn13") String isbn13){
+    public BookDto.Response bookmarkBook(@PathVariable("isbn13") String isbn13){
         Book findBook = bookService.findVerifiedBook(isbn13);
-        boolean result = bookmarkService.bookmarkBook(isbn13);
-        return BookDto.BookmarkResponse.of(findBook,result);
+        bookmarkService.bookmarkBook(isbn13);
+        bookService.isBookMarkedBook(findBook);
+        BookDto.Response response = bookMapper.bookToBookResponse(findBook);
+        return response;
     }
 
 }

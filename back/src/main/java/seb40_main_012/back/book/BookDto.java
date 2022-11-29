@@ -62,6 +62,7 @@ public class BookDto {
 
         private String isbn13;
         private Double myRating;
+        private boolean isBookmarked;
         private Optional<Comment> myComment;
         private String cover;
         private String title;
