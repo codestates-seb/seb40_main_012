@@ -33,7 +33,6 @@ const SearchBooks = () => {
     axios
       .get(`/api/search?Category=books&Query=${keyword}&Sort=accuracy`)
       .then((res) => {
-        console.log(res.data);
         setBooks(res.data);
         setIsLoading(false);
       })
