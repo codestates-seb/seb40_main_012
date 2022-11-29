@@ -159,9 +159,7 @@ const Content = ({ content, setContent, fetchData }) => {
     <>
       <ContentContainer>
         <Grid container>
-          <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
-            {/* <CommentContainer></CommentContainer> */}
-          </Grid>
+          <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}></Grid>
 
           <Grid
             item
@@ -201,10 +199,7 @@ const Content = ({ content, setContent, fetchData }) => {
                 textAlign: 'center',
               }}
             >
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
               <div>열심히 읽어오는 중..</div>
             </div>
           }
@@ -216,15 +211,17 @@ const Content = ({ content, setContent, fetchData }) => {
           }
         >
           <div>
-            {content.data
-              ? content.data.map((data) => (
-                  <MyCommentDetail
-                    key={data.commentId}
-                    data={data}
-                    fetchData={fetchData}
-                  />
-                ))
-              : null}
+            {content.data ? (
+              content.data.map((data) => (
+                <MyCommentDetail
+                  key={data.commentId}
+                  data={data}
+                  fetchData={fetchData}
+                />
+              ))
+            ) : (
+              <div>데이터가 없어요</div>
+            )}
           </div>
         </InfiniteScroll>
       </ContentContainer>

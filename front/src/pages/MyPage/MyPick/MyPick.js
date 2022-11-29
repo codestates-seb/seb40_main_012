@@ -14,7 +14,6 @@ import {
   MY_PICK_BOOK,
   MY_PICK_PAIRING,
   MY_PICK_COLLECTION,
-  COMMENT_URL,
 } from '../../../api/requests';
 import Scroll from '../Scroll';
 
@@ -39,26 +38,15 @@ const MyPick = () => {
   console.log('마이픽 시작');
   const [view, setView] = useState(4);
   const [content, setContent] = useState({
-    listCount: 0,
     data: [],
-    hasMore: true,
   });
 
   const [pairingContent, setPairingContent] = useState({
-    listCount: 0,
     data: [],
-    hasMore: true,
   });
 
   const [collectionContent, setCollectionContent] = useState({
-    listCount: 0,
     data: [],
-    hasMore: true,
-  });
-
-  const [infiniteData, setInfiniteData] = useState({
-    data: [],
-    hasMore: true,
   });
 
   // 책 북마크 데이터 가져오기
@@ -68,14 +56,7 @@ const MyPick = () => {
       .then((response) => {
         console.log('then?', response);
         setContent({
-          listCount: response.data.listCount,
           data: response.data.data,
-          hasMore: true,
-        });
-        console.log('확인', response);
-        setInfiniteData({
-          content: response.data,
-          hasMore: true,
         });
       })
       .catch((error) => console.log('에러', error));
@@ -87,9 +68,7 @@ const MyPick = () => {
       .get(MY_PICK_PAIRING)
       .then((response) => {
         setPairingContent({
-          listCount: response.data.listCount,
           data: response.data.data,
-          hasMore: true,
         });
       })
       .catch((error) => console.log('에러', error));
@@ -102,12 +81,7 @@ const MyPick = () => {
       .get(MY_PICK_COLLECTION)
       .then((response) => {
         setCollectionContent({
-          listCount:
-            content.listCount +
-            pairingContent.listCount +
-            response.data.listCount,
           data: response.data.data,
-          hasMore: true,
         });
 
         console.log('collectionContent 현재값', collectionContent);
@@ -126,35 +100,21 @@ const MyPick = () => {
   return (
     <Scroll>
       <PageContainer header footer>
-        {content.data.length !== 0 ? (
-          <Container maxWidth="md">
-            <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
-            <Content
-              content={content}
-              setContent={setContent}
-              pairingContent={pairingContent}
-              setPairingContent={setPairingContent}
-              collectionContent={collectionContent}
-              setCollectionContent={setCollectionContent}
-              fetchCollectionData={fetchCollectionData}
-              fetchPairingData={fetchPairingData}
-              fetchData={fetchData}
-            ></Content>
-          </Container>
-        ) : (
-          <Container maxWidth="md">
-            <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
-            <Void>
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-              더 읽어올 데이터가 없군요 📕
-            </Void>
-          </Container>
-        )}
+        <Container maxWidth="md">
+          <Header></Header>
+          <Nav view={view} setView={setView}></Nav>
+          <Content
+            content={content}
+            setContent={setContent}
+            pairingContent={pairingContent}
+            setPairingContent={setPairingContent}
+            collectionContent={collectionContent}
+            setCollectionContent={setCollectionContent}
+            fetchCollectionData={fetchCollectionData}
+            fetchPairingData={fetchPairingData}
+            fetchData={fetchData}
+          ></Content>
+        </Container>
       </PageContainer>
     </Scroll>
   );

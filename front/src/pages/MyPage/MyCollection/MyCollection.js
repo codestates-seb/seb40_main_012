@@ -31,10 +31,6 @@ const MyCollection = () => {
   console.log('마이컬렉션 시작');
   const [view, setView] = useState(3);
   const [content, setContent] = useState({
-    listCount: '',
-    data: [],
-  });
-  const [infiniteData, setInfiniteData] = useState({
     data: [],
   });
 
@@ -43,11 +39,7 @@ const MyCollection = () => {
       .get(MY_COLLECTION_URL)
       .then((response) => {
         setContent({
-          listCount: response.data.listCount,
-          data: response.data.data,
-        });
-        setInfiniteData({
-          content: response.data,
+          data: response.data.data.content,
         });
       })
       .catch((error) => console.log('에러', error));
@@ -58,10 +50,6 @@ const MyCollection = () => {
     console.log('useEffect의 state 현재값', content);
   }, []);
 
-  useEffect(() => {
-    console.log('infiniteData 변경', infiniteData);
-  }, [infiniteData]);
-
   return (
     <Scroll>
       <PageContainer header footer>
@@ -71,8 +59,6 @@ const MyCollection = () => {
             <Nav view={view} setView={setView} content={content}></Nav>
             <Content
               content={content}
-              setInfiniteData={setInfiniteData}
-              infiniteData={infiniteData}
               setContent={setContent}
               fetchData={fetchData}
             ></Content>
@@ -82,11 +68,8 @@ const MyCollection = () => {
             <Header></Header>
             <Nav view={view} setView={setView} content={content}></Nav>
             <Void>
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-              더 읽어올 데이터가 없군요 📕
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>더
+              읽어올 데이터가 없군요 📕
             </Void>
           </Container>
         )}

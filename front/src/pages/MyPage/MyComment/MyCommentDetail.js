@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import axios from '../../../api/axios';
-import { minHeight } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
 
 const Remove = styled.div`
@@ -75,7 +74,7 @@ const FlexBox = styled.div`
   }
 `;
 
-const MyCommentBook = ({ data, fetchData }) => {
+const MyCommentDetail = ({ data, fetchData }) => {
   const navigate = useNavigate();
 
   const onRemove = (id) => {
@@ -97,7 +96,6 @@ const MyCommentBook = ({ data, fetchData }) => {
               sx={{
                 display: 'flex',
                 flexDirection: 'row',
-                // height: 'auto',
               }}
             >
               <Grid item xs={1.8}>
@@ -293,4 +291,4 @@ const MyCommentBook = ({ data, fetchData }) => {
     </>
   );
 };
-export default MyCommentBook;
+export default MyCommentDetail;

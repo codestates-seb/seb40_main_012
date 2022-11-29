@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
+import MyPairingDetail from './MyPairingDetail';
+import { useState } from 'react';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -37,7 +39,6 @@ const ContentContainer = styled.div`
   }
 `;
 const BookImg = styled.div`
-  cursor: pointer;
   .resize {
     box-sizing: inherit;
     width: 108px !important;
@@ -51,7 +52,6 @@ const CommentContainer = styled.div`
   flex-direction: row;
 `;
 const FlexBox = styled.div`
-  cursor: pointer;
   display: flex;
   flex-direction: column;
   margin-left: 20px;
@@ -65,11 +65,6 @@ const FlexBox = styled.div`
   .heart-star-title {
     display: flex;
     flex-direction: row;
-    img {
-      width: 20px;
-      height: 20px;
-      margin-right: 2px;
-    }
   }
 `;
 const ButtonCSS = styled.button`
@@ -101,51 +96,60 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ setInfiniteData, infiniteData, fetchData }) => {
-  // const [data, setData] = useState({
-  //   content: content.data,
-  //   hasMore: true,
-  // });
-  const navigate = useNavigate();
+const Content = ({ content, setContent, fetchData }) => {
+  const [hasMore, setHasMore] = useState(true);
 
+  // 그냥 콘솔로그 찍었을 때는 나오는데, lastId로 조회했을 때는 nan이 나오는 문제
+  const [lastId, setLastId] = useState(
+    content?.data[content?.data?.length - 1]?.pairingId
+  );
+  console.log(content?.data[content?.data?.length - 1]?.pairingId);
+
+  console.log('마지막아이디', lastId);
+  const [newContent, setNewContent] = useState({
+    data: [],
+  });
+  console.log('hasMore', hasMore);
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    if (infiniteData.content.data.length >= 100) {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data,
-        },
-        hasMore: false,
-      });
-      return;
-    }
-    if (infiniteData.content.data.length < 10) {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data,
-        },
-        hasMore: false,
-      });
-      return;
-    }
-    ////// 나중에 통신하는 거 붙여주기
-    setTimeout(() => {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data.concat(infiniteData.content.data),
-        },
-        // response.data
-        hasMore: true,
-      });
-    }, 800);
-    /////
-  };
+    // if (newContent.data.length < 5) {
+    //   setHasMore(false);
+    //   return;
+    // }
 
-  const onRemove = (id) => {
-    axios
-      .delete(`/api/books/pairings/${id}/delete`)
-      .then(() => fetchData())
-      .catch((error) => console.log('에러', error));
+    // 새로불러온 데이터를 state에 저장해서 그 데이터끼리 붙여야 함
+
+    if (hasMore === true) {
+      axios
+        .get(`/api/mypage/userPairing?lastId=86`)
+        // .get(`/api/mypage/userPairing?lastId=${lastId}`)
+
+        .then((response) => {
+          console.log('response.data.data.content', response.data.data.content);
+          // 여기까진 들어옴
+          setNewContent({
+            data: response?.data.data.content,
+          });
+          console.log('newContent', newContent);
+          // console.log('newContent', newContent.data);
+
+          // setContent({
+          //   data: content.data.concat(response.data.data.content),
+          //   size: content.size,
+          // });
+
+          setContent({
+            data: content?.data?.concat(newContent.data),
+            size: content.size,
+          });
+          console.log('content.data', content.data);
+          setHasMore(response.data.data.empty);
+          setLastId(lastId - 5);
+        })
+        .catch((error) => console.log('에러', error));
+    }
+
+    /////
   };
 
   const removeAll = () => {
@@ -182,9 +186,8 @@ const Content = ({ setInfiniteData, infiniteData, fetchData }) => {
                   mt: 1,
                   mb: 1,
                 }}
-                gutterBottom
-                component="div"
                 variant="body2"
+                component={'span'}
               >
                 전체 삭제
               </Typography>
@@ -193,21 +196,18 @@ const Content = ({ setInfiniteData, infiniteData, fetchData }) => {
         </Grid>
 
         <InfiniteScroll
-          dataLength={infiniteData.content.data.length}
+          dataLength={content.data.length}
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
-          next={infiniteData.content.data && fetchMoreData}
-          hasMore={infiniteData.hasMore} // 스크롤 막을지 말지 결정
+          next={content && fetchMoreData}
+          hasMore={true} // 스크롤 막을지 말지 결정
           loader={
             <div
               style={{
                 textAlign: 'center',
               }}
             >
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
               <div>열심히 읽어오는 중..</div>
             </div>
           }
@@ -219,126 +219,16 @@ const Content = ({ setInfiniteData, infiniteData, fetchData }) => {
           }
         >
           <div>
-            {infiniteData.content.data ? (
-              infiniteData.content.data.map((data, key) => (
-                <ItemContainer key={key}>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }}
-                  >
-                    <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
-
-                    <Grid
-                      item
-                      xs={2}
-                      onClick={() => navigate(`/pairing/${data.pairingId}`)}
-                    >
-                      {data && (
-                        <BookImg>
-                          <img
-                            className="resize"
-                            src={data.bookCover}
-                            alt="book thumbnail"
-                          ></img>
-                        </BookImg>
-                      )}
-                    </Grid>
-                    <Grid
-                      item
-                      xs={9}
-                      onClick={() => navigate(`/pairing/${data.pairingId}`)}
-                    >
-                      <FlexBox>
-                        <Typography
-                          color="#232627"
-                          sx={{
-                            height: 125,
-                            fontWeight: 200,
-                          }}
-                          variant="body2"
-                          component="div"
-                          gutterBottom
-                        >
-                          {data.content}
-                        </Typography>
-
-                        <div className="heart-star-title">
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                            color="#BFBFBF"
-                          >
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                '/images/p_heart_filled_icon.svg'
-                              }
-                              alt="heart icon"
-                            />
-                            {data.pairingLike}
-                          </Grid>
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                            color="#BFBFBF"
-                          ></Grid>
-                          <Grid
-                            item
-                            xs={6}
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row-reverse',
-                            }}
-                            align="right"
-                            color="#737373"
-                          >
-                            <div>
-                              {data.bookName}, {data.author}
-                            </div>
-                          </Grid>
-                        </div>
-                      </FlexBox>
-                    </Grid>
-                    <Grid
-                      item
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row-reverse',
-                      }}
-                    >
-                      <Remove
-                        onClick={() => {
-                          // 현재 작동 안됨 (코멘트 아이디 없음)
-                          if (
-                            window.confirm(
-                              `${data.pairingId}번째 페어링을 삭제하시겠습니까?`
-                            )
-                          ) {
-                            onRemove(data.pairingId);
-                          }
-                        }}
-                      >
-                        <DeleteOutlinedIcon />
-                      </Remove>
-                    </Grid>
-                  </Grid>
-                </ItemContainer>
+            {content.data ? (
+              content.data.map((data) => (
+                <MyPairingDetail
+                  key={data.pairingId}
+                  data={data}
+                  fetchData={fetchData}
+                />
               ))
             ) : (
-              <div>데이터없어용</div>
+              <div>데이터가 없어요</div>
             )}
           </div>
         </InfiniteScroll>
