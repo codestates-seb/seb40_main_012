@@ -17,7 +17,8 @@ const CollectionPage = () => {
       {isLogin ? (
         <CollectionMediumSet
           title={`${nickName}님의 취향에 맞는 추천 컬렉션`}
-          type="recomment"
+          type="recommend"
+          nickName={nickName}
         />
       ) : null}
       <CollectionMediumSet

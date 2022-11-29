@@ -6,8 +6,13 @@ const CollectionSmallBooksContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 10px;
+  padding: 3px;
+  border: 3px solid transparent;
   &:hover {
     cursor: pointer;
+    border: none;
+    margin: 0 13px;
+    padding: 0;
   }
   &.small {
     width: 23%;

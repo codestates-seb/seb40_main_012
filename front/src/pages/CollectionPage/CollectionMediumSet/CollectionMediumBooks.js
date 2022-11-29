@@ -16,10 +16,13 @@ const CollectionMediumBooksContainer = styled.div`
 `;
 
 const CollectionMediumInfo = styled.div`
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.mainColor};
-  white-space: nowrap;
+  word-break: break-all;
+  @media screen and (max-width: 640px) {
+    font-size: 14px;
+  }
   @media screen and (max-width: 500px) {
     font-size: 12px;
   }
@@ -29,11 +32,12 @@ const MediumHeader = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
 `;
 
 const MediumBooks = styled.div`
   display: flex;
+  justify-content: space-between;
 `;
 
 const CollectonMediumBooks = ({ collection }) => {

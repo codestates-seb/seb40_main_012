@@ -21,11 +21,25 @@ const SlickSlider = styled.div`
   .slick-next {
     right: 20px;
     top: 47%;
+    @media screen and (max-width: 1100px) {
+      top: 40%;
+    }
+    @media screen and (max-width: 500px) {
+      right: 5px;
+      top: 50%;
+    }
   }
   .slick-prev {
     left: 22px;
     top: 47%;
     z-index: 100;
+    @media screen and (max-width: 1100px) {
+      top: 40%;
+    }
+    @media screen and (max-width: 500px) {
+      left: 5px;
+      top: 50%;
+    }
   }
 `;
 
@@ -33,13 +47,15 @@ const CollectionSmallSetContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
   padding: 0 40px;
   @media screen and (max-width: 640px) {
     padding: 0 20px;
+    margin-bottom: 60px;
   }
   @media screen and (max-width: 500px) {
     padding: 0;
+    margin-bottom: 40px;
   }
 `;
 

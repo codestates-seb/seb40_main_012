@@ -8,16 +8,18 @@ import CollectionLargeBooks from './CollectionLargeBooks';
 const CollectionLargeSetContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
   padding: 0 40px;
   &:hover {
     cursor: pointer;
   }
   @media screen and (max-width: 640px) {
     padding: 0 20px;
+    margin-bottom: 60px;
   }
   @media screen and (max-width: 500px) {
     padding: 0;
+    margin-bottom: 40px;
   }
 `;
 

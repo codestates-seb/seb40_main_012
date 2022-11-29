@@ -1,19 +1,22 @@
 import styled from 'styled-components';
 
 const CollectionMediumBookContainer = styled.div`
-  width: 33.336%;
+  width: 32%;
   img {
     width: 100%;
     aspect-ratio: 7 / 10;
     object-fit: cover;
-    padding: 2px;
+    padding: 5px;
   }
 `;
 
 const CollectionBookTitle = styled.div`
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.dark};
+  @media screen and (max-width: 640px) {
+    font-size: 11px;
+  }
   @media screen and (max-width: 500px) {
     font-size: 10px;
     font-weight: 500;

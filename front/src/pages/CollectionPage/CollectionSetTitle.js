@@ -15,6 +15,9 @@ const CollectionTitle = styled.div`
   @media screen and (max-width: 640px) {
     font-size: 18px;
   }
+  span.nickName {
+    color: ${({ theme }) => theme.colors.mainColor};
+  }
 `;
 
 const MyCollectionBtn = styled.button`
@@ -35,7 +38,12 @@ const MyCollectionBtn = styled.button`
   }
 `;
 
-const CollectionSetTitle = ({ title, isMyCollection }) => {
+const CollectionSetTitle = ({
+  title,
+  isMyCollection,
+  type = 'basic',
+  nickName = '',
+}) => {
   const navigate = useNavigate();
 
   const onClickMyCollectionBtn = () => {
@@ -44,7 +52,14 @@ const CollectionSetTitle = ({ title, isMyCollection }) => {
 
   return (
     <CollectionSetTitleContainer>
-      <CollectionTitle>{title}</CollectionTitle>
+      {type === 'recommend' ? (
+        <CollectionTitle>
+          <span className="nickName">{nickName}</span>
+          <span>님의 취향에 맞는 추천 컬렉션</span>
+        </CollectionTitle>
+      ) : (
+        <CollectionTitle>{title}</CollectionTitle>
+      )}
       {isMyCollection ? (
         <MyCollectionBtn onClick={onClickMyCollectionBtn}>
           모두보기
