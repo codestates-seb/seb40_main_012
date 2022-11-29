@@ -14,6 +14,7 @@ import seb40_main_012.back.book.BookRepository;
 
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -114,7 +115,7 @@ public class BookInfoSearchService {
         return restTemplate.getForObject(targetUrl, BookInfoSearchDto.MainCollectionBook.class);
     }
 
-    public List<BookInfoSearchDto.BookList.Item> cherryPickSearch(String title, String sort, Integer page, Integer size) {
+    public List<BookInfoSearchDto.BookList.Item> cherryPickSearch(String title, String sort) {
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -133,46 +134,35 @@ public class BookInfoSearchService {
                 .encode(StandardCharsets.UTF_8)
                 .toUri();
 
-//        BookInfoSearchDto.BookList list1 = restTemplate.getForObject(targetUrl, BookInfoSearchDto.BookList.class);
+//        BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 25);
+//        BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 25);
+//        BookInfoSearchDto.BookList totalResult3 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 25);
+//        BookInfoSearchDto.BookList totalResult4 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 4, 25);
 //
-//        long list1Size = list1.getTotalResults();
-
-//        if (0 <= list1Size && list1Size <= 50) {
-
-//            BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+//        List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(
+//                (Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
+//                                totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
+//                (Stream.concat(totalResult3.getItem().stream().filter(a -> a.isbn13 != ""),
+//                                totalResult4.getItem().stream().filter(a -> a.isbn13 != "")))
+//                )
 //
-//            List<BookInfoSearchDto.BookList.Item> result1 = totalResult1.getItem().stream().filter(book -> book.isbn13 != "").distinct().collect(Collectors.toList());
-
-//            List<BookInfoSearchDto.BookList.Item> pageResult1 = makePageable(result1, page, size);
-
-//            return result1;
-//            return pageResult1;
-
-//        } else
-////            if (51 <= list1Size && list1Size <= 100)
-//            {
+//                .filter(c -> c.isbn13 != "") // ISBN 없는거 거르기
+//                .filter(d -> d.isbn13.startsWith(String.valueOf(9))) // 책이 아닌거 거르기
+//                .filter(e -> !e.isbn13.startsWith(String.valueOf(977))) // 잡지, 신문 등 거르기
 //
-        BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 25);
-        BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 25);
-        BookInfoSearchDto.BookList totalResult3 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 3, 25);
-        BookInfoSearchDto.BookList totalResult4 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 4, 25);
+//                        .distinct().collect(Collectors.toList());
 
-        List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(
-                (Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
-                                totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))),
-                (Stream.concat(totalResult3.getItem().stream().filter(a -> a.isbn13 != ""),
-                                totalResult4.getItem().stream().filter(a -> a.isbn13 != "")))
-                )
+        BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
+        BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
 
-                        .distinct().collect(Collectors.toList());
+        List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
+                totalResult2.getItem().stream().filter(a -> a.isbn13 != ""))
 
-//        BookInfoSearchDto.BookList totalResult1 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 1, 50);
-//        BookInfoSearchDto.BookList totalResult2 = listSearch(title.toLowerCase(Locale.ROOT), "Accuracy", 2, 50);
-//
-//        List<BookInfoSearchDto.BookList.Item> result2 = Stream.concat(totalResult1.getItem().stream().filter(a -> a.isbn13 != ""),
-//                totalResult2.getItem().stream().filter(a -> a.isbn13 != "")).distinct().collect(Collectors.toList());
+                .filter(c -> c.isbn13 != "") // ISBN 없는거 거르기
+                .filter(d -> d.isbn13.startsWith(String.valueOf(9))) // 책이 아닌거 거르기
+                .filter(e -> !e.isbn13.startsWith(String.valueOf(977))) // 잡지, 신문 등 거르기
 
-//            List<BookInfoSearchDto.BookList.Item> pageResult2 = makePageable(result2, page, size);
+                .distinct().collect(Collectors.toList());
 
         return result2;
 //        }

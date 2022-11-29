@@ -127,7 +127,7 @@ public class CommentService {
 
         Comment findComment = findVerifiedComment(commentId);
 
-        if (findUser == comment.getUser()) {
+        if (findUser == findComment.getUser()) {
             findComment.setBody(comment.getBody());
             findComment.setModifiedAt(LocalDateTime.now());
             return commentRepository.save(findComment);
