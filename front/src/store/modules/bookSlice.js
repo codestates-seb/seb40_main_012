@@ -25,7 +25,11 @@ export const postBookComment = createAsyncThunk(
   'bookSlice/postBookComment',
   async ({ isbn, commentBody }) => {
     try {
-      return await axios.post(`${BOOKS_URL}/${isbn}/comments/add`, commentBody);
+      return await axios
+        .post(`${BOOKS_URL}/${isbn}/comments/add`, commentBody)
+        .then((res) => {
+          return res.data.data;
+        });
     } catch (error) {
       console.log(error);
     }
@@ -36,6 +40,21 @@ export const patchBookStarRating = createAsyncThunk(
   async ({ isbn, ratingBody }) => {
     try {
       return await axios.patch(`${BOOKS_URL}/${isbn}/rating`, ratingBody);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
+export const deleteBookComment = createAsyncThunk(
+  'bookSlice/deleteBookComment',
+  async (commentId) => {
+    try {
+      return await axios
+        .delete(`/api/comments/${commentId}/delete`)
+        .then(() => {
+          return commentId;
+        });
     } catch (error) {
       console.log(error);
     }
@@ -62,7 +81,8 @@ export const bookSlice = createSlice({
     builder.addCase(postBookComment.pending, (state) => {
       state.status = 'postBookComment/pending';
     });
-    builder.addCase(postBookComment.fulfilled, (state) => {
+    builder.addCase(postBookComment.fulfilled, (state, action) => {
+      state.data.comments.content.push(action.payload);
       state.status = 'postBookComment/fulfilled';
     });
     builder.addCase(postBookComment.rejected, (state) => {
@@ -79,6 +99,20 @@ export const bookSlice = createSlice({
     builder.addCase(patchBookStarRating.rejected, (state) => {
       state.data = [];
       state.status = 'postBookStarRating/rejected';
+    });
+    //
+    builder.addCase(deleteBookComment.pending, (state) => {
+      state.status = 'postBookComment/pending';
+    });
+    builder.addCase(deleteBookComment.fulfilled, (state, action) => {
+      state.data.comments.content = state.data.comments.content.filter(
+        (el) => el.commentId !== action.payload
+      );
+      state.status = 'postBookComment/fulfilled';
+    });
+    builder.addCase(deleteBookComment.rejected, (state) => {
+      state.data = [];
+      state.status = 'postBookComment/rejected';
     });
   },
 });

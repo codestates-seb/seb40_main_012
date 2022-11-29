@@ -164,7 +164,7 @@ const PairingWrite = () => {
       })
     );
     dispatch(asyncPostPairing({ formData, isbn: curBookData.isbn13 }));
-    navigate('/pairing', { replace: true });
+    navigate(-1, { replace: true });
     categoryReset();
     titleReset();
     bodyReset();
