@@ -15,9 +15,10 @@ import seb40_main_012.back.config.auth.filter.JwtAuthenticationFilter;
 import seb40_main_012.back.config.auth.filter.JwtVerificationFilter;
 import seb40_main_012.back.config.auth.handler.*;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
-import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
+import seb40_main_012.back.config.auth.service.OAuth2UserServiceImpl;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 import seb40_main_012.back.user.mapper.UserMapper;
+import seb40_main_012.back.user.repository.UserRepository;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -27,9 +28,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
-    private final RefreshTokenRepository repository;
     private final UserMapper userMapper;
     private final CookieManager cookieManager;
+    private final OAuth2UserServiceImpl oAuth2UserService;
+    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -56,8 +58,11 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
 //                        .antMatchers(HttpMethod.DELETE, "/api/users/**").hasAnyRole("USER", "ADMIN") // 회원 탈퇴, 강제 탈퇴
-                        .anyRequest().permitAll()
-                );
+                        .anyRequest().permitAll())
+                .oauth2Login(authorize -> {
+                    authorize.userInfoEndpoint().userService(oAuth2UserService);
+                    authorize.successHandler(new UserOAuth2SuccessHandler(jwtTokenizer, userRepository, cookieManager, userMapper));
+                });
         return http.build();
     }
 

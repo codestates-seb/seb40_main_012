@@ -1,14 +1,11 @@
 package seb40_main_012.back.user.dto;
 
 import lombok.*;
-import seb40_main_012.back.book.entity.Genre;
-import seb40_main_012.back.user.entity.enums.AgeType;
-import seb40_main_012.back.user.entity.enums.GenderType;
+import seb40_main_012.back.config.auth.entity.enums.ProviderType;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
 import java.util.List;
 
 @Getter
@@ -35,7 +32,7 @@ public class UserDto {
     @NoArgsConstructor
     public static class Password {
         @NotBlank(message = "패스워드를 입력해주세요.")
-        @Pattern(regexp = "[0-9a-zA-Z@$!%*?&]{8,16}", message = "8~16자 영문, 숫자, 특수문자(@$!%*?&)만 사용 가능합니다.")
+        @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$", message = "8~16자 영문, 숫자, 특수문자(@$!%*?&)만 사용 가능합니다.")
         private String password;
     }
 
@@ -54,7 +51,7 @@ public class UserDto {
         private String nickName;
 
         @NotBlank(message = "패스워드를 입력해주세요.")
-        @Pattern(regexp = "[0-9a-zA-Z@$!%*?&]{8,16}", message = "8~16자 영문, 숫자, 특수문자(@$!%*?&)만 사용 가능합니다.")
+        @Pattern(regexp = "^(?=.*[a-zA-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,16}$", message = "8~16자 영문, 숫자, 특수문자(@$!%*?&)만 사용 가능합니다.")
         private String password;
 
         @NotBlank(message = "기본 이미지를 넣으셔야 합니다")
@@ -82,5 +79,6 @@ public class UserDto {
         private double bookTemp;
         private List<String> roles;
         private String profileImage;
+        //private ProviderType providerType;
     }
 }
