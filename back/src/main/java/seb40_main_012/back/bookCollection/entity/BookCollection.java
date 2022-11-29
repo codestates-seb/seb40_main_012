@@ -57,7 +57,7 @@ public class BookCollection {
     @ElementCollection
     private List<String> bookIsbn13 = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<BookCollectionBook> collectionBooks = new ArrayList<>();
