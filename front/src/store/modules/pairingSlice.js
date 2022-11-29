@@ -24,21 +24,6 @@ export const asyncGetOnePairing = createAsyncThunk(
   }
 );
 
-export const asyncPostPairing = createAsyncThunk(
-  'pairingSlice/asyncPostPairing',
-  async ({ formData, isbn }) => {
-    try {
-      return await axios.post(`/api/books/${isbn}/pairings/add`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-    } catch (error) {
-      console.log('페어링 post 실패', error);
-    }
-  }
-);
-
 export const asyncDeletePairing = createAsyncThunk(
   'pairingSlice/asyncDeletePairing',
   async ({ deleteId }) => {
@@ -188,16 +173,6 @@ export const pairingSlice = createSlice({
     builder.addCase(asyncGetOnePairing.rejected, (state) => {
       state.data = [];
       state.status = 'asyncGetOnePairing/rejected';
-    });
-    //페어링 작성
-    builder.addCase(asyncPostPairing.pending, (state) => {
-      state.status = 'asyncPostPairing/pending';
-    });
-    builder.addCase(asyncPostPairing.fulfilled, (state) => {
-      state.status = 'asyncPostPairing/fulfilled';
-    });
-    builder.addCase(asyncPostPairing.rejected, (state) => {
-      state.status = 'asyncPostPairing/rejected';
     });
     //페어링 삭제
     builder.addCase(asyncDeletePairing.pending, (state) => {
