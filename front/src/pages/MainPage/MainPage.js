@@ -1,5 +1,4 @@
 import { PageContainer } from 'containers';
-import Guide from './Guide';
 import MainBooks from './MainBooks';
 import BestBooks from './BestBooks';
 import UserBooks from './UserBooks';
@@ -15,7 +14,6 @@ const MainPage = () => {
   return (
     <PageContainer footer>
       <MainBooks />
-      <Guide />
       <BestBooks />
       {isLogin ? <UserBooks nickname={userNickname} /> : null}
       <BestCollections />

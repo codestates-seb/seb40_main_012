@@ -10,7 +10,6 @@ const CommentsContainer = styled.div`
   padding: 0 20px;
 `;
 
-//TODO: comment dislike 기능 추가
 const Comments = ({
   commentsData,
   commentAdd,
@@ -18,6 +17,7 @@ const Comments = ({
   commentEdit,
   commentLike,
   commentDislike,
+  type,
 }) => {
   const userEmail = useSelector(selectEmail);
   const isLogin = useSelector(selectIsLogin);
@@ -29,6 +29,7 @@ const Comments = ({
         return (
           <Comment
             key={el.commentId}
+            type={type}
             isLogin={isLogin}
             commentId={el.commentId}
             userEmail={userEmail}

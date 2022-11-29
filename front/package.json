@@ -2,6 +2,7 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@babel/core": "^7.16.0",
     "@fontsource/roboto": "^4.5.8",

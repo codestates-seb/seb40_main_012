@@ -83,8 +83,6 @@ const BookDetail = () => {
   }, [dispatch]);
   const bookData = useSelector((state) => state.book.data);
 
-  console.log('bookData', bookData);
-
   const navToWrite = () => {
     navigate('/pairing/write');
   };
@@ -110,7 +108,7 @@ const BookDetail = () => {
         />
         <ButtonContainer>
           <div>
-            <RateModal />
+            <RateModal isbn={isbn} />
             {isLogin ? (
               <BasicButton onClick={navToWrite}>페어링 작성하기</BasicButton>
             ) : (
@@ -143,7 +141,8 @@ const BookDetail = () => {
         <DescContainer>
           <h1>코멘트</h1>
           {bookData.comments?.empty !== true ? (
-            // <Comment data={bookData.comments.contents} />
+            // <Comment data={bookData.comments.contents} type="bookcomment"/>
+            // 위와 같이 type props를 bookcomment로 지정하면 수정버튼이 보이지 않습니다.
             <h1>코멘트</h1>
           ) : null}
         </DescContainer>

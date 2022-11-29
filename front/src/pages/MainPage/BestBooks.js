@@ -30,7 +30,7 @@ const BestBooks = () => {
     <BestBooksContainer>
       <MainBooksTitle title="체리픽에서 많이 본 책" />
       <BooksContainer>
-        {bestBooks.map((el, idx) => {
+        {bestBooks?.map((el, idx) => {
           return (
             <Book
               key={el.isbn13}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import LinkCopyModal from '../../components/LinkCopyModal';
@@ -7,6 +7,9 @@ import LinkCopyModal from '../../components/LinkCopyModal';
 const CollectionHeaderBtnsContainer = styled.div`
   display: flex;
   align-items: center;
+  a {
+    text-decoration: none;
+  }
 `;
 
 const CollectionBtns = styled.div`
@@ -36,6 +39,7 @@ const CollectionDelete = styled(CollectionBtns)`
     color: #850000;
   }
 `;
+const CollectionEdit = styled(CollectionBtns)``;
 
 const ModalBox = styled.div`
   width: 300px;
@@ -86,23 +90,64 @@ const ModalBox = styled.div`
   }
 `;
 
-//TODO: 내가 작성한 컬렉션만 삭제 버튼 노출
-const CollectionHeaderBtns = ({
-  likeCount,
-  userLike,
-  userBookmark,
-  userCollection,
-  handleCollectionLike,
-  handleCollectionBookmark,
-  handleCollectionDelete,
-}) => {
-  const [isLiked, setIsLiked] = useState(userLike);
-  const [isBookmarked, setIsBookmarked] = useState(userBookmark);
-
+export const DeleteEditBtns = ({ userCollection, handleCollectionDelete }) => {
   //Delete Modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const { collectionId } = useParams();
+
+  return (
+    <CollectionHeaderBtnsContainer>
+      {userCollection ? (
+        <>
+          <Link to={`/collection/edit/${collectionId}`}>
+            <CollectionEdit>수정하기</CollectionEdit>
+          </Link>
+          <CollectionDelete onClick={handleOpen}>삭제하기</CollectionDelete>
+          <Modal
+            open={open}
+            onClose={handleClose}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <ModalBox>
+              <div className="info">정말 삭제하시겠습니까?</div>
+              <div className="container">
+                <div
+                  className="close"
+                  onClick={handleClose}
+                  role="presentation"
+                >
+                  취소
+                </div>
+                <div
+                  className="delete"
+                  onClick={handleCollectionDelete}
+                  role="presentation"
+                >
+                  삭제하기
+                </div>
+              </div>
+            </ModalBox>
+          </Modal>
+        </>
+      ) : null}
+    </CollectionHeaderBtnsContainer>
+  );
+};
+
+export const CollectionHeaderBtns = ({
+  likeCount,
+  userLike,
+  userBookmark,
+  handleCollectionLike,
+  handleCollectionBookmark,
+}) => {
+  const [isLiked, setIsLiked] = useState(userLike);
+  const [isBookmarked, setIsBookmarked] = useState(userBookmark);
+
   //LinkCopy Modal
   const [modalOpen, setModalOpen] = useState(false);
   const handleModalOpen = () => setModalOpen(true);
@@ -140,7 +185,7 @@ const CollectionHeaderBtns = ({
             alt="bookmark icon"
           />
         )}
-        북마크
+        나의 픽
       </CollectionBookmark>
       <CollectionHeart onClick={handleClickLikeBtn}>
         {isLiked ? (
@@ -169,39 +214,6 @@ const CollectionHeaderBtns = ({
         link={location.pathname}
         type="마음에 드는 컬렉션을"
       />
-      {userCollection ? (
-        <>
-          <CollectionDelete onClick={handleOpen}>삭제하기</CollectionDelete>
-          <Modal
-            open={open}
-            onClose={handleClose}
-            aria-labelledby="modal-modal-title"
-            aria-describedby="modal-modal-description"
-          >
-            <ModalBox>
-              <div className="info">정말 삭제하시겠습니까?</div>
-              <div className="container">
-                <div
-                  className="close"
-                  onClick={handleClose}
-                  role="presentation"
-                >
-                  취소
-                </div>
-                <div
-                  className="delete"
-                  onClick={handleCollectionDelete}
-                  role="presentation"
-                >
-                  삭제하기
-                </div>
-              </div>
-            </ModalBox>
-          </Modal>
-        </>
-      ) : null}
     </CollectionHeaderBtnsContainer>
   );
 };
-
-export default CollectionHeaderBtns;

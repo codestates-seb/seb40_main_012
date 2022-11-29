@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { PageContainer } from 'containers';
 import CollectionDetailHeader from './CollectionDetailHeader';
-import CollectionTags from './CollectionTags';
-import CollectionHeaderBtns from './CollectionHeaderBtns';
+import { DeleteEditBtns, CollectionHeaderBtns } from './CollectionHeaderBtns';
 import CollectionIntro from './CollectionIntro';
 import CollectionDetailBooks from './CollectionDetailBooks';
 import Comments from '../../components/Comments/Comments';
@@ -17,6 +16,8 @@ const CollectionTagBtn = styled.div`
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
+  padding: 10px 0;
+  flex-wrap: wrap;
 `;
 
 const CollectionDetailPage = () => {
@@ -39,7 +40,6 @@ const CollectionDetailPage = () => {
     axios
       .get(`/api/collections/${collectionId}`)
       .then((res) => {
-        console.log(res.data);
         setCollectionData(res.data);
       })
       .catch((error) => console.error(error));
@@ -75,7 +75,6 @@ const CollectionDetailPage = () => {
     //컬렉션 삭제
     axios.delete(`/api/collections/${collectionId}`).then(() => {
       navigate('/collection');
-      console.log('삭제');
     });
   };
 
@@ -136,9 +135,13 @@ const CollectionDetailPage = () => {
         title={collectionData.title}
         writer={collectionData.collectionAuthor}
         update={ToDateString(collectionData.lastModifiedAt)}
+        taglist={collectionData.tags}
       />
       <CollectionTagBtn>
-        <CollectionTags taglist={collectionData.tags} />
+        <DeleteEditBtns
+          userCollection={collectionData.userCollection}
+          handleCollectionDelete={handleCollectionDelete}
+        />
         <CollectionHeaderBtns
           likeCount={collectionData.likeCount}
           userLike={collectionData.userLike}

@@ -16,6 +16,7 @@ export { default as PairingDetail } from './PairingPage/PairingDetail/PairingDet
 export { default as CollectionPage } from './CollectionPage/Collection';
 export { default as CollectionDetailPage } from './CollectionDetailPage/CollectionDetail';
 export { default as CollectionWritePage } from './CollectionWritePage/CollectionWrite';
+export { default as CollectionEditPage } from './CollectionEditPage/CollectionEdit';
 
 export { default as MyComment } from './MyPage/MyComment/MyComment';
 export { default as MyParing } from './MyPage/MyPairing/MyPairing';

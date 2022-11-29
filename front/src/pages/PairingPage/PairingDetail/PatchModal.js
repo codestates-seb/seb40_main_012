@@ -259,7 +259,12 @@ export default function DeleteModal() {
                 <Imgbtn>이미지 업로드</Imgbtn>
                 <span className="imgName">{imgData?.name}</span>
               </label>
-              <input id="upload" type="file" onChange={onChangeImg} />
+              <input
+                id="upload"
+                type="file"
+                accept=".jpeg, .jpg, .png"
+                onChange={onChangeImg}
+              />
             </LinkAndImgWrapperStyled>
           </Wrapper>
           <BtnStyleBox>
