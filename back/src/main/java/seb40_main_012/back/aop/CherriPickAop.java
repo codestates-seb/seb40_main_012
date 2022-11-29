@@ -52,7 +52,7 @@ public class CherriPickAop {
         System.out.println("----------------------------------------------------");
     }
 
-    @AfterReturning(value = "execution(* seb40_main_012.back.user.controller.UserController.emailConfirm(..)) && args(emailDto))", returning = "response")
+    /*@AfterReturning(value = "execution(* seb40_main_012.back.user.controller.UserController.emailConfirm(..)) && args(emailDto))", returning = "response")
     public void sendAuthCodeEmail(JoinPoint joinPoint, UserDto.EmailDto emailDto, String response) {
         String authCode = response;
         try {
@@ -60,6 +60,6 @@ public class CherriPickAop {
         } catch (GeneralSecurityException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
 }
