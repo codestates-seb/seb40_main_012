@@ -77,7 +77,7 @@ public class CommentService {
                             .book(findBook)
                             .user(findUser)
                             .body(comment.getBody())
-                            .createdAt(LocalDateTime.now())
+                            .createdAt(findMyComment(isbn13).getCreatedAt())
                             .modifiedAt(LocalDateTime.now())
                             .build();
         }
@@ -208,12 +208,12 @@ public class CommentService {
         return commentRepository.findByIsbn13AndUserId(isbn13, findUser.getUserId());
     }
 
-    public Comment findMyCommentByEmail(String isbn13) {
-
-        User findUser = userService.getLoginUser();
-
-        return commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, findUser.getEmail());
-    }
+//    public Comment findMyCommentByEmail(String isbn13) {
+//
+//        User findUser = userService.getLoginUser();
+//
+//        return commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, findUser.getEmail());
+//    }
 
     public List<Comment> findMyCommentAll() {
 

@@ -61,8 +61,8 @@ public class BookDto {
     public static class Response {
 
         private String isbn13;
-        private Comment myComment;
-        private Rating myRating;
+        private Double myRating;
+        private Optional<Comment> myComment;
         private String cover;
         private String title;
         private String author;

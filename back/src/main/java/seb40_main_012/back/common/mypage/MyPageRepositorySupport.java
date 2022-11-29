@@ -57,6 +57,7 @@ public class MyPageRepositorySupport extends QuerydslRepositorySupport {
         return checkLastPage(pageable, results);
     }
 
+
     public Slice<Pairing> findUserPairing(Pageable pageable, Long lastStoreId, Long userId){
         List<Pairing> results =
                 queryFactory.selectFrom(pairing)
@@ -76,7 +77,6 @@ public class MyPageRepositorySupport extends QuerydslRepositorySupport {
                         .where(
                                 lstStoreIdOfBookmark(lastStoreId),
                                 bookmark.user.userId.eq(userId)
-//                                        .and(bookmark.bookCollection.isNotNull())
                                         .and(bookmark.bookmarkType.eq(BookmarkType.COLLECTION))
                         )
                         .orderBy(bookmark.bookmarkId.desc())

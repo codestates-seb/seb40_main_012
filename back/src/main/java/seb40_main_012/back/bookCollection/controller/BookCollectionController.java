@@ -5,6 +5,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
@@ -78,15 +79,23 @@ public class BookCollectionController {
         return bookmarkService.bookmarkCollection(collectionId);
     }
 
+    @GetMapping("/bookmark/book")
+    @ResponseStatus(HttpStatus.OK)
+    public SingleResponseDto getBookMarkByBook() {
+        List<Book> books = collectionService.getBookmarkByBook();
+        List<BookDto.BookmarkedBook> bookDto = books.stream().map(x -> BookDto.BookmarkedBook.of(x)).collect(Collectors.toList());
+        return new SingleResponseDto<>(bookDto);
+    }
+
 
     @GetMapping("/userCollection")
     @ResponseStatus(HttpStatus.OK)
-    public SingleResponseDto getUserBookCollection(@PathParam("lastId") Long lastId) {
+    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {
         User findUser = userService.getLoginUser();
-        Slice<BookCollection> collections = userService.getUserCollection(lastId);
-        Slice<BookCollectionDto.UserCollection> collectionDto = new SliceImpl<>(collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList()));
+        List<BookCollection> collections = collectionService.findUserCollection();
+        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
         Long listCount = collectionRepository.countByUser(findUser);
-        return new SingleResponseDto<>(collectionDto);
+        return new ListResponseDto<>(listCount, collectionDto);
     }
 
 
