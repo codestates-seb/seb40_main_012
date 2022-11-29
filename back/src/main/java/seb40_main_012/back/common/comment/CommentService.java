@@ -77,7 +77,6 @@ public class CommentService {
                             .book(findBook)
                             .user(findUser)
                             .body(comment.getBody())
-                            .createdAt(LocalDateTime.now())
                             .modifiedAt(LocalDateTime.now())
                             .build();
         }
