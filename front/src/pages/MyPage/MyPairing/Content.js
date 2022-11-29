@@ -96,14 +96,14 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ content, setContent, fetchData }) => {
+const Content = ({ content, setContent, fetchData, lastId, setLastId }) => {
   const [hasMore, setHasMore] = useState(true);
+  console.log('content나와랑', content);
 
   // 그냥 콘솔로그 찍었을 때는 나오는데, lastId로 조회했을 때는 nan이 나오는 문제
-  const [lastId, setLastId] = useState(
-    content?.data[content?.data?.length - 1]?.pairingId
-  );
-  console.log(content?.data[content?.data?.length - 1]?.pairingId);
+  // const [lastId, setLastId] = useState(
+  //   content?.data[content?.data?.length - 1]?.pairingId
+  // );
 
   console.log('마지막아이디', lastId);
   const [newContent, setNewContent] = useState({
@@ -116,20 +116,17 @@ const Content = ({ content, setContent, fetchData }) => {
     //   setHasMore(false);
     //   return;
     // }
-
+    console.log(lastId);
     // 새로불러온 데이터를 state에 저장해서 그 데이터끼리 붙여야 함
 
-    if (hasMore === true) {
+    if (hasMore === true && lastId) {
       axios
-        .get(`/api/mypage/userPairing?lastId=86`)
-        // .get(`/api/mypage/userPairing?lastId=${lastId}`)
+
+        .get(`/api/mypage/userPairing?lastId=${lastId}`)
 
         .then((response) => {
           console.log('response.data.data.content', response.data.data.content);
           // 여기까진 들어옴
-          setNewContent({
-            data: response?.data.data.content,
-          });
           console.log('newContent', newContent);
           // console.log('newContent', newContent.data);
 
@@ -139,18 +136,22 @@ const Content = ({ content, setContent, fetchData }) => {
           // });
 
           setContent({
-            data: content?.data?.concat(newContent.data),
-            size: content.size,
+            data: content.data.concat(response.data.data.content),
+            size: response.data.data.size,
           });
           console.log('content.data', content.data);
-          setHasMore(response.data.data.empty);
-          setLastId(lastId - 5);
+          setHasMore(response.data.data.size < 5 ? false : true);
+          setLastId(
+            response.data.data.content[response.data.data.content.length - 1]
+              .pairingId
+          );
         })
         .catch((error) => console.log('에러', error));
     }
 
     /////
   };
+  console.log('newContent', newContent);
 
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
@@ -199,8 +200,9 @@ const Content = ({ content, setContent, fetchData }) => {
           dataLength={content.data.length}
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
-          next={content && fetchMoreData}
-          hasMore={true} // 스크롤 막을지 말지 결정
+          // size 속성으로 측정 가능 .
+          next={fetchMoreData}
+          hasMore={hasMore} // 스크롤 막을지 말지 결정
           loader={
             <div
               style={{
@@ -220,7 +222,7 @@ const Content = ({ content, setContent, fetchData }) => {
         >
           <div>
             {content.data ? (
-              content.data.map((data) => (
+              content.data?.map((data) => (
                 <MyPairingDetail
                   key={data.pairingId}
                   data={data}

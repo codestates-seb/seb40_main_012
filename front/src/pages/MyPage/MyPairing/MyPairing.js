@@ -34,6 +34,7 @@ const MyPairing = () => {
   const [content, setContent] = useState({
     data: [],
   });
+  const [lastId, setLastId] = useState();
 
   const fetchData = async () => {
     axios
@@ -42,6 +43,10 @@ const MyPairing = () => {
         setContent({
           data: response.data.data.content,
         });
+        setLastId(
+          response.data.data.content[response.data.data.content.length - 1]
+            .pairingId
+        );
       })
       .catch((error) => console.log('에러', error));
   };
@@ -61,6 +66,8 @@ const MyPairing = () => {
               content={content}
               setContent={setContent}
               fetchData={fetchData}
+              lastId={lastId}
+              setLastId={setLastId}
             ></Content>
           </Container>
         ) : (

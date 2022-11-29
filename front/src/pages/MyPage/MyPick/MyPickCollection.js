@@ -45,6 +45,15 @@ const BookImg = styled.div`
     height: 164px !important;
     margin-left: 10px;
   }
+  .resize-book {
+    box-sizing: inherit;
+    width: 112px !important;
+    height: 158px !important;
+    padding: 10px !important;
+    margin-left: 8px;
+    filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
+    /* background-color: navy; */
+  }
 `;
 
 const FlexBox = styled.div`

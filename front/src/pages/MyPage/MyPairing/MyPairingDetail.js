@@ -40,6 +40,7 @@ const BookImg = styled.div`
     height: 164px !important;
     margin-left: 10px;
     /* background-color: navy; */
+    filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
   }
   .resize-book {
     box-sizing: inherit;

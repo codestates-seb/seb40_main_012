@@ -9,7 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { MY_PICK_PAIRING } from '../../../api/requests';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -44,6 +45,16 @@ const BookImg = styled.div`
     width: 108px !important;
     height: 164px !important;
     margin-left: 10px;
+    /* background-color: navy; */
+  }
+  .resize-book {
+    box-sizing: inherit;
+    width: 112px !important;
+    height: 158px !important;
+    padding: 10px !important;
+    margin-left: 8px;
+    filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
+    /* background-color: navy; */
   }
 `;
 
@@ -80,20 +91,34 @@ const FlexBox = styled.div`
   }
 `;
 
-const MyPickPairing = ({ content, fetchCollectionData }) => {
+const MyPickPairing = ({ content }) => {
   console.log('받아온콘텐츠', content);
   const navigate = useNavigate();
   const [hasMore, setHasMore] = useState(true);
-
+  const [pairingContent, setPairingContent] = useState({
+    data: [],
+  });
   // 그냥 콘솔로그 찍었을 때는 나오는데, lastId로 조회했을 때는 nan이 나오는 문제
-  const [lastId, setLastId] = useState(
-    content?.data?.content[content?.data?.content?.length - 1]?.bookmarkId
-  );
-  console.log(
-    content?.data?.content[content?.data?.content?.length - 1]?.bookmarkId
-  );
+  // const [lastId, setLastId] = useState(
+  //   content?.data?.content[content?.data?.content?.length - 1]?.bookmarkId
+  // );
+  // console.log(
+  //   content?.data?.content[content?.data?.content?.length - 1]?.bookmarkId
+  // );
 
-  console.log('마지막아이디', lastId);
+  const fetchPairingData = async () => {
+    axios
+      .get(MY_PICK_PAIRING)
+      .then((response) => {
+        console.log('response');
+        setPairingContent({
+          data: response.data.data.content,
+        });
+      })
+      .catch((error) => console.log('에러', error));
+  };
+
+  // console.log('마지막아이디', lastId);
   const [newContent, setNewContent] = useState({
     data: [],
   });
@@ -123,7 +148,10 @@ const MyPickPairing = ({ content, fetchCollectionData }) => {
         // .get(`/api/mypage/userPairing?lastId=${lastId}`)
 
         .then((response) => {
-          console.log('response.data.data.content', response.data.data.content);
+          console.log(
+            '확인하기 response.data.data.content',
+            response.data.data.content
+          );
           // 여기까진 들어옴
           setNewContent({
             data: response?.data.data.content,
@@ -149,190 +177,202 @@ const MyPickPairing = ({ content, fetchCollectionData }) => {
 
     /////
   };
-
+  useEffect(() => {
+    fetchPairingData();
+  }, []);
   return (
     <>
-      {content.data.content ? (
-        <InfiniteScroll
-          dataLength={content.data.content}
-          // dataLength={data.content.length}
-          // next={data.content && fetchMoreData}
-          next={content.data.content && fetchMoreData}
-          hasMore={true} // 스크롤 막을지 말지 결정
-          loader={
-            <div
-              style={{
-                textAlign: 'center',
-              }}
-            >
-              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
-              <div>열심히 읽어오는 중..</div>
-            </div>
-          }
-          height={400}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yayy! 모든 픽을 다 읽었어요!</b>
-            </p>
-          }
-        >
-          {content?.data.content?.map((data) => (
-            <ItemContainer key={data.bookmarkId}>
-              <Grid
-                container
-                item
-                xs={12}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                }}
-              >
-                <Grid
-                  item
-                  xs={1.8}
-                  onClick={() => navigate(`/pairing/${data.pairingId}`)}
-                  aria-hidden="true"
-                >
-                  <BookImg>
-                    {data.collections.bookCover ? (
-                      <img
-                        className="resize-book"
-                        src={data.collections.bookCover}
-                        alt="book thumbnail"
-                      ></img>
-                    ) : (
-                      <img
-                        className="resize"
-                        src="/images/pairing.png"
-                        alt="book thumbnail"
-                      ></img>
-                    )}
-                  </BookImg>
-                </Grid>
-
-                <Grid
-                  item
-                  xs={10}
-                  sx={{ height: '164px', marginBottom: '5px' }}
-                >
-                  <FlexBox
-                    onClick={() =>
-                      navigate(`/book/${data.collections.pairingId}`)
-                    }
-                  >
-                    <Grid sx={{ height: '32.8px' }}>
-                      <Typography
-                        className="title"
-                        sx={{
-                          display: 'flex',
-                          mt: 1,
-                          mb: 1,
-                          fontSize: 17,
-                          fontWeight: 400,
-                        }}
-                        color="#2e3031"
-                        variant="body2"
-                        component={'span'}
-                      >
-                        {data.collections.bookName}
-                      </Typography>
-                    </Grid>
-                    <Grid sx={{ height: '98.4px' }}>
-                      <Typography
-                        color="#232627"
-                        sx={{
-                          fontWeight: 200,
-                          height: 'auto',
-                        }}
-                        variant="body2"
-                        component={'span'}
-                      >
-                        {data.collections.content}
-                      </Typography>
-                    </Grid>
-
-                    <Grid sx={{ height: '32.8px' }}>
-                      <div className="heart-star-title">
-                        <Grid
-                          item
-                          xs={3}
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                          color="#BFBFBF"
-                        >
-                          <>
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                '/images/p_heart_filled_icon.svg'
-                              }
-                              alt="heart icon"
-                            />
-                          </>
-
-                          {data.collections.collectionLike
-                            ? data.collections.collectionLike
-                            : 0}
-                        </Grid>
-                        <Grid
-                          item
-                          xs={3}
-                          sx={{
-                            display: 'flex',
-                            alignItems: 'center',
-                          }}
-                          color="#BFBFBF"
-                        ></Grid>
-                        <Grid
-                          item
-                          xs={6}
-                          sx={{
-                            display: 'flex',
-                            flexDirection: 'row-reverse',
-                          }}
-                          align="right"
-                          color="#b3b3b3"
-                        ></Grid>
-                      </div>
-                    </Grid>
-                  </FlexBox>
-                </Grid>
-                <Grid
-                  item
-                  xs={0.2}
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'row-reverse',
+      {pairingContent ? (
+        <>
+          {console.log('길이가있나용', pairingContent?.data?.length)}
+          {pairingContent?.data ? (
+            <InfiniteScroll
+              dataLength={pairingContent?.data?.length}
+              // dataLength={data.content.length}
+              // next={data.content && fetchMoreData}
+              next={pairingContent.data.content && fetchMoreData}
+              hasMore={true} // 스크롤 막을지 말지 결정
+              loader={
+                <div
+                  style={{
+                    textAlign: 'center',
                   }}
                 >
-                  <Remove>
-                    <RemoveButton
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            `${data.collections.pairingId}번째 페어링 북마크를 삭제하시겠습니까?`
-                          )
-                        ) {
-                          onRemove(data.collections.pairingId);
+                  <img
+                    src={'/images/spinner.gif'}
+                    alt="loading cherrypick"
+                  ></img>
+                  <div>열심히 읽어오는 중..</div>
+                </div>
+              }
+              height={400}
+              endMessage={
+                <p style={{ textAlign: 'center' }}>
+                  <b>Yayy! 모든 픽을 다 읽었어요!</b>
+                </p>
+              }
+            >
+              {pairingContent.data.content?.map((data) => (
+                <ItemContainer key={data.bookmarkId}>
+                  <Grid
+                    container
+                    item
+                    xs={12}
+                    sx={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                    }}
+                  >
+                    <Grid
+                      item
+                      xs={1.8}
+                      onClick={() => navigate(`/pairing/${data.pairingId}`)}
+                      aria-hidden="true"
+                    >
+                      <BookImg>
+                        {data.collections.bookCover ? (
+                          <img
+                            className="resize-book"
+                            src={data.collections.bookCover}
+                            alt="book thumbnail"
+                          ></img>
+                        ) : (
+                          <img
+                            className="resize"
+                            src="/images/pairing.png"
+                            alt="book thumbnail"
+                          ></img>
+                        )}
+                      </BookImg>
+                    </Grid>
+
+                    <Grid
+                      item
+                      xs={10}
+                      sx={{ height: '164px', marginBottom: '5px' }}
+                    >
+                      <FlexBox
+                        onClick={() =>
+                          navigate(`/book/${data.collections.pairingId}`)
                         }
+                      >
+                        <Grid sx={{ height: '32.8px' }}>
+                          <Typography
+                            className="title"
+                            sx={{
+                              display: 'flex',
+                              mt: 1,
+                              mb: 1,
+                              fontSize: 17,
+                              fontWeight: 400,
+                            }}
+                            color="#2e3031"
+                            variant="body2"
+                            component={'span'}
+                          >
+                            {data.collections.bookName}
+                          </Typography>
+                        </Grid>
+                        <Grid sx={{ height: '98.4px' }}>
+                          <Typography
+                            color="#232627"
+                            sx={{
+                              fontWeight: 200,
+                              height: 'auto',
+                            }}
+                            variant="body2"
+                            component={'span'}
+                          >
+                            {data.collections.content}
+                          </Typography>
+                        </Grid>
+
+                        <Grid sx={{ height: '32.8px' }}>
+                          <div className="heart-star-title">
+                            <Grid
+                              item
+                              xs={3}
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}
+                              color="#BFBFBF"
+                            >
+                              <>
+                                <img
+                                  src={
+                                    process.env.PUBLIC_URL +
+                                    '/images/p_heart_filled_icon.svg'
+                                  }
+                                  alt="heart icon"
+                                />
+                              </>
+
+                              {data.collections.collectionLike
+                                ? data.collections.collectionLike
+                                : 0}
+                            </Grid>
+                            <Grid
+                              item
+                              xs={3}
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                              }}
+                              color="#BFBFBF"
+                            ></Grid>
+                            <Grid
+                              item
+                              xs={6}
+                              sx={{
+                                display: 'flex',
+                                flexDirection: 'row-reverse',
+                              }}
+                              align="right"
+                              color="#b3b3b3"
+                            ></Grid>
+                          </div>
+                        </Grid>
+                      </FlexBox>
+                    </Grid>
+                    <Grid
+                      item
+                      xs={0.2}
+                      sx={{
+                        display: 'flex',
+                        flexDirection: 'row-reverse',
                       }}
                     >
-                      <img
-                        src={
-                          process.env.PUBLIC_URL +
-                          '/images/bookmark_filled_icon.svg'
-                        }
-                        alt="bookmark icon"
-                      />
-                    </RemoveButton>
-                  </Remove>
-                </Grid>
-              </Grid>
-            </ItemContainer>
-          ))}
-        </InfiniteScroll>
+                      <Remove>
+                        <RemoveButton
+                          onClick={() => {
+                            if (
+                              window.confirm(
+                                `${data.collections.pairingId}번째 페어링 북마크를 삭제하시겠습니까?`
+                              )
+                            ) {
+                              onRemove(data.collections.pairingId);
+                            }
+                          }}
+                        >
+                          <img
+                            src={
+                              process.env.PUBLIC_URL +
+                              '/images/bookmark_filled_icon.svg'
+                            }
+                            alt="bookmark icon"
+                          />
+                        </RemoveButton>
+                      </Remove>
+                    </Grid>
+                  </Grid>
+                </ItemContainer>
+              ))}
+            </InfiniteScroll>
+          ) : (
+            <div>데이터가 없습니다</div>
+          )}
+        </>
       ) : (
         <div>데이터없어용</div>
       )}

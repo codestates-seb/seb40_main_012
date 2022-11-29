@@ -92,8 +92,8 @@ const MyPick = () => {
 
   useEffect(() => {
     // fetchDataTest();
-    fetchData();
     fetchPairingData();
+    fetchData();
     fetchCollectionData();
   }, []);
 

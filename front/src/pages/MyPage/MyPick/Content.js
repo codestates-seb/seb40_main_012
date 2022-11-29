@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 // import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import MyPickBook from './MyPickBook';
-import InfiniteScroll from 'react-infinite-scroll-component';
+
 import MyPickPairing from './MyPickPairing';
 import MyPickCollection from './MyPickCollection';
 import { useState } from 'react';
@@ -105,8 +105,7 @@ const ButtonCSS = styled.button`
 const Content = ({
   setContent,
   content,
-  pairingContent,
-  setPairingContent,
+
   collectionContent,
   setCollectionContent,
   fetchCollectionData,
@@ -192,12 +191,7 @@ const Content = ({
           {/* ///////////// */}
 
           <div>
-            {/* {view === 1 ? (
-                <MyPickPairing
-                  content={pairingContent}
-                  fetchPairingData={fetchPairingData}
-                />
-              ) : null} */}
+            {view === 1 ? <MyPickPairing /> : null}
 
             {view === 2 ? (
               <MyPickCollection

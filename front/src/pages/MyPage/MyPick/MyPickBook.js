@@ -45,6 +45,15 @@ const BookImg = styled.div`
     height: 164px !important;
     margin-left: 10px;
   }
+  .resize-book {
+    box-sizing: inherit;
+    width: 112px !important;
+    height: 158px !important;
+    padding: 10px !important;
+    margin-left: 8px;
+    filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
+    /* background-color: navy; */
+  }
 `;
 
 const FlexBox = styled.div`
@@ -152,7 +161,7 @@ const MyPickBook = ({ content, fetchData }) => {
 
   return (
     <>
-      {content.data.content ? (
+      {content ? (
         <InfiniteScroll
           dataLength={content.data.content}
           // dataLength={data.content.length}
@@ -191,7 +200,7 @@ const MyPickBook = ({ content, fetchData }) => {
                   <BookImg
                     onClick={() => navigate(`/book/${data.collections.isbn13}`)}
                   >
-                    {data.bookCover ? (
+                    {data.collections.bookCover ? (
                       <img
                         className="resize-book"
                         src={data.collections.bookCover}
