@@ -88,6 +88,8 @@ public class BookCollectionController {
     }
 
 
+    //================================= 컬렉션 메인 =================================
+
     @GetMapping("/userCollection")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {
@@ -96,6 +98,14 @@ public class BookCollectionController {
         List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
         Long listCount = collectionRepository.countByUser(findUser);
         return new ListResponseDto<>(listCount, collectionDto);
+    }
+
+    @GetMapping("/bestCollection")
+    @ResponseStatus(HttpStatus.OK)
+    public ListResponseDto<BookCollectionDto.UserCollection> getBestBookCollection() {
+        List<BookCollection> collections = collectionService.findBestCollection();
+        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
+        return new ListResponseDto<>(collectionDto);
     }
 
 

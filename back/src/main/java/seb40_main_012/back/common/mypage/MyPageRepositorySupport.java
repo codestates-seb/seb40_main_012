@@ -30,19 +30,6 @@ public class MyPageRepositorySupport extends QuerydslRepositorySupport {
         this.queryFactory = queryFactory;
     }
 
-    //*test
-    public Slice<BookCollection> findCollectionByNoOffset(Pageable pageable, Long lastStoreId){
-        List<BookCollection> results =
-                queryFactory.selectFrom(collection)
-                        .where(
-                                lstStoreIdOfCollection(lastStoreId) //no offset 페이징 처리
-                                //기타 조건
-                        )
-                        .orderBy(collection.collectionId.desc())
-                        .limit(pageable.getPageSize()+1)
-                        .fetch();
-        return checkLastPage(pageable,results); //무한 스크롤 처리
-    }
 
     public Slice<BookCollection> findUserCollection(Pageable pageable, Long lastStoreId, Long userId){
         List<BookCollection> results =
