@@ -15,9 +15,6 @@ const CollectionBookTitle = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.dark};
   @media screen and (max-width: 500px) {
-    font-size: 11px;
-  }
-  @media screen and (max-width: 500px) {
     font-size: 10px;
     font-weight: 500;
   }
