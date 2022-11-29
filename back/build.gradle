@@ -58,9 +58,6 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test' // Spring Security Test
     implementation 'org.springframework.boot:spring-boot-starter-test' // JUnit4 Test
     //    --------------------------------------------------------------------------------------------
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 사진 저장을 위해 추가
 	implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.2' // S3 이미지 업로드를 위해 추가
 	implementation 'com.github.downgoon:marvin:1.5.5' // 이미지 리사이징을 위한 라이브러리
@@ -75,7 +72,6 @@ dependencies {
 	runtimeOnly 'com.h2database:h2'
 //	runtimeOnly 'mysql:mysql-connector-java'
     //    --------------------------------------------------------------------------------------------
-    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
@@ -85,7 +81,6 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 	//    --------------------------------------------------------------------------------------------
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf' // 임시 사용
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // OAuth2
 }
 
