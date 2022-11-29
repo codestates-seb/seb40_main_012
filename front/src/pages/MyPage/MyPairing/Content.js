@@ -1,10 +1,13 @@
+/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from '../../../api/axios';
+import { useNavigate } from 'react-router-dom';
+import MyPairingDetail from './MyPairingDetail';
+import { useState } from 'react';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -93,57 +96,67 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ setInfiniteData, infiniteData }) => {
-  // const [data, setData] = useState({
-  //   content: content.data,
-  //   hasMore: true,
-  // });
+const Content = ({ content, setContent, fetchData }) => {
+  const [hasMore, setHasMore] = useState(true);
 
+  // 그냥 콘솔로그 찍었을 때는 나오는데, lastId로 조회했을 때는 nan이 나오는 문제
+  const [lastId, setLastId] = useState(
+    content?.data[content?.data?.length - 1]?.pairingId
+  );
+  console.log(content?.data[content?.data?.length - 1]?.pairingId);
+
+  console.log('마지막아이디', lastId);
+  const [newContent, setNewContent] = useState({
+    data: [],
+  });
+  console.log('hasMore', hasMore);
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    if (infiniteData.content.data.length >= 100) {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data,
-        },
-        hasMore: false,
-      });
-      return;
-    }
-    if (infiniteData.content.data.length < 10) {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data,
-        },
-        hasMore: false,
-      });
-      return;
-    }
-    ////// 나중에 통신하는 거 붙여주기
-    setTimeout(() => {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data.concat(infiniteData.content.data),
-        },
-        // response.data
-        hasMore: true,
-      });
-    }, 800);
-    /////
-  };
+    // if (newContent.data.length < 5) {
+    //   setHasMore(false);
+    //   return;
+    // }
 
-  const onRemove = (id) => {
-    axios
-      .delete(`/api/books/pairings/${id}/delete`)
-      .then(location.reload())
-      .catch((error) => console.log('에러', error));
+    // 새로불러온 데이터를 state에 저장해서 그 데이터끼리 붙여야 함
+
+    if (hasMore === true) {
+      axios
+        .get(`/api/mypage/userPairing?lastId=86`)
+        // .get(`/api/mypage/userPairing?lastId=${lastId}`)
+
+        .then((response) => {
+          console.log('response.data.data.content', response.data.data.content);
+          // 여기까진 들어옴
+          setNewContent({
+            data: response?.data.data.content,
+          });
+          console.log('newContent', newContent);
+          // console.log('newContent', newContent.data);
+
+          // setContent({
+          //   data: content.data.concat(response.data.data.content),
+          //   size: content.size,
+          // });
+
+          setContent({
+            data: content?.data?.concat(newContent.data),
+            size: content.size,
+          });
+          console.log('content.data', content.data);
+          setHasMore(response.data.data.empty);
+          setLastId(lastId - 5);
+        })
+        .catch((error) => console.log('에러', error));
+    }
+
+    /////
   };
 
   const removeAll = () => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
       axios
         .delete(`/api/books/pairings/delete`)
-        .then(location.reload())
+        .then(() => fetchData())
         .catch((error) => console.log('에러', error));
     }
   };
@@ -174,7 +187,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                   mb: 1,
                 }}
                 variant="body2"
-                gutterBottom
+                component={'span'}
               >
                 전체 삭제
               </Typography>
@@ -183,23 +196,20 @@ const Content = ({ setInfiniteData, infiniteData }) => {
         </Grid>
 
         <InfiniteScroll
-          dataLength={infiniteData.content.data.length}
+          dataLength={content.data.length}
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
-          next={infiniteData.content.data && fetchMoreData}
-          hasMore={infiniteData.hasMore} // 스크롤 막을지 말지 결정
+          next={content && fetchMoreData}
+          hasMore={true} // 스크롤 막을지 말지 결정
           loader={
-            <p
+            <div
               style={{
                 textAlign: 'center',
               }}
             >
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
               <div>열심히 읽어오는 중..</div>
-            </p>
+            </div>
           }
           height={400}
           endMessage={
@@ -209,115 +219,16 @@ const Content = ({ setInfiniteData, infiniteData }) => {
           }
         >
           <div>
-            {infiniteData.content.data ? (
-              infiniteData.content.data.map((data, key) => (
-                <ItemContainer key={key}>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }}
-                  >
-                    <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
-
-                    <Grid item xs={2}>
-                      {data && (
-                        <BookImg>
-                          <img
-                            className="resize"
-                            src={data.bookCover}
-                            alt="book thumbnail"
-                          ></img>
-                        </BookImg>
-                      )}
-                    </Grid>
-                    <Grid item xs={9}>
-                      <FlexBox>
-                        <Typography
-                          color="#232627"
-                          sx={{
-                            height: 125,
-                            fontWeight: 200,
-                          }}
-                          variant="body2"
-                          gutterBottom
-                        >
-                          {data.content}
-                        </Typography>
-
-                        <div className="heart-star-title">
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                            color="#BFBFBF"
-                          >
-                            <FavoriteTwoToneIcon
-                              sx={{ width: 19.5, height: 19.5 }}
-                              align="center"
-                              style={{ color: 'FFD8D8' }}
-                            />
-                            {data.pairingLike}
-                          </Grid>
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                            color="#BFBFBF"
-                          ></Grid>
-                          <Grid
-                            item
-                            xs={6}
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row-reverse',
-                            }}
-                            align="right"
-                            color="#737373"
-                          >
-                            <div>
-                              {data.bookName}, {data.author}
-                            </div>
-                          </Grid>
-                        </div>
-                      </FlexBox>
-                    </Grid>
-                    <Grid
-                      item
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row-reverse',
-                      }}
-                    >
-                      <Remove
-                        onClick={() => {
-                          // 현재 작동 안됨 (코멘트 아이디 없음)
-                          if (
-                            window.confirm(
-                              `${data.commentId}번째 페어링을 삭제하시겠습니까?`
-                            )
-                          ) {
-                            onRemove(data.commentId);
-                          }
-                        }}
-                      >
-                        <DeleteOutlinedIcon />
-                      </Remove>
-                    </Grid>
-                  </Grid>
-                </ItemContainer>
+            {content.data ? (
+              content.data.map((data) => (
+                <MyPairingDetail
+                  key={data.pairingId}
+                  data={data}
+                  fetchData={fetchData}
+                />
               ))
             ) : (
-              <div>데이터없어용</div>
+              <div>데이터가 없어요</div>
             )}
           </div>
         </InfiniteScroll>

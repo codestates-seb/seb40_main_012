@@ -105,7 +105,7 @@ const LinkCopyModal = ({
   link = '---',
 }) => {
   const [copied, setCopied] = useState(false);
-  const CopyLink = `http://main-012-client.s3-website.ap-northeast-2.amazonaws.com${link}`;
+  const CopyLink = `https://cherry-pick.co.kr${link}`;
 
   const handleClickCopy = () => {
     navigator.clipboard.writeText(CopyLink);
@@ -135,10 +135,7 @@ const LinkCopyModal = ({
         <LinkContainer>
           <div className="share">링크 공유</div>
           <LinkBox>
-            <input
-              readOnly
-              value={`http://main-012-client.s3-website.ap-northeast-2.amazonaws.com${link}`}
-            ></input>
+            <input readOnly value={`https://cherry-pick.co.kr${link}`}></input>
             <button onClick={handleClickCopy}>복사</button>
           </LinkBox>
         </LinkContainer>

@@ -12,8 +12,6 @@ import axios from '../../../api/axios';
 import { COMMENT_URL } from '../../../api/requests';
 import Scroll from '../Scroll';
 
-// 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
-
 const Void = styled.div`
   min-width: 50vw;
   min-height: 100vh;
@@ -32,40 +30,28 @@ const Void = styled.div`
 const MyComment = () => {
   console.log('마이코멘트 시작');
   const [view, setView] = useState(1);
+
   const [content, setContent] = useState({
-    bookComment: [],
-    pairingComment: [],
-    collectionComment: [],
-    hasMore: true,
-    listCount: 7,
+    data: [],
+    listCount: 0,
   });
 
   const fetchData = async () => {
     axios
       .get(COMMENT_URL)
       .then((response) => {
-        console.log(response);
         setContent({
-          bookComment: response.data.bookComment,
-          pairingComment: response.data.pairingComment,
-          collectionComment: response.data.collectionComment,
-          hasMore: true,
-          listCount: 0,
+          data: response.data.data,
+          listCount: response.data.listCount,
         });
       })
       .catch((error) => console.log('에러', error));
   };
 
-  const dataArray = content.bookComment
-    .concat(content.pairingComment)
-    .concat(content.collectionComment);
-
   useEffect(() => {
     fetchData();
   }, []);
 
-  console.log('content확인', content);
-  console.log('dataArray', dataArray);
   return (
     <Scroll>
       <PageContainer header footer>
@@ -74,10 +60,9 @@ const MyComment = () => {
             <Header></Header>
             <Nav view={view} setView={setView} content={content}></Nav>
             <Content
-              commentLength={content.listCount}
-              dataArray={dataArray}
               content={content}
               setContent={setContent}
+              fetchData={fetchData}
             ></Content>
           </Container>
         ) : (

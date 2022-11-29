@@ -6,8 +6,19 @@ const CollectionSmallBooksContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0 10px;
+  padding: 3px;
+  border: 3px solid transparent;
   &:hover {
     cursor: pointer;
+    border: none;
+    margin: 0 13px;
+    padding: 0;
+  }
+  &.small {
+    width: 23%;
+  }
+  @media screen and (max-width: 500px) {
+    margin: 0 5px;
   }
 `;
 
@@ -18,12 +29,25 @@ const BookColumn = styled.div`
 `;
 
 const CollectionSmallInfo = styled.div`
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
+  word-break: break-all;
+  margin-top: 10px;
   color: ${({ theme }) => theme.colors.darkgray};
+  @media screen and (max-width: 640px) {
+    font-size: 12px;
+  }
+  @media screen and (max-width: 500px) {
+    display: none;
+  }
 `;
 
-const CollectionSmallBooks = ({ collectionId, title, books }) => {
+const CollectionSmallBooks = ({
+  collectionId,
+  title,
+  books,
+  type = 'basic',
+}) => {
   const navigate = useNavigate();
 
   const onClickCollectionInfo = () => {
@@ -31,7 +55,10 @@ const CollectionSmallBooks = ({ collectionId, title, books }) => {
   };
 
   return (
-    <CollectionSmallBooksContainer onClick={onClickCollectionInfo}>
+    <CollectionSmallBooksContainer
+      onClick={onClickCollectionInfo}
+      className={type === 'small' ? 'small' : null}
+    >
       <BookColumn>
         {books.slice(0, 2).map((el) => {
           return <CollectionSmallBook key={el.isbn13} cover={el.bookCover} />;
