@@ -11,6 +11,8 @@ public class CorsConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:3000",
+                        "https://cherry-pick.co.kr:443",
+                        "https://www.cherry-pick.co.kr:443",
                         "http://main-012-client.s3-website.ap-northeast-2.amazonaws.com")
                 .allowedMethods("*")
                 .exposedHeaders("Authorization")

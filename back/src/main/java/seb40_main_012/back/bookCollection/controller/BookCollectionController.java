@@ -1,6 +1,8 @@
 package seb40_main_012.back.bookCollection.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
@@ -14,10 +16,12 @@ import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.dto.ListResponseDto;
 import seb40_main_012.back.dto.MultiResponseDto;
+import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -75,27 +79,14 @@ public class BookCollectionController {
     }
 
 
-//    @GetMapping("/userCollection")
-//    @ResponseStatus(HttpStatus.OK)
-//    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {
-//        User findUser = userService.getLoginUser();
-//        Long userId = findUser.getUserId();
-//        List<BookCollection> collections = userService.getUserCollection();
-//        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
-//        Long listCount = collectionRepository.countByUser(findUser);
-//        return new ListResponseDto<>(listCount, collectionDto);
-//    }
-
-    /** 무한스크롤 queryDsl */
     @GetMapping("/userCollection")
     @ResponseStatus(HttpStatus.OK)
-    public ListResponseDto<BookCollectionDto.UserCollection> getUserBookCollection() {
+    public SingleResponseDto getUserBookCollection(@PathParam("lastId") Long lastId) {
         User findUser = userService.getLoginUser();
-        Long userId = findUser.getUserId();
-        List<BookCollection> collections = userService.getUserCollection();
-        List<BookCollectionDto.UserCollection> collectionDto = collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList());
+        Slice<BookCollection> collections = userService.getUserCollection(lastId);
+        Slice<BookCollectionDto.UserCollection> collectionDto = new SliceImpl<>(collections.stream().map(x -> BookCollectionDto.UserCollection.of(x)).collect(Collectors.toList()));
         Long listCount = collectionRepository.countByUser(findUser);
-        return new ListResponseDto<>(listCount, collectionDto);
+        return new SingleResponseDto<>(collectionDto);
     }
 
 
