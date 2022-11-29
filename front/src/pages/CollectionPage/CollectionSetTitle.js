@@ -12,6 +12,9 @@ const CollectionTitle = styled.div`
   font-size: 22px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.dark};
+  @media screen and (max-width: 640px) {
+    font-size: 18px;
+  }
 `;
 
 const MyCollectionBtn = styled.button`
