@@ -36,6 +36,9 @@ const BookInfo = styled.div`
   font-size: 14px;
   font-weight: 700;
   justify-content: flex-start;
+  @media screen and (min-width: 1180px) {
+    width: 450px;
+  }
   .title {
     color: ${({ theme }) => theme.colors.dark};
     font-size: 20px;
