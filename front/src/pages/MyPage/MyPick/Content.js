@@ -11,28 +11,14 @@ import MyPickCollection from './MyPickCollection';
 import { useState } from 'react';
 import MyPickGuide from './MyPickGuide';
 import { BasicButton } from '../../../components/Buttons';
+import * as React from 'react';
+
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
-  input[type='radio'],
-  input:checked {
-    /* appearance: none; */
-    appearance: none;
 
-    border-radius: 100%;
-    margin-right: 0.1rem;
-    width: 20px;
-    height: 20px;
-    border: 1.5px solid gainsboro;
-
-    margin-top: -0.1px;
-    accent-color: #cfc3ff;
-    background-color: white;
-
-    &:checked {
-      background-color: #cfc3ff;
-    }
-  }
   img {
     align-items: center;
     justify-content: center;
@@ -45,6 +31,22 @@ const ContentContainer = styled.div`
   }
 `;
 
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  '& .MuiToggleButtonGroup-grouped': {
+    margin: theme.spacing(0.5),
+    border: 0,
+    '&.Mui-disabled': {
+      border: 0,
+    },
+    '&:not(:first-of-type)': {
+      borderRadius: theme.shape.borderRadius,
+    },
+    '&:first-of-type': {
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
+}));
+
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -52,6 +54,11 @@ const CommentContainer = styled.div`
 
 const Content = ({ content }) => {
   const [view, setView] = useState(1);
+  const [alignment, setAlignment] = React.useState('left');
+
+  const handleAlignment = (event, newAlignment) => {
+    setAlignment(newAlignment);
+  };
 
   return (
     <>
@@ -64,39 +71,38 @@ const Content = ({ content }) => {
               alignItems: 'center',
             }}
           >
-            <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
-            <Grid item xs={5} sx={{ mt: 1, mb: 1 }}>
+            <Grid item xs={5} sx={{ mt: 1, mb: 1, ml: 1 }}>
               <CommentContainer>
-                <Typography
-                  color="#737373"
-                  sx={{
-                    display: 'flex',
-                  }}
-                  variant="body2"
-                  gutterBottom
+                <StyledToggleButtonGroup
+                  size="small"
+                  value={alignment}
+                  exclusive
+                  onChange={handleAlignment}
+                  aria-label="text alignment"
+                  sx={{ ml: 0 }}
                 >
-                  <input
-                    type="radio"
-                    onChange={() => setView(1)}
-                    defaultChecked={true}
-                    name="xxx"
-                  />
-                  페어링
-                  <input
-                    type="radio"
-                    onChange={() => setView(2)}
-                    defaultChecked={false}
-                    name="xxx"
-                  />
-                  컬렉션
-                  <input
-                    type="radio"
-                    onChange={() => setView(3)}
-                    defaultChecked={false}
-                    name="xxx"
-                  />
-                  책
-                </Typography>
+                  <ToggleButton
+                    onClick={() => setView(1)}
+                    value="left"
+                    aria-label="left aligned"
+                  >
+                    페어링
+                  </ToggleButton>
+                  <ToggleButton
+                    onClick={() => setView(2)}
+                    value="center"
+                    aria-label="centered"
+                  >
+                    컬렉션
+                  </ToggleButton>
+                  <ToggleButton
+                    onClick={() => setView(3)}
+                    value="right"
+                    aria-label="right aligned"
+                  >
+                    책
+                  </ToggleButton>
+                </StyledToggleButtonGroup>
               </CommentContainer>
             </Grid>
 
