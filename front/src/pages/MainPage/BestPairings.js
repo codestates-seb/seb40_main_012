@@ -44,7 +44,7 @@ const BestPairings = () => {
 
   return (
     <BestPairingsContainer>
-      <MainBooksTitle title="요즘 뜨는 페어링" type="pairing" />
+      <MainBooksTitle title="체리픽 인기 페어링" type="pairing" />
       <PairingsContainer>
         {bestpairings?.map((el) => {
           return (
