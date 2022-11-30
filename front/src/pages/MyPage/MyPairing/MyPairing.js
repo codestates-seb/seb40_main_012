@@ -43,10 +43,15 @@ const MyPairing = () => {
         setContent({
           data: response.data.data.content,
         });
-        setLastId(
-          response.data.data.content[response.data.data.content.length - 1]
-            .pairingId
-        );
+        {
+          response.data.data.content.length
+            ? setLastId(
+                response.data.data.content[
+                  response.data.data.content.length - 1
+                ].pairingId
+              )
+            : null;
+        }
       })
       .catch((error) => console.log('에러', error));
   };
@@ -73,7 +78,7 @@ const MyPairing = () => {
         ) : (
           <Container maxWidth="md">
             <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
+            <Nav view={view} setView={setView}></Nav>
             <Void>
               <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>더
               읽어올 데이터가 없군요 📕

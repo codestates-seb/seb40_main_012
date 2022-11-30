@@ -79,7 +79,7 @@ const FlexBox = styled.div`
   }
   .title {
     :hover {
-      color: #b09dff;
+      color: #795af5;
       transition: color 0.5s;
     }
   }
@@ -224,7 +224,7 @@ const MyPairingDetail = ({ data, fetchData }) => {
             >
               <Remove
                 onClick={() => {
-                  if (window.confirm(`코멘트를 삭제하시겠습니까?`)) {
+                  if (window.confirm(`페어링을 삭제하시겠습니까?`)) {
                     onRemove(data.pairingId);
                   }
                 }}
