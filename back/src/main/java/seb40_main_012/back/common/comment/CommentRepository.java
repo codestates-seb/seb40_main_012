@@ -16,7 +16,7 @@ import java.util.Optional;
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
-//    SliceImpl<Comment> findSliceBy(Pageable pageable);
+    //    SliceImpl<Comment> findSliceBy(Pageable pageable);
     List<Comment> findSliceBy(Pageable pageable);
 
     @Query(nativeQuery = true, value = "select * from comment " +
@@ -33,12 +33,13 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<Comment> findMyBookCommentByIsbn13AndEmail(String isbn13);
 
     PageRequest pageRequest = PageRequest.of(0, 10);
+
     @Query(nativeQuery = true, value = "select * from comment " +
-            "where isbn13 = :isbn13 "+ "order by " + "like_count " + "desc")
+            "where isbn13 = :isbn13 " + "order by " + "like_count " + "desc")
     Page<Comment> findBookCommentsSlice(String isbn13, Pageable pageable);
 
     @Query(nativeQuery = true, value = "select * from comment " +
-            "where isbn13 = :isbn13 "+ "order by " + "like_count " + "desc")
+            "where isbn13 = :isbn13 " + "order by " + "like_count " + "desc")
     List<Comment> findBookComments(String isbn13);
 
     @Modifying
@@ -48,8 +49,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(nativeQuery = true, value = "select * " +
             "from Comment " +
             "where User_Id = :userId "
-            + "order by " + "created_at desc, created_at " + "desc")
-    List<Comment> findByUserId(long userId);
+            + "order by " + "created_at desc, created_at " + "desc ")
+    List<Comment> findByUserId(long userId, Pageable pageable);
 
     Long countByUser(User user);
 

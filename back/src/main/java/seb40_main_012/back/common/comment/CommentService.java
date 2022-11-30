@@ -221,7 +221,9 @@ public class CommentService {
 
         long userId = findUser.getUserId();
 
-        return commentRepository.findByUserId(userId);
+        PageRequest pageRequest = PageRequest.of(0, 5);
+
+        return commentRepository.findByUserId(userId, pageRequest);
     }
 
 //    public Page<Comment> findComments(int page, int size) { // 페이지네이션으로 받기
