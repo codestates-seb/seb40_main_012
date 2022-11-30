@@ -76,6 +76,7 @@ public interface BookMapper {
         List<BookCollection> list2 = book.getBookCollections();
         if (list2 != null) {
             response.bookCollections(new SliceImpl<>(list2.stream().sorted(Comparator.comparing(BookCollection::getLikeCount).reversed()).collect(Collectors.toList())));
+//            response.bookCollections(new SliceImpl<>(list2.stream().sorted(Comparator.comparing(BookCollection::getLikeCount).reversed()).collect(Collectors.toList())));
         }
         return response.build();
     }

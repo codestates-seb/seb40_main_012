@@ -93,7 +93,7 @@ public class RatingService {
 
                     findRating.setUserBookRating(0); // 유저 별점 업데이트
 
-                    findBook.setRatingCount(findBook.getRatingCount() - 1); // 별점 인원 + 1
+                    findBook.setRatingCount(findBook.getRatingCount() - 1); // 별점 인원 - 1
 
                     return bookRepository.save(findBook);
 

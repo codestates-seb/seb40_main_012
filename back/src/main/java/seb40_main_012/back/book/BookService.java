@@ -13,7 +13,9 @@ import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.CommentService;
@@ -151,7 +153,7 @@ public class BookService {
 
             long pairingCount = findBook.getPairings().size();
 
-            long bookCollectionCount = findBook.getBookCollections().size();
+            long bookCollectionCount = bookCollectionRepository.findAllCollectionsForTheBook(isbn13).size();
 
             findBook.setView(findBook.getView() + 1); // 별점 업데이트
             findBook.setCommentCount(commentCount);

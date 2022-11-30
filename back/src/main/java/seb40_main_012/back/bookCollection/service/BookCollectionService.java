@@ -308,6 +308,9 @@ public class BookCollectionService {
         return books;
     }
 
+    public List<BookCollection> getAllCollectionsForTheBook(String isbn13) {
+        return collectionRepository.findAllCollectionsForTheBook(isbn13);
+    }
 
     public List<BookCollection> findCollectionByUserCategory2() {
         User loginUser = userService.getLoginUser();
