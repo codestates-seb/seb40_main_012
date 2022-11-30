@@ -9,24 +9,28 @@ const randomColor = () => {
 const MainBookContainer = styled.div`
   position: relative;
   background-color: ${(props) => props.bgcolor};
-  border-radius: 20px;
   height: 400px;
   img {
     height: 90%;
     aspect-ratio: 7 / 10;
     object-fit: cover;
-    margin-left: 20px;
+    margin-left: 10px;
     @media screen and (max-width: 640px) {
-      width: 30%;
+      width: 40%;
       height: auto;
+      margin-left: 0;
+    }
+    &:hover {
+      cursor: pointer;
     }
   }
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   margin: 0 30px;
-  &:hover {
-    cursor: pointer;
+  @media screen and (max-width: 640px) {
+    margin: 5px;
+    height: 350px;
   }
 `;
 
@@ -34,18 +38,17 @@ const MainBookInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0 30px;
+  margin: 0px;
   background-color: #f5f5f5;
   min-width: 120px;
-  border-radius: 10px;
+  border-radius: 5px;
   padding: 20px;
-
   .title {
     font-size: 22px;
     font-weight: 700;
     color: ${({ theme }) => theme.colors.dark};
     margin-bottom: 5px;
-    word-wrap: break-word;
+    word-wrap: break-all;
     @media screen and (max-width: 640px) {
       font-size: 18px;
     }
@@ -63,6 +66,19 @@ const MainBookInfo = styled.div`
   }
   .rating {
     color: ${({ theme }) => theme.colors.mainColor};
+    font-weight: 600;
+  }
+  @media screen and (max-width: 640px) {
+    .title {
+      font-size: 16px;
+    }
+    .author,
+    .genre {
+      font-size: 12px;
+    }
+    .rating {
+      font-size: 14px;
+    }
   }
 `;
 
@@ -99,12 +115,17 @@ const MainBook = ({
   };
 
   return (
-    <MainBookContainer bgcolor={randomRGB} onClick={onClickMainBook}>
+    <MainBookContainer bgcolor={randomRGB}>
       <RankInfo>{ranking}</RankInfo>
-      <img src={cover} alt="book cover" />
+      <img
+        src={cover}
+        alt="book cover"
+        onClick={onClickMainBook}
+        role="presentation"
+      />
       <MainBookInfo>
         <div className="title">{bookTitle}</div>
-        <div className="author">{`${author} ·${publish}`}</div>
+        <div className="author">{`${author} · ${publish}`}</div>
         <div className="genre">{GenterMatcherToKor(genre)}</div>
         <div className="rating">★ {rating}</div>
       </MainBookInfo>
