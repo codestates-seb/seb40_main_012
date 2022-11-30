@@ -19,12 +19,14 @@ import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 import seb40_main_012.back.user.service.UserService;
 
+import javax.servlet.FilterChain;
 import javax.servlet.annotation.WebListener;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
+import javax.servlet.http.*;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Aspect
@@ -89,6 +91,14 @@ public class CherriPickAop {
 
         }
     }
+
+//    @AfterReturning(value = "execution(* seb40_main_012.back.config.auth.cookie.CookieManager.outCookie(..)) && args(request)", returning = "key")
+//    public void cookiesLifeCycle(JoinPoint joinPoint, HttpServletRequest request, String key) {
+//    }
+//
+//    @After(value = "execution(* seb40_main_012.back.config.auth.filter.JwtAuthenticationFilter.successfulAuthentication(..)) && args(request, response, authResult)")
+//    public void cookiesSignIn(JoinPoint joinPoint, HttpServletRequest request, HttpServletResponse response, Authentication authResult) {
+//    }
 
     @AfterReturning(value = "execution(* seb40_main_012.back.config.auth.service.UserDetailsServiceImpl.loadUserByUsername(..))", returning = "findUser")
     public void signInStatistics(JoinPoint joinPoint, User findUser) { // 로그인 이벤트 발생시
