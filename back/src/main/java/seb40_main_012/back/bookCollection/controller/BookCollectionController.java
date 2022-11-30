@@ -24,6 +24,7 @@ import seb40_main_012.back.user.service.UserService;
 
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,6 +58,12 @@ public class BookCollectionController {
     @ResponseStatus(HttpStatus.OK)
     public BookCollectionDto.CollectionDetails getCollection(@PathVariable("collection-id") Long collectionId) {
         BookCollection collection = collectionService.getCollection(collectionId);
+        collection.setCollectionCover(
+                collection.getBookIsbn13().stream()
+                        .map(a -> bookService.findBook(a).getCover())
+                        .limit(4)
+                        .collect(Collectors.toList())
+        );
         return BookCollectionDto.CollectionDetails.of(collection);
     }
 

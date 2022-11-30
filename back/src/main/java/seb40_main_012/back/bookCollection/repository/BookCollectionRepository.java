@@ -37,4 +37,10 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection, 
                     "OR LOWER(CONTENT) LIKE %:queryParam%")
     List<BookCollection> findTest(@Param("queryParam") String queryParam);
 
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM BOOK_COLLECTION " +
+            "INNER JOIN BOOK_COLLECTION_BOOK " +
+            "ON BOOK_COLLECTION.COLLECTION_ID = BOOK_COLLECTION_BOOK.COLLECTION_ID " +
+            "WHERE BOOK_ID = :isbn13")
+    List<BookCollection> findAllCollectionsForTheBook(String isbn13);
 }

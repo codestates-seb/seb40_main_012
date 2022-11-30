@@ -2,6 +2,7 @@ package seb40_main_012.back.bookCollection.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
@@ -28,6 +29,7 @@ import seb40_main_012.back.user.service.UserService;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -148,9 +150,13 @@ public class BookCollectionService {
     public BookCollection getCollection(Long collectionId) {
         BookCollection findBookCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
-        isUserLike(collectionId);
-        isUserBookmark(collectionId);
-        isUserCollection(collectionId);
+
+        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+            isUserLike(collectionId);
+            isUserBookmark(collectionId);
+            isUserCollection(collectionId);
+        }
+
         findBookCollection.setView(findBookCollection.getView() + 1);
 
         return findBookCollection;
@@ -302,6 +308,28 @@ public class BookCollectionService {
         return books;
     }
 
+    public List<BookCollection> getAllCollectionsForTheBook(String isbn13) {
+
+        List<BookCollection> result = collectionRepository.findAllCollectionsForTheBook(isbn13);
+
+//        List<String> coverResult = result.stream()
+//                .map(BookCollection::getBookIsbn13)
+//                .flatMap(Collection::stream)
+//                .map(a -> bookService.findBook(a).getCover())
+//                .limit(4)
+//                .collect(Collectors.toList());
+        if (result != null) {
+            for (int i = 0; i < result.size(); i++) {
+                result.get(i).setCollectionCover(
+                        result.get(i).getBookIsbn13().stream()
+                                .map(a -> bookService.findBook(a).getCover())
+                                .limit(4)
+                                .collect(Collectors.toList()));
+            }
+        }
+
+        return result;
+    }
 
     public List<BookCollection> findCollectionByUserCategory2() {
         User loginUser = userService.getLoginUser();

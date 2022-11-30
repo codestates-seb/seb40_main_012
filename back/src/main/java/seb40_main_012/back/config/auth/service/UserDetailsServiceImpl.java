@@ -43,7 +43,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             setPassword(user.getPassword());
             setRoles(user.getRoles());
             setProfileImage(user.getProfileImage());
-            //setProviderType(user.getProviderType());
+            //setProviderType(user.getProviderType()); // OAuth2 반영 안함
         }
 
         @Override
