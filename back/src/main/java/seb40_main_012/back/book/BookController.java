@@ -5,6 +5,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.entity.Book;
@@ -41,11 +42,13 @@ public class BookController {
 
     @GetMapping("/{isbn13}")
     public ResponseEntity getBook(
-            @RequestHeader("Authorization") @Valid @Nullable String token,
+            @RequestHeader(value = "Authorization", required = false) @Valid @Nullable String token,
             @PathVariable("isbn13") @Positive String isbn13) {
 
         Book book = bookService.updateView(isbn13);
-        bookService.isBookMarkedBook(book);
+        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+            bookService.isBookMarkedBook(book);
+        }
 
         if (token == null && book.getComments() != null) { // 로그인 안 했을 때 isLiked == null
 
@@ -78,28 +81,6 @@ public class BookController {
                             }}
                     ));
         }
-
-
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        book.getBookCollections().stream()
-//                .map(BookCollection::getBookIsbn13)
-//                .flatMap(Collection::stream)
-//                .map(a -> bookService.findBook(a).getCover())
-//                .limit(4)
-//                .forEach(System.out::println);
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-//        System.out.println("-------------------------------------------------");
-
-
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

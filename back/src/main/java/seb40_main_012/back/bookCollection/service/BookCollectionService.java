@@ -2,6 +2,7 @@ package seb40_main_012.back.bookCollection.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
@@ -149,9 +150,13 @@ public class BookCollectionService {
     public BookCollection getCollection(Long collectionId) {
         BookCollection findBookCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
-        isUserLike(collectionId);
-        isUserBookmark(collectionId);
-        isUserCollection(collectionId);
+
+        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+            isUserLike(collectionId);
+            isUserBookmark(collectionId);
+            isUserCollection(collectionId);
+        }
+
         findBookCollection.setView(findBookCollection.getView() + 1);
 
         return findBookCollection;
@@ -329,7 +334,7 @@ public class BookCollectionService {
             }
         }
 
-    return result;
+        return result;
     }
 
     public List<BookCollection> findCollectionByUserCategory2() {
