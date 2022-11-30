@@ -12,6 +12,7 @@ const BasicBtn = styled.button`
   height: ${(props) => props.height || '40px'};
   font-size: ${(props) => props.fontSize || '14px'};
   font-weight: ${(props) => props.fontWeight || '700'};
+  white-space: nowrap;
   &:hover {
     background-color: ${({ theme }) => theme.colors.purple_1};
     border: none;
@@ -56,6 +57,7 @@ const FillBtn = styled.button`
   height: ${(props) => props.height || '40px'};
   font-size: ${(props) => props.fontSize || '14px'};
   font-weight: ${(props) => props.fontWeight || '700'};
+  white-space: nowrap;
   &:hover {
     background-color: ${({ theme }) => theme.colors.purple_1};
     color: white;
@@ -132,6 +134,7 @@ const TransparBtn = styled.button`
   height: ${(props) => props.height || '40px'};
   font-size: ${(props) => props.fontSize || '14px'};
   font-weight: ${(props) => props.fontWeight || '700'};
+  white-space: nowrap;
   &:hover {
     background-color: ${({ theme }) => theme.colors.purple_1};
     color: white;
@@ -175,6 +178,7 @@ const MoreBtn = styled.button`
   height: ${(props) => props.height || '20px'};
   font-size: ${(props) => props.fontSize || '14px'};
   font-weight: ${(props) => props.fontWeight || '700'};
+  white-space: nowrap;
   &:hover {
     color: ${({ theme }) => theme.colors.dark};
   }
