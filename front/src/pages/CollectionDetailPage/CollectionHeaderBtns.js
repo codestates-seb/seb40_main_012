@@ -20,6 +20,7 @@ const CollectionBtns = styled.div`
   color: ${({ theme }) => theme.colors.darkgray};
   font-size: 15px;
   font-weight: 500;
+  white-space: nowrap;
   img {
     width: 20px;
     height: 20px;
