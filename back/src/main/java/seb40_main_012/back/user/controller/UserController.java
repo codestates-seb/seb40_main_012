@@ -172,13 +172,21 @@ public class UserController {
     }
 
     @GetMapping("/mypage/userComment")
-    public ResponseEntity getUserComment() {
+    public ResponseEntity getUserComment(@PathParam("page") int page) {
+
         User findUser = userService.getLoginUser();
-        List<Comment> findComments = commentService.findMyCommentAll();
-        Slice<CommentDto.myPageResponse> responses = commentMapper.commentsToMyPageResponse(findComments);
         Long listCount = commentRepository.countByUser(findUser);
+
+        List<Comment> findComments = commentService.findMyCommentAll(page);
+        Slice<CommentDto.myPageResponse> responses = commentMapper.commentsToMyPageResponse(findComments);
+
+        Boolean isLast = false;
+        if(page * 5 >= listCount) {
+            isLast = true;
+        }
+
         return new ResponseEntity<>(
-                new SliceResponseDto<>(listCount,responses), HttpStatus.OK);
+                new SliceResponseDto<>(listCount, isLast, responses), HttpStatus.OK);
     }
 
 //    @GetMapping("/mypage/userComment")

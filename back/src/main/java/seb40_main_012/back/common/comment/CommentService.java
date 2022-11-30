@@ -215,13 +215,13 @@ public class CommentService {
 //        return commentRepository.findMyBookCommentByIsbn13AndEmail(isbn13, findUser.getEmail());
 //    }
 
-    public List<Comment> findMyCommentAll() {
+    public List<Comment> findMyCommentAll(int page) {
 
         User findUser = userService.getLoginUser();
 
         long userId = findUser.getUserId();
 
-        PageRequest pageRequest = PageRequest.of(0, 5);
+        PageRequest pageRequest = PageRequest.of(page - 1, 5);
 
         return commentRepository.findByUserId(userId, pageRequest);
     }
