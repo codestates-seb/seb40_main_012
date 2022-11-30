@@ -118,6 +118,7 @@ const CollectionSmallSet = () => {
                         collectionId={el.collectionId}
                         title={el.title}
                         books={el.books}
+                        len={data.length}
                       />
                     );
                   })}
@@ -134,6 +135,7 @@ const CollectionSmallSet = () => {
                     title={el.title}
                     books={el.books}
                     type="small"
+                    len={data.length}
                   />
                 );
               })}

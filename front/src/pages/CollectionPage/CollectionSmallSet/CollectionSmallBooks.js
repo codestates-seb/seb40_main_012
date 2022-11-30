@@ -9,6 +9,8 @@ const CollectionSmallBooksContainer = styled.div`
   border: 3px solid transparent;
   &:hover {
     cursor: pointer;
+  }
+  &.active:hover {
     border: none;
     margin: 0 10px;
   }
@@ -47,6 +49,7 @@ const CollectionSmallBooks = ({
   title,
   books,
   type = 'basic',
+  len,
 }) => {
   const navigate = useNavigate();
 
@@ -57,7 +60,9 @@ const CollectionSmallBooks = ({
   return (
     <CollectionSmallBooksContainer
       onClick={onClickCollectionInfo}
-      className={type === 'small' ? 'small' : null}
+      className={`${type === 'small' ? 'small' : null} ${
+        len >= 4 ? 'active' : null
+      }`}
     >
       <BookColumn>
         {books.slice(0, 2).map((el) => {

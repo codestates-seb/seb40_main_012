@@ -61,12 +61,11 @@ const BestCollections = () => {
 
   const [data, setData] = useState([]);
 
-  //배열 뒤집은거 수정!!
   useEffect(() => {
     axios
       .get('/api/collections/bestCollection')
       .then((res) => {
-        setData([...res.data.data.reverse()]);
+        setData([...res.data.data]);
       })
       .catch((error) => console.error(error));
   }, []);
