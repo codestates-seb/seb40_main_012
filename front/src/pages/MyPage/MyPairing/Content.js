@@ -1,10 +1,14 @@
+/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from '../../../api/axios';
+import { useNavigate } from 'react-router-dom';
+import MyPairingDetail from './MyPairingDetail';
+import { useEffect, useState } from 'react';
+import { BasicButton } from '../../../components/Buttons';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -34,13 +38,11 @@ const ContentContainer = styled.div`
   .fixed {
     position: fixed;
   }
-`;
-const BookImg = styled.div`
-  .resize {
-    box-sizing: inherit;
-    width: 108px !important;
-    height: 164px !important;
-    margin-left: 10px;
+  p {
+    text-align: center;
+  }
+  .no-data-notice {
+    text-align: center;
   }
 `;
 
@@ -48,22 +50,7 @@ const CommentContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
-const FlexBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 20px;
-  margin-right: 10px;
-  font-size: 13px;
-  border-bottom: 1px solid #e9e9e9;
-  .comment {
-    height: 125px;
-    color: #232627;
-  }
-  .heart-star-title {
-    display: flex;
-    flex-direction: row;
-  }
-`;
+
 const ButtonCSS = styled.button`
   outline: none;
   display: inline-block;
@@ -75,86 +62,55 @@ const ButtonCSS = styled.button`
   background: transparent;
 `;
 
-const Remove = styled.div`
-  color: #dee2e6;
-  font-size: 24px;
-  cursor: pointer;
-  opacity: 0;
-  &:hover {
-    color: #6741ff;
-  }
-`;
-
-const ItemContainer = styled.div`
-  &:hover {
-    ${Remove} {
-      opacity: 1;
-    }
-  }
-`;
-
-const Content = ({ setInfiniteData, infiniteData }) => {
-  // const [data, setData] = useState({
-  //   content: content.data,
-  //   hasMore: true,
-  // });
+const Content = ({ content, setContent, fetchData, lastId, setLastId }) => {
+  const [hasMore, setHasMore] = useState(true);
+  const navigate = useNavigate();
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    if (infiniteData.content.data.length >= 100) {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data,
-        },
-        hasMore: false,
-      });
-      return;
-    }
-    if (infiniteData.content.data.length < 10) {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data,
-        },
-        hasMore: false,
-      });
-      return;
-    }
-    ////// 나중에 통신하는 거 붙여주기
     setTimeout(() => {
-      setInfiniteData({
-        content: {
-          data: infiniteData.content.data.concat(infiniteData.content.data),
-        },
-        // response.data
-        hasMore: true,
-      });
-    }, 800);
-    /////
-  };
-
-  const onRemove = (id) => {
-    axios
-      .delete(`/api/books/pairings/${id}/delete`)
-      .then(location.reload())
-      .catch((error) => console.log('에러', error));
+      if (hasMore === true && lastId) {
+        axios
+          .get(`/api/mypage/userPairing?lastId=${lastId}`)
+          .then((response) => {
+            setContent({
+              data: content.data.concat(response.data.data.content),
+              size: response.data.data.size,
+            });
+            setHasMore(response.data.data.size < 5 ? false : true);
+            {
+              response.data.data.size >= 5
+                ? setLastId(
+                    response.data.data.content[
+                      response.data.data.content.length - 1
+                    ].pairingId
+                  )
+                : null;
+            }
+          })
+          .catch((error) => console.log('에러', error));
+      }
+    }, 500);
   };
 
   const removeAll = () => {
-    if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
+    if (window.confirm(`모든 페어링을 정말 삭제하시겠습니까?`)) {
       axios
         .delete(`/api/books/pairings/delete`)
-        .then(location.reload())
+        .then(() => fetchData())
         .catch((error) => console.log('에러', error));
     }
   };
+
+  useEffect(() => {
+    setHasMore(content.data.length < 5 ? false : true);
+  }, []);
 
   return (
     <>
       <ContentContainer>
         <Grid container>
-          <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
-            <CommentContainer></CommentContainer>
-          </Grid>
+          <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}></Grid>
 
           <Grid
             item
@@ -174,7 +130,7 @@ const Content = ({ setInfiniteData, infiniteData }) => {
                   mb: 1,
                 }}
                 variant="body2"
-                gutterBottom
+                component={'span'}
               >
                 전체 삭제
               </Typography>
@@ -182,145 +138,82 @@ const Content = ({ setInfiniteData, infiniteData }) => {
           </Grid>
         </Grid>
 
-        <InfiniteScroll
-          dataLength={infiniteData.content.data.length}
-          // dataLength={data.content.length}
-          // next={data.content && fetchMoreData}
-          next={infiniteData.content.data && fetchMoreData}
-          hasMore={infiniteData.hasMore} // 스크롤 막을지 말지 결정
-          loader={
-            <p
-              style={{
-                textAlign: 'center',
+        {content.data.length ? (
+          <InfiniteScroll
+            dataLength={content.data.length}
+            // dataLength={data.content.length}
+            // next={data.content && fetchMoreData}
+            // size 속성으로 측정 가능 .
+            next={fetchMoreData}
+            hasMore={hasMore} // 스크롤 막을지 말지 결정
+            loader={
+              <div
+                style={{
+                  textAlign: 'center',
+                }}
+              >
+                <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
+                <div>열심히 읽어오는 중..</div>
+              </div>
+            }
+            height={400}
+            endMessage={
+              <p style={{ textAlign: 'center' }}>
+                <Typography
+                  sx={{
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  color="#2e3031"
+                  variant="body2"
+                  gutterBottom
+                  component={'span'}
+                >
+                  모든 페어링을 다 읽었어요!
+                </Typography>
+              </p>
+            }
+          >
+            <div>
+              {content.data ? (
+                content.data?.map((data) => (
+                  <MyPairingDetail
+                    key={data.pairingId}
+                    data={data}
+                    fetchData={fetchData}
+                  />
+                ))
+              ) : (
+                <div>데이터가 없어요</div>
+              )}
+            </div>
+          </InfiniteScroll>
+        ) : (
+          <div className="no-data-notice">
+            <Typography
+              sx={{
+                mt: 1,
+                mb: 1,
+                fontSize: 17,
+                fontWeight: 300,
               }}
+              color="#2e3031"
+              variant="body2"
+              gutterBottom
+              component={'span'}
             >
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-              <div>열심히 읽어오는 중..</div>
-            </p>
-          }
-          height={400}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yayy! 모든 페어링을 다 읽었어요!</b>
-            </p>
-          }
-        >
-          <div>
-            {infiniteData.content.data ? (
-              infiniteData.content.data.map((data, key) => (
-                <ItemContainer key={key}>
-                  <Grid
-                    container
-                    item
-                    xs={12}
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                    }}
-                  >
-                    <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
-
-                    <Grid item xs={2}>
-                      {data && (
-                        <BookImg>
-                          <img
-                            className="resize"
-                            src={data.bookCover}
-                            alt="book thumbnail"
-                          ></img>
-                        </BookImg>
-                      )}
-                    </Grid>
-                    <Grid item xs={9}>
-                      <FlexBox>
-                        <Typography
-                          color="#232627"
-                          sx={{
-                            height: 125,
-                            fontWeight: 200,
-                          }}
-                          variant="body2"
-                          gutterBottom
-                        >
-                          {data.content}
-                        </Typography>
-
-                        <div className="heart-star-title">
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                            color="#BFBFBF"
-                          >
-                            <FavoriteTwoToneIcon
-                              sx={{ width: 19.5, height: 19.5 }}
-                              align="center"
-                              style={{ color: 'FFD8D8' }}
-                            />
-                            {data.pairingLike}
-                          </Grid>
-                          <Grid
-                            item
-                            xs={3}
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                            }}
-                            color="#BFBFBF"
-                          ></Grid>
-                          <Grid
-                            item
-                            xs={6}
-                            sx={{
-                              display: 'flex',
-                              flexDirection: 'row-reverse',
-                            }}
-                            align="right"
-                            color="#737373"
-                          >
-                            <div>
-                              {data.bookName}, {data.author}
-                            </div>
-                          </Grid>
-                        </div>
-                      </FlexBox>
-                    </Grid>
-                    <Grid
-                      item
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'row-reverse',
-                      }}
-                    >
-                      <Remove
-                        onClick={() => {
-                          // 현재 작동 안됨 (코멘트 아이디 없음)
-                          if (
-                            window.confirm(
-                              `${data.commentId}번째 페어링을 삭제하시겠습니까?`
-                            )
-                          ) {
-                            onRemove(data.commentId);
-                          }
-                        }}
-                      >
-                        <DeleteOutlinedIcon />
-                      </Remove>
-                    </Grid>
-                  </Grid>
-                </ItemContainer>
-              ))
-            ) : (
-              <div>데이터없어용</div>
-            )}
+              읽어올 데이터가 없습니다
+              <br />새 페어링을 작성해보세요!
+              <br />
+              <br />
+              <BasicButton onClick={() => navigate(`/pairing`)}>
+                페어링 페이지
+              </BasicButton>
+            </Typography>
           </div>
-        </InfiniteScroll>
+        )}
       </ContentContainer>
     </>
   );

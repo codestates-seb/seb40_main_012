@@ -26,16 +26,16 @@ const SearchBookBtn = styled(SearchTabBtn)`
     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
   }
 `;
-const SearchPairingBtn = styled(SearchTabBtn)`
-  &.pairing {
-    border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
-  }
-`;
-const SearchCollectionBtn = styled(SearchTabBtn)`
-  &.collection {
-    border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
-  }
-`;
+// const SearchPairingBtn = styled(SearchTabBtn)`
+//   &.pairing {
+//     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
+//   }
+// `;
+// const SearchCollectionBtn = styled(SearchTabBtn)`
+//   &.collection {
+//     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
+//   }
+// `;
 
 const SearchTab = () => {
   const location = useLocation();
@@ -44,14 +44,14 @@ const SearchTab = () => {
   return (
     <SearchTabContainer>
       <Link to="/search/book">
-        <SearchBookBtn className={current}>책</SearchBookBtn>
+        <SearchBookBtn className={current}>검색 결과</SearchBookBtn>
       </Link>
-      <Link to="/search/pairing">
+      {/* <Link to="/search/pairing">
         <SearchPairingBtn className={current}>페어링</SearchPairingBtn>
       </Link>
       <Link to="/search/collection">
         <SearchCollectionBtn className={current}>컬렉션</SearchCollectionBtn>
-      </Link>
+      </Link> */}
     </SearchTabContainer>
   );
 };

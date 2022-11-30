@@ -12,6 +12,12 @@ const MainBooksContainer = styled.div`
   justify-content: center;
   margin: 25px 0;
   min-width: 650px;
+  @media screen and (max-width: 640px) {
+    min-width: 500px;
+  }
+  @media screen and (max-width: 500px) {
+    min-width: 400px;
+  }
 `;
 
 const MainCarousel = styled.div`

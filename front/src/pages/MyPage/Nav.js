@@ -40,8 +40,7 @@ const BottomBorder = styled.div`
     display: block;
     position: absolute;
     top: 0;
-    width: 94.2%;
-    left: 5.8%;
+    width: 100%;
     border-bottom: solid 1px #eaeaea;
   }
 `;
@@ -58,17 +57,20 @@ const CommentBorderCSS = styled.button`
   content: '';
   border-bottom: solid 3px ${({ theme }) => theme.colors.mainColor};
   align-items: center;
+  img {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+  }
 `;
-const Circle = styled.div`
-  width: 30px;
-  height: 30px;
-  background-color: ${({ theme }) => theme.colors.mainColor};
-  border-radius: 50%;
-`;
+// const Circle = styled.div`
+//   width: 30px;
+//   height: 30px;
+//   background-color: ${({ theme }) => theme.colors.mainColor};
+//   border-radius: 50%;
+// `;
 
-const Nav = ({ content, view, setView }) => {
-  console.log(content);
-
+const Nav = ({ view, setView }) => {
   return (
     <div>
       <Grid container justifyContent="space-around">
@@ -87,11 +89,11 @@ const Nav = ({ content, view, setView }) => {
               <CommentBorderCSS>
                 <Typography variant="h6">나의 코멘트</Typography>
               </CommentBorderCSS>
-              <Circle className="circle">
+              {/* <Circle className="circle">
                 <Typography variant="h6" style={{ color: 'white' }}>
-                  {content?.listCount}
+                  {size}
                 </Typography>
-              </Circle>
+              </Circle> */}
             </>
           ) : (
             <Link to="/mypage/mycomment">
@@ -117,11 +119,11 @@ const Nav = ({ content, view, setView }) => {
               <CommentBorderCSS>
                 <Typography variant="h6">나의 페어링</Typography>
               </CommentBorderCSS>
-              <Circle className="circle">
+              {/* <Circle className="circle">
                 <Typography variant="h6" style={{ color: 'white' }}>
-                  {content?.listCount}
+                  {size}
                 </Typography>
-              </Circle>
+              </Circle> */}
             </>
           ) : (
             <Link to="/mypage/mypairing">
@@ -147,11 +149,11 @@ const Nav = ({ content, view, setView }) => {
               <CommentBorderCSS>
                 <Typography variant="h6">나의 컬렉션</Typography>
               </CommentBorderCSS>
-              <Circle className="circle">
+              {/* <Circle className="circle">
                 <Typography variant="h6" style={{ color: 'white' }}>
-                  {content?.listCount}
+                  {size}
                 </Typography>
-              </Circle>
+              </Circle> */}
             </>
           ) : (
             <Link to="/mypage/mycollection">
@@ -175,13 +177,19 @@ const Nav = ({ content, view, setView }) => {
           {view === 4 ? (
             <>
               <CommentBorderCSS>
-                <Typography variant="h6">나의 픽</Typography>
-              </CommentBorderCSS>
-              <Circle className="circle">
-                <Typography variant="h6" style={{ color: 'white' }}>
-                  {content?.listCount}
+                <Typography variant="h6">
+                  <img
+                    src={process.env.PUBLIC_URL + '/images/cherry.png'}
+                    alt="bookmark icon"
+                  />
+                  나의 픽
                 </Typography>
-              </Circle>
+              </CommentBorderCSS>
+              {/* <Circle className="circle">
+                <Typography variant="h6" style={{ color: 'white' }}>
+                  {size}
+                </Typography>
+              </Circle> */}
             </>
           ) : (
             <Link to="/mypage/mypick">

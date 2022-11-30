@@ -1,31 +1,24 @@
+/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 // import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 // import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import MyPickBook from './MyPickBook';
-import InfiniteScroll from 'react-infinite-scroll-component';
-// import MyPickPairing from './MyPickPairing';
-// import MyPickCollection from './MyPickCollection';
+
+import MyPickPairing from './MyPickPairing';
+import MyPickCollection from './MyPickCollection';
+import { useState } from 'react';
+import MyPickGuide from './MyPickGuide';
+import { BasicButton } from '../../../components/Buttons';
+import * as React from 'react';
+
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
-  input {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 1.5px solid gainsboro;
-    border-radius: 0.35rem;
-    margin-top: -0.1px;
-    &:checked {
-      border-color: transparent;
-      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-      background-size: 100% 100%;
-      background-position: 50%;
-      background-repeat: no-repeat;
-      background-color: #cfc3ff;
-    }
-  }
+
   img {
     align-items: center;
     justify-content: center;
@@ -37,202 +30,197 @@ const ContentContainer = styled.div`
     position: fixed;
   }
 `;
-// const BookImg = styled.div`
-//   .resize {
-//     box-sizing: inherit;
-//     width: 108px !important;
-//     height: 164px !important;
-//     margin-left: 10px;
-//   }
-// `;
+
+const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
+  '& .MuiToggleButtonGroup-grouped': {
+    margin: theme.spacing(0.5),
+    border: 0,
+    '&.Mui-disabled': {
+      border: 0,
+    },
+    '&:not(:first-of-type)': {
+      borderRadius: theme.shape.borderRadius,
+    },
+    '&:first-of-type': {
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
+}));
 
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
-// const FlexBox = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   margin-left: 20px;
-//   margin-right: 10px;
-//   font-size: 13px;
-//   border-bottom: 1px solid #e9e9e9;
-//   .comment {
-//     height: 125px;
-//     color: #232627;
-//   }
-//   .heart-star-title {
-//     display: flex;
-//     flex-direction: row;
-//   }
-// `;
-const ButtonCSS = styled.button`
-  outline: none;
-  display: inline-block;
-  margin: 0;
-  text-transform: uppercase;
-  cursor: pointer;
-  border: 0;
-  outline: 0;
-  background: transparent;
-`;
 
-// const Remove = styled.div`
-//   color: #dee2e6;
-//   font-size: 24px;
-//   cursor: pointer;
-//   opacity: 0;
-//   &:hover {
-//     color: #6741ff;
-//   }
-// `;
+const Content = ({ content }) => {
+  const [view, setView] = useState(1);
+  const [alignment, setAlignment] = React.useState('left');
 
-// const ItemContainer = styled.div`
-//   &:hover {
-//     ${Remove} {
-//       opacity: 1;
-//     }
-//   }
-// `;
-
-const Content = ({
-  setContent,
-  content,
-  // pairingContent,
-  // setPairingContent,
-  // collectionContent,
-  // setCollectionContent,
-}) => {
-  // const [data, setData] = useState({
-  //   content: content.data,
-  //   hasMore: true,
-  // });
-
-  // 스크롤이 바닥에 닿을때 동작하는 함수
-  const fetchMoreData = () => {
-    if (content.listCount >= 100) {
-      setContent({
-        listCount: content.listCount,
-        data: content.data,
-        hasMore: false,
-      });
-      return;
-    }
-    if (content.data.length < 10) {
-      setContent({
-        listCount: content.listCount,
-        data: content.data,
-        hasMore: false,
-      });
-      return;
-    }
-    ////// 나중에 통신하는 거 붙여주기
-    setTimeout(() => {
-      setContent({
-        listCount: content.listCount.concat(content.listCount),
-        data: content.data.concat(content.data),
-        hasMore: true,
-      });
-    }, 800);
-    /////
-  };
-
-  console.log('content.data', content.data);
-
-  // const onRemove = (targetId) => {
-  //   const newCommentList = content.data.filter(
-  //     (el) => el.commentId !== targetId
-  //   );
-  //   setContent({ data: newCommentList, hasMore: true });
-  // };
-
-  const removeAll = () => {
-    if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      setContent({ data: [], hasMore: false });
-    }
+  const handleAlignment = (event, newAlignment) => {
+    setAlignment(newAlignment);
   };
 
   return (
     <>
-      <ContentContainer>
-        <Grid container style={{ backgroundColor: '#f7f4ff' }}>
-          <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
-          <Grid item xs={5} sx={{ mt: 1, mb: 1 }}>
-            <CommentContainer>
-              <Typography
-                color="#737373"
-                sx={{
-                  display: 'flex',
-                }}
-                variant="body2"
-                gutterBottom
-              >
-                <input type="checkbox" defaultChecked={true} name="xxx" />
-                페어링
-                <input type="checkbox" defaultChecked={true} name="xxx" />
-                컬렉션
-                <input type="checkbox" defaultChecked={true} name="xxx" />책
-              </Typography>
-            </CommentContainer>
-          </Grid>
-
+      {content ? (
+        <ContentContainer>
           <Grid
-            item
-            xs={6.5}
-            sx={{
-              display: 'flex',
-              flexDirection: 'row-reverse',
+            container
+            style={{
+              textAlign: 'center',
+              alignItems: 'center',
             }}
           >
-            <ButtonCSS onClick={removeAll}>
-              <Typography color="#737373" variant="body2" gutterBottom>
-                전체 삭제
-              </Typography>
-            </ButtonCSS>
-          </Grid>
-        </Grid>
+            <Grid item xs={5} sx={{ mt: 1, mb: 1, ml: 1 }}>
+              <CommentContainer>
+                <StyledToggleButtonGroup
+                  size="small"
+                  value={alignment}
+                  exclusive
+                  onChange={handleAlignment}
+                  aria-label="text alignment"
+                  sx={{ ml: 0 }}
+                >
+                  <ToggleButton
+                    onClick={() => setView(1)}
+                    value="left"
+                    aria-label="left aligned"
+                  >
+                    페어링
+                  </ToggleButton>
+                  <ToggleButton
+                    onClick={() => setView(2)}
+                    value="center"
+                    aria-label="centered"
+                  >
+                    컬렉션
+                  </ToggleButton>
+                  <ToggleButton
+                    onClick={() => setView(3)}
+                    value="right"
+                    aria-label="right aligned"
+                  >
+                    책
+                  </ToggleButton>
+                </StyledToggleButtonGroup>
+              </CommentContainer>
+            </Grid>
 
-        <InfiniteScroll
-          dataLength={content.listCount}
-          // dataLength={data.content.length}
-          // next={data.content && fetchMoreData}
-          next={content.data && fetchMoreData}
-          hasMore={content.hasMore} // 스크롤 막을지 말지 결정
-          loader={
-            <p
+            <Grid
+              item
+              xs={6.5}
+              sx={{
+                display: 'flex',
+                flexDirection: 'row-reverse',
+              }}
               style={{
                 textAlign: 'center',
+                alignItems: 'center',
               }}
             >
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-              <div>열심히 읽어오는 중..</div>
-            </p>
-          }
-          height={400}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yayy! 모든 나의 픽을 다 읽었어요!</b>
-            </p>
-          }
-        >
-          <div>
-            <MyPickBook content={content} setContent={setContent} />
+              <MyPickGuide />
+            </Grid>
+          </Grid>
+          {/* ///////////// */}
 
-            {/* <MyPickPairing
-              content={pairingContent}
-              setContent={setPairingContent}
-            />
-            <MyPickCollection
-              content={collectionContent}
-              setContent={setCollectionContent}
-            /> */}
+          <div>
+            {view === 1 ? <MyPickPairing /> : null}
+
+            {view === 2 ? <MyPickCollection /> : null}
+
+            {view === 3 ? <MyPickBook /> : null}
           </div>
-        </InfiniteScroll>
-      </ContentContainer>
+        </ContentContainer>
+      ) : (
+        <>
+          <ContentContainer>
+            <Grid
+              container
+              style={{
+                textAlign: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
+              <Grid item xs={5} sx={{ mt: 1, mb: 1 }}>
+                <CommentContainer>
+                  <Typography
+                    color="#737373"
+                    sx={{
+                      display: 'flex',
+                    }}
+                    variant="body2"
+                    gutterBottom
+                  >
+                    <input
+                      type="radio"
+                      onChange={() => setView(1)}
+                      defaultChecked={true}
+                      name="xxx"
+                    />
+                    페어링
+                    <input
+                      type="radio"
+                      onChange={() => setView(2)}
+                      defaultChecked={false}
+                      name="xxx"
+                    />
+                    컬렉션
+                    <input
+                      type="radio"
+                      onChange={() => setView(3)}
+                      defaultChecked={false}
+                      name="xxx"
+                    />
+                    책
+                  </Typography>
+                </CommentContainer>
+              </Grid>
+
+              <Grid
+                item
+                xs={6.5}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row-reverse',
+                }}
+                style={{
+                  textAlign: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <MyPickGuide />
+              </Grid>
+            </Grid>
+            <div className="no-data-notice">
+              <Typography
+                sx={{
+                  mt: 1,
+                  mb: 1,
+                  fontSize: 17,
+                  fontWeight: 300,
+                }}
+                color="#2e3031"
+                variant="body2"
+                gutterBottom
+                component={'span'}
+              >
+                읽어올 데이터가 없습니다
+                <br />
+                메인 페이지에서 체리픽의 새로운 추천을 만나보세요!
+                <br />
+                <br />
+                <BasicButton onClick={() => navigate(`/`)}>
+                  메인 페이지
+                </BasicButton>
+              </Typography>
+            </div>
+            {/* ///////////// */}
+          </ContentContainer>
+        </>
+      )}
     </>
   );
 };
+
 export default Content;

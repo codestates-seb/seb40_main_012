@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import Header from '../Header';
 import { PageContainer } from 'containers';
 import Nav from '../Nav';
@@ -31,25 +32,26 @@ const MyPairing = () => {
   console.log('마이페어링 시작');
   const [view, setView] = useState(2);
   const [content, setContent] = useState({
-    listCount: '',
     data: [],
   });
-  const [infiniteData, setInfiniteData] = useState({
-    content: {
-      data: [],
-    },
-    hasMore: true,
-  });
+  const [lastId, setLastId] = useState();
 
   const fetchData = async () => {
     axios
       .get(MY_PAIRING_URL)
       .then((response) => {
-        setContent(response.data);
-        setInfiniteData({
-          content: response.data,
-          hasMore: true,
+        setContent({
+          data: response.data.data.content,
         });
+        {
+          response.data.data.content.length
+            ? setLastId(
+                response.data.data.content[
+                  response.data.data.content.length - 1
+                ].pairingId
+              )
+            : null;
+        }
       })
       .catch((error) => console.log('에러', error));
   };
@@ -58,34 +60,28 @@ const MyPairing = () => {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    console.log('infiniteData 변경', infiniteData);
-  }, [infiniteData]);
-
   return (
     <Scroll>
       <PageContainer header footer>
         {content ? (
           <Container maxWidth="md">
             <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
+            <Nav view={view} setView={setView}></Nav>
             <Content
-              view={view}
-              setView={setView}
               content={content}
-              setInfiniteData={setInfiniteData}
-              infiniteData={infiniteData}
+              setContent={setContent}
+              fetchData={fetchData}
+              lastId={lastId}
+              setLastId={setLastId}
             ></Content>
           </Container>
         ) : (
           <Container maxWidth="md">
             <Header></Header>
+            <Nav view={view} setView={setView}></Nav>
             <Void>
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-              더 읽어올 데이터가 없군요 📕
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>더
+              읽어올 데이터가 없군요 📕
             </Void>
           </Container>
         )}

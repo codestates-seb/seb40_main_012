@@ -16,9 +16,13 @@ const CollectionHeaderContainer = styled.div`
 const CollectionInfo = styled.div`
   font-size: 24px;
   font-weight: 700;
+  white-space: nowrap;
   color: ${({ theme }) => theme.colors.dark};
   span {
     color: ${({ theme }) => theme.colors.mainColor};
+  }
+  @media screen and (max-width: 640px) {
+    font-size: 18px;
   }
 `;
 

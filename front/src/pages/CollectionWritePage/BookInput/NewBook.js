@@ -25,7 +25,11 @@ const CoverContainer = styled.div`
 
 const TitleContainer = styled.div`
   font-size: 12px;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.dark};
+  @media screen and (max-width: 500px) {
+    font-size: 7px;
+  }
 `;
 
 const AuthorContainer = styled.div`
@@ -51,6 +55,12 @@ const DeleteBtn = styled.button`
     cursor: pointer;
     background-color: ${({ theme }) => theme.colors.mainColor};
     color: white;
+  }
+  @media screen and (max-width: 500px) {
+    width: 12px;
+    height: 12px;
+    font-size: 10px;
+    padding-right: 2px;
   }
 `;
 
@@ -86,7 +96,7 @@ const NewBook = ({
         </NewBookContainer>
       ) : (
         <NewBookContainer>
-          <DeleteBtn onClick={deleteBook}>X</DeleteBtn>
+          <DeleteBtn onClick={deleteBook}>x</DeleteBtn>
           <CoverContainer>
             <img src={cover} alt="book cover" />
           </CoverContainer>

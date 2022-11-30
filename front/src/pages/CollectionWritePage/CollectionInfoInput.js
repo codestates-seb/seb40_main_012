@@ -4,10 +4,19 @@ import { useState } from 'react';
 
 const CollectionInfoInputContainer = styled.div`
   width: 100%;
-  padding: 30px 60px;
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
+  padding: 30px 60px;
+  @media screen and (max-width: 980px) {
+    padding: 20px 40px;
+  }
+  @media screen and (max-width: 640px) {
+    padding: 20px 20px;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 5px 10px;
+  }
 `;
 
 const TitleInput = styled.input`
@@ -23,25 +32,42 @@ const TitleInput = styled.input`
   height: 80px;
   font-size: 24px;
   color: ${({ theme }) => theme.colors.dark};
+  @media screen and (max-width: 640px) {
+    height: 60px;
+    padding: 0 20px;
+    font-size: 20px;
+  }
+  @media screen and (max-width: 500px) {
+    height: 40px;
+    font-size: 16px;
+    padding: 0 10px;
+  }
 `;
 
 const TagInputContainer = styled.div`
   width: 100%;
   margin: 5px 0;
-  padding: 20px;
+  padding: 10px;
   display: flex;
   flex-wrap: wrap;
   background-color: white;
+  @media screen and (max-width: 500px) {
+    padding: 5px;
+  }
 `;
 
 const Tags = styled.div`
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
 `;
 
 const TagContainer = styled.div`
   div {
     margin: 5px;
+    @media screen and (max-width: 500px) {
+      margin: 2px;
+    }
     &:hover {
       cursor: pointer;
       border: none;
@@ -54,9 +80,13 @@ const TagContainer = styled.div`
 
 const TagInput = styled.input`
   border: none;
-  margin-left: 10px;
+  margin: 10px 0 10px 10px;
   &:focus {
     outline: none;
+  }
+  @media screen and (max-width: 500px) {
+    margin: 5px 0 5px 5px;
+    font-size: 10px;
   }
 `;
 
@@ -71,6 +101,9 @@ const TagInfo = styled.div`
   }
   &.show {
     display: flex;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
   }
 `;
 
@@ -93,6 +126,10 @@ const ContentInput = styled.textarea`
   &:focus {
     outline: none;
   }
+  @media screen and (max-width: 500px) {
+    padding: 10px 10px;
+    font-size: 10px;
+  }
 `;
 
 const CollectionInfoInput = ({ data, setData }) => {
@@ -104,7 +141,7 @@ const CollectionInfoInput = ({ data, setData }) => {
   };
 
   const handleOnKeyPressTag = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === 'Enter' && newTag.length <= 20 && data.tags.length <= 9) {
       setData({ ...data, tags: [...data.tags, newTag] });
       setNewTag('');
     }
@@ -136,6 +173,7 @@ const CollectionInfoInput = ({ data, setData }) => {
         placeholder="컬렉션 제목"
         maxLength="30"
         onChange={handleOnChangeTitle}
+        value={data.title}
       ></TitleInput>
       <TagInputContainer>
         <Tags>
@@ -165,7 +203,7 @@ const CollectionInfoInput = ({ data, setData }) => {
       </TagInputContainer>
       <TagInfo className={isOnKeyUpTag ? 'show' : 'hidden'}>
         <div>
-          엔터를 입력하여 태그를 등록할 수 있습니다.
+          엔터를 입력하여 태그를 등록할 수 있습니다. (최대 10개, 1개당 20자)
           <br />
           등록된 태그를 클릭하면 삭제됩니다.
         </div>
@@ -176,6 +214,7 @@ const CollectionInfoInput = ({ data, setData }) => {
           placeholder="컬렉션을 소개해 보세요."
           maxLength="250"
           onChange={handleOnChangeContent}
+          value={data.content}
         />
       </ContentInputContainer>
     </CollectionInfoInputContainer>

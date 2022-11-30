@@ -11,6 +11,14 @@ const BestPairingsContainer = styled.div`
   align-items: center;
   padding: 0 40px;
   margin-bottom: 100px;
+  @media screen and (max-width: 640px) {
+    padding: 0 20px;
+    margin-bottom: 60px;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 0;
+    margin-bottom: 40px;
+  }
 `;
 
 const PairingsContainer = styled.div`
@@ -50,7 +58,7 @@ const BestPairings = () => {
         })}
       </PairingsContainer>
       <PairingsContainer>
-        {bestpairings.slice(5, 10).map((el) => {
+        {bestpairings?.slice(5, 10).map((el) => {
           return (
             <BestPairing
               key={el.pairingId}

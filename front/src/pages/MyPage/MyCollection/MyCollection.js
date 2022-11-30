@@ -27,69 +27,60 @@ const Void = styled.div`
   }
 `;
 
-const MyPairing = () => {
+const MyCollection = () => {
   console.log('마이컬렉션 시작');
   const [view, setView] = useState(3);
   const [content, setContent] = useState({
-    listCount: '',
     data: [],
-    hasMore: true,
   });
-  const [infiniteData, setInfiniteData] = useState({
-    data: [],
-    hasMore: true,
-  });
+  const [lastId, setLastId] = useState();
 
   const fetchData = async () => {
     axios
       .get(MY_COLLECTION_URL)
       .then((response) => {
         setContent({
-          listCount: response.data.listCount,
-          data: response.data.data,
-          hasMore: true,
+          data: response.data.data.content,
         });
-        setInfiniteData({
-          content: response.data,
-          hasMore: true,
-        });
+        {
+          response.data.data.length
+            ? setLastId(
+                response.data.data.content[
+                  response.data.data.content.length - 1
+                ].collectionId
+              )
+            : null;
+        }
       })
       .catch((error) => console.log('에러', error));
   };
 
   useEffect(() => {
     fetchData();
-    console.log('useEffect의 state 현재값', content);
   }, []);
-
-  useEffect(() => {
-    console.log('infiniteData 변경', infiniteData);
-  }, [infiniteData]);
 
   return (
     <Scroll>
       <PageContainer header footer>
-        {content.data.length !== 0 ? (
+        {content ? (
           <Container maxWidth="md">
             <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
+            <Nav view={view} setView={setView}></Nav>
             <Content
               content={content}
-              setInfiniteData={setInfiniteData}
-              infiniteData={infiniteData}
               setContent={setContent}
+              fetchData={fetchData}
+              lastId={lastId}
+              setLastId={setLastId}
             ></Content>
           </Container>
         ) : (
           <Container maxWidth="md">
             <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
+            <Nav view={view} setView={setView}></Nav>
             <Void>
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-              더 읽어올 데이터가 없군요 📕
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>더
+              읽어올 데이터가 없군요 📕
             </Void>
           </Container>
         )}
@@ -98,4 +89,4 @@ const MyPairing = () => {
   );
 };
 
-export default MyPairing;
+export default MyCollection;

@@ -6,11 +6,9 @@ import Typography from '@mui/material/Typography';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import MyCommentBook from './MyCommentBook';
+import MyCommentDetail from './MyCommentDetail';
 // import { useState } from 'react';
 import axios from '../../../api/axios';
-import MyCommentPairing from './MyCommentPairing';
-import MyCommentCollection from './MyCommentCollection';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -99,30 +97,31 @@ const ItemContainer = styled.div`
   }
 `;
 
-const Content = ({ commentLength, content, setContent }) => {
+const Content = ({ content, setContent, fetchData }) => {
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    if (commentLength >= 100) {
-      setContent({
-        bookComment: content.bookComment,
-        pairingComment: content.pairingComment,
-        collectionComment: content.collectionComment,
-        hasMore: false,
-        listCount: 0,
-      });
-      return;
+    if (content.listCount >= 100) {
+      // setContent({
+      //   bookComment: content.bookComment,
+      //   pairingComment: content.pairingComment,
+      //   collectionComment: content.collectionComment,
+      //   hasMore: false,
+      //   listCount: 0,
+      // });
+      // return;
     }
-    if (commentLength < 10) {
-      setContent({
-        bookComment: content.bookComment,
-        pairingComment: content.pairingComment,
-        collectionComment: content.collectionComment,
-        hasMore: false,
-        listCount: 0,
-      });
+    if (content.listCount < 10) {
+      // setContent({
+      //   bookComment: content.bookComment,
+      //   pairingComment: content.pairingComment,
+      //   collectionComment: content.collectionComment,
+      //   hasMore: false,
+      //   listCount: 0,
+      // });
+      // return;
+    }
 
-      return;
-    }
+    //content.data 배열
 
     ////// 나중에 통신하는 거 붙여주기
     // setTimeout(() => {
@@ -139,12 +138,7 @@ const Content = ({ commentLength, content, setContent }) => {
     // }, 800);
     setTimeout(() => {
       setContent({
-        bookComment: content.bookComment.concat(content.bookComment),
-        pairingComment: content.pairingComment.concat(content.pairingComment),
-        collectionComment: content.collectionComment.concat(
-          content.collectionComment
-        ),
-        hasMore: true,
+        data: content.data.concat(content.data),
         listCount: 0,
       });
     }, 800);
@@ -155,7 +149,7 @@ const Content = ({ commentLength, content, setContent }) => {
     if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
       axios
         .delete(`api/comments/delete`)
-        .then(location.reload())
+        .then(() => fetchData())
         .catch((error) => console.log('에러', error));
     }
   };
@@ -165,9 +159,7 @@ const Content = ({ commentLength, content, setContent }) => {
     <>
       <ContentContainer>
         <Grid container>
-          <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
-            <CommentContainer></CommentContainer>
-          </Grid>
+          <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}></Grid>
 
           <Grid
             item
@@ -187,7 +179,7 @@ const Content = ({ commentLength, content, setContent }) => {
                   mb: 1,
                 }}
                 variant="body2"
-                gutterBottom
+                component={'span'}
               >
                 전체 삭제
               </Typography>
@@ -196,35 +188,53 @@ const Content = ({ commentLength, content, setContent }) => {
         </Grid>
 
         <InfiniteScroll
-          dataLength={content.bookComment.length}
+          dataLength={content.listCount}
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
           next={content && fetchMoreData}
-          hasMore={content.hasMore} // 스크롤 막을지 말지 결정
+          hasMore={true} // 스크롤 막을지 말지 결정
           loader={
-            <p
+            <div
               style={{
                 textAlign: 'center',
               }}
             >
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
               <div>열심히 읽어오는 중..</div>
-            </p>
+            </div>
           }
           height={400}
           endMessage={
             <p style={{ textAlign: 'center' }}>
-              <b>Yayy! 모든 코멘트를 다 읽었어요!</b>
+              <Typography
+                sx={{
+                  mt: 1,
+                  mb: 1,
+                  fontSize: 17,
+                  fontWeight: 300,
+                }}
+                color="#2e3031"
+                variant="body2"
+                gutterBottom
+                component={'span'}
+              >
+                모든 코멘트를 다 읽었어요!
+              </Typography>
             </p>
           }
         >
           <div>
-            <MyCommentBook content={content} setContent={setContent} />
-            <MyCommentPairing content={content} setContent={setContent} />
-            <MyCommentCollection content={content} setContent={setContent} />
+            {content.data ? (
+              content.data.map((data) => (
+                <MyCommentDetail
+                  key={data.commentId}
+                  data={data}
+                  fetchData={fetchData}
+                />
+              ))
+            ) : (
+              <div>데이터가 없어요</div>
+            )}
           </div>
         </InfiniteScroll>
       </ContentContainer>

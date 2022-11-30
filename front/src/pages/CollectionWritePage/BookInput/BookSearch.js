@@ -13,6 +13,9 @@ const BookSearchTitle = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.dark};
   display: flex;
+  @media screen and (max-width: 500px) {
+    font-size: 16px;
+  }
 `;
 
 const Books = styled.div`
@@ -22,6 +25,9 @@ const Books = styled.div`
   padding: 15px;
   margin: 10px 0;
   border: 1px solid ${({ theme }) => theme.colors.gray};
+  @media screen and (max-width: 500px) {
+    padding: 2px;
+  }
 `;
 
 const SearchContainer = styled.div`
@@ -47,6 +53,9 @@ const BookSearchbar = styled.input`
   &:focus {
     outline: none;
   }
+  @media screen and (max-width: 500px) {
+    font-size: 11px;
+  }
 `;
 
 const SearchedBooks = styled.div`
@@ -62,6 +71,13 @@ const SearchedBooks = styled.div`
     &.hide {
       display: none;
     }
+    @media screen and (max-width: 500px) {
+      width: 25px;
+      height: 25px;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    margin: 10px 0;
   }
 `;
 
@@ -69,6 +85,7 @@ const ScrollContainer = styled.div`
   display: flex;
   overflow-y: auto;
   flex-wrap: wrap;
+  width: 100%;
 `;
 
 const BookSearch = ({
@@ -89,13 +106,13 @@ const BookSearch = ({
     }
   };
 
-  //TODO: 무한스크롤로 수정되어야 함
   const handleSearchBook = (e) => {
     setIsLoading(true);
     if (e.key === 'Enter') {
       axios
         .get(`/api/search/collectionbooks?Query=${searchInput}`)
         .then((res) => {
+          console.log(res.data);
           setSearchedBooks(res.data);
           setIsLoading(false);
         })
@@ -104,7 +121,7 @@ const BookSearch = ({
   };
 
   const handleSetNewBooks = (isbn) => {
-    if (!newBooks.includes(isbn)) {
+    if (!newBooks.includes(isbn) && newBooks.length <= 30) {
       setNewBooks([...newBooks, isbn]);
       axios.get(`/api/books/${isbn}`).then((res) => {
         setNewBooksInfo([...newBooksInfo, res.data.data]);

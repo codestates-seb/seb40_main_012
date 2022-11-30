@@ -5,12 +5,15 @@ const CollectionLargeBooksContainer = styled.div`
   display: flex;
   margin: 0 15px;
   justify-content: space-between;
+  @media screen and (max-width: 500px) {
+    margin: 0 5px;
+  }
 `;
 
 const CollectionLargeBooks = ({ books }) => {
   return (
     <CollectionLargeBooksContainer>
-      {books.slice(0, 6).map((el) => {
+      {books?.slice(0, 6).map((el) => {
         return (
           <CollectionLargeBook
             key={el.isbn13}

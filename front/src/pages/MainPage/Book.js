@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const BookContainer = styled.div`
-  width: 25%;
+  width: 20%;
   padding: 10px;
   position: relative;
   img {
@@ -16,13 +16,23 @@ const BookContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 500px) {
+    padding: 5px;
+  }
 `;
 
 const BookTitle = styled.div`
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.darkgray};
-  white-space: nowrap;
+  word-wrap: break-word;
+  @media screen and (max-width: 640px) {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+  }
 `;
 
 const RankInfo = styled.div`

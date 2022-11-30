@@ -9,6 +9,22 @@ import axios from 'api/axios';
 import { useEffect, useState } from 'react';
 import { USER_INFO_URL } from 'api/requests';
 
+const Progress = styled.div`
+  #progress {
+    appearance: none;
+    height: 9px;
+  }
+  #progress::-webkit-progress-bar {
+    background: #f0f0f0;
+    border-radius: 10px;
+    box-shadow: inset 5px 5px 10px rgb(244 244 244);
+  }
+  #progress::-webkit-progress-value {
+    border-radius: 10px;
+    background: #6741ff;
+    background: linear-gradient(to right, #5b32ff, #b09dff);
+  }
+`;
 const ButtonCSS = styled.button`
   outline: none;
   display: inline-block;
@@ -41,7 +57,6 @@ const Header = () => {
       .get(USER_INFO_URL)
 
       .then((response) => {
-        console.log('response', response);
         setUserInfo({
           introduction: response.data.introduction,
           gender: response.data.gender,
@@ -50,7 +65,6 @@ const Header = () => {
           temp: response.data.temp,
           category: response.data.category,
         });
-        console.log('userInfo', userInfo);
       })
       .catch((error) => console.log('에러', error));
   };
@@ -64,68 +78,108 @@ const Header = () => {
       {/* xs , sm, md, lg, xl 사이즈 */}
 
       <Container component="main" maxWidth="xs">
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-        >
-          <Grid container>
-            <Grid item xs={2.4} sx={{ display: 'flex', alignItems: 'center' }}>
-              <Avatar
-                sx={{
-                  bgcolor: '#A28BFF',
-                  width: 80,
-                  height: 80,
-                }}
+        <Progress>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <Grid container>
+              <Grid
+                item
+                xs={2.4}
+                sx={{ display: 'flex', alignItems: 'center' }}
               >
-                <img
-                  src="https://styles.redditmedia.com/t5_33mhbo/styles/profileIcon_7f1481qm5y291.jpeg?width=256&height=256&frame=1&crop=256:256,smart&s=6cc29126b9f6853db131a0f5189c8e86eff9a20e"
-                  alt="cat profile"
-                ></img>
-              </Avatar>
-            </Grid>
-            <Grid item xs={7.2}>
-              <Box
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'left',
-                  mt: 3,
-                  mb: 2,
-                }}
-                style={{
-                  marginLeft: 20,
-                }}
-              >
-                <Typography variant="h6">
-                  {userInfo.nickname ? userInfo.nickname : '체리픽'}
-                </Typography>
+                <Avatar
+                  sx={{
+                    bgcolor: '#A28BFF',
+                    width: 80,
+                    height: 80,
+                  }}
+                >
+                  <img
+                    src={
+                      userInfo.profileImage
+                        ? userInfo.profileImage
+                        : 'https://styles.redditmedia.com/t5_33mhbo/styles/profileIcon_7f1481qm5y291.jpeg?width=256&height=256&frame=1&crop=256:256,smart&s=6cc29126b9f6853db131a0f5189c8e86eff9a20e'
+                    }
+                    alt="cat profile"
+                  ></img>
+                </Avatar>
+              </Grid>
+              <Grid item xs={7.2}>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'left',
+                    mt: 3,
+                    mb: 2,
+                  }}
+                  style={{
+                    marginLeft: 20,
+                  }}
+                >
+                  <Typography
+                    className="title"
+                    sx={{
+                      display: 'flex',
+                      mt: 1,
+                      fontSize: 17,
+                      fontWeight: 400,
+                    }}
+                    color="#2e3031"
+                    variant="body2"
+                    gutterBottom
+                    component={'span'}
+                  >
+                    {userInfo.nickname ? userInfo.nickname : ' '}
+                  </Typography>
 
-                <Typography variant="body1" gutterBottom>
-                  {userInfo.introduction
-                    ? userInfo.introduction
-                    : 'Cherry Pick!'}
-                </Typography>
-                <Typography sx={{ mt: 1.6 }} variant="body2" gutterBottom>
-                  책의 온기 {userInfo.temp}도
-                </Typography>
-              </Box>
+                  <Typography
+                    color="#232627"
+                    sx={{
+                      fontWeight: 200,
+                      height: 'auto',
+                    }}
+                    variant="body2"
+                    gutterBottom
+                    component={'span'}
+                  >
+                    {userInfo.introduction ? userInfo.introduction : null}
+                  </Typography>
+                  <Typography
+                    sx={{ mt: 1.6, color: '#9b8adb' }}
+                    variant="body2"
+                    gutterBottom
+                    component={'span'}
+                  >
+                    <progress
+                      id="progress"
+                      value={userInfo.temp}
+                      min="0"
+                      max="100"
+                    ></progress>
+                    <div> 책의 온기 {userInfo.temp}도</div>
+                  </Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={2.4}>
+                <ButtonCSS>
+                  <Grid item>
+                    <Link to="/mypage/profile" variant="body2">
+                      <Typography sx={{ mt: 4 }} variant="body2" gutterBottom>
+                        내 정보 수정
+                      </Typography>
+                    </Link>
+                  </Grid>
+                </ButtonCSS>
+              </Grid>
             </Grid>
-            <Grid item xs={2.4}>
-              <ButtonCSS>
-                <Grid item>
-                  <Link to="/mypage/profile" variant="body2">
-                    <Typography sx={{ mt: 4 }} variant="body2" gutterBottom>
-                      내 정보 수정
-                    </Typography>
-                  </Link>
-                </Grid>
-              </ButtonCSS>
-            </Grid>
-          </Grid>
-        </Box>
+          </Box>
+        </Progress>
       </Container>
     </>
   );

@@ -8,6 +8,9 @@ const BestBooksContainer = styled.div`
   display: flex;
   padding: 10px 40px;
   flex-direction: column;
+  @media screen and (max-width: 640px) {
+    padding: 0;
+  }
 `;
 
 const BooksContainer = styled.div`
