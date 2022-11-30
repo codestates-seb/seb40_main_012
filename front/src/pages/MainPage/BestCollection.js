@@ -12,6 +12,9 @@ const BestCollectionContainer = styled.div`
 
 const BookColumn = styled.div`
   display: flex;
+  height: 100%;
+  aspect-ratio: 1.38;
+  background-color: #f5f5f5;
 `;
 
 const BestCollectionBook = styled.div`
@@ -28,10 +31,17 @@ const BestCollectionInfo = styled.div`
   font-size: 14px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.darkgray};
-  white-space: nowrap;
+  word-break: break-all;
+  @media screen and (max-width: 640px) {
+    font-size: 12px;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+    font-weight: 600;
+  }
 `;
 
-const BestCollection = ({ title, collectionId }) => {
+const BestCollection = ({ title, collectionId, books }) => {
   const navigate = useNavigate();
 
   const onClickBestCollection = () => {
@@ -41,32 +51,22 @@ const BestCollection = ({ title, collectionId }) => {
   return (
     <BestCollectionContainer onClick={onClickBestCollection}>
       <BookColumn>
-        <BestCollectionBook>
-          <img
-            src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-            alt="book cover"
-          />
-        </BestCollectionBook>
-        <BestCollectionBook>
-          <img
-            src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-            alt="book cover"
-          />
-        </BestCollectionBook>
+        {books?.slice(0, 2).map((el, idx) => {
+          return (
+            <BestCollectionBook key={idx}>
+              <img src={el.bookCover} alt="book cover" />
+            </BestCollectionBook>
+          );
+        })}
       </BookColumn>
       <BookColumn>
-        <BestCollectionBook>
-          <img
-            src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-            alt="book cover"
-          />
-        </BestCollectionBook>
-        <BestCollectionBook>
-          <img
-            src={process.env.PUBLIC_URL + '/images/books/bookcover_1.jpeg'}
-            alt="book cover"
-          />
-        </BestCollectionBook>
+        {books?.slice(2, 4).map((el, idx) => {
+          return (
+            <BestCollectionBook key={idx}>
+              <img src={el.bookCover} alt="book cover" />
+            </BestCollectionBook>
+          );
+        })}
       </BookColumn>
       <BestCollectionInfo>{title}</BestCollectionInfo>
     </BestCollectionContainer>

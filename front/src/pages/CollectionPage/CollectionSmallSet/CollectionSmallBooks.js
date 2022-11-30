@@ -5,14 +5,12 @@ import CollectionSmallBook from './CollectionSmallBook';
 const CollectionSmallBooksContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0 10px;
-  padding: 3px;
+  margin: 3px 10px;
   border: 3px solid transparent;
   &:hover {
     cursor: pointer;
     border: none;
-    margin: 0 13px;
-    padding: 0;
+    margin: 0 10px;
   }
   &.small {
     width: 23%;
@@ -24,6 +22,7 @@ const CollectionSmallBooksContainer = styled.div`
 
 const BookColumn = styled.div`
   display: flex;
+  height: 100%;
   aspect-ratio: 1.38;
   background-color: #f5f5f5;
 `;
@@ -38,7 +37,8 @@ const CollectionSmallInfo = styled.div`
     font-size: 12px;
   }
   @media screen and (max-width: 500px) {
-    display: none;
+    font-size: 10px;
+    font-weight: 600;
   }
 `;
 
