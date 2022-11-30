@@ -49,7 +49,7 @@ const HeadContainer = styled.div`
 `;
 
 const HeadTitle = styled.div`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.dark};
   span {
