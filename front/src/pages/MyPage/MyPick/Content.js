@@ -5,11 +5,12 @@ import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 // import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import MyPickBook from './MyPickBook';
-import InfiniteScroll from 'react-infinite-scroll-component';
+
 import MyPickPairing from './MyPickPairing';
 import MyPickCollection from './MyPickCollection';
 import { useState } from 'react';
 import MyPickGuide from './MyPickGuide';
+import { BasicButton } from '../../../components/Buttons';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -44,88 +45,13 @@ const ContentContainer = styled.div`
   }
 `;
 
-// const BookImg = styled.div`
-//   .resize {
-//     box-sizing: inherit;
-//     width: 108px !important;
-//     height: 164px !important;
-//     margin-left: 10px;
-//   }
-// `;
-
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: row;
 `;
-// const FlexBox = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   margin-left: 20px;
-//   margin-right: 10px;
-//   font-size: 13px;
-//   border-bottom: 1px solid #e9e9e9;
-//   .comment {
-//     height: 125px;
-//     color: #232627;
-//   }
-//   .heart-star-title {
-//     display: flex;
-//     flex-direction: row;
-//   }
-// `;
-const ButtonCSS = styled.button`
-  outline: none;
-  display: inline-block;
-  margin: 0;
-  text-transform: uppercase;
-  cursor: pointer;
-  border: 0;
-  outline: 0;
-  background: transparent;
-`;
 
-// const Remove = styled.div`
-//   color: #dee2e6;
-//   font-size: 24px;
-//   cursor: pointer;
-//   opacity: 0;
-//   &:hover {
-//     color: #6741ff;
-//   }
-// `;
-
-// const ItemContainer = styled.div`
-//   &:hover {
-//     ${Remove} {
-//       opacity: 1;
-//     }
-//   }
-// `;
-
-const Content = ({
-  setContent,
-  content,
-  pairingContent,
-  setPairingContent,
-  collectionContent,
-  setCollectionContent,
-  fetchCollectionData,
-  fetchPairingData,
-  fetchData,
-}) => {
-  // const [data, setData] = useState({
-  //   content: content.data,
-  //   hasMore: true,
-  // });
-
+const Content = ({ content }) => {
   const [view, setView] = useState(1);
-
-  // const onRemove = (targetId) => {
-  //   const newCommentList = content.data.filter(
-  //     (el) => el.commentId !== targetId
-  //   );
-  //   setContent({ data: newCommentList, hasMore: true });
-  // };
 
   return (
     <>
@@ -192,23 +118,11 @@ const Content = ({
           {/* ///////////// */}
 
           <div>
-            {/* {view === 1 ? (
-                <MyPickPairing
-                  content={pairingContent}
-                  fetchPairingData={fetchPairingData}
-                />
-              ) : null} */}
+            {view === 1 ? <MyPickPairing /> : null}
 
-            {view === 2 ? (
-              <MyPickCollection
-                content={collectionContent}
-                fetchCollectionData={fetchCollectionData}
-              />
-            ) : null}
+            {view === 2 ? <MyPickCollection /> : null}
 
-            {view === 3 ? (
-              <MyPickBook content={content} fetchData={fetchData} />
-            ) : null}
+            {view === 3 ? <MyPickBook /> : null}
           </div>
         </ContentContainer>
       ) : (
@@ -272,6 +186,29 @@ const Content = ({
                 <MyPickGuide />
               </Grid>
             </Grid>
+            <div className="no-data-notice">
+              <Typography
+                sx={{
+                  mt: 1,
+                  mb: 1,
+                  fontSize: 17,
+                  fontWeight: 300,
+                }}
+                color="#2e3031"
+                variant="body2"
+                gutterBottom
+                component={'span'}
+              >
+                읽어올 데이터가 없습니다
+                <br />
+                메인 페이지에서 체리픽의 새로운 추천을 만나보세요!
+                <br />
+                <br />
+                <BasicButton onClick={() => navigate(`/`)}>
+                  메인 페이지
+                </BasicButton>
+              </Typography>
+            </div>
             {/* ///////////// */}
           </ContentContainer>
         </>

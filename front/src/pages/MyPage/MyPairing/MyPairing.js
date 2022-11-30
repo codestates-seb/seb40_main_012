@@ -34,6 +34,7 @@ const MyPairing = () => {
   const [content, setContent] = useState({
     data: [],
   });
+  const [lastId, setLastId] = useState();
 
   const fetchData = async () => {
     axios
@@ -42,6 +43,15 @@ const MyPairing = () => {
         setContent({
           data: response.data.data.content,
         });
+        {
+          response.data.data.content.length
+            ? setLastId(
+                response.data.data.content[
+                  response.data.data.content.length - 1
+                ].pairingId
+              )
+            : null;
+        }
       })
       .catch((error) => console.log('에러', error));
   };
@@ -61,12 +71,14 @@ const MyPairing = () => {
               content={content}
               setContent={setContent}
               fetchData={fetchData}
+              lastId={lastId}
+              setLastId={setLastId}
             ></Content>
           </Container>
         ) : (
           <Container maxWidth="md">
             <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
+            <Nav view={view} setView={setView}></Nav>
             <Void>
               <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>더
               읽어올 데이터가 없군요 📕
