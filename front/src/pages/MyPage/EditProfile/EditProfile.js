@@ -180,6 +180,7 @@ const EditProfile = () => {
   };
 
   const isValidNickName = async (id, value) => {
+    if (nickName === value) return;
     try {
       const response = await duplicationCheck(id, value);
       const { status, message } = response;
