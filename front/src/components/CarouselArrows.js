@@ -3,6 +3,22 @@ import styled from 'styled-components';
 const ArrowContainer = styled.div`
   width: 25px;
   height: 25px;
+  @media screen and (max-width: 640px) {
+    width: 20px;
+    height: 20px;
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    width: 15px;
+    height: 15px;
+    img {
+      width: 15px;
+      height: 15px;
+    }
+  }
 `;
 const NextArrow = (props) => {
   const { className, style, onClick } = props;

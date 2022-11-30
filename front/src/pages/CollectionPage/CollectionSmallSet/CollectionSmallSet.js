@@ -8,7 +8,7 @@ import { NextArrow, PrevArrow } from '../../../components/CarouselArrows';
 import { useSelector } from 'react-redux';
 import { selectIsLogin } from '../../../store/modules/authSlice';
 import { useEffect, useState } from 'react';
-//import axios from '../../../api/axios';
+import axios from '../../../api/axios';
 
 const SlickSlider = styled.div`
   width: 100%;
@@ -21,11 +21,25 @@ const SlickSlider = styled.div`
   .slick-next {
     right: 20px;
     top: 47%;
+    @media screen and (max-width: 1100px) {
+      top: 40%;
+    }
+    @media screen and (max-width: 500px) {
+      right: 5px;
+      top: 50%;
+    }
   }
   .slick-prev {
     left: 22px;
     top: 47%;
     z-index: 100;
+    @media screen and (max-width: 1100px) {
+      top: 40%;
+    }
+    @media screen and (max-width: 500px) {
+      left: 5px;
+      top: 50%;
+    }
   }
 `;
 
@@ -33,13 +47,26 @@ const CollectionSmallSetContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  margin-bottom: 40px;
+  margin-bottom: 80px;
   padding: 0 40px;
+  @media screen and (max-width: 640px) {
+    padding: 0 20px;
+    margin-bottom: 60px;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 0;
+    margin-bottom: 40px;
+  }
 `;
 
 const CollectionBooks = styled.div`
   display: flex;
   justify-content: center;
+`;
+
+const BooksContainer = styled.div`
+  width: 100%;
+  display: flex;
 `;
 
 const CollectionSmallSet = () => {
@@ -249,31 +276,25 @@ const CollectionSmallSet = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    // if (isLogin) {
-    //   //내 컬렉션 조회
-    //   axios
-    //     .get('/api/collections/userCollection')
-    //     .then((res) => {
-    //       console.log(res.data.data);
-    //       if (res.data.listCount < 4) { //4개보다 적은 경우
-    //         setData([...res.data.data, ...res.data.data]);
-    //       } else {
-    //         setData(res.data.data);
-    //       }
-    //     })
-    //     .catch((error) => console.error(error));
-    // } else {
-    //   //인기 컬렉션 조회 -> api 수정 필요
-    //   axios
-    //     .get('/api/collections/userCollection')
-    //     .then((res) => {
-    //       console.log(res.data.data);
-    //       setData(res.data.data);
-    //     })
-    //     .catch((error) => console.error(error));
-    // }
-
-    setData(response.data);
+    if (isLogin) {
+      //내 컬렉션 조회
+      axios
+        .get('/api/collections/userCollection')
+        .then((res) => {
+          setData([...res.data.data]);
+        })
+        .catch((error) => console.error(error));
+    } else {
+      //인기 컬렉션 조회 -> api 수정 필요
+      // axios
+      //   .get('/api/collections/userCollection')
+      //   .then((res) => {
+      //     console.log(res.data.data);
+      //     setData(res.data.data);
+      //   })
+      //   .catch((error) => console.error(error));
+      setData(response.data);
+    }
   }, []);
 
   const isLogin = useSelector(selectIsLogin);
@@ -283,22 +304,38 @@ const CollectionSmallSet = () => {
       {isLogin ? (
         <>
           <CollectionSetTitle title="나의 컬렉션" isMyCollection={true} />
-          <CollectionBooks>
-            <SlickSlider>
-              <Slider {...settings}>
-                {data.map((el) => {
-                  return (
-                    <CollectionSmallBooks
-                      key={el.collectionId}
-                      collectionId={el.collectionId}
-                      title={el.title}
-                      books={el.books}
-                    />
-                  );
-                })}
-              </Slider>
-            </SlickSlider>
-          </CollectionBooks>
+          {data.length >= 4 ? (
+            <CollectionBooks>
+              <SlickSlider>
+                <Slider {...settings}>
+                  {data?.map((el) => {
+                    return (
+                      <CollectionSmallBooks
+                        key={el.collectionId}
+                        collectionId={el.collectionId}
+                        title={el.title}
+                        books={el.books}
+                      />
+                    );
+                  })}
+                </Slider>
+              </SlickSlider>
+            </CollectionBooks>
+          ) : (
+            <BooksContainer>
+              {data?.map((el) => {
+                return (
+                  <CollectionSmallBooks
+                    key={el.collectionId}
+                    collectionId={el.collectionId}
+                    title={el.title}
+                    books={el.books}
+                    type="small"
+                  />
+                );
+              })}
+            </BooksContainer>
+          )}
         </>
       ) : (
         <>
@@ -306,7 +343,7 @@ const CollectionSmallSet = () => {
           <CollectionBooks>
             <SlickSlider>
               <Slider {...settings}>
-                {data.map((el) => {
+                {data?.map((el) => {
                   return (
                     <CollectionSmallBooks
                       key={el.collectionId}

@@ -12,7 +12,12 @@ const CollectionLargeBookContainer = styled.div`
 const CollectionBookTitle = styled.div`
   font-size: 14px;
   font-weight: 700;
-  color: ${({ theme }) => theme.colors.darkgray};
+  color: ${({ theme }) => theme.colors.dark};
+  word-wrap: break-word;
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+    font-weight: 500;
+  }
 `;
 
 const CollectionLargeBook = ({ bookTitle, cover }) => {
