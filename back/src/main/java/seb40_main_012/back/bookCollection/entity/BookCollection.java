@@ -43,6 +43,7 @@ public class BookCollection {
     private boolean userCollection;
     private Long view;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
     private List<BookCollectionTag> collectionTags = new ArrayList<>();
 
@@ -56,6 +57,7 @@ public class BookCollection {
 
     @ElementCollection
     private List<String> bookIsbn13 = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)

@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.CommentMapper;
@@ -30,6 +31,7 @@ public class BookController {
 
     private final CommentService commentService;
     private final CommentMapper commentMapper;
+    private final BookCollectionService bookCollectionService;
     private final BookService bookService;
     private final BookmarkService bookmarkService;
     private final BookMapper bookMapper;
@@ -55,6 +57,8 @@ public class BookController {
                     .map(comment -> commentService.isLikedComment(comment.getCommentId()))
                     .collect(Collectors.toList());
         }
+
+        book.setBookCollections(bookCollectionService.getAllCollectionsForTheBook(isbn13));
 
         BookDto.Response response = bookMapper.bookToBookResponse(book);
 //        if ( response.getComments() == null ) {
