@@ -21,6 +21,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { NextArrow, PrevArrow } from '../../components/CarouselArrows';
 import axios from '../../api/axios';
+import CollectionSmallBooks from '../../pages/CollectionPage/CollectionSmallSet/CollectionSmallBooks';
 
 const Wrapper = styled.div`
   display: flex;
@@ -30,11 +31,8 @@ const Wrapper = styled.div`
 
 const PairingStyled = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
-  @media screen and (min-width: 641px) {
-    flex-direction: row;
-  }
 `;
 
 const BestPairingBox = styled.div`
@@ -109,8 +107,9 @@ const PairingContents = styled.div`
   background-blend-mode: multiply;
   border-radius: 5px;
   color: white;
-  width: 50%;
-  max-width: 300px;
+  font-size: 12px;
+  width: 30%;
+  max-width: 280px;
   aspect-ratio: 1 / 1;
   box-sizing: border-box;
   margin: 7px;
@@ -122,8 +121,8 @@ const PairingContents = styled.div`
     cursor: pointer;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
-  @media screen and (max-width: 640px) {
-    width: 50%;
+  @media screen and (min-width: 640px) {
+    font-size: 18px;
   }
 `;
 
@@ -512,8 +511,35 @@ const BookDetail = () => {
             <EmptyStyledBox>
               <p>첫 컬렉션을 등록해보세요!</p>
             </EmptyStyledBox>
+          ) : bookData?.bookCollectionCount < 5 ? (
+            <RowBox>
+              {bookData?.bookCollections?.content?.map((el) => {
+                return (
+                  <CollectionSmallBooks
+                    key={el.collectionId}
+                    collectionId={el.collectionId}
+                    title={el.title}
+                    books={el.collectionCover}
+                    type="small"
+                  />
+                );
+              })}
+            </RowBox>
           ) : (
-            <p>컬렉션!</p>
+            <SlickSlider>
+              <Slider {...sliderSettings}>
+                {bookData?.bookCollections?.content?.map((el) => {
+                  return (
+                    <CollectionSmallBooks
+                      key={el.collectionId}
+                      collectionId={el.collectionId}
+                      title={el.title}
+                      books={el.collectionCover}
+                    />
+                  );
+                })}
+              </Slider>
+            </SlickSlider>
           )}
         </DescContainer>
       </Wrapper>
