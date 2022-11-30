@@ -27,6 +27,7 @@ const SlickSlider = styled.div`
     @media screen and (max-width: 500px) {
       right: 5px;
       top: 50%;
+      display: none !important;
     }
   }
   .slick-prev {
@@ -39,6 +40,7 @@ const SlickSlider = styled.div`
     @media screen and (max-width: 500px) {
       left: 5px;
       top: 50%;
+      display: none !important;
     }
   }
 `;
