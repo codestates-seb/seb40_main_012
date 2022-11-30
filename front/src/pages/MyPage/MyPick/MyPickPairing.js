@@ -187,7 +187,20 @@ const MyPickPairing = () => {
           height={400}
           endMessage={
             <p style={{ textAlign: 'center' }}>
-              <b>Yayy! 모든 픽을 다 읽었어요!</b>
+              <Typography
+                sx={{
+                  mt: 1,
+                  mb: 1,
+                  fontSize: 17,
+                  fontWeight: 300,
+                }}
+                color="#2e3031"
+                variant="body2"
+                gutterBottom
+                component={'span'}
+              >
+                모든 픽을 다 읽었어요!
+              </Typography>
             </p>
           }
         >

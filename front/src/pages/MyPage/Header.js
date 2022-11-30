@@ -100,7 +100,11 @@ const Header = () => {
                   }}
                 >
                   <img
-                    src="https://styles.redditmedia.com/t5_33mhbo/styles/profileIcon_7f1481qm5y291.jpeg?width=256&height=256&frame=1&crop=256:256,smart&s=6cc29126b9f6853db131a0f5189c8e86eff9a20e"
+                    src={
+                      userInfo.profileImage
+                        ? userInfo.profileImage
+                        : 'https://styles.redditmedia.com/t5_33mhbo/styles/profileIcon_7f1481qm5y291.jpeg?width=256&height=256&frame=1&crop=256:256,smart&s=6cc29126b9f6853db131a0f5189c8e86eff9a20e'
+                    }
                     alt="cat profile"
                   ></img>
                 </Avatar>
