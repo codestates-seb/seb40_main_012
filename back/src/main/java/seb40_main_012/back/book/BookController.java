@@ -8,6 +8,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.comment.CommentDto;
@@ -19,6 +20,7 @@ import seb40_main_012.back.dto.SingleResponseDto;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -76,6 +78,26 @@ public class BookController {
                             }}
                     ));
         }
+
+
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        book.getBookCollections().stream()
+//                .map(BookCollection::getBookIsbn13)
+//                .flatMap(Collection::stream)
+//                .map(a -> bookService.findBook(a).getCover())
+//                .limit(4)
+//                .forEach(System.out::println);
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
+//        System.out.println("-------------------------------------------------");
 
 
 
