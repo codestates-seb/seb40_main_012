@@ -6,11 +6,14 @@ import styled from 'styled-components';
 const CommentAddContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 20px 20px;
+  padding: 20px;
   div.input {
     display: flex;
   }
   margin-bottom: 50px;
+  @media screen and (max-width: 640px) {
+    padding: 10px 0;
+  }
 `;
 
 const CommentInput = styled.input`
@@ -25,6 +28,15 @@ const CommentInput = styled.input`
     outline: none;
   }
   margin-right: 20px;
+  @media screen and (max-width: 640px) {
+    margin-right: 10px;
+  }
+  @media screen and (max-width: 500px) {
+    height: 30px;
+    font-size: 10px;
+    padding: 0 5px;
+    margin-right: 5px;
+  }
 `;
 
 const CommentAddBtn = styled.button`
@@ -39,6 +51,14 @@ const CommentAddBtn = styled.button`
   font-size: 14px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.dark};
+  @media screen and (max-width: 500px) {
+    width: 60px;
+    font-size: 12px;
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
   &:hover {
     cursor: pointer;
   }
@@ -64,6 +84,9 @@ const CommentInfoContainer = styled.div`
   color: ${({ theme }) => theme.colors.gray};
   &.none {
     display: none;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
   }
 `;
 

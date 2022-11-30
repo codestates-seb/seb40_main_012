@@ -29,6 +29,13 @@ const CollectionBtns = styled.div`
     cursor: pointer;
     background-color: #e8e8e8;
   }
+  @media screen and (max-width: 500px) {
+    font-size: 11px;
+    img {
+      width: 15px;
+      height: 15px;
+    }
+  }
 `;
 const CollectionBookmark = styled(CollectionBtns)``;
 const CollectionHeart = styled(CollectionBtns)``;
