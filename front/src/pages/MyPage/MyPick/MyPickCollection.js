@@ -9,7 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { MY_PICK_COLLECTION } from '../../../api/requests';
+import { BasicButton } from '../../../components/Buttons';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -21,6 +23,10 @@ const RemoveButton = styled.button`
   border: 0;
   outline: 0;
   cursor: pointer;
+`;
+
+const NoDataNotice = styled.div`
+  text-align: center;
 `;
 
 const ItemContainer = styled.div`
@@ -44,6 +50,15 @@ const BookImg = styled.div`
     width: 108px !important;
     height: 164px !important;
     margin-left: 10px;
+  }
+  .resize-book {
+    box-sizing: inherit;
+    width: 112px !important;
+    height: 158px !important;
+    padding: 10px !important;
+    margin-left: 8px;
+    filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
+    /* background-color: navy; */
   }
 `;
 
@@ -74,91 +89,91 @@ const FlexBox = styled.div`
   }
   .title {
     :hover {
-      color: #b09dff;
+      color: #795af5;
       transition: color 0.5s;
     }
   }
 `;
 
-const MyPickCollection = ({ content, fetchCollectionData }) => {
-  console.log('받아온콘텐츠', content);
+const MyPickCollection = () => {
   const navigate = useNavigate();
   const [hasMore, setHasMore] = useState(true);
-
-  // 그냥 콘솔로그 찍었을 때는 나오는데, lastId로 조회했을 때는 nan이 나오는 문제
-  const [lastId, setLastId] = useState(
-    content?.data?.content[content?.data?.content?.length - 1]?.bookmarkId
-  );
-  console.log(
-    content?.data?.content[content?.data?.content?.length - 1]?.bookmarkId
-  );
-
-  console.log('마지막아이디', lastId);
-  const [newContent, setNewContent] = useState({
+  const [content, setContent] = useState({
     data: [],
   });
-  console.log('hasMore', hasMore);
+  const [lastId, setLastId] = useState();
 
-  // console.log('data는어디에 ', data);
+  const fetchData = async () => {
+    axios
+      .get(MY_PICK_COLLECTION)
+      .then((response) => {
+        console.log('response');
+        setContent({
+          data: response.data.data.content,
+        });
+        {
+          response.data.data.content.length
+            ? setLastId(
+                response.data.data.content[
+                  response.data.data.content.length - 1
+                ].bookmarkId
+              )
+            : null;
+        }
+        setHasMore(response.data.data.size < 5 ? false : true);
+      })
+      .catch((error) => console.log('에러', error));
+  };
 
   const onRemove = (id) => {
     axios
       .post(`/api/collections/${id}/bookmark`)
-      // .then(() => fetchData())
+      .then(() => fetchData())
       .catch((error) => console.log('에러', error));
   };
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    // if (newContent.data.length < 5) {
-    //   setHasMore(false);
-    //   return;
-    // }
-
-    // 새로불러온 데이터를 state에 저장해서 그 데이터끼리 붙여야 함
-
-    if (hasMore === true) {
-      axios
-        .get(`/api/mypage/userPairing?lastId=86`)
-        // .get(`/api/mypage/userPairing?lastId=${lastId}`)
-
-        .then((response) => {
-          console.log('response.data.data.content', response.data.data.content);
-          // 여기까진 들어옴
-          setNewContent({
-            data: response?.data.data.content,
-          });
-          console.log('newContent', newContent);
-          // console.log('newContent', newContent.data);
-
-          // setContent({
-          //   data: content.data.concat(response.data.data.content),
-          //   size: content.size,
-          // });
-
-          setContent({
-            data: content?.data?.concat(newContent.data),
-            size: content.size,
-          });
-          console.log('content.data', content.data);
-          setHasMore(response.data.data.empty);
-          setLastId(lastId - 5);
-        })
-        .catch((error) => console.log('에러', error));
-    }
-
-    /////
+    setTimeout(() => {
+      if (hasMore === true && lastId) {
+        axios
+          .get(`/api/mypage/bookmark/collection?lastId=${lastId}`)
+          .then((response) => {
+            console.log('응답', response.data.data.content);
+            setContent({
+              data: pairingContent.data.concat(response.data.data.content),
+              size: response.data.data.size,
+            });
+            setHasMore(response.data.data.size < 5 ? false : true);
+            {
+              response.data.data.size >= 5
+                ? setLastId(
+                    response.data.data.content[
+                      response.data.data.content.length - 1
+                    ].bookmarkId
+                  )
+                : null;
+            }
+          })
+          .catch((error) => console.log('에러', error));
+      }
+    }, 500);
   };
+
+  useEffect(() => {
+    fetchData();
+    setHasMore(content.data.length < 5 ? false : true);
+  }, []);
 
   return (
     <>
-      {content.data.content ? (
+      {content.data.length ? (
         <InfiniteScroll
-          dataLength={content.data.content}
+          dataLength={content.data.length}
           // dataLength={data.content.length}
           // next={data.content && fetchMoreData}
-          next={content.data.content && fetchMoreData}
-          hasMore={true} // 스크롤 막을지 말지 결정
+          next={fetchMoreData}
+          hasMore={hasMore} // 스크롤 막을지 말지 결정
           loader={
             <div
               style={{
@@ -172,11 +187,24 @@ const MyPickCollection = ({ content, fetchCollectionData }) => {
           height={400}
           endMessage={
             <p style={{ textAlign: 'center' }}>
-              <b>Yayy! 모든 픽을 다 읽었어요!</b>
+              <Typography
+                sx={{
+                  mt: 1,
+                  mb: 1,
+                  fontSize: 17,
+                  fontWeight: 300,
+                }}
+                color="#2e3031"
+                variant="body2"
+                gutterBottom
+                component={'span'}
+              >
+                모든 픽을 다 읽었어요!
+              </Typography>
             </p>
           }
         >
-          {content?.data.content?.map((data) => (
+          {content.data.map((data) => (
             <ItemContainer key={data.bookmarkId}>
               <Grid
                 container
@@ -187,16 +215,13 @@ const MyPickCollection = ({ content, fetchCollectionData }) => {
                   flexDirection: 'row',
                 }}
               >
-                <Grid
-                  item
-                  xs={1.8}
-                  onClick={() =>
-                    navigate(`/collection/${data.collections.collectionId}`)
-                  }
-                  aria-hidden="true"
-                >
-                  <BookImg>
-                    {data.bookCover ? (
+                <Grid item xs={1.8} aria-hidden="true">
+                  <BookImg
+                    onClick={() =>
+                      navigate(`/collection/${data.collections.collectionId}`)
+                    }
+                  >
+                    {data.collections.bookCover ? (
                       <img
                         className="resize-book"
                         src={data.collections.bookCover}
@@ -333,7 +358,29 @@ const MyPickCollection = ({ content, fetchCollectionData }) => {
           ))}
         </InfiniteScroll>
       ) : (
-        <div>데이터없어용</div>
+        <NoDataNotice>
+          <Typography
+            sx={{
+              mt: 1,
+              mb: 1,
+              fontSize: 17,
+              fontWeight: 300,
+            }}
+            color="#2e3031"
+            variant="body2"
+            gutterBottom
+            component={'span'}
+          >
+            읽어올 데이터가 없습니다
+            <br />
+            컬렉션 페이지에서 체리픽의 인기 컬렉션을 추천해드릴게요!
+            <br />
+            <br />
+            <BasicButton onClick={() => navigate(`/collection`)}>
+              컬렉션 페이지
+            </BasicButton>
+          </Typography>
+        </NoDataNotice>
       )}
     </>
   );

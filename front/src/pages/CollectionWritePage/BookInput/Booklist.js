@@ -6,23 +6,37 @@ const BooklistContainer = styled.div`
   flex-wrap: wrap;
   align-items: center;
   white-space: nowrap;
+  border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
+  font-weight: 500;
   .rating {
-    margin-right: 20px;
+    width: 60px;
+    font-weight: 600;
     color: ${({ theme }) => theme.colors.mainColor};
-    font-weight: 700;
+    @media screen and (max-width: 500px) {
+      width: 30px;
+      margin-right: 5px;
+      font-size: 12px;
+    }
   }
   .title {
     width: 60%;
-    font-weight: 700;
     font-size: 14px;
+    @media screen and (max-width: 500px) {
+      font-size: 12px;
+    }
   }
   .author {
     font-size: 12px;
-    font-weight: 600;
+    @media screen and (max-width: 500px) {
+      font-size: 10px;
+    }
   }
   &:hover {
     cursor: pointer;
     background-color: #f5f5f5;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 5px;
   }
 `;
 

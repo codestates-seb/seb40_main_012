@@ -28,12 +28,12 @@ const CollectionMediumSet = ({ title, nickName, type }) => {
 
   useEffect(() => {
     //TODO: URL 조건부로 수정!
-    // const URL =
-    //   type === 'recomment'
-    //     ? '/api/collections/category'
-    //     : '/api/collections/tag';
+    const URL =
+      type === 'recommend'
+        ? '/api/collections/category'
+        : '/api/collections/tag';
 
-    const URL = '/api/collections/tag';
+    //const URL = '/api/collections/tag';
 
     axios
       .get(URL)

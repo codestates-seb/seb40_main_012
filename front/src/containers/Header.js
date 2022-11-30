@@ -66,6 +66,7 @@ const LogoSytled = styled.img`
 const HeaderBtn = styled(Button)`
   color: ${({ theme }) => theme.colors.dark};
   border: none;
+  white-space: nowrap;
   &:hover {
     background-color: transparent;
   }
@@ -79,6 +80,7 @@ const HeaderItemButtonStyled = styled(HeaderBtn)`
   height: 60px;
   border-top: 3px solid transparent;
   border-radius: 0;
+  white-space: nowrap;
   &:hover,
   &.selected {
     border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor};

@@ -10,14 +10,8 @@ import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 // import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import axios from '../../../api/axios';
-import {
-  MY_PICK_BOOK,
-  MY_PICK_PAIRING,
-  MY_PICK_COLLECTION,
-} from '../../../api/requests';
+import { MY_PICK_BOOK } from '../../../api/requests';
 import Scroll from '../Scroll';
-
-// 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
 
 const Void = styled.div`
   min-width: 50vw;
@@ -41,14 +35,6 @@ const MyPick = () => {
     data: [],
   });
 
-  const [pairingContent, setPairingContent] = useState({
-    data: [],
-  });
-
-  const [collectionContent, setCollectionContent] = useState({
-    data: [],
-  });
-
   // 책 북마크 데이터 가져오기
   const fetchData = async () => {
     axios
@@ -57,64 +43,35 @@ const MyPick = () => {
         console.log('then?', response);
         setContent({
           data: response.data.data,
+          content,
         });
       })
-      .catch((error) => console.log('에러', error));
-  };
-
-  // 페어링 북마크 데이터 가져오기
-  const fetchPairingData = async () => {
-    axios
-      .get(MY_PICK_PAIRING)
-      .then((response) => {
-        setPairingContent({
-          data: response.data.data,
-        });
-      })
-      .catch((error) => console.log('에러', error));
-  };
-  console.log('pairingContent 현재값', pairingContent);
-
-  // 컬렉션 북마크 데이터 가져오기
-  const fetchCollectionData = async () => {
-    axios
-      .get(MY_PICK_COLLECTION)
-      .then((response) => {
-        setCollectionContent({
-          data: response.data.data,
-        });
-
-        console.log('collectionContent 현재값', collectionContent);
-      })
-
       .catch((error) => console.log('에러', error));
   };
 
   useEffect(() => {
-    // fetchDataTest();
     fetchData();
-    fetchPairingData();
-    fetchCollectionData();
   }, []);
 
   return (
     <Scroll>
       <PageContainer header footer>
-        <Container maxWidth="md">
-          <Header></Header>
-          <Nav view={view} setView={setView}></Nav>
-          <Content
-            content={content}
-            setContent={setContent}
-            pairingContent={pairingContent}
-            setPairingContent={setPairingContent}
-            collectionContent={collectionContent}
-            setCollectionContent={setCollectionContent}
-            fetchCollectionData={fetchCollectionData}
-            fetchPairingData={fetchPairingData}
-            fetchData={fetchData}
-          ></Content>
-        </Container>
+        {content ? (
+          <Container maxWidth="md">
+            <Header></Header>
+            <Nav view={view} setView={setView}></Nav>
+            <Content content={content}></Content>
+          </Container>
+        ) : (
+          <Container maxWidth="md">
+            <Header></Header>
+            <Nav view={view} setView={setView}></Nav>
+            <Void>
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>더
+              읽어올 데이터가 없군요 📕
+            </Void>
+          </Container>
+        )}
       </PageContainer>
     </Scroll>
   );

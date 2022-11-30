@@ -78,7 +78,7 @@ const FlexBox = styled.div`
   }
   .title {
     :hover {
-      color: #b09dff;
+      color: #795af5;
       transition: color 0.5s;
     }
   }
@@ -91,7 +91,7 @@ const MyCollectionDetail = ({ data, fetchData }) => {
 
   const onRemove = (id) => {
     axios
-      .delete(`/api/books/collections/${id}`)
+      .delete(`/api/collections/${id}`)
       .then(() => fetchData())
       .catch((error) => console.log('에러', error));
   };
@@ -225,7 +225,7 @@ const MyCollectionDetail = ({ data, fetchData }) => {
             >
               <Remove
                 onClick={() => {
-                  if (window.confirm(`코멘트를 삭제하시겠습니까?`)) {
+                  if (window.confirm(`컬렉션을 삭제하시겠습니까?`)) {
                     onRemove(data.collectionId);
                   }
                 }}

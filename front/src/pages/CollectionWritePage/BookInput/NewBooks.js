@@ -12,6 +12,9 @@ const NewBooksTitle = styled.div`
   font-size: 24px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.mainColor};
+  @media screen and (max-width: 500px) {
+    font-size: 16px;
+  }
 `;
 
 const Books = styled.div`
@@ -25,9 +28,7 @@ const Books = styled.div`
 
 const NewBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
   const handleDeleteBook = (isbn) => {
-    console.log('delete', isbn);
     const tmp = newBooks.filter((el) => {
-      console.log(el, isbn, el === isbn);
       return String(el) !== String(isbn);
     });
     setNewBooks(tmp);

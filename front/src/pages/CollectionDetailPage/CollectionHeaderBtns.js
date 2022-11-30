@@ -20,6 +20,7 @@ const CollectionBtns = styled.div`
   color: ${({ theme }) => theme.colors.darkgray};
   font-size: 15px;
   font-weight: 500;
+  white-space: nowrap;
   img {
     width: 20px;
     height: 20px;
@@ -28,6 +29,13 @@ const CollectionBtns = styled.div`
   &:hover {
     cursor: pointer;
     background-color: #e8e8e8;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 11px;
+    img {
+      width: 15px;
+      height: 15px;
+    }
   }
 `;
 const CollectionBookmark = styled(CollectionBtns)``;
