@@ -145,6 +145,7 @@ const DescContainer = styled.div`
 
 const ButtonContainer = styled.div`
   display: flex;
+  flex-wrap: wrap;
   padding: 0 20px 10px;
   button {
     margin: 0 3px;

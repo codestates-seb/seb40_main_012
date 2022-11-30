@@ -29,6 +29,7 @@ import CopyUrlButton from './CopyUrlButton';
 const BtnStyleBox = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
 `;
 
