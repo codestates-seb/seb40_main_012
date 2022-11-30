@@ -4,12 +4,8 @@ import PairingOriginBook from '../PairingPage/PairingDetail/PairingOriginBook';
 import RateModal from './RateModal';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  getBookAsync,
-  postBookPick,
-  deleteBookComment,
-} from '../../store/modules/bookSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getBookAsync } from '../../store/modules/bookSlice';
 import { GenterMatcherToKor } from '../../util/GenreMatcher';
 import { ToDateString } from '../../util/ToDateString';
 import { BasicButton } from '../../components/Buttons';
@@ -19,11 +15,12 @@ import PickButton from '../PairingPage/PairingDetail/PickButton';
 import NeedLoginModal from '../PairingPage/PairingDetail/NeedLoginModal';
 import LinkCopyModal from '../../components/LinkCopyModal';
 import BookCommentsModal from './BookCommentsModal';
-import MyComment from './MyComments';
+import MyComment from './MyComment';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { NextArrow, PrevArrow } from '../../components/CarouselArrows';
+import axios from '../../api/axios';
 
 const Wrapper = styled.div`
   display: flex;
@@ -202,10 +199,115 @@ const BookDetail = () => {
   const userEmail = useSelector(selectEmail);
   const location = useLocation();
 
+  const initialState = {
+    adult: null,
+    author: '',
+    averageRating: 0,
+    bestPairing: {},
+    bookCollectionCount: '',
+    bookCollections: {},
+    bookmarked: false,
+    commentCount: 0,
+    comments: {},
+    cover: null,
+    description: null,
+    genre: '',
+    isbn13: '',
+    itemPage: null,
+    myComment: null,
+    myRating: 0,
+    pairingCount: 0,
+    pairings: {},
+    pubDate: null,
+    publisher: null,
+    ratingCount: 0,
+    subTitle: null,
+    title: '',
+    view: 0,
+  };
+
+  const [bookData, setBookData] = useState(initialState);
+
   useEffect(() => {
     dispatch(getBookAsync(isbn));
-  }, [dispatch]);
-  const bookData = useSelector((state) => state.book.data);
+    getBookData(isbn);
+  }, []);
+
+  const getBookData = () => {
+    axios
+      .get(`/api/books/${isbn}`)
+      .then((res) => {
+        setBookData(res.data.data);
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleBookmark = () => {
+    if (isLogin) {
+      axios
+        .post(`/api/books/${isbn}/bookmark`)
+        .then(() => getBookData())
+        .catch((error) => console.error(error));
+    }
+  };
+
+  const handleRating = (ratingBody) => {
+    axios
+      .patch(`/api/books/${isbn}/rating`, ratingBody)
+      .then(() => {
+        getBookData();
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCommentAdd = (commentBody) => {
+    axios
+      .post(`/api/books/${isbn}/comments/add`, commentBody)
+      .then(() => {
+        getBookData();
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCommentDelete = (commentId) => {
+    axios
+      .delete(`/api/comments/${commentId}/delete`)
+      .then(() => {
+        getBookData();
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCommentEdit = (commentId, commentBody) => {
+    axios
+      .patch(`/api/books/${commentId}/edit`, {
+        commentBody,
+      })
+      .then(() => {
+        getBookData();
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCommentLike = (commentId) => {
+    axios
+      .patch(`/api/comments/${commentId}/like`)
+      .then((res) => {
+        console.log(res.data.data);
+        getBookData();
+      })
+      .catch((error) => console.error(error));
+  };
+
+  const handleCommentDislike = (commentId) => {
+    axios
+      .patch(`/api/comments/${commentId}/dislike`)
+      .then((res) => {
+        console.log(res.data.data);
+        getBookData();
+      })
+      .catch((error) => console.error(error));
+  };
 
   const navToWrite = () => {
     navigate('/pairing/write');
@@ -213,14 +315,6 @@ const BookDetail = () => {
 
   const navToPairingContent = (pairingId) => {
     navigate(`/pairing/${pairingId}`);
-  };
-
-  const handleBookmark = () => {
-    dispatch(postBookPick(isbn));
-  };
-
-  const handleCommentDelete = (commentId) => {
-    dispatch(deleteBookComment(commentId));
   };
 
   console.log(bookData);
@@ -276,7 +370,15 @@ const BookDetail = () => {
         ) : null}
         <ButtonContainer>
           <RowBox>
-            <RateModal isbn={isbn} />
+            <RateModal
+              isbn={isbn}
+              bookData={bookData}
+              setBookData={setBookData}
+              getBookData={getBookData}
+              handleRating={handleRating}
+              handleCommentAdd={handleCommentAdd}
+              handleCommentEdit={handleCommentEdit}
+            />
             {isLogin ? (
               <BasicButton onClick={navToWrite}>페어링 작성하기</BasicButton>
             ) : (
@@ -316,8 +418,12 @@ const BookDetail = () => {
           <h1>코멘트 {bookData?.comments?.content?.length}</h1>
           {bookData?.myRating || bookData?.myComment ? (
             <MyComment
+              isbn={isbn}
+              getBookData={getBookData}
               myComment={bookData.myComment}
               myRating={bookData.myRating}
+              commentId={bookData.myComment?.commentId}
+              handleCommentDelete={handleCommentDelete}
             />
           ) : null}
           {commentsTopThree?.length === 0 ? (
@@ -334,6 +440,8 @@ const BookDetail = () => {
                   userEmail={userEmail}
                   commentId={el.commentId}
                   commentDelete={handleCommentDelete}
+                  commentLike={handleCommentLike}
+                  commentDislike={handleCommentDislike}
                   type="bookcomment"
                 />
               );
@@ -346,6 +454,9 @@ const BookDetail = () => {
                 data={bookData?.comments?.content}
                 isLogin={isLogin}
                 userEmail={userEmail}
+                handleCommentDelete={handleCommentDelete}
+                handleCommentLike={handleCommentLike}
+                handleCommentDislike={handleCommentDislike}
               />
             </CommentBtnStyled>
           )}

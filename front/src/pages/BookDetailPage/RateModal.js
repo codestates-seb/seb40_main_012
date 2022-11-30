@@ -5,12 +5,7 @@ import TextField from '@mui/material/TextField';
 import styled from 'styled-components';
 import { FillButton, ContainedButton } from '../../components/Buttons';
 import HoverRating from './RateStar';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import {
-  postBookComment,
-  patchBookStarRating,
-} from '../../store/modules/bookSlice';
+import { useEffect, useState } from 'react';
 
 const style = {
   position: 'absolute',
@@ -37,11 +32,25 @@ const LimitDesc = styled.p`
   margin-left: 15px;
 `;
 
-export default function RateModal({ isbn }) {
-  const dispatch = useDispatch();
+export default function RateModal({
+  isbn,
+  bookData,
+  getBookData,
+  handleRating,
+  handleCommentAdd,
+}) {
   const [open, setOpen] = useState(false);
-  const [star, setStar] = useState(0);
-  const [comment, setComment] = useState('');
+  const myRating = bookData?.myRating;
+  const myComment = bookData?.myComment?.body || '';
+
+  const [star, setStar] = useState(myRating);
+  const [comment, setComment] = useState(myComment);
+
+  useEffect(() => {
+    getBookData(isbn);
+    setStar(myRating);
+    setComment(myComment);
+  }, [myRating, myComment]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -51,16 +60,14 @@ export default function RateModal({ isbn }) {
   };
 
   const handleSubmit = () => {
-    if (comment.length > 4) {
+    if (comment?.length > 4) {
       const commentBody = { body: comment };
-      dispatch(postBookComment({ isbn, commentBody }));
+      handleCommentAdd(commentBody);
     }
     if (star > 0) {
       const ratingBody = { rating: star };
-      dispatch(patchBookStarRating({ isbn, ratingBody }));
+      handleRating(ratingBody);
     }
-    setStar(0);
-    setComment('');
     handleClose();
   };
 
@@ -98,7 +105,12 @@ export default function RateModal({ isbn }) {
             />
           </Box>
           {comment.length < 5 ? (
-            <LimitDesc>5글자 이상 입력하세요.</LimitDesc>
+            <div>
+              <LimitDesc>5글자 이상 입력하세요.</LimitDesc>
+              <ContainedButton width="100%" onClick={handleSubmit}>
+                별점만 등록
+              </ContainedButton>
+            </div>
           ) : (
             <ContainedButton width="100%" onClick={handleSubmit}>
               등록

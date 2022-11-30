@@ -44,7 +44,14 @@ const Btns = styled.button`
   }
 `;
 
-export default function BookCommentsModal({ data, isLogin, userEmail }) {
+export default function BookCommentsModal({
+  data,
+  isLogin,
+  userEmail,
+  handleCommentDelete,
+  handleCommentLike,
+  handleCommentDislike,
+}) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -73,6 +80,9 @@ export default function BookCommentsModal({ data, isLogin, userEmail }) {
                   isLogin={isLogin}
                   userEmail={userEmail}
                   commentId={el.commentId}
+                  commentDelete={handleCommentDelete}
+                  commentLike={handleCommentLike}
+                  commentDislike={handleCommentDislike}
                   type="bookcomment"
                 />
               );
