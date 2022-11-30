@@ -13,6 +13,9 @@ public class SliceResponseDto<T> {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Long listCount;
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Boolean isLast;
     private Slice<T> data;
 
     public SliceResponseDto(Slice<T> data){

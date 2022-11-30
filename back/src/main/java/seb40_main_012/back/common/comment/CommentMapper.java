@@ -109,7 +109,7 @@ public interface CommentMapper {
 
             CommentDto.myPageResponse myPageResponse = new CommentDto.myPageResponse();
 
-            myPageResponse.setCommentCount(comments.size()); // 코멘트 개수
+//            myPageResponse.setCommentCount(comments.size()); // 코멘트 개수
             myPageResponse.setCommentId(comments.get(i).getCommentId()); // 코멘트 식별 번호
             myPageResponse.setCommentType(comments.get(i).getCommentType()); // 코멘트 타입
 
