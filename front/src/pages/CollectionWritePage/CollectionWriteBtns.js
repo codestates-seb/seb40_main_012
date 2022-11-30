@@ -29,6 +29,9 @@ const ExitBtn = styled.button`
     text-decoration: none;
     color: ${({ theme }) => theme.colors.dark};
   }
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 
 const CollectionWriteBtn = styled.button`
@@ -43,6 +46,11 @@ const CollectionWriteBtn = styled.button`
   &:hover {
     cursor: pointer;
     background-color: ${({ theme }) => theme.colors.purple_1};
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
+    width: 80px;
+    height: 30px;
   }
 `;
 
@@ -86,6 +94,9 @@ const InputWaringMsg = styled.div`
   color: #850000;
   &.hide {
     display: none;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
   }
 `;
 

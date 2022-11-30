@@ -7,7 +7,11 @@ import CollectionEditBookInput from './EditBookInput/CollectionEditBookInput';
 import CollectionWriteBtns from 'pages/CollectionWritePage/CollectionWriteBtns';
 import axios from '../../api/axios';
 
-const CollectionEditPageContainer = styled.div``;
+const CollectionEditPageContainer = styled.div`
+  div.content {
+    background-color: #f5f5f5;
+  }
+`;
 
 const CollectionEditPage = () => {
   const { collectionId } = useParams();

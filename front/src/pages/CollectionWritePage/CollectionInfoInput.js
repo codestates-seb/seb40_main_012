@@ -4,10 +4,19 @@ import { useState } from 'react';
 
 const CollectionInfoInputContainer = styled.div`
   width: 100%;
-  padding: 30px 60px;
   display: flex;
   flex-direction: column;
   background-color: #f5f5f5;
+  padding: 30px 60px;
+  @media screen and (max-width: 980px) {
+    padding: 20px 40px;
+  }
+  @media screen and (max-width: 640px) {
+    padding: 20px 20px;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 5px 10px;
+  }
 `;
 
 const TitleInput = styled.input`
@@ -23,6 +32,16 @@ const TitleInput = styled.input`
   height: 80px;
   font-size: 24px;
   color: ${({ theme }) => theme.colors.dark};
+  @media screen and (max-width: 640px) {
+    height: 60px;
+    padding: 0 20px;
+    font-size: 20px;
+  }
+  @media screen and (max-width: 500px) {
+    height: 40px;
+    font-size: 16px;
+    padding: 0 10px;
+  }
 `;
 
 const TagInputContainer = styled.div`
@@ -32,6 +51,9 @@ const TagInputContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   background-color: white;
+  @media screen and (max-width: 500px) {
+    padding: 5px;
+  }
 `;
 
 const Tags = styled.div`
@@ -43,6 +65,9 @@ const Tags = styled.div`
 const TagContainer = styled.div`
   div {
     margin: 5px;
+    @media screen and (max-width: 500px) {
+      margin: 2px;
+    }
     &:hover {
       cursor: pointer;
       border: none;
@@ -59,6 +84,10 @@ const TagInput = styled.input`
   &:focus {
     outline: none;
   }
+  @media screen and (max-width: 500px) {
+    margin: 5px 0 5px 5px;
+    font-size: 10px;
+  }
 `;
 
 const TagInfo = styled.div`
@@ -72,6 +101,9 @@ const TagInfo = styled.div`
   }
   &.show {
     display: flex;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
   }
 `;
 
@@ -93,6 +125,10 @@ const ContentInput = styled.textarea`
   line-height: 100%;
   &:focus {
     outline: none;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 10px 10px;
+    font-size: 10px;
   }
 `;
 
