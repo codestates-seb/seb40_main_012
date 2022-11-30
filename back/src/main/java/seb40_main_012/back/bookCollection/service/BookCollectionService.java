@@ -237,20 +237,17 @@ public class BookCollectionService {
         return collectionRepositorySupport.findBestCollection();
     }
 
-    public BookCollection findVerifiedCollection(Long collectionId) {
-        BookCollection collection = collectionRepository.findById(collectionId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
-        return collection;
-    }
+//    public List<BookCollection> findUserFitCollection() {
+//        return collectionRepositorySupport.findUserFitCollection();
+//    }
+
 
     public List<BookCollection> findCollectionByUserCategory() {
         User findUser = userService.getLoginUser();
-
-        Long userId = findUser.getUserId();
         String userCategory = findUser.getCategories().get(0).getCategory().getGenre().toString();
-        System.out.println("HERE>" + userCategory);
-
-//        Category category = categoryRepository.findByGenre(Genre.ART);
-
+        if(findUser.getCategories().isEmpty()){
+            userCategory = Genre.NOVEL.name();
+        }
         Tag tag = tagRepository.findByTagName(userCategory).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
         System.out.println("HERE>" + tag.getTagName());
 
@@ -260,9 +257,6 @@ public class BookCollectionService {
     }
 
     public List<BookCollection> findCollectionByCollectionTag() {
-        User findUser = userService.getLoginUser();
-
-        Long userId = findUser.getUserId();
         String tagName = "겨울";
         Tag tag = tagRepository.findByTagName(tagName).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
         List<BookCollectionTag> collectionTag = collectionTagRepository.findByTag(tag);
@@ -361,6 +355,11 @@ public class BookCollectionService {
         }
 
         return bookCollections;
+    }
+
+    public BookCollection findVerifiedCollection(Long collectionId) {
+        BookCollection collection = collectionRepository.findById(collectionId).orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
+        return collection;
     }
 
 }
