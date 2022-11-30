@@ -28,6 +28,7 @@ import seb40_main_012.back.user.service.UserService;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -309,7 +310,26 @@ public class BookCollectionService {
     }
 
     public List<BookCollection> getAllCollectionsForTheBook(String isbn13) {
-        return collectionRepository.findAllCollectionsForTheBook(isbn13);
+
+        List<BookCollection> result = collectionRepository.findAllCollectionsForTheBook(isbn13);
+
+//        List<String> coverResult = result.stream()
+//                .map(BookCollection::getBookIsbn13)
+//                .flatMap(Collection::stream)
+//                .map(a -> bookService.findBook(a).getCover())
+//                .limit(4)
+//                .collect(Collectors.toList());
+        if (result != null) {
+            for (int i = 0; i < result.size(); i++) {
+                result.get(i).setCollectionCover(
+                        result.get(i).getBookIsbn13().stream()
+                                .map(a -> bookService.findBook(a).getCover())
+                                .limit(4)
+                                .collect(Collectors.toList()));
+            }
+        }
+
+    return result;
     }
 
     public List<BookCollection> findCollectionByUserCategory2() {
