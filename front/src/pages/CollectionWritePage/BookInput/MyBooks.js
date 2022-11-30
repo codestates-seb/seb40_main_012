@@ -16,6 +16,9 @@ const MyBooksTitle = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.dark};
   display: flex;
+  @media screen and (max-width: 500px) {
+    font-size: 16px;
+  }
 `;
 
 const Books = styled.div`
@@ -30,6 +33,9 @@ const Books = styled.div`
   &.hide {
     display: none;
   }
+  @media screen and (max-width: 500px) {
+    padding: 5px;
+  }
 `;
 
 const MyBooksBtn = styled.button`
@@ -37,6 +43,12 @@ const MyBooksBtn = styled.button`
   background-color: transparent;
   &:hover {
     cursor: pointer;
+  }
+  @media screen and (max-width: 500px) {
+    svg {
+      width: 15px;
+      height: 15px;
+    }
   }
 `;
 

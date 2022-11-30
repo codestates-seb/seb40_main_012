@@ -6,6 +6,9 @@ const CollectionDetailHeaderContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 10px;
+  @media screen and (max-width: 500px) {
+    padding: 0 5px;
+  }
 `;
 
 const CollectionTitle = styled.div`
@@ -13,6 +16,14 @@ const CollectionTitle = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.dark};
   margin: 30px 0 10px 0;
+  @media screen and (max-width: 640px) {
+    font-size: 24px;
+    margin: 20px 0 5px 0;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 20px;
+    margin-top: 10px;
+  }
 `;
 
 const CollectionWriter = styled.div`
@@ -25,17 +36,33 @@ const CollectionWriter = styled.div`
   }
   display: flex;
   align-items: center;
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+    img {
+      width: 15px;
+      height: 15px;
+    }
+  }
 `;
 
 const CollectionUpdate = styled.div`
   margin: 5px 0;
   font-size: 13px;
   color: ${({ theme }) => theme.colors.gray};
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+  }
 `;
 
 const TitleTagContainer = styled.div`
   display: flex;
   align-items: center;
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  @media screen and (max-width: 500px) {
+  }
 `;
 
 const CollectionDetailHeader = ({ title, writer, update, taglist }) => {

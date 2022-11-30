@@ -112,8 +112,7 @@ const CollectionDetailPage = () => {
   const handleCommentLike = (commentId) => {
     axios
       .patch(`/api/comments/${commentId}/like`)
-      .then((res) => {
-        console.log(res.data.data);
+      .then(() => {
         getCollectionData(collectionId);
       })
       .catch((error) => console.error(error));
@@ -122,8 +121,7 @@ const CollectionDetailPage = () => {
   const handleCommentDislike = (commentId) => {
     axios
       .patch(`/api/comments/${commentId}/dislike`)
-      .then((res) => {
-        console.log(res.data.data);
+      .then(() => {
         getCollectionData(collectionId);
       })
       .catch((error) => console.error(error));

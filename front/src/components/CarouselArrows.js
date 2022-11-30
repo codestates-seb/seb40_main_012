@@ -11,14 +11,6 @@ const ArrowContainer = styled.div`
       height: 20px;
     }
   }
-  @media screen and (max-width: 500px) {
-    width: 15px;
-    height: 15px;
-    img {
-      width: 15px;
-      height: 15px;
-    }
-  }
 `;
 const NextArrow = (props) => {
   const { className, style, onClick } = props;
