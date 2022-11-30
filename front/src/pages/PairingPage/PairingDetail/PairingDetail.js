@@ -29,6 +29,7 @@ import CopyUrlButton from './CopyUrlButton';
 const BtnStyleBox = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
 `;
 
@@ -112,7 +113,6 @@ const PairingDetail = () => {
   }, [dispatch]);
 
   const pairingData = useSelector((state) => state.pairing.data.pairingRes);
-  console.log('여기보세여!', pairingData);
   const bookData = useSelector((state) => state.pairing.data.bookRes);
 
   useEffect(() => {

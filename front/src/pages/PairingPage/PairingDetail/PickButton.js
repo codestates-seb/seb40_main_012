@@ -42,7 +42,7 @@ const PickButton = ({ isBookmarked, handleBookmark }) => {
                 }
                 alt="bookmark icon"
               />
-              <span>나의 Pick</span>
+              <span>나의 픽</span>
             </Btns>
           ) : (
             <Btns onClick={handlePick}>
@@ -52,7 +52,7 @@ const PickButton = ({ isBookmarked, handleBookmark }) => {
                 }
                 alt="bookmark icon"
               />
-              <span>나의 Pick</span>
+              <span>나의 픽</span>
             </Btns>
           )}
         </div>
@@ -65,7 +65,7 @@ const PickButton = ({ isBookmarked, handleBookmark }) => {
               }
               alt="bookmark icon"
             />
-            <span>나의 Pick</span>
+            <span>나의 픽</span>
           </Btns>
         </NeedLoginModal>
       )}
