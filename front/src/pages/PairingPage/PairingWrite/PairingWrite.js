@@ -170,13 +170,13 @@ const PairingWrite = () => {
       })
       .then((res) => {
         navigate(`/pairing/${res.data.data.pairingId}`, { replace: true });
+        categoryReset();
+        titleReset();
+        bodyReset();
+        outLinkReset();
+        setImgData({});
       })
       .catch((error) => console.error(error));
-    categoryReset();
-    titleReset();
-    bodyReset();
-    outLinkReset();
-    setImgData({});
   };
 
   return (
