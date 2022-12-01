@@ -30,9 +30,16 @@ const BookColumn = styled.div`
 `;
 
 const CollectionSmallInfo = styled.div`
+  height: 40px;
   font-size: 16px;
   font-weight: 700;
   word-break: break-all;
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   margin-top: 10px;
   color: ${({ theme }) => theme.colors.darkgray};
   @media screen and (max-width: 640px) {
