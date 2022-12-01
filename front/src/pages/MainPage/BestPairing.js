@@ -40,6 +40,12 @@ const PairingTitle = styled.div`
   left: 50%;
   text-align: center;
   word-wrap: break-word;
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   transform: translate(-50%, -50%);
   color: white;
   font-size: 16px;
