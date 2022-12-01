@@ -1,6 +1,7 @@
 package seb40_main_012.back.bookCollection.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -30,12 +31,14 @@ import seb40_main_012.back.user.service.UserService;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class BookCollectionService {
     private final UserService userService;
     private final BookService bookService;
@@ -244,15 +247,13 @@ public class BookCollectionService {
 
     public List<BookCollection> findCollectionByUserCategory() {
         User findUser = userService.getLoginUser();
-        String userCategory = findUser.getCategories().get(0).getCategory().getGenre().toString();
-        if(findUser.getCategories().isEmpty()){
-            userCategory = Genre.NOVEL.name();
-        }
-        Tag tag = tagRepository.findByTagName(userCategory).orElseThrow(() -> new BusinessLogicException(ExceptionCode.NOT_FOUND));
-        System.out.println("HERE>" + tag.getTagName());
+        List<Genre> genres = findUser.getCategories().stream().map(x -> x.getCategory().getGenre()).collect(Collectors.toList());
+        Collections.shuffle(genres);
+        String genre = genres.get(0).name();
+        log.info("this genre : " + genre);
 
-        List<BookCollectionTag> collectionTag = collectionTagRepository.findByTag(tag);
-        List<BookCollection> collections = collectionTag.stream().map(BookCollectionTag::getBookCollection).collect(Collectors.toList());
+        List<BookCollectionBook> collectionBooks = collectionRepositorySupport.findCollectionBook(genre);
+        List<BookCollection> collections = collectionBooks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
         return collections;
     }
 

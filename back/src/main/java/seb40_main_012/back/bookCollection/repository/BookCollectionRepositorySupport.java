@@ -38,16 +38,30 @@ public class BookCollectionRepositorySupport extends QuerydslRepositorySupport {
         return collections;
     }
 
-    public List<BookCollection> findUserFitCollection(String genre){
+    //2. 해당 컬렉션 북의 컬렉션 아이디 조회
+    public List<BookCollection> findUserFitCollection(){
         List<BookCollection> collections =
                 queryFactory.select(bookCollection)
-                        .from(bookCollection,collectionBook)
-                        .leftJoin(bookCollection).on(collectionBook.book.genre.stringValue().eq(genre))
-                        .where()
-                        .orderBy()
+                        .from(bookCollection)
+                        .leftJoin(bookCollection.collectionBooks,collectionBook).fetchJoin()
+                        .where(
+                                bookCollection.collectionBooks.contains(collectionBook)
+                        )
+                        .orderBy(bookCollection.likeCount.desc())
+                        .orderBy(bookCollection.view.desc())
                         .fetch();
         return collections;
     }
+
+    //1. 장르 책 가진 컬렉션 북 조회
+    public List<BookCollectionBook> findCollectionBook(String genre){
+        List<BookCollectionBook> collections =
+                queryFactory.selectFrom(collectionBook)
+                        .where(collectionBook.book.genre.stringValue().eq(genre))
+                        .fetch();
+        return collections;
+    }
+
 
     private BooleanExpression genre(String genre){
         return null;
