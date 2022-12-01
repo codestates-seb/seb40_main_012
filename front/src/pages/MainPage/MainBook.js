@@ -2,16 +2,21 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { GenterMatcherToKor } from '../../util/GenreMatcher';
 
-const randomColor = () => {
-  return Math.floor(Math.random() * 50) + 200;
-};
-
 const MainBookContainer = styled.div`
   position: relative;
-  background: linear-gradient(
-    white 55%,
-    ${({ theme }) => theme.colors.darkgray} 45%
-  );
+  &.dark {
+    background: linear-gradient(
+      white 55%,
+      ${({ theme }) => theme.colors.darkgray} 45%
+    );
+  }
+  &.light {
+    background: linear-gradient(
+      white 55%,
+      ${({ theme }) => theme.colors.purple_1} 45%
+    );
+  }
+
   height: 400px;
   img {
     height: 95%;
@@ -91,7 +96,6 @@ const MainBookInfo = styled.div`
   }
   .rating {
     font-size: 24px;
-    color: ${({ theme }) => theme.colors.purple_1};
     font-weight: 700;
     display: flex;
     align-items: flex-end;
@@ -102,7 +106,6 @@ const MainBookInfo = styled.div`
       margin-bottom: 5px;
     }
     .info {
-      color: #f5f5f5;
       font-size: 18px;
       white-space: nowrap;
     }
@@ -111,7 +114,6 @@ const MainBookInfo = styled.div`
     div.bookcomment {
       display: flex;
       align-items: center;
-      color: #f5f5f5;
       font-size: 13px;
       img {
         object-fit: contain;
@@ -188,6 +190,32 @@ const RateInfoContainer = styled.div`
   flex-direction: column;
   position: absolute;
   top: 60%;
+  &.dark {
+    .rating {
+      color: ${({ theme }) => theme.colors.purple_1};
+      .info {
+        color: #f5f5f5;
+      }
+    }
+    .comments {
+      div.bookcomment {
+        color: #f5f5f5;
+      }
+    }
+  }
+  &.light {
+    .rating {
+      color: ${({ theme }) => theme.colors.darkgray};
+      .info {
+        color: ${({ theme }) => theme.colors.darkgray};
+      }
+    }
+    .comments {
+      div.bookcomment {
+        color: ${({ theme }) => theme.colors.darkgray};
+      }
+    }
+  }
 `;
 
 const RankInfo = styled.div`
@@ -215,15 +243,13 @@ const MainBook = ({
   cover,
   comments,
 }) => {
-  const randomRGB = `rgb(${randomColor()}, ${randomColor()}, ${randomColor()})`;
-
   const navigate = useNavigate();
 
   const onClickMainBook = () => {
     navigate(`/book/${isbn}`);
   };
   return (
-    <MainBookContainer bgcolor={randomRGB}>
+    <MainBookContainer className={ranking % 2 === 0 ? 'light' : 'dark'}>
       <RankInfo>{ranking}</RankInfo>
       <img
         src={cover}
@@ -241,25 +267,39 @@ const MainBook = ({
         <div className="genre">{`${publish} · ${GenterMatcherToKor(
           genre
         )}`}</div>
-        <RateInfoContainer>
+        <RateInfoContainer className={ranking % 2 === 0 ? 'light' : 'dark'}>
           <div className="rating">
             <span className="info">체리픽 유저들의 평가 </span>
-            <>
+            {ranking % 2 === 0 ? (
+              <img
+                src={process.env.PUBLIC_URL + '/images/star_dark.svg'}
+                alt="star"
+              />
+            ) : (
               <img
                 src={process.env.PUBLIC_URL + '/images/star_purple.svg'}
                 alt="star"
-              />{' '}
-              {rating}
-            </>
+              />
+            )}
+            {rating}
           </div>
           <div className="comments">
             {comments?.slice(0, 2).map((el, idx) => {
               return (
                 <div key={idx} className="bookcomment">
-                  <img
-                    src={process.env.PUBLIC_URL + '/images/comment_purple.svg'}
-                    alt="comment"
-                  />
+                  {ranking % 2 === 0 ? (
+                    <img
+                      src={process.env.PUBLIC_URL + '/images/comment_dark.svg'}
+                      alt="comment"
+                    />
+                  ) : (
+                    <img
+                      src={
+                        process.env.PUBLIC_URL + '/images/comment_purple.svg'
+                      }
+                      alt="comment"
+                    />
+                  )}
                   <div className="content">{el.body}</div>
                 </div>
               );
