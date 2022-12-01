@@ -30,7 +30,7 @@ public class UserInfoDto {
         public User toEntity(){
             /** 로직 dto에서 제거 예정 */
             if(profileImage==null) {
-                profileImage = "http://url";
+                profileImage = "";
             }
             if(gender == "NONE"){
                 gender = "NONE";
@@ -91,7 +91,7 @@ public class UserInfoDto {
                 introduction = user.getIntroduction();
             }
             if(user.getProfileImage()==null){
-                profileImage = "http://url";
+                profileImage = "";
             }
             else{
                 profileImage = user.getProfileImage();
