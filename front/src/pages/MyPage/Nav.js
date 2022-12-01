@@ -87,7 +87,13 @@ const Nav = ({ view, setView }) => {
           {view === 1 ? (
             <>
               <CommentBorderCSS>
-                <Typography variant="h6">나의 코멘트</Typography>
+                <Typography variant="h6">
+                  <img
+                    src={process.env.PUBLIC_URL + '/images/mycomment_icon.svg'}
+                    alt="my comment"
+                  />
+                  나의 코멘트
+                </Typography>
               </CommentBorderCSS>
               {/* <Circle className="circle">
                 <Typography variant="h6" style={{ color: 'white' }}>
@@ -117,7 +123,13 @@ const Nav = ({ view, setView }) => {
           {view === 2 ? (
             <>
               <CommentBorderCSS>
-                <Typography variant="h6">나의 페어링</Typography>
+                <Typography variant="h6">
+                  <img
+                    src={process.env.PUBLIC_URL + '/images/mypairing_icon.svg'}
+                    alt="my pairing"
+                  />
+                  나의 페어링
+                </Typography>
               </CommentBorderCSS>
               {/* <Circle className="circle">
                 <Typography variant="h6" style={{ color: 'white' }}>
@@ -147,7 +159,15 @@ const Nav = ({ view, setView }) => {
           {view === 3 ? (
             <>
               <CommentBorderCSS>
-                <Typography variant="h6">나의 컬렉션</Typography>
+                <Typography variant="h6">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + '/images/mycollection_icon.svg'
+                    }
+                    alt="my collection"
+                  />
+                  나의 컬렉션
+                </Typography>
               </CommentBorderCSS>
               {/* <Circle className="circle">
                 <Typography variant="h6" style={{ color: 'white' }}>
