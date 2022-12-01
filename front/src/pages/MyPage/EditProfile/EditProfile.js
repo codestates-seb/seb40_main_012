@@ -151,7 +151,13 @@ const EditProfile = () => {
       setBackdropOpen(false);
     } catch (error) {
       setBackdropOpen(false);
-      console.log(error);
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
     }
   };
 
