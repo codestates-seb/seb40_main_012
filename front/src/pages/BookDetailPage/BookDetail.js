@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getBookAsync } from '../../store/modules/bookSlice';
 import { GenterMatcherToKor } from '../../util/GenreMatcher';
 import { ToDateString } from '../../util/ToDateString';
-import { BasicButton } from '../../components/Buttons';
+import { BasicButton, FillButton } from '../../components/Buttons';
 import { selectIsLogin, selectEmail } from '../../store/modules/authSlice';
 import Comment from '../../components/Comments/Comment';
 import PickButton from '../PairingPage/PairingDetail/PickButton';
@@ -192,11 +192,6 @@ const CommentBtnStyled = styled.div`
   justify-content: flex-end;
 `;
 
-const randomColor = () => {
-  //130 ~ 200
-  return Math.floor(Math.random() * 70) + 130;
-};
-
 const BookDetail = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -237,8 +232,10 @@ const BookDetail = () => {
   useEffect(() => {
     dispatch(getBookAsync(isbn))
       .unwrap()
-      .catch(() => {
-        navigate('/404');
+      .catch((error) => {
+        if (error.status === 500) {
+          navigate('/404');
+        }
       });
     getBookData(isbn);
   }, []);
@@ -326,7 +323,6 @@ const BookDetail = () => {
   };
 
   const commentsTopThree = bookData?.comments?.content?.slice(0, 3);
-  const randomRGB = `rgb(${randomColor()}, ${randomColor()}, 255)`;
 
   const sliderSettings = {
     dots: false,
@@ -360,7 +356,7 @@ const BookDetail = () => {
         {bookData?.bestPairing ? (
           <BestPairingBox
             img={bookData?.bestPairing?.imagePath}
-            color={bookData?.bestPairing?.imagePath ? null : randomRGB}
+            color={bookData?.bestPairing?.imagePath ? null : '#A28BFF'}
             onClick={() => {
               navToPairingContent(bookData?.bestPairing?.pairingId);
             }}
@@ -378,15 +374,22 @@ const BookDetail = () => {
         ) : null}
         <ButtonContainer>
           <RowBox>
-            <RateModal
-              isbn={isbn}
-              bookData={bookData}
-              setBookData={setBookData}
-              getBookData={getBookData}
-              handleRating={handleRating}
-              handleCommentAdd={handleCommentAdd}
-              handleCommentEdit={handleCommentEdit}
-            />
+            {isLogin ? (
+              <RateModal
+                isbn={isbn}
+                bookData={bookData}
+                setBookData={setBookData}
+                getBookData={getBookData}
+                handleRating={handleRating}
+                handleCommentAdd={handleCommentAdd}
+                handleCommentEdit={handleCommentEdit}
+              />
+            ) : (
+              <NeedLoginModal>
+                <FillButton>평가하기</FillButton>
+              </NeedLoginModal>
+            )}
+
             {isLogin ? (
               <BasicButton onClick={navToWrite}>페어링 작성하기</BasicButton>
             ) : (
@@ -484,7 +487,7 @@ const BookDetail = () => {
                       <PairingContents
                         key={el.pairingId}
                         img={el.imagePath}
-                        color={el.imagePath ? null : randomRGB}
+                        color={el.imagePath ? null : '#A28BFF'}
                         onClick={() => {
                           navToPairingContent(el.pairingId);
                         }}
@@ -501,7 +504,7 @@ const BookDetail = () => {
                   <PairingContents
                     key={el.pairingId}
                     img={el.imagePath}
-                    color={el.imagePath ? null : randomRGB}
+                    color={el.imagePath ? null : '#A28BFF'}
                     onClick={() => {
                       navToPairingContent(el.pairingId);
                     }}

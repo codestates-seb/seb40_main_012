@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import MyCollectionThumbnail from './MyCollectionThumbnail';
+import Modal from '@mui/material/Modal';
+import { useState } from 'react';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -86,9 +88,61 @@ const FlexBox = styled.div`
     }
   }
 `;
+const ModalBox = styled.div`
+  width: 300px;
+  height: 150px;
+  position: absolute;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .info {
+    font-weight: 700;
+  }
+  .container {
+    display: flex;
+    margin-top: 20px;
+  }
+  .delete {
+    width: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #ffc5c5;
+    color: #850000;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .close {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #e8e8e8;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
 
 const MyCollectionDetail = ({ data, fetchData }) => {
   const navigate = useNavigate();
+  //Delete Modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   // console.log('data는어디에 ', data);
 
@@ -221,15 +275,44 @@ const MyCollectionDetail = ({ data, fetchData }) => {
                 flexDirection: 'row-reverse',
               }}
             >
-              <Remove
+              <Remove onClick={handleOpen}>
+                <DeleteOutlinedIcon />
+              </Remove>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+              >
+                <ModalBox>
+                  <div className="info">정말 삭제하시겠습니까?</div>
+                  <div className="container">
+                    <div
+                      className="close"
+                      role="presentation"
+                      onClick={handleClose}
+                    >
+                      취소
+                    </div>
+                    <div
+                      className="delete"
+                      onClick={() => {
+                        onRemove(data.collectionId);
+                      }}
+                      role="presentation"
+                    >
+                      삭제하기
+                    </div>
+                  </div>
+                </ModalBox>
+              </Modal>
+              {/* <Remove
                 onClick={() => {
                   if (window.confirm(`컬렉션을 삭제하시겠습니까?`)) {
                     onRemove(data.collectionId);
                   }
                 }}
-              >
-                <DeleteOutlinedIcon />
-              </Remove>
+              > */}
             </Grid>
           </Grid>
         </ItemContainer>

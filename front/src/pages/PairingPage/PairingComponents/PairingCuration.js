@@ -121,18 +121,11 @@ const LineContents = styled.div`
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
 `;
-const randomColor = () => {
-  //130 ~ 200
-  return Math.floor(Math.random() * 70) + 130;
-};
 
 const PairingCuration = ({ title, pairingData }) => {
   const navigate = useNavigate();
   const twoToThree = pairingData.slice(1, 3);
   const fourToEight = pairingData.slice(3, 8);
-  const randomRgb = `rgb(${randomColor()}, ${randomColor()}, 255)`;
-  const randomRGb = `rgb(${randomColor()}, ${randomColor()}, 255)`;
-  const randomRGB = `rgb(${randomColor()}, ${randomColor()}, 255)`;
   const onClickPairing = (pairingId) => {
     navigate(`/pairing/${pairingId}`);
   };
@@ -143,7 +136,7 @@ const PairingCuration = ({ title, pairingData }) => {
         <PhotoContainer>
           <FirstPhotoContents
             img={pairingData[0]?.imagePath}
-            color={pairingData[0]?.imagePath ? null : randomRgb}
+            color={pairingData[0]?.imagePath ? null : '#A28BFF'}
             onClick={() => onClickPairing(pairingData[0]?.pairingId)}
           >
             <h1>{pairingData[0]?.title}</h1>
@@ -154,7 +147,7 @@ const PairingCuration = ({ title, pairingData }) => {
                 <OtherPhotoContents
                   key={el.pairingId}
                   img={el.imagePath}
-                  color={el.imagePath ? null : randomRGb}
+                  color={el.imagePath ? null : '#A28BFF'}
                   onClick={() => onClickPairing(el.pairingId)}
                 >
                   <h1>{el?.title}</h1>
@@ -169,7 +162,7 @@ const PairingCuration = ({ title, pairingData }) => {
               <LineContents
                 key={el.pairingId}
                 img={el.imagePath}
-                color={el.imagePath ? null : randomRGB}
+                color={el.imagePath ? null : '#A28BFF'}
                 onClick={() => onClickPairing(el.pairingId)}
               >
                 <h1>{el?.title}</h1>
