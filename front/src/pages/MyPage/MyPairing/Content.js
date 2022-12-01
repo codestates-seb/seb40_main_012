@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import MyPairingDetail from './MyPairingDetail';
 import { useEffect, useState } from 'react';
 import { BasicButton } from '../../../components/Buttons';
+import Modal from '@mui/material/Modal';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -47,6 +48,55 @@ const ButtonCSS = styled.button`
   background: transparent;
 `;
 
+const ModalBox = styled.div`
+  width: 300px;
+  height: 150px;
+  position: absolute;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .info {
+    font-weight: 700;
+  }
+  .container {
+    display: flex;
+    margin-top: 20px;
+  }
+  .delete {
+    width: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #ffc5c5;
+    color: #850000;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .close {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #e8e8e8;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
 const Content = ({
   content,
   setContent,
@@ -56,6 +106,11 @@ const Content = ({
   hasMore,
   setHasMore,
 }) => {
+  //Delete Modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const navigate = useNavigate();
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
@@ -86,12 +141,10 @@ const Content = ({
   };
 
   const removeAll = () => {
-    if (window.confirm(`모든 페어링을 정말 삭제하시겠습니까?`)) {
-      axios
-        .delete(`/api/books/pairings/delete`)
-        .then(() => fetchData())
-        .catch((error) => console.log('에러', error));
-    }
+    axios
+      .delete(`/api/books/pairings/delete`)
+      .then(() => fetchData())
+      .catch((error) => console.log('에러', error));
   };
 
   useEffect(() => {
@@ -112,7 +165,7 @@ const Content = ({
               flexDirection: 'row-reverse',
             }}
           >
-            <ButtonCSS onClick={removeAll}>
+            <ButtonCSS onClick={handleOpen}>
               <Typography
                 color="#737373"
                 sx={{
@@ -127,6 +180,39 @@ const Content = ({
                 전체 삭제
               </Typography>
             </ButtonCSS>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <ModalBox>
+                <div className="info">
+                  모든 페어링이 삭제됩니다.
+                  <br />
+                  정말 삭제하시겠습니까?
+                </div>
+                <div className="container">
+                  <div
+                    className="close"
+                    role="presentation"
+                    onClick={handleClose}
+                  >
+                    취소
+                  </div>
+                  <div
+                    className="delete"
+                    onClick={() => {
+                      removeAll();
+                      handleClose();
+                    }}
+                    role="presentation"
+                  >
+                    삭제하기
+                  </div>
+                </div>
+              </ModalBox>
+            </Modal>
           </Grid>
         </Grid>
 

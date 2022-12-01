@@ -2,18 +2,16 @@
 
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+
 import Typography from '@mui/material/Typography';
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
+
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useState, useEffect } from 'react';
 import { BasicButton } from '../../../components/Buttons';
 import { MY_PICK_BOOK } from '../../../api/requests';
-import { ContentCopyOutlined } from '@mui/icons-material';
-
 const Remove = styled.div`
   color: #dee2e6;
   opacity: 0;
@@ -353,9 +351,7 @@ const MyPickBook = () => {
                   <Remove>
                     <RemoveButton
                       onClick={() => {
-                        if (window.confirm(`북마크를 삭제하시겠습니까?`)) {
-                          onRemove(data.collections.isbn13);
-                        }
+                        onRemove(data.collections.isbn13);
                       }}
                     >
                       <img

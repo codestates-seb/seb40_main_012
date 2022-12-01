@@ -39,6 +39,12 @@ const FlexBox = styled.div`
       transition: color 0.5s;
     }
   }
+
+  .content-body {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
 `;
 
 const NavigateBook = ({ data, navigate }) => {
@@ -63,6 +69,7 @@ const NavigateBook = ({ data, navigate }) => {
       </Grid>
       <Grid sx={{ height: '98.4px' }}>
         <Typography
+          className="content-body"
           color="#232627"
           sx={{
             fontWeight: 200,

@@ -5,6 +5,8 @@ import CloseIcon from '@mui/icons-material/Close';
 import { ContainedButton } from 'components';
 import { myPageApi, authApi } from 'api';
 import { useNavigate } from 'react-router-dom';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const PasswordCheckInputStyled = styled.input`
   width: 100%;
@@ -68,8 +70,8 @@ const PasswordErrorMessageStyled = styled.p`
 `;
 
 const WithDrawalModal = ({ open, handleCloseModal }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [passwordValue, setPasswordValue] = useState('');
   const [passwordErrMsg, setPasswordErrMsg] = useState('');
 
@@ -79,14 +81,26 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
       const response = await myPageApi.currentPasswordCheck(passwordValue);
       if (!response) {
         setPasswordErrMsg('현재 비밀번호를 다시 확인해주세요.');
-      } else {
-        setPasswordErrMsg('');
-        await myPageApi.withdrawal(); // 회원탈퇴 안내 메시지 필요
-        await authApi.logout(); // 회원탈퇴 api 단에서 로그아웃 api 로직까지 같이 처리해주는게 좋을 것 같음
-        navigate('/', { replace: true });
+        return;
       }
+      setPasswordErrMsg('');
+      await myPageApi.withdrawal();
+      await authApi.logout(); // 회원탈퇴 api 단에서 로그아웃 api 로직까지 같이 처리해주는게 좋을 것 같음
+      navigate('/', { replace: true });
+      dispatch(
+        setOpenSnackbar({
+          severity: 'info',
+          message: '그동안 체리픽 서비스를 이용해 주셔서 감사합니다.',
+        })
+      );
     } catch (error) {
-      console.log(error);
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
     }
   };
 

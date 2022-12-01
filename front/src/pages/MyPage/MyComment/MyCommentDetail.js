@@ -11,6 +11,8 @@ import NavigateBook from './NavigateBook';
 import NavigatePairing from './NavigatePairing';
 import NavigateCollection from './NavigateCollection';
 import CollectionThumbnail from './CollectionThumbnail';
+import Modal from '@mui/material/Modal';
+import { useState } from 'react';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -88,8 +90,60 @@ const FlexBox = styled.div`
   }
 `;
 
+const ModalBox = styled.div`
+  width: 300px;
+  height: 150px;
+  position: absolute;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .info {
+    font-weight: 700;
+  }
+  .container {
+    display: flex;
+    margin-top: 20px;
+  }
+  .delete {
+    width: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #ffc5c5;
+    color: #850000;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .close {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #e8e8e8;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
 const MyCommentDetail = ({ data, fetchData }) => {
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const onRemove = (id) => {
     axios
@@ -189,15 +243,38 @@ const MyCommentDetail = ({ data, fetchData }) => {
                   flexDirection: 'row-reverse',
                 }}
               >
-                <Remove
-                  onClick={() => {
-                    if (window.confirm(`코멘트를 삭제하시겠습니까?`)) {
-                      onRemove(data.commentId);
-                    }
-                  }}
-                >
+                <Remove onClick={handleOpen}>
                   <DeleteOutlinedIcon />
                 </Remove>
+
+                <Modal
+                  open={open}
+                  onClose={handleClose}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <ModalBox>
+                    <div className="info">정말 삭제하시겠습니까?</div>
+                    <div className="container">
+                      <div
+                        className="close"
+                        role="presentation"
+                        onClick={handleClose}
+                      >
+                        취소
+                      </div>
+                      <div
+                        className="delete"
+                        onClick={() => {
+                          onRemove(data.commentId);
+                        }}
+                        role="presentation"
+                      >
+                        삭제하기
+                      </div>
+                    </div>
+                  </ModalBox>
+                </Modal>
               </Grid>
             </Grid>
           </ItemContainer>
