@@ -10,16 +10,18 @@ const CollectionLargeBookContainer = styled.div`
 `;
 
 const CollectionBookTitle = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.dark};
-  word-wrap: break-all;
-  overflow: hidden;
-  line-height: 1.5;
-  max-height: 3;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  .title {
+    font-size: 14px;
+    font-weight: 600;
+    color: ${({ theme }) => theme.colors.dark};
+    word-wrap: break-all;
+    overflow: hidden;
+    line-height: 1.5;
+    max-height: 3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
   @media screen and (max-width: 640px) {
     font-size: 12px;
     font-weight: 500;
@@ -33,7 +35,9 @@ const CollectionLargeBook = ({ bookTitle, cover }) => {
   return (
     <CollectionLargeBookContainer>
       <img src={cover} alt="book cover" />
-      <CollectionBookTitle>{bookTitle}</CollectionBookTitle>
+      <CollectionBookTitle>
+        <div className="title">{bookTitle}</div>
+      </CollectionBookTitle>
     </CollectionLargeBookContainer>
   );
 };
