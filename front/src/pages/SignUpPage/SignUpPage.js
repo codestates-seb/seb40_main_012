@@ -8,6 +8,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { PageContainer } from 'containers';
 import { ContainedButton } from 'components';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 import {
   signUpAsync,
@@ -45,17 +46,28 @@ const SignUpPage = () => {
       email: data.get('email'),
       password: data.get('password'),
     };
-    // console.log(params);
+
     dispatch(signUpAsync(params))
-      .then((response) => {
-        if (response.payload) {
-          navigate('/user/signin', { replace: true });
-        } else {
-          // 에러 어떻게 넘어오는지 확인해보기
-          // console.log(response.payload?.errorMessage);
-        }
+      .unwrap()
+      .then(() => {
+        dispatch(
+          setOpenSnackbar({
+            severity: 'success',
+            message: '회원가입이 완료되었습니다.',
+          })
+        );
+
+        navigate('/user/signin', { replace: true });
       })
-      .catch((err) => console.log(err));
+      .catch((error) => {
+        const { message } = error;
+        dispatch(
+          setOpenSnackbar({
+            severity: 'error',
+            message: message,
+          })
+        );
+      });
   };
 
   return (
