@@ -5,7 +5,7 @@ import BasicSelect from './Select';
 import TitleInput from './TitleInput';
 import BodyInput from './BodyInput';
 import OutLinkInput from './OutLinkInput';
-import useInput from '../../../util/useInput';
+import useInput from '../../../hooks/useInput';
 import { ContainedButton } from '../../../components/Buttons';
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';

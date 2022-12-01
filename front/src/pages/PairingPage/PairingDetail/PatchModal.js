@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import styled from 'styled-components';
 import { TextButton, ContainedButton } from '../../../components/Buttons';
-import useInput from '../../../util/useInput';
+import useInput from '../../../hooks/useInput';
 import BasicSelect from '../PairingWrite/Select';
 import TitleInput from '../PairingWrite/TitleInput';
 import BodyInput from '../PairingWrite/BodyInput';

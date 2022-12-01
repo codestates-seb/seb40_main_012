@@ -4,7 +4,6 @@ import { validationCheck, duplicationCheck } from 'util/util';
 
 const initialState = {
   loading: false,
-  error: null,
   inputValue: { nickName: '', email: '', password: '', passwordCheck: '' },
   inputStatus: { nickName: '', email: '', password: '', passwordCheck: '' },
   inputHelperText: { nickName: '', email: '', password: '', passwordCheck: '' },
@@ -17,9 +16,7 @@ export const signUpAsync = createAsyncThunk(
       const response = await signUpApi.signUp(params);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue({
-        errorMessage: error.response.data.message,
-      });
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -41,20 +38,13 @@ export const signUpSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(signUpAsync.pending, (state) => {
-        state.error = null;
         state.loading = true;
       })
       .addCase(signUpAsync.fulfilled, (state) => {
-        state.error = null;
         state.loading = false;
       })
-      .addCase(signUpAsync.rejected, (state, action) => {
+      .addCase(signUpAsync.rejected, (state) => {
         state.loading = false;
-        if (action.payload) {
-          state.error = action.payload.errorMessage;
-        } else {
-          state.error = action.error;
-        }
       });
   },
 });
