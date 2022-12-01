@@ -58,13 +58,17 @@ public class BookCollectionController {
     @ResponseStatus(HttpStatus.OK)
     public BookCollectionDto.CollectionDetails getCollection(@PathVariable("collection-id") Long collectionId) {
         BookCollection collection = collectionService.getCollection(collectionId);
-        collection.setCollectionCover(
-                collection.getBookIsbn13().stream()
-                        .map(a -> bookService.findBook(a).getCover())
-                        .limit(4)
-                        .collect(Collectors.toList())
-        );
-        return BookCollectionDto.CollectionDetails.of(collection);
+        List<String> collectionCovers = collection.getBookIsbn13().stream()
+                .map(a -> bookService.findBook(a).getCover())
+                .limit(4)
+                .collect(Collectors.toList());
+//        collection.setCollectionCover(
+//                collection.getBookIsbn13().stream()
+//                        .map(a -> bookService.findBook(a).getCover())
+//                        .limit(4)
+//                        .collect(Collectors.toList())
+//        );
+        return BookCollectionDto.CollectionDetails.of(collection,collectionCovers);
     }
 
 
@@ -131,10 +135,9 @@ public class BookCollectionController {
     @ResponseStatus(HttpStatus.OK)
 
     public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory() {
-
         List<BookCollection> collections = collectionService.findCollectionByUserCategory();
 
-        List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
+        List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).limit(4).collect(Collectors.toList());
         return new ListResponseDto<>(tagCollectionDto);
     }
 
