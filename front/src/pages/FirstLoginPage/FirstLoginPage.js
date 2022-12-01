@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect, forwardRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -25,7 +25,7 @@ import { genreData, ageGroupData, genderData } from 'util/util';
 import { firstLoginAsync } from 'store/modules/authSlice';
 import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
@@ -63,10 +63,11 @@ const CheckboxFormGroupStyled = styled(FormGroup)`
 
 const FirstLoginPage = () => {
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
 
-  const [gender, setGender] = React.useState('');
-  const [age, setAge] = React.useState('');
-  const [checked, setChecked] = React.useState({
+  const [gender, setGender] = useState('');
+  const [age, setAge] = useState('');
+  const [checked, setChecked] = useState({
     NOVEL: false,
     ESSAY: false,
     POEM: false,
@@ -76,6 +77,11 @@ const FirstLoginPage = () => {
     COMICS: false,
     ETC: false,
   });
+  const [backdropOpen, setBackdropOpen] = useState(false);
+
+  useEffect(() => {
+    setBackdropOpen(loading);
+  }, [loading]);
 
   const handleClose = () => {
     dispatch(firstLoginAsync({}));
@@ -138,7 +144,7 @@ const FirstLoginPage = () => {
   const checkCount = Object.values(checked).filter((v) => v).length >= 3;
 
   return (
-    <PageContainer footer center>
+    <PageContainer footer center backdrop={backdropOpen}>
       <Dialog open={true} TransitionComponent={Transition}>
         <AppBarStyled sx={{ position: 'relative' }}>
           <ToolbarStyled>

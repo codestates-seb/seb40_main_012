@@ -77,9 +77,7 @@ const SignInPage = () => {
 
         navigate('/', { replace: true });
       })
-      .catch((error) => {
-        const { status } = error;
-        if (status === 401 || status === 405) return;
+      .catch(() => {
         setShowLoginError(true);
       });
   };
