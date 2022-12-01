@@ -268,11 +268,9 @@ public class BookCollectionService {
 
     public BookCollection findCollectionByAuthor() {
         String author = "양귀자 (지은이)";
-
         String title = "양귀자 모음";
         String content = "";
 
-        //저자 이름으로 조회한 책 isbn으로 updateView() 통해 책 db 저장
         List<Book> books = bookRepository.findWritersBooks(author);
 
         List<BookCollectionBook> collectionBooks = new ArrayList<>();
@@ -284,6 +282,7 @@ public class BookCollectionService {
                 }
         );
         return BookCollection.builder()
+                .collectionId(50L)
                 .title(title)
                 .content(content)
                 .collectionBooks(collectionBooks)
