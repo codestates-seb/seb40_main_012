@@ -64,6 +64,7 @@ const Header = () => {
           nickname: response.data.nickname,
           temp: response.data.temp,
           category: response.data.category,
+          profileImage: response.data.profileImage,
         });
       })
       .catch((error) => console.log('에러', error));
@@ -98,16 +99,8 @@ const Header = () => {
                     width: 80,
                     height: 80,
                   }}
-                >
-                  <img
-                    src={
-                      userInfo.profileImage
-                        ? userInfo.profileImage
-                        : 'https://styles.redditmedia.com/t5_33mhbo/styles/profileIcon_7f1481qm5y291.jpeg?width=256&height=256&frame=1&crop=256:256,smart&s=6cc29126b9f6853db131a0f5189c8e86eff9a20e'
-                    }
-                    alt="cat profile"
-                  ></img>
-                </Avatar>
+                  src={userInfo.profileImage ? userInfo.profileImage : ''}
+                ></Avatar>
               </Grid>
               <Grid item xs={7.2}>
                 <Box

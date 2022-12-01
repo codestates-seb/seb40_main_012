@@ -24,10 +24,9 @@ const BestPairingsContainer = styled.div`
 const PairingsContainer = styled.div`
   display: flex;
   width: 100%;
-  justify-content: center;
-  @media screen and (max-width: 640px) {
-    flex-direction: column;
-    align-items: center;
+  flex-wrap: wrap;
+  @media screen and (max-width: 500px) {
+    justify-content: center;
   }
 `;
 
@@ -45,9 +44,19 @@ const BestPairings = () => {
 
   return (
     <BestPairingsContainer>
-      <MainBooksTitle title="요즘 뜨는 페어링" type="pairing" />
+      <MainBooksTitle title="체리픽 인기 페어링" type="pairing" />
       <PairingsContainer>
-        {bestpairings?.slice(0, 5).map((el) => {
+        {bestpairings?.map((el) => {
+          return (
+            <BestPairing
+              key={el.pairingId}
+              pairingImg={el.imagePath}
+              pairingTitle={el.title}
+              pairingId={el.pairingId}
+            />
+          );
+        })}
+        {/* {bestpairings?.slice(0, 5).map((el) => {
           return (
             <BestPairing
               key={el.pairingId}
@@ -66,7 +75,7 @@ const BestPairings = () => {
               pairingId={el.pairingId}
             />
           );
-        })}
+        })} */}
       </PairingsContainer>
     </BestPairingsContainer>
   );

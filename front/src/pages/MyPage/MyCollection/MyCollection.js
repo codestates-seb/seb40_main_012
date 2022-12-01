@@ -33,7 +33,6 @@ const MyCollection = () => {
   const [content, setContent] = useState({
     data: [],
   });
-  const [lastId, setLastId] = useState();
 
   const fetchData = async () => {
     axios
@@ -42,15 +41,6 @@ const MyCollection = () => {
         setContent({
           data: response.data.data.content,
         });
-        {
-          response.data.data.length
-            ? setLastId(
-                response.data.data.content[
-                  response.data.data.content.length - 1
-                ].collectionId
-              )
-            : null;
-        }
       })
       .catch((error) => console.log('에러', error));
   };
@@ -66,13 +56,7 @@ const MyCollection = () => {
           <Container maxWidth="md">
             <Header></Header>
             <Nav view={view} setView={setView}></Nav>
-            <Content
-              content={content}
-              setContent={setContent}
-              fetchData={fetchData}
-              lastId={lastId}
-              setLastId={setLastId}
-            ></Content>
+            <Content></Content>
           </Container>
         ) : (
           <Container maxWidth="md">

@@ -25,18 +25,19 @@ const CollectionSmallBooksContainer = styled.div`
 const CollectionSmallBookContainer = styled.div`
   width: 50%;
   img {
-    width: 100%;
-    aspect-ratio: 7 / 10;
-    object-fit: cover;
-    padding: 2px;
+    aspect-ratio: 7 / 10 !important;
+    object-fit: cover !important;
+    padding: 2px !important;
+    height: 100% !important;
+    width: 100% !important;
   }
 `;
 
 const BookColumn = styled.div`
-  display: flex;
-  height: 100%;
-  aspect-ratio: 1.38;
-  background-color: #f5f5f5;
+  display: flex !important;
+  height: 95% !important;
+  aspect-ratio: 1.38 !important;
+  background-color: #f5f5f5 !important;
 `;
 
 // const CollectionSmallBookContainer = styled.div`
@@ -55,7 +56,7 @@ const BookColumn = styled.div`
 //   color: ${({ theme }) => theme.colors.darkgray};
 // `;
 
-const CollectionThumbnail = ({ data }) => {
+const MyCollectionThumbnail = ({ data }) => {
   // const navigate = useNavigate();
 
   // const onClickCollectionInfo = () => {
@@ -74,15 +75,15 @@ const CollectionThumbnail = ({ data }) => {
         })} */}
       <BookColumn>
         <CollectionSmallBookContainer>
-          {data.collectionCover[0] ? (
-            <img src={data.collectionCover[0]} alt="book"></img>
+          {data.books[0] ? (
+            <img src={data.books[0].bookCover} alt="book"></img>
           ) : (
             <img src={'/images/collection.png'} alt="book thumbnail"></img>
           )}
         </CollectionSmallBookContainer>
         <CollectionSmallBookContainer>
-          {data.collectionCover[1] ? (
-            <img src={data.collectionCover[1]} alt="book"></img>
+          {data.books[1] ? (
+            <img src={data.books[1].bookCover} alt="book"></img>
           ) : (
             <img src={'/images/collection.png'} alt="book thumbnail"></img>
           )}
@@ -90,15 +91,15 @@ const CollectionThumbnail = ({ data }) => {
       </BookColumn>
       <BookColumn>
         <CollectionSmallBookContainer>
-          {data.collectionCover[2] ? (
-            <img src={data.collectionCover[2]} alt="book"></img>
+          {data.books[2] ? (
+            <img src={data.books[2].bookCover} alt="book"></img>
           ) : (
             <img src={'/images/collection.png'} alt="book thumbnail"></img>
           )}
         </CollectionSmallBookContainer>
         <CollectionSmallBookContainer>
-          {data.collectionCover[3] ? (
-            <img src={data.collectionCover[3]} alt="book"></img>
+          {data.books[3] ? (
+            <img src={data.books[3].bookCover} alt="book"></img>
           ) : (
             <img src={'/images/collection.png'} alt="book thumbnail"></img>
           )}
@@ -117,4 +118,4 @@ const CollectionThumbnail = ({ data }) => {
   );
 };
 
-export default CollectionThumbnail;
+export default MyCollectionThumbnail;
