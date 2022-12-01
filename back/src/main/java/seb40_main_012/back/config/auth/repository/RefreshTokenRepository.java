@@ -18,5 +18,11 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
     )
     Optional<RefreshToken> findUserTokenByEmail(String email);
 
+    @Query(nativeQuery = true, value =
+            "SELECT EMAIL FROM REFRESH_TOKEN " +
+                    "WHERE TOKEN_VALUE = :token"
+    )
+    String findUserEmailByToken(String token);
+
     Optional<RefreshToken> deleteByTokenValue(String tokenValue);
 }
