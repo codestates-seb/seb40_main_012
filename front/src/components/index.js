@@ -4,3 +4,4 @@ export { default as ScrollToTop } from './ScrollToTop';
 export { default as RoutesComponent } from './RoutesComponent';
 export { default as Searchbar } from './Searchbar';
 export { default as LoadingComponent } from './LoadingComponent';
+export { default as Snackbar } from './SnackbarComponent';

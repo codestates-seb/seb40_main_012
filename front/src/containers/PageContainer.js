@@ -4,6 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from 'styles/theme';
 import { Header, Footer } from 'containers';
+import { Snackbar } from 'components';
 
 const PageContainer = ({
   children,
@@ -31,6 +32,7 @@ const PageContainer = ({
           sx={{ mt: cmt, mb: cmb }}
           maxWidth={maxWidth}
         >
+          <Snackbar />
           {center ? (
             <Box
               sx={{
