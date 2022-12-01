@@ -24,6 +24,7 @@ import {
   genreData,
 } from 'util/util';
 import WithDrawal from './WithDrawalModal';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 const WrapperStyled = styled.div`
   display: flex;
@@ -236,7 +237,27 @@ const EditProfile = () => {
       // profileImage, // api 변경되면 params에 필요할 수도 있음
     };
     const userInfo = { email, roles };
-    dispatch(patchUserInfoAsync({ params, userInfo }));
+    dispatch(patchUserInfoAsync({ params, userInfo }))
+      .unwrap()
+      .then(() => {
+        dispatch(
+          setOpenSnackbar({
+            severity: 'success',
+            message: '회원정보 수정이 완료되었습니다.',
+          })
+        );
+        setInputStatus({ ...inputStatus, nickName: '' });
+        setInputHelperText({ ...inputHelperText, nickName: '' });
+      })
+      .catch((error) => {
+        const { message } = error;
+        dispatch(
+          setOpenSnackbar({
+            severity: 'error',
+            message: message,
+          })
+        );
+      });
   };
 
   const checkCount = Object.values(checked).filter((v) => v).length >= 3;
