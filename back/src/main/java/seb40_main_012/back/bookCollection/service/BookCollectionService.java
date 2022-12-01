@@ -253,7 +253,7 @@ public class BookCollectionService {
         log.info("this genre : " + genre);
 
         List<BookCollectionBook> collectionBooks = collectionRepositorySupport.findCollectionBook(genre);
-        List<BookCollection> collections = collectionBooks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
+        List<BookCollection> collections = collectionBooks.stream().map(x -> x.getBookCollection()).distinct().collect(Collectors.toList());
         return collections;
     }
 
