@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const BackdropStyled = styled(Backdrop)`
   background-color: rgb(255, 255, 255, 0.5);
   top: 60px;
+  z-index: 1400;
 `;
 
 const SimpleBackdrop = ({ open }) => {

@@ -32,6 +32,12 @@ const BestCollectionInfo = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.darkgray};
   word-break: break-all;
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   margin-top: 10px;
   @media screen and (max-width: 640px) {
     font-size: 12px;

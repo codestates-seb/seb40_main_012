@@ -50,31 +50,12 @@ const BestPairings = () => {
           return (
             <BestPairing
               key={el.pairingId}
+              pairingImg={el.imagePath}
               pairingTitle={el.title}
               pairingId={el.pairingId}
             />
           );
         })}
-        {/* {bestpairings?.slice(0, 5).map((el) => {
-          return (
-            <BestPairing
-              key={el.pairingId}
-              pairingTitle={el.title}
-              pairingId={el.pairingId}
-            />
-          );
-        })}
-      </PairingsContainer>
-      <PairingsContainer>
-        {bestpairings?.slice(5, 10).map((el) => {
-          return (
-            <BestPairing
-              key={el.pairingId}
-              pairingTitle={el.title}
-              pairingId={el.pairingId}
-            />
-          );
-        })} */}
       </PairingsContainer>
     </BestPairingsContainer>
   );
