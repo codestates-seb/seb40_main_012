@@ -1,9 +1,6 @@
 import * as React from 'react';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import styled from 'styled-components';
-import { TextButton, ContainedButton } from '../../../components/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { asyncDeletePairing } from '../../../store/modules/pairingSlice';
@@ -18,6 +15,55 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
+const ModalBox = styled.div`
+  width: 300px;
+  height: 150px;
+  position: absolute;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .info {
+    font-weight: 700;
+  }
+  .container {
+    display: flex;
+    margin-top: 20px;
+  }
+  .delete {
+    width: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #ffc5c5;
+    color: #850000;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .close {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #e8e8e8;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
 
 const Btns = styled.button`
   display: flex;
@@ -36,15 +82,6 @@ const Btns = styled.button`
     background-color: #ffc5c5;
     color: #850000;
   }
-`;
-
-const BtnStyleBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: center;
-  margin-top: 30px;
-  margin-left: -15px;
 `;
 
 export default function DeleteModal({ deleteId }) {
@@ -67,22 +104,21 @@ export default function DeleteModal({ deleteId }) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            이 페어링을 삭제하시겠습니까?
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            삭제된 페어링 게시글은 다시 되돌릴 수 없습니다.
-          </Typography>
-          <BtnStyleBox>
-            <TextButton width={'120px'} onClick={handleClose}>
-              취소하기
-            </TextButton>
-            <ContainedButton width={'120px'} onClick={handlePairingDelete}>
+        <ModalBox sx={style}>
+          <div className="info">정말 삭제하시겠습니까?</div>
+          <div className="container">
+            <div className="close" onClick={handleClose} role="presentation">
+              취소
+            </div>
+            <div
+              className="delete"
+              onClick={handlePairingDelete}
+              role="presentation"
+            >
               삭제하기
-            </ContainedButton>
-          </BtnStyleBox>
-        </Box>
+            </div>
+          </div>
+        </ModalBox>
       </Modal>
     </div>
   );

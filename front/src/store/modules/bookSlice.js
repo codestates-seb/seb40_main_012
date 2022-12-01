@@ -11,12 +11,12 @@ const initialState = {
 
 export const getBookAsync = createAsyncThunk(
   'bookSlice/getBookAsync',
-  async (isbn) => {
+  async (isbn, thunkAPI) => {
     try {
       const res = await axios.get(`${BOOKS_URL}/${isbn}`);
       return res.data.data;
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );

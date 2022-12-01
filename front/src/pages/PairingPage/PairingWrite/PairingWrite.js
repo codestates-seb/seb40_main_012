@@ -7,10 +7,11 @@ import BodyInput from './BodyInput';
 import OutLinkInput from './OutLinkInput';
 import useInput from '../../../hooks/useInput';
 import { ContainedButton } from '../../../components/Buttons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from '../../../api/axios';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 const Wrapper = styled.div`
   display: flex;
@@ -117,6 +118,7 @@ const PairingWrite = () => {
   const [imgData, setImgData] = useState({});
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const curBookData = useSelector((state) => state.book.data);
   console.log(curBookData);
   const preventClose = (e) => {
@@ -125,7 +127,12 @@ const PairingWrite = () => {
   };
   useEffect(() => {
     if (!curBookData.title) {
-      alert('작성 중인 글이 취소되었습니다. 페어링 메인 페이지로 이동합니다');
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: '작성중인 글이 취소되었습니다.',
+        })
+      );
       navigate('/pairing');
     }
     (() => {
@@ -170,13 +177,13 @@ const PairingWrite = () => {
       })
       .then((res) => {
         navigate(`/pairing/${res.data.data.pairingId}`, { replace: true });
+        categoryReset();
+        titleReset();
+        bodyReset();
+        outLinkReset();
+        setImgData({});
       })
       .catch((error) => console.error(error));
-    categoryReset();
-    titleReset();
-    bodyReset();
-    outLinkReset();
-    setImgData({});
   };
 
   return (
