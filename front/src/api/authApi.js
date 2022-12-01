@@ -47,15 +47,18 @@ const authApi = {
     });
   },
   refreshToken: () => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       return axios
         .get(TOKEN_REFRESH_URL)
         .then((response) => {
           signInSuccess(response);
           return resolve();
         })
-        .catch(() => {
-          authApi.logout();
+        .catch((error) => {
+          return reject(error);
+
+          // 에러코드 나오면 처리 필요
+          // logoutApi();
         });
     });
   },
