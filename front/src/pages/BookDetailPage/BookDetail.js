@@ -230,7 +230,11 @@ const BookDetail = () => {
   const [bookData, setBookData] = useState(initialState);
 
   useEffect(() => {
-    dispatch(getBookAsync(isbn));
+    dispatch(getBookAsync(isbn))
+      .unwrap()
+      .catch(() => {
+        navigate('/404');
+      });
     getBookData(isbn);
   }, []);
 
@@ -293,8 +297,7 @@ const BookDetail = () => {
   const handleCommentLike = (commentId) => {
     axios
       .patch(`/api/comments/${commentId}/like`)
-      .then((res) => {
-        console.log(res.data.data);
+      .then(() => {
         getBookData();
       })
       .catch((error) => console.error(error));
@@ -303,8 +306,7 @@ const BookDetail = () => {
   const handleCommentDislike = (commentId) => {
     axios
       .patch(`/api/comments/${commentId}/dislike`)
-      .then((res) => {
-        console.log(res.data.data);
+      .then(() => {
         getBookData();
       })
       .catch((error) => console.error(error));
@@ -318,7 +320,6 @@ const BookDetail = () => {
     navigate(`/pairing/${pairingId}`);
   };
 
-  console.log(bookData);
   const commentsTopThree = bookData?.comments?.content?.slice(0, 3);
 
   const sliderSettings = {
