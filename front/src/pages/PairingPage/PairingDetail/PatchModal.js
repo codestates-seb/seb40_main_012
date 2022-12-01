@@ -205,7 +205,6 @@ export default function DeleteModal() {
       title: title,
       body: body,
       pairingCategory: category,
-      imagePath: 'img',
       outLinkPath: outLink,
     };
     const formData = new FormData();
