@@ -42,6 +42,24 @@ export const signUpSlice = createSlice({
       })
       .addCase(signUpAsync.fulfilled, (state) => {
         state.loading = false;
+        state.inputValue = {
+          nickName: '',
+          email: '',
+          password: '',
+          passwordCheck: '',
+        };
+        state.inputStatus = {
+          nickName: '',
+          email: '',
+          password: '',
+          passwordCheck: '',
+        };
+        state.inputHelperText = {
+          nickName: '',
+          email: '',
+          password: '',
+          passwordCheck: '',
+        };
       })
       .addCase(signUpAsync.rejected, (state) => {
         state.loading = false;

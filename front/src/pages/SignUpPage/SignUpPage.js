@@ -68,7 +68,8 @@ const SignUpPage = () => {
         navigate('/user/signin', { replace: true });
       })
       .catch((error) => {
-        const { message } = error;
+        const { message, status } = error;
+        if (status === 409) return;
         dispatch(
           setOpenSnackbar({
             severity: 'error',

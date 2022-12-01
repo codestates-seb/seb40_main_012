@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { GlobalStyle } from 'styles';
 import { authApi } from 'api';
 import { selectIsLogin } from 'store/modules/authSlice';
-import { ScrollToTop, Loading } from 'components';
+import { ScrollToTop, Loading, Snackbar } from 'components';
 
 const RoutesComponent = lazy(() => import('components/RoutesComponent'));
 
@@ -30,6 +30,7 @@ const App = () => {
       <ScrollToTop />
       <GlobalStyle />
       <Suspense fallback={<Loading />}>
+        <Snackbar />
         <RoutesComponent />
       </Suspense>
     </BrowserRouter>
