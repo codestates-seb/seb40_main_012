@@ -4,6 +4,7 @@ import CollectonMediumBook from './CollectionMediumBook';
 //import CollectionTags from './CollectinTags';
 
 const CollectionMediumBooksContainer = styled.div`
+  width: 50%;
   display: flex;
   flex-direction: column;
   margin: 0 15px;
@@ -20,6 +21,12 @@ const CollectionMediumInfo = styled.div`
   font-weight: 700;
   color: ${({ theme }) => theme.colors.dark};
   word-break: break-all;
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
   @media screen and (max-width: 640px) {
     font-size: 14px;
   }
