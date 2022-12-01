@@ -28,7 +28,10 @@ public class Statistics {
     private long totalVisitor;
 
     @Column
-    private Duration averageStayTime;
+    private long averageStayTimeSec;
+
+    @Column
+    private String averageStayTimeStr;
 
     @Column
     private long pairingCount;

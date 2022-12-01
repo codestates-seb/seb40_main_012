@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.config.auth.service.UserDetailsServiceImpl;
 import seb40_main_012.back.email.EmailSenderService;
@@ -17,12 +19,14 @@ import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
+import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.*;
 import java.security.GeneralSecurityException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -36,6 +40,7 @@ import java.util.stream.Collectors;
 public class CherriPickAop {
 
     private final UserService userService;
+    private final UserRepository userRepository;
     private final EmailSenderService emailSenderService;
     private final StatisticsService statisticsService;
     private final StatisticsRepository statisticsRepository;
@@ -99,7 +104,10 @@ public class CherriPickAop {
     }
 
     @AfterReturning(value = "execution(* seb40_main_012.back.config.auth.jwt.JwtTokenizer.delegateRefreshToken(..)) && args(user)", returning = "refreshToken")
-    public void signInStatistics(JoinPoint joinPoint, User user, String refreshToken) { // 로그인 한 경우
+    public void signInStatistics(JoinPoint joinPoint, User user, String refreshToken) { // 로그인 하는 경우
+
+        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        String ip = req.getRemoteAddr();;
 
             StayTime newSignIn = StayTime.builder()
                     .signIn(LocalDateTime.now())
@@ -109,6 +117,34 @@ public class CherriPickAop {
 
             stayTimeRepository.save(newSignIn);
     }
+
+//    @After(value = "execution(* seb40_main_012.back.config.auth.jwt.JwtTokenizer.removeRefreshToken(..)) && args(tokenValue)")
+//    public void signOutStatistics(JoinPoint joinPoint, String tokenValue) { // 로그아웃 한 경우
+//
+//        String userEmail = refreshTokenRepository.findUserEmailByToken(tokenValue); // 유저 이메일
+//        User user = userService.findUserByEmail(userEmail); // 로그아웃 하는 유저
+//
+//        StayTime findStayTime = stayTimeRepository.findByToken(tokenValue);
+//        long duration = Duration.between(findStayTime.getSignIn(), LocalDateTime.now()).getSeconds(); // 로그인 - 로그아웃 간격(초)
+//        String durationForStat = duration / 60 + "분 " + duration % 60 + "초";
+//
+//        if (statisticsRepository.findByDate(LocalDate.now()) == null && findStayTime.getSignIn().getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) { // 전날 로그인 해서 오늘 처음으로 로그아웃 하는 경우
+//
+//            Statistics newStatistics = Statistics.builder()
+//                    .date(LocalDate.now())
+//                    .averageStayTimeSec(duration)
+//                    .averageStayTimeStr(durationForStat)
+//                    .build();
+//
+//            statisticsRepository.save(newStatistics);
+//
+//        } else {
+//
+//            Statistics statistics = statisticsRepository.findByDate(LocalDate.now());
+//        }
+//
+//        stayTimeRepository.deleteByToken(tokenValue);
+//    }
 
 
     public void firstVisitWithAuth(User findUser, List<String> genre, Statistics newStatistics) {
@@ -445,6 +481,16 @@ public class CherriPickAop {
 
         @Override
         public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
+        }
+    }
+
+    @AfterReturning(value = "execution(* seb40_main_012.back.user.controller.UserController.emailConfirm(..)) && args(emailDto))", returning = "response")
+    public void sendConfirmEmail(JoinPoint joinPoint, UserDto.EmailDto emailDto, String response) { // 이메일 인증
+
+        try {
+            emailSenderService.sendAuthCode(emailDto.getEmail(), response);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
         }
     }
 

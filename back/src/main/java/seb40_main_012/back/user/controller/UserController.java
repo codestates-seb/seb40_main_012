@@ -105,30 +105,31 @@ public class UserController {
     @PatchMapping("/mypage/userInfo")
     @ResponseStatus(HttpStatus.OK)
     public UserInfoDto.Response patchUserInfo(
-            @RequestParam(value = "image") @Nullable MultipartFile file,
-            @RequestPart(value = "request") UserInfoDto.Post request) throws Exception {
+//            @RequestParam(value = "image") @Nullable MultipartFile file,
+//            @RequestPart(value = "request")
+            UserInfoDto.Post request) throws Exception {
 
         User editedUser = userService.editUserInfo(request.toEntity(), request.getCategory());
 
-        if (editedUser.getS3ProfileImage() == null && file == null) {
-
-            editedUser.setProfileImage(null);
-
-        } else if (editedUser.getS3ProfileImage() == null && file != null) {
-
-            String imagePath = awsS3Service.uploadProfileImageToS3(file);
-            editedUser.setProfileImage(imagePath);
-
-        } else if (editedUser.getS3ProfileImage() != null && file == null) {
-
-            editedUser.setProfileImage(null);
-
-        } else if (editedUser.getS3ProfileImage() != null && file != null) {
-
-//            awsS3Service.removeFromS3(pairingService.findPairing(pairingId).getImagePath()); // 기존 이미지 삭제
-            String imagePath = awsS3Service.uploadProfileImageToS3(file); // 새 이미지 저장
-            editedUser.setProfileImage(imagePath);
-        }
+//        if (editedUser.getS3ProfileImage() == null && file == null) {
+//
+//            editedUser.setProfileImage(null);
+//
+//        } else if (editedUser.getS3ProfileImage() == null && file != null) {
+//
+//            String imagePath = awsS3Service.uploadProfileImageToS3(file);
+//            editedUser.setProfileImage(imagePath);
+//
+//        } else if (editedUser.getS3ProfileImage() != null && file == null) {
+//
+//            editedUser.setProfileImage(null);
+//
+//        } else if (editedUser.getS3ProfileImage() != null && file != null) {
+//
+////            awsS3Service.removeFromS3(pairingService.findPairing(pairingId).getImagePath()); // 기존 이미지 삭제
+//            String imagePath = awsS3Service.uploadProfileImageToS3(file); // 새 이미지 저장
+//            editedUser.setProfileImage(imagePath);
+//        }
 
         userService.updateNickName(request.getNickname());
         return UserInfoDto.Response.of(editedUser);
@@ -261,4 +262,10 @@ public class UserController {
                 new SingleResponseDto<>(mapper.userToFirstLoginResponse(user)), HttpStatus.OK);
     }
 
+    @PostMapping("/users/emailConfirm")
+    public String emailConfirm(@Valid @RequestBody UserDto.EmailDto emailDto) {
+        String authCode = userService.createCode();
+
+        return authCode;
+    }
 }

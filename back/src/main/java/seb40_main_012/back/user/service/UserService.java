@@ -304,4 +304,26 @@ public class UserService {
             throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
         return true;
     }
+
+    public String createCode() { // 인증 코드 만들기
+        Random random = new Random();
+        StringBuffer key = new StringBuffer();
+
+        for(int i = 0; i < 8; i++) {
+            int index = random.nextInt(3);
+
+            switch (index) {
+                case 0 :
+                    key.append((char) ((int)random.nextInt(26) + 97));
+                    break;
+                case 1:
+                    key.append((char) ((int)random.nextInt(26) + 65));
+                    break;
+                case 2:
+                    key.append(random.nextInt(9));
+                    break;
+            }
+        }
+        return key.toString();
+    }
 }

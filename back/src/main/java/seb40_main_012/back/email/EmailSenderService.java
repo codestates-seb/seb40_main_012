@@ -34,4 +34,23 @@ public class EmailSenderService {
             throw new RuntimeException("메일 전송에 실패했습니다.");
         }
     }
+
+    @Async
+    public void sendAuthCode(String toAddress, String authNum) throws GeneralSecurityException {
+        try {
+            String body =
+                    "<img src=\"https://user-images.githubusercontent.com/13742045/203527798-844b9a71-ecb5-441d-a52f-4abb337f07f3.png\" width=\"700\">" +
+                            "<br><br>" +
+                            "<font size = \"5\">" +
+                            "<h1>안녕하세요, 체리<font color=\"#6741FF\">픽</font> 팀입니다.</h1>" +
+                            "<h3>" + "아래의 인증코드를 입력하시면 메일 인증이 정상적으로 완료됩니다." + "</h3>" +
+                            "<div align=\"center\" style=\"border:1px solid black; font-family:verdana;\">" +
+                            "<h2>인증 코드: <font color=\"#026645\">" + authNum + "</font></h2>" +
+                            "</div>" +
+                            "<font>";
+            emailSenderController.send(toAddress, "[CherryPick] 가입 인증 메일입니다", body);
+        } catch (MessagingException e) {
+            throw new RuntimeException("인증 메일 전송에 실패했습니다.");
+        }
+    }
 }
