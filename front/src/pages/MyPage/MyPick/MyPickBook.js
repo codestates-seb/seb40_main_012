@@ -181,7 +181,21 @@ const MyPickBook = () => {
               }}
             >
               <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
-              <div>열심히 읽어오는 중..</div>
+              <Typography
+                color="#737373"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  mt: 1,
+                  mb: 1,
+                  fontSize: 17,
+                  fontWeight: 300,
+                }}
+                variant="body2"
+                component={'span'}
+              >
+                열심히 읽어오는 중..
+              </Typography>
             </div>
           }
           height={400}

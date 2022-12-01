@@ -110,6 +110,7 @@ const Content = ({ content }) => {
               item
               xs={6.5}
               sx={{
+                ml: 3,
                 display: 'flex',
                 flexDirection: 'row-reverse',
               }}
@@ -121,7 +122,6 @@ const Content = ({ content }) => {
               <MyPickGuide />
             </Grid>
           </Grid>
-          {/* ///////////// */}
 
           <div>
             {view === 1 ? <MyPickPairing /> : null}
@@ -133,6 +133,7 @@ const Content = ({ content }) => {
         </ContentContainer>
       ) : (
         <>
+          <Grid item xs={0.5}></Grid>
           <ContentContainer>
             <Grid
               container
@@ -141,7 +142,6 @@ const Content = ({ content }) => {
                 alignItems: 'center',
               }}
             >
-              <Grid item xs={0.5} sx={{ width: 20 }}></Grid>
               <Grid item xs={5} sx={{ mt: 1, mb: 1 }}>
                 <CommentContainer>
                   <Typography

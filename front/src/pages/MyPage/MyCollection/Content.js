@@ -9,25 +9,11 @@ import { useNavigate } from 'react-router-dom';
 import MyCollectionDetail from './MyCollectionDetail';
 import { useEffect, useState } from 'react';
 import { BasicButton } from '../../../components/Buttons';
+import { MY_COLLECTION_URL } from '../../../api/requests';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
-  input {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 1.5px solid gainsboro;
-    border-radius: 0.35rem;
-    margin-top: -0.1px;
-    &:checked {
-      border-color: transparent;
-      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-      background-size: 100% 100%;
-      background-position: 50%;
-      background-repeat: no-repeat;
-      background-color: #cfc3ff;
-    }
-  }
+
   img {
     align-items: center;
     justify-content: center;
@@ -62,9 +48,36 @@ const ButtonCSS = styled.button`
   background: transparent;
 `;
 
-const Content = ({ content, setContent, fetchData, lastId, setLastId }) => {
+const Content = () => {
   const [hasMore, setHasMore] = useState(true);
   const navigate = useNavigate();
+  const [content, setContent] = useState({
+    data: [],
+  });
+  const [lastId, setLastId] = useState();
+
+  const fetchData = async () => {
+    axios
+      .get(MY_COLLECTION_URL)
+      .then((response) => {
+        console.log('response배열', response.data.data.content);
+        setContent({
+          data: response.data.data.content,
+        });
+        {
+          response.data.data.content.length
+            ? setLastId(
+                response.data.data.content[
+                  response.data.data.content.length - 1
+                ].collectionId
+              )
+            : null;
+        }
+        setHasMore(response.data.data.size < 5 ? false : true);
+      })
+      .catch((error) => console.log('에러', error));
+  };
+  console.log(lastId);
 
   const fetchMoreData = () => {
     setTimeout(() => {
@@ -102,6 +115,7 @@ const Content = ({ content, setContent, fetchData, lastId, setLastId }) => {
   };
 
   useEffect(() => {
+    fetchData();
     setHasMore(content.data.length < 5 ? false : true);
   }, []);
 
@@ -153,7 +167,21 @@ const Content = ({ content, setContent, fetchData, lastId, setLastId }) => {
                 }}
               >
                 <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
-                <div>열심히 읽어오는 중..</div>
+                <Typography
+                  color="#737373"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  variant="body2"
+                  component={'span'}
+                >
+                  열심히 읽어오는 중..
+                </Typography>
               </div>
             }
             height={400}
@@ -186,7 +214,21 @@ const Content = ({ content, setContent, fetchData, lastId, setLastId }) => {
                   />
                 ))
               ) : (
-                <div>데이터가 없어요</div>
+                <Typography
+                  color="#737373"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  variant="body2"
+                  component={'span'}
+                >
+                  데이터가 없어요
+                </Typography>
               )}
             </div>
           </InfiniteScroll>
