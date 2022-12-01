@@ -4,10 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class StayTimeService {
 
     private final StayTimeRepository stayTimeRepository;
+
+    public void createStayTimeTable() {
+        StayTime stayTime = new StayTime();
+        stayTimeRepository.save(stayTime);
+    }
+
+    public StayTime getByUserId(long userId) {
+        return null;
+    }
 }

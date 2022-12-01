@@ -9,10 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
+import seb40_main_012.back.config.auth.service.UserDetailsServiceImpl;
 import seb40_main_012.back.email.EmailSenderService;
-import seb40_main_012.back.statistics.Statistics;
-import seb40_main_012.back.statistics.StatisticsRepository;
-import seb40_main_012.back.statistics.StatisticsService;
+import seb40_main_012.back.statistics.*;
 import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.enums.AgeType;
@@ -24,6 +24,7 @@ import javax.servlet.annotation.WebListener;
 import javax.servlet.http.*;
 import java.security.GeneralSecurityException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +39,9 @@ public class CherriPickAop {
     private final EmailSenderService emailSenderService;
     private final StatisticsService statisticsService;
     private final StatisticsRepository statisticsRepository;
+    private final StayTimeService stayTimeService;
+    private final StayTimeRepository stayTimeRepository;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @AfterReturning(value = "execution(* seb40_main_012.back.user.controller.UserController.postUser(..)) && args(postDto))", returning = "response")
     public void sendSignUpEmail(JoinPoint joinPoint, UserDto.PostDto postDto, ResponseEntity response) { // 회원가입 이메일
@@ -61,11 +65,12 @@ public class CherriPickAop {
             newStatistics.setTotalVisitor(1);
             statisticsRepository.save(newStatistics);
 
-        } else if (statisticsRepository.findByDate(LocalDate.now()) == null && !authentication.getName().equals("anonymousUser")) { // 오늘의 첫 방문자이면서 로그인 한 경우
+        } else if (statisticsRepository.findByDate(LocalDate.now()) == null && !authentication.getName().equals("anonymousUser")) { // 오늘의 첫 방문자이면서 로그인 되어 있는 경우
 
             User findUser = userService.getLoginUser();
             List<String> genre = userService.getAllGenre(findUser);
             statisticsService.createTable(LocalDate.now());
+            stayTimeService.createStayTimeTable(); // 체류시간 테이블 생성
             Statistics newStatistics = statisticsService.findByDate(LocalDate.now());
             newStatistics.setTotalVisitor(1);
 
@@ -83,43 +88,27 @@ public class CherriPickAop {
 
             User findUser = userService.getLoginUser();
             List<String> genre = userService.getAllGenre(findUser);
-            Statistics newStatistics = statisticsService.findByDate(LocalDate.now());
+            Statistics statistics = statisticsService.findByDate(LocalDate.now());
+            statistics.setTotalVisitor(statistics.getTotalVisitor() + 1);
 
-            notFirstVisitWithAuth(findUser, genre, newStatistics);
+            notFirstVisitWithAuth(findUser, genre, statistics);
 
-            statisticsRepository.save(newStatistics);
+            statisticsRepository.save(statistics);
 
         }
     }
 
-//    @AfterReturning(value = "execution(* seb40_main_012.back.config.auth.cookie.CookieManager.outCookie(..)) && args(request)", returning = "key")
-//    public void cookiesLifeCycle(JoinPoint joinPoint, HttpServletRequest request, String key) {
-//    }
-//
-//    @After(value = "execution(* seb40_main_012.back.config.auth.filter.JwtAuthenticationFilter.successfulAuthentication(..)) && args(request, response, authResult)")
-//    public void cookiesSignIn(JoinPoint joinPoint, HttpServletRequest request, HttpServletResponse response, Authentication authResult) {
-//    }
+    @AfterReturning(value = "execution(* seb40_main_012.back.config.auth.jwt.JwtTokenizer.delegateRefreshToken(..)) && args(user)", returning = "refreshToken")
+    public void signInStatistics(JoinPoint joinPoint, User user, String refreshToken) { // 로그인 한 경우
 
-    @AfterReturning(value = "execution(* seb40_main_012.back.config.auth.service.UserDetailsServiceImpl.loadUserByUsername(..))", returning = "findUser")
-    public void signInStatistics(JoinPoint joinPoint, User findUser) { // 로그인 이벤트 발생시
+            StayTime newSignIn = StayTime.builder()
+                    .signIn(LocalDateTime.now())
+                    .user(user)
+                    .refreshToken(refreshToken)
+                    .build();
 
-//        if (statisticsRepository.findByDate(LocalDate.now()) == null) {
-//            statisticsService.createTable(LocalDate.now());
-//        }
+            stayTimeRepository.save(newSignIn);
     }
-
-    @WebListener
-    public static class sessionStatistics implements HttpSessionListener { // 세션 사용하게 되면 쓰기
-
-        @Override
-        public void sessionCreated(HttpSessionEvent httpSessionEvent) {
-        }
-
-        @Override
-        public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
-        }
-    }
-
 
 
     public void firstVisitWithAuth(User findUser, List<String> genre, Statistics newStatistics) {
@@ -447,5 +436,16 @@ public class CherriPickAop {
         }
     }
 
+    @WebListener
+    public static class sessionStatistics implements HttpSessionListener { // 세션 사용하게 되면 쓰기
+
+        @Override
+        public void sessionCreated(HttpSessionEvent httpSessionEvent) {
+        }
+
+        @Override
+        public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
+        }
+    }
 
 }
