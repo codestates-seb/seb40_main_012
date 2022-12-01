@@ -8,6 +8,7 @@ import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
+import MyCollectionThumbnail from './MyCollectionThumbnail';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -34,12 +35,14 @@ const ItemContainer = styled.div`
 
 const BookImg = styled.div`
   cursor: pointer;
+
   .resize {
     box-sizing: inherit;
     width: 108px !important;
     height: 164px !important;
     margin-left: 10px;
     /* background-color: navy; */
+    filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
   }
   .resize-book {
     box-sizing: inherit;
@@ -115,16 +118,11 @@ const MyCollectionDetail = ({ data, fetchData }) => {
                   navigate(`/collection/${data.collectionId}`);
                 }}
               >
-                {data.bookCover ? (
-                  <img
-                    className="resize-book"
-                    src={data.bookCover}
-                    alt="book thumbnail"
-                  ></img>
+                {data.books ? (
+                  <MyCollectionThumbnail data={data} />
                 ) : (
                   <img
-                    className="resize"
-                    src="/images/collection.png"
+                    src={'/images/collection.png'}
                     alt="book thumbnail"
                   ></img>
                 )}
@@ -236,7 +234,21 @@ const MyCollectionDetail = ({ data, fetchData }) => {
           </Grid>
         </ItemContainer>
       ) : (
-        <div>데이터없어용</div>
+        <Typography
+          color="#737373"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            mt: 1,
+            mb: 1,
+            fontSize: 17,
+            fontWeight: 300,
+          }}
+          variant="body2"
+          component={'span'}
+        >
+          데이터가 없어요
+        </Typography>
       )}
     </>
   );

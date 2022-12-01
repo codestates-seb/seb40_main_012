@@ -13,10 +13,10 @@ const MainBooksContainer = styled.div`
   margin: 25px 0;
   min-width: 650px;
   @media screen and (max-width: 640px) {
-    min-width: 500px;
+    min-width: 490px;
   }
   @media screen and (max-width: 500px) {
-    min-width: 400px;
+    min-width: 380px;
   }
 `;
 
@@ -30,13 +30,28 @@ const MainCarousel = styled.div`
     display: none;
   }
   .slick-next {
-    right: 26px;
+    right: 40px;
     top: 47%;
   }
   .slick-prev {
-    left: 22px;
+    left: 40px;
     top: 47%;
     z-index: 100;
+  }
+  @media screen and (max-width: 640px) {
+    padding: 0;
+    .slick-next {
+      right: 10px;
+    }
+    .slick-prev {
+      left: 10px;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    .slick-next,
+    .slick-prev {
+      display: none !important;
+    }
   }
 `;
 
@@ -54,12 +69,11 @@ const MainBooks = () => {
 
   const settings = {
     infinite: true,
-    centerMode: true,
     speed: 500,
     slidesToShow: 1,
     dots: true,
     slidesToScroll: 1,
-    autoplay: true,
+    //autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
     nextArrow: <NextArrow />,
@@ -81,6 +95,7 @@ const MainBooks = () => {
                 genre={el.genre}
                 rating={el.averageRating}
                 cover={el.cover}
+                comments={el.comments}
               />
             );
           })}

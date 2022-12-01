@@ -235,7 +235,21 @@ const MyPairingDetail = ({ data, fetchData }) => {
           </Grid>
         </ItemContainer>
       ) : (
-        <div>데이터없어용</div>
+        <Typography
+          color="#737373"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            mt: 1,
+            mb: 1,
+            fontSize: 17,
+            fontWeight: 300,
+          }}
+          variant="body2"
+          component={'span'}
+        >
+          데이터가 없어요
+        </Typography>
       )}
     </>
   );

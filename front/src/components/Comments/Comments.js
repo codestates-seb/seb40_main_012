@@ -27,8 +27,8 @@ const Comments = ({
 
   return (
     <CommentsContainer>
-      <CommentsHeader cnt={commentsData.length} />
-      {commentsData.map((el) => {
+      <CommentsHeader cnt={commentsData?.length} />
+      {commentsData?.map((el) => {
         return (
           <Comment
             key={el.commentId}

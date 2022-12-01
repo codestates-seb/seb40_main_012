@@ -33,7 +33,6 @@ const MyComment = () => {
 
   const [content, setContent] = useState({
     data: [],
-    listCount: 0,
   });
 
   const fetchData = async () => {
@@ -41,8 +40,7 @@ const MyComment = () => {
       .get(COMMENT_URL)
       .then((response) => {
         setContent({
-          data: response.data.data,
-          listCount: response.data.listCount,
+          data: response.data.data.content,
         });
       })
       .catch((error) => console.log('에러', error));
@@ -58,22 +56,16 @@ const MyComment = () => {
         {content ? (
           <Container maxWidth="md">
             <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
-            <Content
-              content={content}
-              setContent={setContent}
-              fetchData={fetchData}
-            ></Content>
+            <Nav view={view} setView={setView}></Nav>
+            <Content></Content>
           </Container>
         ) : (
           <Container maxWidth="md">
             <Header></Header>
+            <Nav view={view} setView={setView}></Nav>
             <Void>
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-              더 읽어올 데이터가 없군요 📕
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>더
+              읽어올 데이터가 없군요 📕
             </Void>
           </Container>
         )}

@@ -12,6 +12,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { useState, useEffect } from 'react';
 import { MY_PICK_COLLECTION } from '../../../api/requests';
 import { BasicButton } from '../../../components/Buttons';
+import CollectionThumbnail from '../MyComment/CollectionThumbnail';
+import MyPickCollectionThumbnail from './MyPickCollectionThumbnail';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -141,7 +143,7 @@ const MyPickCollection = () => {
           .then((response) => {
             console.log('응답', response.data.data.content);
             setContent({
-              data: pairingContent.data.concat(response.data.data.content),
+              data: content.data.concat(response.data.data.content),
               size: response.data.data.size,
             });
             setHasMore(response.data.data.size < 5 ? false : true);
@@ -181,7 +183,21 @@ const MyPickCollection = () => {
               }}
             >
               <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
-              <div>열심히 읽어오는 중..</div>
+              <Typography
+                color="#737373"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  mt: 1,
+                  mb: 1,
+                  fontSize: 17,
+                  fontWeight: 300,
+                }}
+                variant="body2"
+                component={'span'}
+              >
+                열심히 읽어오는 중..
+              </Typography>
             </div>
           }
           height={400}
@@ -221,12 +237,10 @@ const MyPickCollection = () => {
                       navigate(`/collection/${data.collections.collectionId}`)
                     }
                   >
-                    {data.collections.bookCover ? (
-                      <img
-                        className="resize-book"
-                        src={data.collections.bookCover}
-                        alt="book thumbnail"
-                      ></img>
+                    {data.collections.books ? (
+                      <MyPickCollectionThumbnail
+                        data={data?.collections?.books}
+                      />
                     ) : (
                       <img
                         className="resize"

@@ -22,10 +22,16 @@ export const signInSlice = createSlice({
         state.inputHelperText[ele.id] = ele.inputHelperText;
       }
     },
+    setInitLoginInput: (state) => {
+      state.inputValue = { email: '', password: '' };
+      state.inputStatus = { email: '', password: '' };
+      state.inputHelperText = { email: '', password: '' };
+    },
   },
 });
 
-export const { setInputValue, setInputStatus } = signInSlice.actions;
+export const { setInputValue, setInputStatus, setInitLoginInput } =
+  signInSlice.actions;
 
 export const setIsValid = (id, value, required) => (dispatch) => {
   const { test, errorMessage } = validationCheck(undefined, value, required);

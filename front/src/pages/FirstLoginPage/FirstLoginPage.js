@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect, forwardRef } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import ListItemText from '@mui/material/ListItemText';
@@ -23,8 +23,9 @@ import { PageContainer } from 'containers';
 import styled from 'styled-components';
 import { genreData, ageGroupData, genderData } from 'util/util';
 import { firstLoginAsync } from 'store/modules/authSlice';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
@@ -62,10 +63,11 @@ const CheckboxFormGroupStyled = styled(FormGroup)`
 
 const FirstLoginPage = () => {
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
 
-  const [gender, setGender] = React.useState('');
-  const [age, setAge] = React.useState('');
-  const [checked, setChecked] = React.useState({
+  const [gender, setGender] = useState('');
+  const [age, setAge] = useState('');
+  const [checked, setChecked] = useState({
     NOVEL: false,
     ESSAY: false,
     POEM: false,
@@ -75,9 +77,21 @@ const FirstLoginPage = () => {
     COMICS: false,
     ETC: false,
   });
+  const [backdropOpen, setBackdropOpen] = useState(false);
+
+  useEffect(() => {
+    setBackdropOpen(loading);
+  }, [loading]);
 
   const handleClose = () => {
     dispatch(firstLoginAsync({}));
+    dispatch(
+      setOpenSnackbar({
+        severity: 'info',
+        message:
+          "상세정보는 '마이페이지 > 내 정보 수정'에서 수정하실 수 있습니다",
+      })
+    );
   };
 
   const handleClickSave = () => {
@@ -90,7 +104,26 @@ const FirstLoginPage = () => {
     if (age.length > 0) params.age = age;
     if (genresArray.length > 0) params.genres = genresArray;
 
-    dispatch(firstLoginAsync(params));
+    dispatch(firstLoginAsync(params))
+      .unwrap()
+      .then(() => {
+        dispatch(
+          setOpenSnackbar({
+            severity: 'success',
+            message: '상세정보가 입력되었습니다.',
+          })
+        );
+      })
+      .catch((error) => {
+        const { message, status } = error;
+        if (status === 400) return;
+        dispatch(
+          setOpenSnackbar({
+            severity: 'error',
+            message: message,
+          })
+        );
+      });
   };
 
   const handleChangeGender = (event) => {
@@ -111,7 +144,7 @@ const FirstLoginPage = () => {
   const checkCount = Object.values(checked).filter((v) => v).length >= 3;
 
   return (
-    <PageContainer footer center>
+    <PageContainer footer center backdrop={backdropOpen}>
       <Dialog open={true} TransitionComponent={Transition}>
         <AppBarStyled sx={{ position: 'relative' }}>
           <ToolbarStyled>

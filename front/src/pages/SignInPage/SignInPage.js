@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
@@ -12,9 +12,14 @@ import Typography from '@mui/material/Typography';
 import { PageContainer } from 'containers';
 import { ContainedButton } from 'components';
 
-import { selectValidCheckArray, setIsValid } from 'store/modules/signInSlice';
+import {
+  selectValidCheckArray,
+  setIsValid,
+  setInitLoginInput,
+} from 'store/modules/signInSlice';
 import { signInAsync } from 'store/modules/authSlice';
 import SignInTextFields from './SignInTextFields';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 const LoginErrorMsgStyled = styled.div`
   font-size: 0.75rem;
@@ -34,8 +39,14 @@ const SignInPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const validCheckArray = useSelector(selectValidCheckArray, shallowEqual);
+  const loading = useSelector((state) => state.auth.loading);
 
   const [showLoginError, setShowLoginError] = useState(false);
+  const [backdropOpen, setBackdropOpen] = useState(false);
+
+  useEffect(() => {
+    setBackdropOpen(loading);
+  }, [loading]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -54,18 +65,25 @@ const SignInPage = () => {
     };
 
     dispatch(signInAsync(params))
-      .then((response) => {
-        if (!response.payload?.error) {
-          navigate('/', { replace: true });
-        } else {
-          setShowLoginError(true);
-        }
+      .unwrap()
+      .then(() => {
+        dispatch(
+          setOpenSnackbar({
+            severity: 'success',
+            message: '로그인이 완료되었습니다.',
+          })
+        );
+        dispatch(setInitLoginInput());
+
+        navigate('/', { replace: true });
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        setShowLoginError(true);
+      });
   };
 
   return (
-    <PageContainer footer center maxWidth="xs">
+    <PageContainer footer center maxWidth="xs" backdrop={backdropOpen}>
       <AvatarStyled sx={{ m: 1 }}>
         <LockOutlinedIcon />
       </AvatarStyled>

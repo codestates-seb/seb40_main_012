@@ -65,13 +65,23 @@ const CollectionSmallBooks = ({
       }`}
     >
       <BookColumn>
-        {books.slice(0, 2).map((el) => {
-          return <CollectionSmallBook key={el.isbn13} cover={el.bookCover} />;
+        {books.slice(0, 2).map((el, idx) => {
+          return (
+            <CollectionSmallBook
+              key={el.isbn13 || idx}
+              cover={el.bookCover || el}
+            />
+          );
         })}
       </BookColumn>
       <BookColumn>
-        {books.slice(2, 4).map((el) => {
-          return <CollectionSmallBook key={el.isbn13} cover={el.bookCover} />;
+        {books.slice(2, 4).map((el, idx) => {
+          return (
+            <CollectionSmallBook
+              key={el.isbn13 || idx}
+              cover={el.bookCover || el}
+            />
+          );
         })}
       </BookColumn>
       <CollectionSmallInfo>{title}</CollectionSmallInfo>

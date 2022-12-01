@@ -32,7 +32,7 @@ const BestCollectionCarousel = styled.div`
     display: none;
   }
   .slick-next {
-    right: 26px;
+    right: 22px;
     top: 47%;
     @media screen and (max-width: 500px) {
       display: none !important;

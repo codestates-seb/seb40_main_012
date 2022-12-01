@@ -12,22 +12,7 @@ import { BasicButton } from '../../../components/Buttons';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
-  input {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 1.5px solid gainsboro;
-    border-radius: 0.35rem;
-    margin-top: -0.1px;
-    &:checked {
-      border-color: transparent;
-      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-      background-size: 100% 100%;
-      background-position: 50%;
-      background-repeat: no-repeat;
-      background-color: #cfc3ff;
-    }
-  }
+
   img {
     align-items: center;
     justify-content: center;
@@ -62,8 +47,15 @@ const ButtonCSS = styled.button`
   background: transparent;
 `;
 
-const Content = ({ content, setContent, fetchData, lastId, setLastId }) => {
-  const [hasMore, setHasMore] = useState(true);
+const Content = ({
+  content,
+  setContent,
+  fetchData,
+  lastId,
+  setLastId,
+  hasMore,
+  setHasMore,
+}) => {
   const navigate = useNavigate();
 
   // 스크롤이 바닥에 닿을때 동작하는 함수
@@ -153,7 +145,21 @@ const Content = ({ content, setContent, fetchData, lastId, setLastId }) => {
                 }}
               >
                 <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
-                <div>열심히 읽어오는 중..</div>
+                <Typography
+                  color="#737373"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  variant="body2"
+                  component={'span'}
+                >
+                  열심히 읽어오는 중..
+                </Typography>
               </div>
             }
             height={400}
@@ -186,7 +192,21 @@ const Content = ({ content, setContent, fetchData, lastId, setLastId }) => {
                   />
                 ))
               ) : (
-                <div>데이터가 없어요</div>
+                <Typography
+                  color="#737373"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  variant="body2"
+                  component={'span'}
+                >
+                  데이터가 없어요
+                </Typography>
               )}
             </div>
           </InfiniteScroll>

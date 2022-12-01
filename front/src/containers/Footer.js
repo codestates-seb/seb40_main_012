@@ -6,6 +6,14 @@ const FooterContainer = styled.div`
   height: 200px;
   padding: 30px 60px;
   background-color: ${({ theme }) => theme.colors.dark};
+  @media screen and (max-width: 640px) {
+    padding: 20px;
+    height: 170px;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 10px 20px;
+    height: 120px;
+  }
 `;
 
 const FooterContent = styled.div`
@@ -16,6 +24,9 @@ const FooterContent = styled.div`
 
 const FooterContent_1 = styled(FooterContent)`
   font-size: 12px;
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+  }
   div {
     color: ${({ theme }) => theme.colors.lightgray};
     flex-grow: 1;
@@ -33,6 +44,13 @@ const FooterContent_1 = styled(FooterContent)`
 `;
 const FooterContent_2 = styled(FooterContent)`
   font-size: 12px;
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+    img {
+      width: 15px;
+      height: 15px;
+    }
+  }
   a:link,
   a:visited {
     color: ${({ theme }) => theme.colors.lightgray};
@@ -46,6 +64,10 @@ const FooterContent_2 = styled(FooterContent)`
 const FooterContent_3 = styled(FooterContent)`
   img {
     margin-top: 20px;
+    @media screen and (max-width: 500px) {
+      margin-top: 10px;
+      width: 80px;
+    }
   }
 `;
 

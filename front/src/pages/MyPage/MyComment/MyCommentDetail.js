@@ -7,6 +7,10 @@ import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
+import NavigateBook from './NavigateBook';
+import NavigatePairing from './NavigatePairing';
+import NavigateCollection from './NavigateCollection';
+import CollectionThumbnail from './CollectionThumbnail';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -38,6 +42,16 @@ const BookImg = styled.div`
     width: 108px !important;
     height: 164px !important;
     margin-left: 10px;
+    /* background-color: navy; */
+    filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
+  }
+  .resize-book {
+    box-sizing: inherit;
+    width: 112px !important;
+    height: 158px !important;
+    padding: 10px !important;
+    margin-left: 8px;
+    filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
     /* background-color: navy; */
   }
 `;
@@ -99,7 +113,6 @@ const MyCommentDetail = ({ data, fetchData }) => {
               }}
             >
               <Grid item xs={1.8}>
-                {/* 페어링인 경우 */}
                 {data.commentType === 'PAIRING' ? (
                   <BookImg
                     onClick={() => {
@@ -115,19 +128,31 @@ const MyCommentDetail = ({ data, fetchData }) => {
                 ) : null}
 
                 {data.commentType === 'BOOK_COLLECTION' ? (
-                  <BookImg
-                    onClick={() => {
-                      navigate(`/collection/${data.contentId}`);
-                    }}
-                  >
-                    <img
-                      className="resize"
-                      src={
-                        data.cover ? data.cover[0] : '/images/collection.png'
-                      }
-                      alt="book thumbnail"
-                    ></img>
-                  </BookImg>
+                  <>
+                    <BookImg
+                      onClick={() => {
+                        navigate(`/collection/${data.contentId}`);
+                      }}
+                    >
+                      {data.collectionCover !== null ? (
+                        <CollectionThumbnail
+                          data={data}
+                          // collectionCover={data.collectionCover}
+                        />
+                      ) : null}
+                      {data.collectionCover == null ? (
+                        <img
+                          className="resize"
+                          src={
+                            data.collectionCover
+                              ? data.collectionCover[0]
+                              : '/images/collection.png'
+                          }
+                          alt="book thumbnail"
+                        ></img>
+                      ) : null}
+                    </BookImg>
+                  </>
                 ) : null}
 
                 {data.commentType === 'BOOK' ? (
@@ -137,7 +162,7 @@ const MyCommentDetail = ({ data, fetchData }) => {
                     }}
                   >
                     <img
-                      className="resize"
+                      className="resize-book"
                       src={data.cover ? data.cover : '/images/book.png'}
                       alt="book thumbnail"
                     ></img>
@@ -146,123 +171,15 @@ const MyCommentDetail = ({ data, fetchData }) => {
               </Grid>
 
               <Grid item xs={10} sx={{ height: '164px', marginBottom: '5px' }}>
-                <FlexBox onClick={() => navigate(`/pairing/${data.contentId}`)}>
-                  <Grid sx={{ height: '32.8px' }}>
-                    <Typography
-                      className="title"
-                      sx={{
-                        display: 'flex',
-                        mt: 1,
-                        mb: 1,
-                        fontSize: 17,
-                        fontWeight: 400,
-                      }}
-                      color="#2e3031"
-                      variant="body2"
-                      gutterBottom
-                      component={'span'}
-                    >
-                      {data.title}
-                    </Typography>
-                  </Grid>
-                  <Grid sx={{ height: '98.4px' }}>
-                    <Typography
-                      color="#232627"
-                      sx={{
-                        fontWeight: 200,
-                        height: 'auto',
-                      }}
-                      variant="body2"
-                      gutterBottom
-                      component={'span'}
-                    >
-                      {data.body}
-                    </Typography>
-                  </Grid>
-
-                  <Grid sx={{ height: '32.8px' }}>
-                    <div className="heart-star-title">
-                      <Grid
-                        item
-                        xs={3}
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                        color="#BFBFBF"
-                      >
-                        {data.commentType === 'BOOK' ? (
-                          <>
-                            <StarRoundedIcon
-                              style={{ color: '#6741ff' }}
-                              sx={{
-                                fontSize: 22,
-                                marginBottom: 0,
-                                marginRight: 0.3,
-                                margin: 0,
-                                padding: 0,
-                              }}
-                              variant="body2"
-                              gutterBottom
-                            />
-
-                            {data.myBookRating !== null
-                              ? data.myBookRating
-                              : null}
-                          </>
-                        ) : (
-                          <>
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                '/images/p_heart_filled_icon.svg'
-                              }
-                              alt="heart icon"
-                            />
-                            {data.likeCount}
-                          </>
-                        )}
-                      </Grid>
-                      <Grid
-                        item
-                        xs={3}
-                        sx={{
-                          display: 'flex',
-                          alignItems: 'center',
-                        }}
-                        color="#BFBFBF"
-                      >
-                        {data.commentType === 'BOOK' ? (
-                          <>
-                            <img
-                              src={
-                                process.env.PUBLIC_URL +
-                                '/images/p_heart_filled_icon.svg'
-                              }
-                              alt="heart icon"
-                            />
-                            {data.likeCount}
-                          </>
-                        ) : null}
-                      </Grid>
-                      <Grid
-                        item
-                        xs={6}
-                        sx={{
-                          display: 'flex',
-                          flexDirection: 'row-reverse',
-                        }}
-                        align="right"
-                        color="#b3b3b3"
-                      >
-                        <div>
-                          {data.commentType === 'BOOK' ? data.title : null}
-                          {data.commentType === 'BOOK' ? data.author : null}
-                        </div>
-                      </Grid>
-                    </div>
-                  </Grid>
-                </FlexBox>
+                {data.commentType === 'BOOK' ? (
+                  <NavigateBook data={data} navigate={navigate} />
+                ) : null}
+                {data.commentType === 'PAIRING' ? (
+                  <NavigatePairing data={data} navigate={navigate} />
+                ) : null}
+                {data.commentType === 'BOOK_COLLECTION' ? (
+                  <NavigateCollection data={data} navigate={navigate} />
+                ) : null}
               </Grid>
               <Grid
                 item
@@ -286,7 +203,21 @@ const MyCommentDetail = ({ data, fetchData }) => {
           </ItemContainer>
         </>
       ) : (
-        <div>데이터없어용</div>
+        <Typography
+          color="#737373"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            mt: 1,
+            mb: 1,
+            fontSize: 17,
+            fontWeight: 300,
+          }}
+          variant="body2"
+          component={'span'}
+        >
+          데이터가 없어요
+        </Typography>
       )}
     </>
   );
