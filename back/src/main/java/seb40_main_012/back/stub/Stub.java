@@ -583,7 +583,89 @@ public class Stub {
         userRepository.save(user24);
 //        ------------------------------------------------------------------------------------------
 //        ------------------------------------------------------------------------------------------
+        // 정우님 전용 캐러셀 테스트를 위한 STUB
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
 
+        for (long i = 1; i <= 50; i++) {
+
+            long rand = (long) (Math.random() * 35) + 1;
+            long rand2 = (long) (Math.random() * 100) + 1;
+
+            log.info("BOOK_COMMENT STUB " +
+                    commentRepository.save(
+                            Comment.builder()
+                                    .commentType(CommentType.BOOK)
+                                    .view((int) (Math.random() * 150))
+                                    .book(bookService.findBook(Long.toString(i)))
+                                    .user(userService.findVerifiedUser(rand))
+                                    .body("Stub_Book_Comment_Body_" + rand)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
+        }
+
+        for (long i = 1; i <= 50; i++) {
+
+            long rand = (long) (Math.random() * 35) + 1;
+
+            log.info("BOOK_COMMENT STUB " +
+                    commentRepository.save(
+                            Comment.builder()
+                                    .commentType(CommentType.BOOK)
+                                    .view((int) (Math.random() * 150))
+                                    .book(bookService.findBook(Long.toString(i)))
+                                    .user(userService.findVerifiedUser(rand))
+                                    .body("Stub_Book_Comment_Body_" + rand)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
+        }
+
+        for (long i = 1; i <= 50; i++) {
+
+            long rand = (long) (Math.random() * 35) + 1;
+
+            log.info("BOOK_COMMENT STUB " +
+                    commentRepository.save(
+                            Comment.builder()
+                                    .commentType(CommentType.BOOK)
+                                    .view((int) (Math.random() * 150))
+                                    .book(bookService.findBook(Long.toString(i)))
+                                    .user(userService.findVerifiedUser(rand))
+                                    .body("Stub_Book_Comment_Body_" + rand)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
+        }
+
+        for (long i = 1; i <= 40; i++) {
+
+            long rand = (long) (Math.random() * 35) + 1;
+
+            log.info("BOOK_COMMENT STUB " +
+                    commentRepository.save(
+                            Comment.builder()
+                                    .commentType(CommentType.BOOK)
+                                    .view((int) (Math.random() * 150))
+                                    .book(bookService.findBook(Long.toString(i)))
+                                    .user(userService.findVerifiedUser(rand))
+                                    .body("Stub_Book_Comment_Body_" + rand)
+                                    .likeCount((long) (Math.random() * 100))
+                                    .createdAt(LocalDateTime.now())
+                                    .modifiedAt(LocalDateTime.now())
+                                    .build())
+            );
+        }
+
+//        ------------------------------------------------------------------------------------------
+//        ------------------------------------------------------------------------------------------
 
         return null;
     }

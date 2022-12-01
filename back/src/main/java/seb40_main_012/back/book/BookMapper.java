@@ -13,6 +13,7 @@ import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.rating.Rating;
 import seb40_main_012.back.pairing.entity.Pairing;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -37,15 +38,15 @@ public interface BookMapper {
 
         response.isbn13(book.getIsbn13());
         if (!Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")
-        && book.getRatings() != null){
-        response.myRating(book.getRatings().stream()
-                .filter(rating -> Objects.equals(rating.getUser().getEmail(), SecurityContextHolder.getContext().getAuthentication().getName()))
-                .mapToDouble(Rating::getUserBookRating).sum());
-        response.isBookmarked(book.isBookmarked());
+                && book.getRatings() != null) {
+            response.myRating(book.getRatings().stream()
+                    .filter(rating -> Objects.equals(rating.getUser().getEmail(), SecurityContextHolder.getContext().getAuthentication().getName()))
+                    .mapToDouble(Rating::getUserBookRating).sum());
+            response.isBookmarked(book.isBookmarked());
 
-        response.myComment(book.getComments().stream()
-                .filter(comment -> Objects.equals(comment.getUser().getEmail(), SecurityContextHolder.getContext().getAuthentication().getName()))
-                .findFirst());
+            response.myComment(book.getComments().stream()
+                    .filter(comment -> Objects.equals(comment.getUser().getEmail(), SecurityContextHolder.getContext().getAuthentication().getName()))
+                    .findFirst());
         }
         response.cover(book.getCover());
         response.title(book.getTitle());
@@ -81,21 +82,26 @@ public interface BookMapper {
         return response.build();
     }
 
-    List<BookDto.Response> booksToBookResponses(List<Book> books);
+    default List<BookDto.Response> booksToBookResponses(List<Book> books) {
 
-    //    --------------------------------------------------------------------------------------------
-    //    --------------------------------------------------------------------------------------------
-    // 다대 다 매핑 준비
-//    default BookCollectionBookDto.Response bookCollectionBookToBookResponse(BookCollectionBook bookCollectionBook) {
-//
-//        return BookCollectionBookDto.Response.builder()
-//        .bookId(bookCollectionBook.getBook().getBookId())
-//        .bookCollectionId(bookCollectionBook.getBookCollectionBookId())
-//        .title(bookCollectionBook.getBookCollection().getTitle())
-//        .tags(bookCollectionBook.getBookCollection().getTags())
-//        .build();
-//
-//    }
-    //    --------------------------------------------------------------------------------------------
-    //    --------------------------------------------------------------------------------------------
+        if (books == null) {
+            return null;
+        }
+
+        List<BookDto.Response> list = new ArrayList<BookDto.Response>(books.size());
+        for (Book book : books) {
+
+            if (book.getComments() != null) {
+                book.setComments(book.getComments().stream()
+                        .sorted(Comparator.comparing(Comment::getLikeCount).reversed())
+                        .collect(Collectors.toList()));
+            }
+
+            list.add(bookToBookResponse(book));
+        }
+
+        return list;
+
+    }
 }
+
