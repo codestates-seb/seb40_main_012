@@ -37,7 +37,7 @@ const PairingStyled = styled.div`
 
 const BestPairingBox = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background-image: url(${(props) => props.img});
   background-repeat: no-repeat;
@@ -58,6 +58,7 @@ const BestPairingBox = styled.div`
   @media screen and (min-width: 1180px) {
     position: absolute;
     flex-direction: column;
+    justify-content: space-between;
     right: 100px;
     top: 100px;
     width: 300px;
