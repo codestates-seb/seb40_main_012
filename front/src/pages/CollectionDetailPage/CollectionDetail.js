@@ -42,7 +42,9 @@ const CollectionDetailPage = () => {
       .then((res) => {
         setCollectionData(res.data);
       })
-      .catch((error) => console.error(error));
+      .catch(() => {
+        navigate('/404');
+      });
   };
 
   const handleCollectionLike = () => {
@@ -74,7 +76,7 @@ const CollectionDetailPage = () => {
   const handleCollectionDelete = () => {
     //컬렉션 삭제
     axios.delete(`/api/collections/${collectionId}`).then(() => {
-      navigate('/collection');
+      navigate(-1, { replace: true });
     });
   };
 
