@@ -235,7 +235,7 @@ const Comment = ({
     <CommentContainer className={isMyComment ? 'mine' : null}>
       <UserImgContainer>
         <img
-          src={process.env.PUBLIC_URL + '/images/mypage_icon.svg'}
+          src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
           alt="user icon"
         />
       </UserImgContainer>
