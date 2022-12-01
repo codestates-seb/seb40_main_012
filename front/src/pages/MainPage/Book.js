@@ -25,7 +25,13 @@ const BookTitle = styled.div`
   font-size: 14px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.darkgray};
-  word-wrap: break-word;
+  word-wrap: break-all;
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   @media screen and (max-width: 640px) {
     font-size: 12px;
     font-weight: 500;
