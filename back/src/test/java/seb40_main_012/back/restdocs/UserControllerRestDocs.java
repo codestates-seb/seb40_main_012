@@ -15,27 +15,20 @@ import org.springframework.security.web.authentication.AbstractAuthenticationPro
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
-import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.config.auth.filter.JwtAuthenticationFilter;
-import seb40_main_012.back.config.auth.userdetails.UserDetailsServiceImpl;
 import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.mapper.UserMapper;
 import seb40_main_012.back.user.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static seb40_main_012.back.util.ApiDocumentUtils.getDocumentRequest;
@@ -65,8 +58,6 @@ public class UserControllerRestDocs {
     @MockBean
     private AbstractAuthenticationProcessingFilter abstractAuthenticationProcessingFilter;
 
-    @MockBean
-    private UserDetailsServiceImpl.UserDetailsImpl userDetailsService;
 
 
 //    @MockBean
@@ -219,7 +210,7 @@ public class UserControllerRestDocs {
                         .bookTemp(36.5)
                         .build();
 
-        given(userService.findUser(anyLong())).willReturn(new User());
+        given(userService.findUser()).willReturn(new User());
         given(userMapper.userToUserResponse(Mockito.any(User.class))).willReturn(response);
 
         ResultActions actions =
