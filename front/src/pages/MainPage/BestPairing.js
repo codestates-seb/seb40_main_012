@@ -1,11 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const randomColor = () => {
-  //130 ~ 200
-  return Math.floor(Math.random() * 70) + 130;
-};
-
 const BestPairingContainer = styled.div`
   display: flex;
   width: 18%;
@@ -54,8 +49,6 @@ const PairingTitle = styled.div`
 `;
 
 const BestPairing = ({ pairingTitle, pairingImg, pairingId }) => {
-  const randomRGB = `rgb(${randomColor()}, ${randomColor()}, 255)`;
-
   const navigate = useNavigate();
 
   const onClickPairing = () => {
@@ -65,7 +58,7 @@ const BestPairing = ({ pairingTitle, pairingImg, pairingId }) => {
   return (
     <BestPairingContainer
       img={pairingImg}
-      color={pairingImg ? null : randomRGB}
+      color={pairingImg ? null : '#A28BFF'}
       onClick={onClickPairing}
     >
       <PairingTitle>{pairingTitle}</PairingTitle>
