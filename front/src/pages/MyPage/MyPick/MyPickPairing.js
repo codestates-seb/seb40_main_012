@@ -405,7 +405,9 @@ const MyPickPairing = () => {
                   }}
                 >
                   <Remove>
-                    <RemoveButton onClick={handleOpen}>
+                    <RemoveButton
+                      onClick={() => onRemove(data.collections.pairingId)}
+                    >
                       <img
                         src={
                           process.env.PUBLIC_URL +
@@ -415,35 +417,6 @@ const MyPickPairing = () => {
                       />
                     </RemoveButton>
                   </Remove>
-
-                  <Modal
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                  >
-                    <ModalBox>
-                      <div className="info">정말 삭제하시겠습니까?</div>
-                      <div className="container">
-                        <div
-                          className="close"
-                          role="presentation"
-                          onClick={handleClose}
-                        >
-                          취소
-                        </div>
-                        <div
-                          className="delete"
-                          onClick={() => {
-                            onRemove(data.collections.pairingId);
-                          }}
-                          role="presentation"
-                        >
-                          삭제하기
-                        </div>
-                      </div>
-                    </ModalBox>
-                  </Modal>
                 </Grid>
               </Grid>
             </ItemContainer>

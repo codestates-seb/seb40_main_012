@@ -24,6 +24,10 @@ const Progress = styled.div`
     background: #6741ff;
     background: linear-gradient(to right, #5b32ff, #b09dff);
   }
+
+  @media screen and (max-width: 100px) {
+    margin-right: 100px;
+  }
 `;
 const ButtonCSS = styled.button`
   outline: none;
@@ -102,6 +106,7 @@ const Header = () => {
                   src={userInfo.profileImage ? userInfo.profileImage : ''}
                 ></Avatar>
               </Grid>
+
               <Grid item xs={7.2}>
                 <Box
                   sx={{
