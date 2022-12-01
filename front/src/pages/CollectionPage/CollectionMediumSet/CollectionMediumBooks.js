@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import CollectonMediumBook from './CollectionMediumBook';
-import CollectionTags from './CollectinTags';
+//import CollectionTags from './CollectinTags';
 
 const CollectionMediumBooksContainer = styled.div`
   display: flex;
@@ -52,7 +52,7 @@ const CollectonMediumBooks = ({ collection }) => {
     <CollectionMediumBooksContainer onClick={onClickCollection}>
       <MediumHeader>
         <CollectionMediumInfo>{collection?.title ?? ''}</CollectionMediumInfo>
-        <CollectionTags tagList={['소설', 'sf']} />
+        {/* <CollectionTags tagList={['소설', 'sf']} /> */}
       </MediumHeader>
       <MediumBooks>
         {collection?.books.slice(0, 3).map((el, idx) => {
