@@ -8,7 +8,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getBookAsync } from '../../store/modules/bookSlice';
 import { GenterMatcherToKor } from '../../util/GenreMatcher';
 import { ToDateString } from '../../util/ToDateString';
-import { BasicButton } from '../../components/Buttons';
+import { BasicButton, FillButton } from '../../components/Buttons';
 import { selectIsLogin, selectEmail } from '../../store/modules/authSlice';
 import Comment from '../../components/Comments/Comment';
 import PickButton from '../PairingPage/PairingDetail/PickButton';
@@ -232,8 +232,10 @@ const BookDetail = () => {
   useEffect(() => {
     dispatch(getBookAsync(isbn))
       .unwrap()
-      .catch(() => {
-        navigate('/404');
+      .catch((error) => {
+        if (error.status === 500) {
+          navigate('/404');
+        }
       });
     getBookData(isbn);
   }, []);
@@ -372,15 +374,22 @@ const BookDetail = () => {
         ) : null}
         <ButtonContainer>
           <RowBox>
-            <RateModal
-              isbn={isbn}
-              bookData={bookData}
-              setBookData={setBookData}
-              getBookData={getBookData}
-              handleRating={handleRating}
-              handleCommentAdd={handleCommentAdd}
-              handleCommentEdit={handleCommentEdit}
-            />
+            {isLogin ? (
+              <RateModal
+                isbn={isbn}
+                bookData={bookData}
+                setBookData={setBookData}
+                getBookData={getBookData}
+                handleRating={handleRating}
+                handleCommentAdd={handleCommentAdd}
+                handleCommentEdit={handleCommentEdit}
+              />
+            ) : (
+              <NeedLoginModal>
+                <FillButton>평가하기</FillButton>
+              </NeedLoginModal>
+            )}
+
             {isLogin ? (
               <BasicButton onClick={navToWrite}>페어링 작성하기</BasicButton>
             ) : (
