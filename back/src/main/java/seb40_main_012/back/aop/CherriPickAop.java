@@ -448,4 +448,14 @@ public class CherriPickAop {
         }
     }
 
+    @AfterReturning(value = "execution(* seb40_main_012.back.user.controller.UserController.emailConfirm(..)) && args(emailDto))", returning = "response")
+    public void sendConfirmEmail(JoinPoint joinPoint, UserDto.EmailDto emailDto, String response) { // 이메일 인증
+
+        try {
+            emailSenderService.sendAuthCode(emailDto.getEmail(), response);
+        } catch (GeneralSecurityException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

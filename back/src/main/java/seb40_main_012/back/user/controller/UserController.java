@@ -261,4 +261,10 @@ public class UserController {
                 new SingleResponseDto<>(mapper.userToFirstLoginResponse(user)), HttpStatus.OK);
     }
 
+    @PostMapping("/users/emailConfirm")
+    public String emailConfirm(@Valid @RequestBody UserDto.EmailDto emailDto) {
+        String authCode = userService.createCode();
+
+        return authCode;
+    }
 }
