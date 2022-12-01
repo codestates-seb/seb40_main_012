@@ -336,6 +336,7 @@ const Header = (props) => {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
+            zIndex: '1500',
             display: { xs: 'block', md: 'none' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
@@ -374,6 +375,7 @@ const Header = (props) => {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
+            zIndex: '1500',
             display: { xs: 'block', md: 'none' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',

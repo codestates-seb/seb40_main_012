@@ -43,9 +43,6 @@ const authApi = {
         })
         .catch((error) => {
           return reject(error);
-
-          // 에러코드 나오면 처리 필요
-          // logoutApi();
         });
     });
   },
