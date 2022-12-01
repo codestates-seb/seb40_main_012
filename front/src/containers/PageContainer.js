@@ -4,6 +4,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import theme from 'styles/theme';
 import { Header, Footer } from 'containers';
+import { Backdrop } from 'components';
 
 const PageContainer = ({
   children,
@@ -14,6 +15,7 @@ const PageContainer = ({
   cmt = 8,
   cmb = 8,
   bmt = 8,
+  backdrop = false,
 }) => {
   return (
     <ThemeProvider theme={theme}>
@@ -31,6 +33,7 @@ const PageContainer = ({
           sx={{ mt: cmt, mb: cmb }}
           maxWidth={maxWidth}
         >
+          <Backdrop open={backdrop} />
           {center ? (
             <Box
               sx={{

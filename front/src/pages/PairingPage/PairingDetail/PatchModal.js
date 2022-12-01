@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Modal from '@mui/material/Modal';
 import styled from 'styled-components';
 import { TextButton, ContainedButton } from '../../../components/Buttons';
-import useInput from '../../../util/useInput';
+import useInput from '../../../hooks/useInput';
 import BasicSelect from '../PairingWrite/Select';
 import TitleInput from '../PairingWrite/TitleInput';
 import BodyInput from '../PairingWrite/BodyInput';
@@ -120,6 +120,25 @@ const Imgbtn = styled.div`
   }
 `;
 
+const Btns = styled.button`
+  display: flex;
+  align-items: center;
+  padding: 3px 7px;
+  border-radius: 3px;
+  color: ${({ theme }) => theme.colors.darkgray};
+  font-size: 15px;
+  font-weight: 500;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 2px;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: #e8e8e8;
+  }
+`;
+
 const WarningMsg = styled.div`
   padding: 0 10px;
   font-size: 13px;
@@ -215,15 +234,7 @@ export default function DeleteModal() {
 
   return (
     <div>
-      <button onClick={handleOpen}>
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-          <path
-            d="M4.16667 15.8333H5.33333L12.5208 8.64579L11.3542 7.47913L4.16667 14.6666V15.8333ZM16.0833 7.43746L12.5417 3.93746L13.7083 2.77079C14.0278 2.45135 14.4203 2.29163 14.8858 2.29163C15.3508 2.29163 15.7431 2.45135 16.0625 2.77079L17.2292 3.93746C17.5486 4.2569 17.7153 4.64246 17.7292 5.09413C17.7431 5.54524 17.5903 5.93051 17.2708 6.24996L16.0833 7.43746ZM14.875 8.66663L6.04167 17.5H2.5V13.9583L11.3333 5.12496L14.875 8.66663ZM11.9375 8.06246L11.3542 7.47913L12.5208 8.64579L11.9375 8.06246Z"
-            fill="#737373"
-          />
-        </svg>
-        <span>수정하기</span>
-      </button>
+      <Btns onClick={handleOpen}>수정하기</Btns>
       <Modal
         open={open}
         onClose={handleClose}

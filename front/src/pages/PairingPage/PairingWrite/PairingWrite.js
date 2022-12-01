@@ -5,12 +5,13 @@ import BasicSelect from './Select';
 import TitleInput from './TitleInput';
 import BodyInput from './BodyInput';
 import OutLinkInput from './OutLinkInput';
-import useInput from '../../../util/useInput';
+import useInput from '../../../hooks/useInput';
 import { ContainedButton } from '../../../components/Buttons';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { asyncPostPairing } from '../../../store/modules/pairingSlice';
+import axios from '../../../api/axios';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 const Wrapper = styled.div`
   display: flex;
@@ -116,8 +117,8 @@ const PairingWrite = () => {
   const [outLink, outLinkBind, outLinkReset] = useInput('');
   const [imgData, setImgData] = useState({});
 
-  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const curBookData = useSelector((state) => state.book.data);
   console.log(curBookData);
   const preventClose = (e) => {
@@ -126,7 +127,12 @@ const PairingWrite = () => {
   };
   useEffect(() => {
     if (!curBookData.title) {
-      alert('작성 중인 글이 취소되었습니다. 메인 페이지로 이동합니다');
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: '작성중인 글이 취소되었습니다.',
+        })
+      );
       navigate('/pairing');
     }
     (() => {
@@ -163,13 +169,21 @@ const PairingWrite = () => {
         type: 'application/json',
       })
     );
-    dispatch(asyncPostPairing({ formData, isbn: curBookData.isbn13 }));
-    navigate('/pairing', { replace: true });
-    categoryReset();
-    titleReset();
-    bodyReset();
-    outLinkReset();
-    setImgData({});
+    axios
+      .post(`/api/books/${curBookData.isbn13}/pairings/add`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then((res) => {
+        navigate(`/pairing/${res.data.data.pairingId}`, { replace: true });
+        categoryReset();
+        titleReset();
+        bodyReset();
+        outLinkReset();
+        setImgData({});
+      })
+      .catch((error) => console.error(error));
   };
 
   return (

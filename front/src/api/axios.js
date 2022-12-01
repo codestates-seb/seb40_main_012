@@ -22,7 +22,7 @@ instance.interceptors.response.use(
     return response;
   },
   (error) => {
-    console.error(error);
+    console.error(new Error(error));
     if (!Object.prototype.hasOwnProperty.call(error, 'response')) {
       return Promise.reject({ status: error.code, message: error.message });
     }

@@ -196,11 +196,11 @@ const Comment = ({
 }) => {
   const [isMyComment, setIsMyComment] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editContent, setEditContent] = useState(data.body);
-  const [isLiked, setIsLiked] = useState(data.isLiked);
+  const [editContent, setEditContent] = useState(data?.body);
+  const [isLiked, setIsLiked] = useState(data?.isLiked);
 
   useEffect(() => {
-    setIsMyComment(userEmail === data.userInformation.email);
+    setIsMyComment(userEmail === data?.userInformation?.email);
   }, []);
 
   const handleDeleteComment = () => {
@@ -213,7 +213,7 @@ const Comment = ({
     if (editContent.length >= 5) {
       commentEdit(commentId, editContent);
     } else {
-      setEditContent(data.body);
+      setEditContent(data?.body);
     }
   };
 
@@ -244,7 +244,7 @@ const Comment = ({
           <UserNickname className={isMyComment ? 'my' : null}>
             {data.userInformation.nickName}
           </UserNickname>
-          <CreatedAt>{ToDateString(data.createdAt)}</CreatedAt>
+          <CreatedAt>{ToDateString(data?.createdAt)}</CreatedAt>
         </BodyContainer>
         <BodyContainer>
           <div className="content">
@@ -254,7 +254,7 @@ const Comment = ({
                 onChange={handleOnChangeEditContent}
               ></CommentEditInput>
             ) : (
-              <CommentContent>{data.body}</CommentContent>
+              <CommentContent>{data?.body}</CommentContent>
             )}
           </div>
           <div className={`edit ${isMyComment ? 'show' : 'hide'} ${type}`}>
@@ -296,7 +296,7 @@ const Comment = ({
                 fill="#232627"
               />
             </svg>
-            <div>{data.likeCount}</div>
+            <div>{data?.likeCount}</div>
           </LikeBtn>
           <DeleteBtn
             className={isMyComment ? null : 'notmine'}

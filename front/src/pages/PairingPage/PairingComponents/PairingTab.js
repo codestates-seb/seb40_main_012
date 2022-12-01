@@ -1,9 +1,10 @@
 import styled from 'styled-components';
+import Guide from '../../MainPage/Guide';
 import { Link } from 'react-router-dom';
 
 const TabBar = styled.ul`
   margin: 10px;
-  font-weight: bold;
+  font-size: 15px;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -11,6 +12,9 @@ const TabBar = styled.ul`
   list-style: none;
   .selected {
     color: ${({ theme }) => theme.colors.dark};
+  }
+  @media screen and (min-width: 500px) {
+    font-size: 18px;
   }
 `;
 
@@ -21,6 +25,7 @@ const TabElement = styled.li`
   align-items: center;
   padding: 10px;
   height: 34px;
+  font-weight: bold;
 `;
 
 const StyledLink = styled(Link)`
@@ -44,11 +49,14 @@ const HeadContainer = styled.div`
 `;
 
 const HeadTitle = styled.div`
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.dark};
   span {
     color: ${({ theme }) => theme.colors.mainColor};
+  }
+  @media screen and (min-width: 500px) {
+    font-size: 24px;
   }
 `;
 
@@ -68,6 +76,7 @@ const PairingTab = ({ pathname = navObj.all }) => {
         <HeadTitle>
           깊고 넓은 즐거움, <span>Cherry Pick</span> 페어링
         </HeadTitle>
+        <Guide type="pairing" />
       </HeadContainer>
       <TabBar>
         <StyledLink to={`${navObj.all}`}>
