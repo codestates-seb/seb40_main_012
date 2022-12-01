@@ -257,7 +257,7 @@ public class BookCollectionDto {
         public static CriticCollection of(BookCollection collection) {
             return CriticCollection.builder()
                     .collectionId(collection.getCollectionId())
-                    .title("00 평론가가 평가한 그 책")
+                    .title("이동진 평론가가 평가한 그 책")
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .build();
         }

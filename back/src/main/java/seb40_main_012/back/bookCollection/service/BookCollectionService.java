@@ -281,12 +281,13 @@ public class BookCollectionService {
                     collectionBooks.add(collectionBook);
                 }
         );
-        return BookCollection.builder()
-                .collectionId(1L)
+        BookCollection collection = BookCollection.builder()
+                .collectionId(30L)
                 .title(title)
                 .content(content)
                 .collectionBooks(collectionBooks)
                 .build();
+        return collectionRepository.save(collection);
     }
 
     public BookCollection findCollectionByCritic() {
