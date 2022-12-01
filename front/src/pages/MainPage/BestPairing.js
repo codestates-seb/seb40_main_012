@@ -10,7 +10,12 @@ const BestPairingContainer = styled.div`
   display: flex;
   width: 18%;
   aspect-ratio: 1 / 1;
-  background-color: ${(props) => props.bgcolor};
+  background-image: url(${(props) => props.img});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: ${(props) => props.color || 'rgba(0,0,0,0.5)'};
+  background-blend-mode: multiply;
+  border-radius: 5px;
   box-sizing: border-box;
   margin: 5px;
   position: relative;
@@ -48,7 +53,7 @@ const PairingTitle = styled.div`
   }
 `;
 
-const BestPairing = ({ pairingTitle, pairingId }) => {
+const BestPairing = ({ pairingTitle, pairingImg, pairingId }) => {
   const randomRGB = `rgb(${randomColor()}, ${randomColor()}, 255)`;
 
   const navigate = useNavigate();
@@ -58,7 +63,11 @@ const BestPairing = ({ pairingTitle, pairingId }) => {
   };
 
   return (
-    <BestPairingContainer bgcolor={randomRGB} onClick={onClickPairing}>
+    <BestPairingContainer
+      img={pairingImg}
+      color={pairingImg ? null : randomRGB}
+      onClick={onClickPairing}
+    >
       <PairingTitle>{pairingTitle}</PairingTitle>
     </BestPairingContainer>
   );

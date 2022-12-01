@@ -50,6 +50,7 @@ const BestPairings = () => {
           return (
             <BestPairing
               key={el.pairingId}
+              pairingImg={el.imagePath}
               pairingTitle={el.title}
               pairingId={el.pairingId}
             />
