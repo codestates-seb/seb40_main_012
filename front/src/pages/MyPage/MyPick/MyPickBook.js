@@ -13,7 +13,7 @@ import { useState, useEffect } from 'react';
 import { BasicButton } from '../../../components/Buttons';
 import { MY_PICK_BOOK } from '../../../api/requests';
 import { ContentCopyOutlined } from '@mui/icons-material';
-
+import Modal from '@mui/material/Modal';
 const Remove = styled.div`
   color: #dee2e6;
   opacity: 0;
@@ -96,6 +96,55 @@ const FlexBox = styled.div`
   }
 `;
 
+const ModalBox = styled.div`
+  width: 300px;
+  height: 150px;
+  position: absolute;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .info {
+    font-weight: 700;
+  }
+  .container {
+    display: flex;
+    margin-top: 20px;
+  }
+  .delete {
+    width: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #ffc5c5;
+    color: #850000;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .close {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #e8e8e8;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
 const MyPickBook = () => {
   const navigate = useNavigate();
   const [hasMore, setHasMore] = useState(true);
@@ -103,6 +152,10 @@ const MyPickBook = () => {
     data: [],
   });
   const [lastId, setLastId] = useState();
+  //Delete Modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const onRemove = (id) => {
     axios
@@ -351,13 +404,7 @@ const MyPickBook = () => {
                   }}
                 >
                   <Remove>
-                    <RemoveButton
-                      onClick={() => {
-                        if (window.confirm(`북마크를 삭제하시겠습니까?`)) {
-                          onRemove(data.collections.isbn13);
-                        }
-                      }}
-                    >
+                    <RemoveButton onClick={handleOpen}>
                       <img
                         src={
                           process.env.PUBLIC_URL +
@@ -367,6 +414,35 @@ const MyPickBook = () => {
                       />
                     </RemoveButton>
                   </Remove>
+
+                  <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                  >
+                    <ModalBox>
+                      <div className="info">정말 삭제하시겠습니까?</div>
+                      <div className="container">
+                        <div
+                          className="close"
+                          role="presentation"
+                          onClick={handleClose}
+                        >
+                          취소
+                        </div>
+                        <div
+                          className="delete"
+                          onClick={() => {
+                            onRemove(data.collections.isbn13);
+                          }}
+                          role="presentation"
+                        >
+                          삭제하기
+                        </div>
+                      </div>
+                    </ModalBox>
+                  </Modal>
                 </Grid>
               </Grid>
             </ItemContainer>
