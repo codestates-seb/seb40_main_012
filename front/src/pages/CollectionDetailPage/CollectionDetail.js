@@ -42,7 +42,9 @@ const CollectionDetailPage = () => {
       .then((res) => {
         setCollectionData(res.data);
       })
-      .catch((error) => console.error(error));
+      .catch(() => {
+        navigate('/404');
+      });
   };
 
   const handleCollectionLike = () => {
