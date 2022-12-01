@@ -84,6 +84,7 @@ const ItemWrapperChangePasswordStyled = styled(ItemWrapperStyled)`
 const EditProfile = () => {
   const inputRef = useRef([]);
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
   const userInfo = useSelector((state) => state.auth);
   const { email, nickName, roles } = userInfo;
 
@@ -113,8 +114,13 @@ const EditProfile = () => {
   });
   const [profileImage, setProfileImage] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [backdropOpen, setBackdropOpen] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
+
+  useEffect(() => {
+    setBackdropOpen(loading);
+  }, [loading]);
 
   useEffect(() => {
     inputRef.current[0].focus();
@@ -122,6 +128,7 @@ const EditProfile = () => {
   }, []);
 
   const getUserInfo = async () => {
+    setBackdropOpen(true);
     try {
       const response = await myPageApi.getUserInfo();
       const { age, category, gender, introduction, nickname, profileImage } =
@@ -140,7 +147,9 @@ const EditProfile = () => {
       setAge(age === 'NONE' ? '' : age);
       setChecked({ ...checked, ...categoryObj });
       setProfileImage(profileImage);
+      setBackdropOpen(false);
     } catch (error) {
+      setBackdropOpen(false);
       console.log(error);
     }
   };
@@ -233,7 +242,7 @@ const EditProfile = () => {
   const checkCount = Object.values(checked).filter((v) => v).length >= 3;
 
   return (
-    <PageContainer footer center maxWidth="sm" bmt={5}>
+    <PageContainer footer center maxWidth="sm" bmt={5} backdrop={backdropOpen}>
       <Avatar
         src={profileImage ? profileImage : ''}
         sx={{ width: 80, height: 80 }}
