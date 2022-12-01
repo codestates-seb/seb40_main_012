@@ -6,7 +6,11 @@ import CollectionSmallBook from '../../CollectionPage/CollectionSmallSet/Collect
 const CollectionSmallBooksContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 112px !important;
+  height: 158px !important;
+  padding: 10px !important;
   margin: 0 10px;
+
   &:hover {
     cursor: pointer;
   }

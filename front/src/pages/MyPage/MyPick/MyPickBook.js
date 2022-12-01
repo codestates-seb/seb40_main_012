@@ -15,6 +15,9 @@ import { MY_PICK_BOOK } from '../../../api/requests';
 const Remove = styled.div`
   color: #dee2e6;
   opacity: 0;
+  @media screen and (max-width: 870px) {
+    display: none !important;
+  }
 `;
 
 const RemoveButton = styled.button`
@@ -40,6 +43,12 @@ const ItemContainer = styled.div`
       }
     }
   }
+  .move {
+    @media screen and (max-width: 750px) {
+      width: 100%;
+      flex-direction: column;
+    }
+  }
 `;
 
 const BookImg = styled.div`
@@ -58,6 +67,10 @@ const BookImg = styled.div`
     margin-left: 8px;
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
     /* background-color: navy; */
+  }
+  .move-image {
+    width: 112px !important;
+    height: 158px !important;
   }
 `;
 
@@ -91,6 +104,20 @@ const FlexBox = styled.div`
       color: #795af5;
       transition: color 0.5s;
     }
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+  .content-body {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
   }
 `;
 
@@ -221,14 +248,16 @@ const MyPickBook = () => {
               <Grid
                 container
                 item
+                className="move"
                 xs={12}
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
                 }}
               >
-                <Grid item xs={1.8}>
+                <Grid item xs={1.8} className="move-image">
                   <BookImg
+                    className="move-image"
                     onClick={() => navigate(`/book/${data.collections.isbn13}`)}
                   >
                     {data.collections.bookCover ? (

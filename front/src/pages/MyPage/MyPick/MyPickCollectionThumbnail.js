@@ -6,7 +6,11 @@ import CollectionSmallBook from '../../CollectionPage/CollectionSmallSet/Collect
 const CollectionSmallBooksContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 112px !important;
+  height: 158px !important;
+  padding: 10px !important;
   margin: 0 10px;
+
   &:hover {
     cursor: pointer;
   }
@@ -16,9 +20,6 @@ const CollectionSmallBooksContainer = styled.div`
   }
   &.small {
     width: 23%;
-  }
-  @media screen and (max-width: 500px) {
-    margin: 0 5px;
   }
 `;
 
@@ -86,7 +87,8 @@ const MyPickCollectionThumbnail = ({ data }) => {
       {data[0]?.bookCover ? (
         <>
           <CollectionSmallBooksContainer
-          //  onClick={onClickCollectionInfo}
+            className="move-image"
+            //  onClick={onClickCollectionInfo}
           >
             {/* {data.collectionCover.slice(0, 2)?.map((el, index) => {
           <>

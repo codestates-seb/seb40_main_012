@@ -17,6 +17,9 @@ import Modal from '@mui/material/Modal';
 const Remove = styled.div`
   color: #dee2e6;
   opacity: 0;
+  @media screen and (max-width: 870px) {
+    display: none !important;
+  }
 `;
 
 const RemoveButton = styled.button`
@@ -40,6 +43,12 @@ const ItemContainer = styled.div`
         margin-right: 5px;
         margin-top: 8px;
       }
+    }
+  }
+  .move {
+    @media screen and (max-width: 750px) {
+      width: 100%;
+      flex-direction: column;
     }
   }
 `;
@@ -69,8 +78,27 @@ const FlexBox = styled.div`
   flex-direction: column;
   margin-left: 20px;
   margin-right: 10px;
+  padding-right: 20px;
   font-size: 13px;
   border-bottom: 1px solid #e9e9e9;
+  width: 100%;
+
+  .title-author {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+  .content-body {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
 
   cursor: pointer;
   .comment {
@@ -94,6 +122,12 @@ const FlexBox = styled.div`
       color: #795af5;
       transition: color 0.5s;
     }
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
   }
 `;
 
@@ -276,6 +310,7 @@ const MyPickPairing = () => {
             <ItemContainer key={data.bookmarkId}>
               <Grid
                 container
+                className="move"
                 item
                 xs={12}
                 sx={{
@@ -312,7 +347,7 @@ const MyPickPairing = () => {
                 >
                   <FlexBox
                     onClick={() =>
-                      navigate(`/book/${data.collections.pairingId}`)
+                      navigate(`/pairing/${data.collections.pairingId}`)
                     }
                   >
                     <Grid sx={{ height: '32.8px' }}>
@@ -333,17 +368,19 @@ const MyPickPairing = () => {
                       </Typography>
                     </Grid>
                     <Grid sx={{ height: '98.4px' }}>
-                      <Typography
-                        color="#232627"
-                        sx={{
-                          fontWeight: 200,
-                          height: 'auto',
-                        }}
-                        variant="body2"
-                        component={'span'}
-                      >
-                        {data.collections.content}
-                      </Typography>
+                      <div className="content-body">
+                        <Typography
+                          color="#232627"
+                          sx={{
+                            fontWeight: 200,
+                            height: 'auto',
+                          }}
+                          variant="body2"
+                          component={'span'}
+                        >
+                          {data.collections.content}
+                        </Typography>
+                      </div>
                     </Grid>
 
                     <Grid sx={{ height: '32.8px' }}>
@@ -390,7 +427,9 @@ const MyPickPairing = () => {
                           align="right"
                           color="#b3b3b3"
                         >
-                          <div>{data.collections.author}</div>
+                          <div className="title-author">
+                            {data.collections.author}
+                          </div>
                         </Grid>
                       </div>
                     </Grid>

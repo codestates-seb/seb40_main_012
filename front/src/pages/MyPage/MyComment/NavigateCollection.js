@@ -12,8 +12,19 @@ const FlexBox = styled.div`
   flex-direction: column;
   margin-left: 20px;
   margin-right: 10px;
+  padding-right: 20px;
   font-size: 13px;
   border-bottom: 1px solid #e9e9e9;
+  width: 100%;
+
+  .content-body {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
 
   cursor: pointer;
   .comment {
@@ -37,6 +48,12 @@ const FlexBox = styled.div`
       color: #b09dff;
       transition: color 0.5s;
     }
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
   }
 `;
 
@@ -65,17 +82,20 @@ const NavigateCollection = ({ data, navigate }) => {
         </Typography>
       </Grid>
       <Grid sx={{ height: '98.4px' }}>
-        <Typography
-          color="#232627"
-          sx={{
-            fontWeight: 200,
-            height: 'auto',
-          }}
-          variant="body2"
-          component={'span'}
-        >
-          {data.body}
-        </Typography>
+        <div className="content-body">
+          <Typography
+            className="body"
+            color="#232627"
+            sx={{
+              fontWeight: 200,
+              height: 'auto',
+            }}
+            variant="body2"
+            component={'span'}
+          >
+            {data.body}
+          </Typography>
+        </div>
       </Grid>
 
       <Grid sx={{ height: '32.8px' }}>

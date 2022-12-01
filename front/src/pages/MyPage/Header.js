@@ -25,8 +25,68 @@ const Progress = styled.div`
     background: linear-gradient(to right, #5b32ff, #b09dff);
   }
 
-  @media screen and (max-width: 100px) {
+  /* @media screen and (max-width: 100px) {
     margin-right: 100px;
+  } */
+
+  .header-move {
+    @media screen and (max-width: 490px) {
+      /* display: flex; */
+
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      justify-content: center;
+    }
+  }
+  .temp {
+    @media screen and (max-width: 490px) {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .title {
+    @media screen and (max-width: 490px) {
+      align-items: center;
+    }
+  }
+  .align-header {
+    @media screen and (max-width: 490px) {
+      align-items: center;
+      margin-top: 0;
+      margin-bottom: 4px;
+    }
+  }
+  .edit-profile {
+    /* width: 100%;
+    flex-direction: row-reverse;
+    display: flex; */
+    /* 
+    @media screen and (max-width: 450px) {
+      flex-direction: row-reverse;
+      width: 100%;
+      display: flex;
+    } */
+
+    a {
+      font-size: 11px;
+    }
+
+    display: flex;
+    align-items: center;
+    height: 70%;
+    justify-content: center;
+
+    @media screen and (max-width: 490px) {
+      display: flex;
+      margin-top: -20px;
+      min-width: 140px;
+      align-items: center;
+      justify-content: center;
+    }
   }
 `;
 const ButtonCSS = styled.button`
@@ -91,34 +151,33 @@ const Header = () => {
               alignItems: 'center',
             }}
           >
-            <Grid container>
+            <Grid container className="header-move">
               <Grid
                 item
-                xs={2.4}
+                xs={'auto'}
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
-                <Avatar
-                  sx={{
-                    bgcolor: '#A28BFF',
-                    width: 80,
-                    height: 80,
-                  }}
-                  src={userInfo.profileImage ? userInfo.profileImage : ''}
-                ></Avatar>
+                <div className="avatar">
+                  <Avatar
+                    sx={{
+                      bgcolor: '#A28BFF',
+                      width: 80,
+                      height: 80,
+                    }}
+                    src={userInfo.profileImage ? userInfo.profileImage : ''}
+                  ></Avatar>
+                </div>
               </Grid>
 
-              <Grid item xs={7.2}>
+              <Grid item xs={6.5} sx={{ padding: 2 }}>
                 <Box
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'left',
                     mt: 3,
                     mb: 2,
                   }}
-                  style={{
-                    marginLeft: 20,
-                  }}
+                  className="align-header"
                 >
                   <Typography
                     className="title"
@@ -140,7 +199,6 @@ const Header = () => {
                     color="#232627"
                     sx={{
                       fontWeight: 200,
-                      height: 'auto',
                     }}
                     variant="body2"
                     gutterBottom
@@ -160,21 +218,23 @@ const Header = () => {
                       min="0"
                       max="100"
                     ></progress>
-                    <div> 책의 온기 {userInfo.temp}도</div>
+                    <div className="temp"> 책의 온기 {userInfo.temp}도</div>
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={2.4}>
-                <ButtonCSS>
-                  <Grid item>
-                    <Link to="/mypage/profile" variant="body2">
-                      <Typography sx={{ mt: 4 }} variant="body2" gutterBottom>
+              {/* <div className="edit-profile"> */}
+              <Grid item sx={{ justifyContent: 'center' }}>
+                <div className="edit-profile">
+                  <ButtonCSS>
+                    <Grid item>
+                      <Link to="/mypage/profile" variant="body2">
                         내 정보 수정
-                      </Typography>
-                    </Link>
-                  </Grid>
-                </ButtonCSS>
+                      </Link>
+                    </Grid>
+                  </ButtonCSS>
+                </div>
               </Grid>
+              {/* </div> */}
             </Grid>
           </Box>
         </Progress>

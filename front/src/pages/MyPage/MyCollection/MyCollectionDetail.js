@@ -20,6 +20,9 @@ const Remove = styled.div`
   &:hover {
     color: #6741ff;
   }
+  @media screen and (max-width: 870px) {
+    display: none !important;
+  }
 `;
 const ItemContainer = styled.div`
   &:hover {
@@ -31,6 +34,12 @@ const ItemContainer = styled.div`
         margin-right: 5px;
         margin-top: 8px;
       }
+    }
+  }
+  .move {
+    @media screen and (max-width: 750px) {
+      width: 100%;
+      flex-direction: column;
     }
   }
 `;
@@ -55,14 +64,20 @@ const BookImg = styled.div`
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
     /* background-color: navy; */
   }
+  .move-image {
+    width: 112px !important;
+    height: 158px !important;
+  }
 `;
 const FlexBox = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 20px;
   margin-right: 10px;
+  padding-right: 20px;
   font-size: 13px;
   border-bottom: 1px solid #e9e9e9;
+  width: 100%;
 
   cursor: pointer;
   .comment {
@@ -86,6 +101,20 @@ const FlexBox = styled.div`
       color: #795af5;
       transition: color 0.5s;
     }
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+  .content-body {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
   }
 `;
 const ModalBox = styled.div`
@@ -159,6 +188,7 @@ const MyCollectionDetail = ({ data, fetchData }) => {
         <ItemContainer key={data.collectionId}>
           <Grid
             container
+            className="move"
             item
             xs={12}
             sx={{
@@ -166,8 +196,9 @@ const MyCollectionDetail = ({ data, fetchData }) => {
               flexDirection: 'row',
             }}
           >
-            <Grid item xs={1.8}>
+            <Grid item xs={1.8} className="move-image">
               <BookImg
+                className="move-image"
                 onClick={() => {
                   navigate(`/collection/${data.collectionId}`);
                 }}
@@ -206,18 +237,20 @@ const MyCollectionDetail = ({ data, fetchData }) => {
                   </Typography>
                 </Grid>
                 <Grid sx={{ height: '98.4px' }}>
-                  <Typography
-                    color="#232627"
-                    sx={{
-                      fontWeight: 200,
-                      height: 'auto',
-                    }}
-                    variant="body2"
-                    gutterBottom
-                    component={'span'}
-                  >
-                    {data.content}
-                  </Typography>
+                  <div className="content-body">
+                    <Typography
+                      color="#232627"
+                      sx={{
+                        fontWeight: 200,
+                        height: 'auto',
+                      }}
+                      variant="body2"
+                      gutterBottom
+                      component={'span'}
+                    >
+                      {data.content}
+                    </Typography>
+                  </div>
                 </Grid>
 
                 <Grid sx={{ height: '32.8px' }}>

@@ -6,7 +6,11 @@ import CollectionSmallBook from '../../CollectionPage/CollectionSmallSet/Collect
 const CollectionSmallBooksContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 112px !important;
+  height: 158px !important;
+  padding: 10px !important;
   margin: 0 10px;
+
   &:hover {
     cursor: pointer;
   }
@@ -17,8 +21,11 @@ const CollectionSmallBooksContainer = styled.div`
   &.small {
     width: 23%;
   }
-  @media screen and (max-width: 500px) {
-    margin: 0 5px;
+
+  .move-image {
+    @media screen and (max-width: 500px) {
+      margin: 0 5px;
+    }
   }
 `;
 
@@ -29,6 +36,8 @@ const CollectionSmallBookContainer = styled.div`
     aspect-ratio: 7 / 10;
     object-fit: cover;
     padding: 2px;
+    height: 100% !important;
+    width: 100% !important;
   }
 `;
 
@@ -63,7 +72,8 @@ const CollectionThumbnail = ({ data }) => {
   // };
   return (
     <CollectionSmallBooksContainer
-    //  onClick={onClickCollectionInfo}
+      className="move-image"
+      //  onClick={onClickCollectionInfo}
     >
       {/* {data.collectionCover.slice(0, 2)?.map((el, index) => {
           <>

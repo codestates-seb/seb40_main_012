@@ -22,6 +22,9 @@ const Remove = styled.div`
   &:hover {
     color: #6741ff;
   }
+  @media screen and (max-width: 870px) {
+    display: none !important;
+  }
 `;
 const ItemContainer = styled.div`
   &:hover {
@@ -33,6 +36,12 @@ const ItemContainer = styled.div`
         margin-right: 5px;
         margin-top: 8px;
       }
+    }
+  }
+  .move {
+    @media screen and (max-width: 750px) {
+      width: 100%;
+      flex-direction: column;
     }
   }
 `;
@@ -55,6 +64,11 @@ const BookImg = styled.div`
     margin-left: 8px;
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
     /* background-color: navy; */
+  }
+  .move-image {
+    width: 112px !important;
+    height: 158px !important;
+    margin: 0 10px;
   }
 `;
 const FlexBox = styled.div`
@@ -159,6 +173,7 @@ const MyCommentDetail = ({ data, fetchData }) => {
           <ItemContainer key={data.commentId}>
             <Grid
               container
+              className="move"
               item
               xs={12}
               sx={{
@@ -166,7 +181,7 @@ const MyCommentDetail = ({ data, fetchData }) => {
                 flexDirection: 'row',
               }}
             >
-              <Grid item xs={1.8}>
+              <Grid item xs={1.8} className="move-image">
                 {data.commentType === 'PAIRING' ? (
                   <BookImg
                     onClick={() => {

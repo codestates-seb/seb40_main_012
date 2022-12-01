@@ -19,6 +19,24 @@ import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
 
+  .buttons {
+    @media screen and (max-width: 490px) {
+      //450이상이어야 적용
+      justify-content: center;
+    }
+  }
+
+  .toggle-button {
+    @media screen and (max-width: 490px) {
+      //450이상이어야 적용
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 50px;
+    }
+  }
+
   img {
     align-items: center;
     justify-content: center;
@@ -29,11 +47,29 @@ const ContentContainer = styled.div`
   .fixed {
     position: fixed;
   }
+  .button-container {
+    @media screen and (max-width: 490px) {
+      display: flex;
+      align-items: center;
+      justify-content: center !important;
+    }
+  }
+  .toggle-button {
+    @media screen and (max-width: 490px) {
+      //450이상이어야 적용
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 50px;
+    }
+  }
 `;
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '& .MuiToggleButtonGroup-grouped': {
     margin: theme.spacing(0.5),
+
     border: 0,
     '&.Mui-disabled': {
       border: 0,
@@ -50,6 +86,8 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: row;
+  /* justify-content: center;
+  align-items: center; */
 `;
 
 const Content = ({ content }) => {
@@ -66,14 +104,16 @@ const Content = ({ content }) => {
         <ContentContainer>
           <Grid
             container
+            className="button-container"
             style={{
               textAlign: 'center',
               alignItems: 'center',
             }}
           >
             <Grid item xs={5} sx={{ mt: 1, mb: 1, ml: 1 }}>
-              <CommentContainer>
+              <CommentContainer className="buttons">
                 <StyledToggleButtonGroup
+                  className="button-container"
                   size="small"
                   value={alignment}
                   exclusive
@@ -82,6 +122,7 @@ const Content = ({ content }) => {
                   sx={{ ml: 0 }}
                 >
                   <ToggleButton
+                    className="toggle-button"
                     onClick={() => setView(1)}
                     value="left"
                     aria-label="left aligned"
@@ -89,6 +130,7 @@ const Content = ({ content }) => {
                     페어링
                   </ToggleButton>
                   <ToggleButton
+                    className="toggle-button"
                     onClick={() => setView(2)}
                     value="center"
                     aria-label="centered"
@@ -96,6 +138,7 @@ const Content = ({ content }) => {
                     컬렉션
                   </ToggleButton>
                   <ToggleButton
+                    className="toggle-button"
                     onClick={() => setView(3)}
                     value="right"
                     aria-label="right aligned"
@@ -189,7 +232,7 @@ const Content = ({ content }) => {
                   alignItems: 'center',
                 }}
               >
-                <MyPickGuide />
+                <MyPickGuide className="move-guide" />
               </Grid>
             </Grid>
             <div className="no-data-notice">
