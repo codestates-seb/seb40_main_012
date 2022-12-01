@@ -129,8 +129,8 @@ const EditProfile = () => {
   }, []);
 
   const getUserInfo = async () => {
-    setBackdropOpen(true);
     try {
+      setBackdropOpen(true);
       const response = await myPageApi.getUserInfo();
       const { age, category, gender, introduction, nickname, profileImage } =
         response;
