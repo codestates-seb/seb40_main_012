@@ -97,11 +97,11 @@ public class BookCollectionDto {
 
 
         //collection book
-        public static CollectionDetails of(BookCollection collection) {
+        public static CollectionDetails of(BookCollection collection,List<String> covers) {
             return CollectionDetails.builder()
                     .collectionId(collection.getCollectionId())
                     .title(collection.getTitle())
-                    .collectionCover(collection.getCollectionCover())
+                    .collectionCover(covers)
                     .content(collection.getContent())
                     .createdAt(collection.getCreatedAt())
                     .lastModifiedAt(collection.getLastModifiedAt())
@@ -145,6 +145,7 @@ public class BookCollectionDto {
         private String content;
         private String title;
         private Long collectionLike;
+        private boolean userLike;
         private List<BookDto.CollectionBook> books;
 
         public static BookCollectionDto.UserCollection of(BookCollection collection) {
@@ -153,6 +154,7 @@ public class BookCollectionDto {
                     .content(collection.getContent())
                     .title(collection.getTitle())
                     .collectionLike(collection.getCollectionLikes().stream().count())
+                    .userLike(collection.isUserLike())
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .build();
         }
@@ -168,6 +170,7 @@ public class BookCollectionDto {
         private String content;
         private String userName;
         private Long collectionLike;
+        private boolean userLike;
         private List<BookDto.CollectionBook> books;
 
         public static BookmarkedCollection of(BookCollection collection) {
@@ -177,6 +180,7 @@ public class BookCollectionDto {
                     .content(collection.getContent())
                     .userName(collection.getUser().getNickName())
                     .collectionLike(collection.getCollectionLikes().stream().count())
+                    .userLike(collection.isUserLike())
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .build();
         }
