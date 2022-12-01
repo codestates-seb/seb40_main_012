@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { NextArrow, PrevArrow } from '../../components/CarouselArrows';
 import MainBooksTitle from './MainBooksTitle';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from '../../api/axios';
 
 const BestCollectionsContainer = styled.div`
   display: flex;
