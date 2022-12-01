@@ -1,13 +1,15 @@
 import Box from '@mui/material/Box';
 
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-};
+const Loading = ({ backdrop }) => {
+  const style = {
+    position: 'absolute',
+    top: backdrop ? 'calc(50% - 60px)' : '50%',
+    left: '50%',
+    transform: backdrop
+      ? 'translate(-50%, calc(-50% + 30px))'
+      : 'translate(-50%, -50%)',
+  };
 
-const Loading = () => {
   return (
     <Box sx={style}>
       <img src={process.env.PUBLIC_URL + '/images/spinner.gif'} alt="loading" />
