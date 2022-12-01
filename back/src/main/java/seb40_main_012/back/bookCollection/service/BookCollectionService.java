@@ -282,7 +282,7 @@ public class BookCollectionService {
                 }
         );
         return BookCollection.builder()
-                .collectionId(50L)
+                .collectionId(1L)
                 .title(title)
                 .content(content)
                 .collectionBooks(collectionBooks)
