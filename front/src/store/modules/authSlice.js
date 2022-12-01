@@ -4,7 +4,6 @@ import { authApi, myPageApi } from 'api';
 
 const initialState = {
   loading: false,
-  error: { status: null, message: '' },
   isLogin: false,
   firstLogin: false,
   nickName: '',
@@ -20,7 +19,7 @@ export const signInAsync = createAsyncThunk(
       const response = await authApi.signIn(params);
       return response.data;
     } catch (error) {
-      return thunkAPI.rejectWithValue({ error });
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -32,7 +31,7 @@ export const firstLoginAsync = createAsyncThunk(
       const response = await authApi.firstLogin(params);
       return response;
     } catch (error) {
-      return thunkAPI.rejectWithValue({ error });
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -44,7 +43,7 @@ export const patchUserInfoAsync = createAsyncThunk(
       const response = await myPageApi.patchUserInfo(data.params);
       return { ...response, ...data.userInfo };
     } catch (error) {
-      return thunkAPI.rejectWithValue({ error });
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -57,7 +56,6 @@ export const authSlice = createSlice({
     builder
       .addCase(signInAsync.pending, (state) => {
         state.loading = true;
-        state.error = null;
         state.isLogin = false;
         state.firstLogin = false;
         state.nickName = '';
@@ -67,7 +65,6 @@ export const authSlice = createSlice({
       })
       .addCase(signInAsync.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.error = null;
         state.isLogin = true;
         state.firstLogin = payload.firstLogin;
         state.nickName = payload.nickName;
@@ -75,13 +72,8 @@ export const authSlice = createSlice({
         state.roles = payload.roles;
         state.profileImage = payload.profileImage;
       })
-      .addCase(signInAsync.rejected, (state, action) => {
+      .addCase(signInAsync.rejected, (state) => {
         state.loading = false;
-        if (action.payload) {
-          state.error = action.payload.error;
-        } else {
-          state.error = action.error;
-        }
         state.isLogin = false;
         state.firstLogin = false;
         state.nickName = '';
@@ -91,7 +83,6 @@ export const authSlice = createSlice({
       })
       .addCase(firstLoginAsync.pending, (state) => {
         state.loading = true;
-        state.error = null;
         state.isLogin = false;
         state.firstLogin = false;
         state.nickName = '';
@@ -101,7 +92,6 @@ export const authSlice = createSlice({
       })
       .addCase(firstLoginAsync.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.error = null;
         state.isLogin = true;
         state.firstLogin = payload.firstLogin;
         state.nickName = payload.nickName;
@@ -109,13 +99,8 @@ export const authSlice = createSlice({
         state.roles = payload.roles;
         state.profileImage = payload.profileImage;
       })
-      .addCase(firstLoginAsync.rejected, (state, action) => {
+      .addCase(firstLoginAsync.rejected, (state) => {
         state.loading = false;
-        if (action.payload) {
-          state.error = action.payload.error;
-        } else {
-          state.error = action.error;
-        }
         state.isLogin = false;
         state.firstLogin = false;
         state.nickName = '';
@@ -125,13 +110,11 @@ export const authSlice = createSlice({
       })
       .addCase(patchUserInfoAsync.pending, (state) => {
         state.loading = true;
-        state.error = null;
         state.isLogin = true;
         state.firstLogin = false;
       })
       .addCase(patchUserInfoAsync.fulfilled, (state, { payload }) => {
         state.loading = false;
-        state.error = null;
         state.isLogin = true;
         state.firstLogin = false;
         state.nickName = payload.nickname;
@@ -139,13 +122,8 @@ export const authSlice = createSlice({
         state.roles = payload.roles;
         state.profileImage = payload.profileImage;
       })
-      .addCase(patchUserInfoAsync.rejected, (state, action) => {
+      .addCase(patchUserInfoAsync.rejected, (state) => {
         state.loading = false;
-        if (action.payload) {
-          state.error = action.payload.error;
-        } else {
-          state.error = action.error;
-        }
         state.isLogin = true;
         state.firstLogin = false;
       })
