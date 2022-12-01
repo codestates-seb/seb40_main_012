@@ -135,10 +135,9 @@ public class BookCollectionController {
     @ResponseStatus(HttpStatus.OK)
 
     public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByUserCategory() {
-
         List<BookCollection> collections = collectionService.findCollectionByUserCategory();
 
-        List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).collect(Collectors.toList());
+        List<BookCollectionDto.TagCollection> tagCollectionDto = collections.stream().map(x -> BookCollectionDto.TagCollection.of(x)).limit(4).collect(Collectors.toList());
         return new ListResponseDto<>(tagCollectionDto);
     }
 
