@@ -132,6 +132,7 @@ public class BookController {
     public ResponseEntity carouselBooks() { // 별점으로 5개 내림차순
 
         List<Book> response = bookService.findCarouselBooks();
+        List<BookDto.Response> result = bookMapper.booksToBookResponses(response);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

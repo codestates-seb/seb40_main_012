@@ -1,6 +1,7 @@
 package seb40_main_012.back.user.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 import seb40_main_012.back.dto.ListResponseDto;
 import seb40_main_012.back.dto.SingleResponseDto;
+import seb40_main_012.back.dto.SliceResponseDto;
 import seb40_main_012.back.email.EmailSenderService;
 import seb40_main_012.back.pairing.PairingDto;
 import seb40_main_012.back.pairing.PairingRepository;
@@ -46,6 +48,7 @@ import seb40_main_012.back.user.service.UserService;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.websocket.server.PathParam;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -169,13 +172,21 @@ public class UserController {
     }
 
     @GetMapping("/mypage/userComment")
-    public ResponseEntity getUserComment() {
+    public ResponseEntity getUserComment(@PathParam("page") int page) {
+
         User findUser = userService.getLoginUser();
-        List<Comment> findComments = commentService.findMyCommentAll();
-        List<CommentDto.myPageResponse> responses = commentMapper.commentsToMyPageResponse(findComments);
         Long listCount = commentRepository.countByUser(findUser);
+
+        List<Comment> findComments = commentService.findMyCommentAll(page);
+        Slice<CommentDto.myPageResponse> responses = commentMapper.commentsToMyPageResponse(findComments);
+
+        Boolean isLast = false;
+        if(page * 5 >= listCount) {
+            isLast = true;
+        }
+
         return new ResponseEntity<>(
-                new ListResponseDto<>(listCount,responses), HttpStatus.OK);
+                new SliceResponseDto<>(listCount, isLast, responses), HttpStatus.OK);
     }
 
 //    @GetMapping("/mypage/userComment")

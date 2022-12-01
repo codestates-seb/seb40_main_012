@@ -1,16 +1,14 @@
 package seb40_main_012.back.common.comment;
 
 import org.mapstruct.Mapper;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.common.rating.Rating;
 import seb40_main_012.back.user.dto.UserDto;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -99,7 +97,7 @@ public interface CommentMapper {
 
     }
 
-    default List<CommentDto.myPageResponse> commentsToMyPageResponse(List<Comment> comments) {
+    default Slice<CommentDto.myPageResponse> commentsToMyPageResponse(List<Comment> comments) {
 
         if (comments == null) {
             return null;
@@ -111,7 +109,7 @@ public interface CommentMapper {
 
             CommentDto.myPageResponse myPageResponse = new CommentDto.myPageResponse();
 
-            myPageResponse.setCommentCount(comments.size()); // 코멘트 개수
+//            myPageResponse.setCommentCount(comments.size()); // 코멘트 개수
             myPageResponse.setCommentId(comments.get(i).getCommentId()); // 코멘트 식별 번호
             myPageResponse.setCommentType(comments.get(i).getCommentType()); // 코멘트 타입
 
@@ -163,7 +161,7 @@ public interface CommentMapper {
                                     comments.get(i).getBookCollection().getCollectionBooks().get(1).getBook().getCover(),
                                     comments.get(i).getBookCollection().getCollectionBooks().get(2).getBook().getCover()
                             ));
-                } else if (comments.get(i).getBookCollection().getCollectionBooks().size() >= 4){
+                } else if (comments.get(i).getBookCollection().getCollectionBooks().size() >= 4) {
                     myPageResponse.setCollectionCover(
                             List.of(
                                     comments.get(i).getBookCollection().getCollectionBooks().get(0).getBook().getCover(),
@@ -182,8 +180,7 @@ public interface CommentMapper {
                         .filter(rating -> Objects.equals(rating.getBook().getIsbn13(), isbn13))
                         .mapToDouble(Rating::getUserBookRating).sum());
                 myPageResponse.setAuthor(comments.get(i).getBook().getAuthor());
-            }
-            else {
+            } else {
                 myPageResponse.setMyBookRating(null);
                 myPageResponse.setAuthor(null);
             }
@@ -194,10 +191,28 @@ public interface CommentMapper {
             responseList.add(myPageResponse);
         }
 
-                List<CommentDto.myPageResponse> result = responseList.stream()
-                        .sorted(Comparator.comparing(CommentDto.myPageResponse::getCreatedAt).reversed())
-                        .collect(Collectors.toList());
+        List<CommentDto.myPageResponse> result = responseList.stream()
+                .sorted(Comparator.comparing(CommentDto.myPageResponse::getCreatedAt).reversed())
+                .collect(Collectors.toList());
 
-        return result;
+        Slice<CommentDto.myPageResponse> responses =
+                new SliceImpl<>(result);
+
+//        return result;
+        return responses;
+    }
+
+    public static <T> List<T> makePageable(List<T> sourceList, int page, int pageSize) {
+        if (pageSize <= 0 || page <= 0) {
+            throw new IllegalArgumentException("invalid page size: " + pageSize);
+        }
+
+        int fromIndex = (page - 1) * pageSize;
+        if (sourceList == null || sourceList.size() <= fromIndex) {
+            return Collections.emptyList();
+        }
+
+        // toIndex exclusive
+        return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
     }
 }
