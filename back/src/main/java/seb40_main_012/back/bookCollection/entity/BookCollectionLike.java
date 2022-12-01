@@ -14,11 +14,8 @@ public class BookCollectionLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "like_id")
-    private Long Id;
-    private String title;
-    private String content;
-    private String author;    //getUserName()
+    @Column
+    private Long likeId;
 
     @ManyToOne
     @JoinColumn(name = "collection_id")

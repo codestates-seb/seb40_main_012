@@ -4,16 +4,21 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.lang.Nullable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookWiki.BookWiki;
 import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.image.Image;
 import seb40_main_012.back.common.like.entity.Like;
 //import seb40_main_012.back.notification.Notification;
 import seb40_main_012.back.common.rating.Rating;
 //import seb40_main_012.back.notification.Notification;
+//import seb40_main_012.back.config.auth.entity.enums.ProviderType;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.statistics.StayTime;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 
@@ -39,6 +44,8 @@ public class User {
     private String password;
     private String introduction;
 
+    private String profileImage; // 프로필 이미지 경로
+
     @Enumerated(EnumType.STRING)
     private GenderType gender;
 
@@ -46,6 +53,7 @@ public class User {
     private AgeType age;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    @NotFound(action = NotFoundAction.IGNORE)
     private List<UserCategory> categories = new ArrayList<>();
 
     @ElementCollection // 사용자 권한 테이블 생성
@@ -53,7 +61,7 @@ public class User {
     private List<String> roles = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 
     @JsonManagedReference
@@ -68,6 +76,16 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private List<Like> likes = new ArrayList<>();
 
+    @Nullable
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<Image> images = new ArrayList<>();
+
+    @Nullable
+    @JsonManagedReference
+    @OneToOne(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private Image s3ProfileImage;
+
     @JsonManagedReference
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<BookCollection> collections = new ArrayList<>();
@@ -79,6 +97,10 @@ public class User {
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Bookmark> collectionBookmarks = new ArrayList<>();
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<StayTime> stayTimes = new ArrayList<>();
 
 
 //    @JsonManagedReference
@@ -99,6 +121,9 @@ public class User {
 //    private final List<Like> likes = new ArrayList<>();
 
     private boolean firstLogin = true; // 첫 로그인 여부
+
+//    @Enumerated(EnumType.STRING)
+//    private ProviderType providerType; // OAuth2 반영 안함
 
     public void updateNickName(String nickName) {
         this.nickName = nickName;

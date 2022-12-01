@@ -13,6 +13,7 @@ import seb40_main_012.back.user.dto.UserDto;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,26 +24,28 @@ public class BookCollectionDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Post{
+    public static class Post {
         private String title;
         private String content;
         private List<String> tags;
         private List<String> bookIsbns;
 
-        public BookCollection toEntity(){
+        public BookCollection toEntity() {
             BookCollection collection = new BookCollection(
-                    title,content,bookIsbns
+                    title, content, bookIsbns
             );
             return collection;
         }
     }
+
     @Getter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Response{
+    public static class Response {
         private Long collectionId;
         private String title;
+        private List<String> collectionCover; // 컬렉션에 속한 책 커버 4개. 컬렉션에 추가된 순으로 오름차순
         private String content;
         private LocalDate createdAt;
         private LocalDate lastModifiedAt;
@@ -53,16 +56,17 @@ public class BookCollectionDto {
         private List<String> tags;
         private List<String> isbns;
 
-        public static Response of(BookCollection collection){
+        public static Response of(BookCollection collection) {
             return Response.builder()
                     .collectionId(collection.getCollectionId())
                     .title(collection.getTitle())
                     .content(collection.getContent())
+                    .collectionCover(collection.getCollectionCover())
                     .createdAt(LocalDate.now())
                     .lastModifiedAt(collection.getLastModifiedAt())
                     .likeCount(collection.getLikeCount())
-                    .userLike(!collection.getUser().getCollectionLikes().isEmpty())
-                    .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
+                    .userLike(collection.isUserLike())
+                    .userBookmark(collection.isUserBookmark())
                     .collectionAuthor(collection.getUser().getNickName())
                     .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
                     .isbns(collection.getBookIsbn13())
@@ -74,9 +78,10 @@ public class BookCollectionDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CollectionDetails{
+    public static class CollectionDetails {
         private Long collectionId;
         private String title;
+        private List<String> collectionCover; // 컬렉션에 속한 책 커버 4개. 컬렉션에 추가된 순으로 오름차순
         private String content;
         private LocalDateTime createdAt;
         private LocalDate lastModifiedAt;
@@ -84,25 +89,27 @@ public class BookCollectionDto {
         private Long view;
         private boolean userLike;
         private boolean userBookmark;
+        private boolean userCollection;
         private String collectionAuthor;
         private List<String> tags;
         private List<BookDto.CollectionBook> books;
         private List<CommentDto.Response> comments;
 
 
-
         //collection book
-        public static CollectionDetails of(BookCollection collection){
+        public static CollectionDetails of(BookCollection collection,List<String> covers) {
             return CollectionDetails.builder()
                     .collectionId(collection.getCollectionId())
                     .title(collection.getTitle())
+                    .collectionCover(covers)
                     .content(collection.getContent())
                     .createdAt(collection.getCreatedAt())
                     .lastModifiedAt(collection.getLastModifiedAt())
                     .likeCount(collection.getCollectionLikes().stream().count())
                     .view(collection.getView())
-                    .userLike(!collection.getUser().getCollectionLikes().isEmpty())
-                    .userBookmark(!collection.getUser().getCollectionBookmarks().isEmpty())
+                    .userLike(collection.isUserLike())
+                    .userBookmark(collection.isUserBookmark())
+                    .userCollection(collection.isUserCollection())
                     .collectionAuthor(collection.getUser().getNickName())
                     .tags(collection.getCollectionTags().stream().map(x -> x.getTag().getTagName()).collect(Collectors.toList()))
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
@@ -133,47 +140,52 @@ public class BookCollectionDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class UserCollection{
+    public static class UserCollection {
         private Long collectionId;
         private String content;
         private String title;
         private Long collectionLike;
+        private boolean userLike;
         private List<BookDto.CollectionBook> books;
 
-        public static BookCollectionDto.UserCollection of(BookCollection collection){
+        public static BookCollectionDto.UserCollection of(BookCollection collection) {
             return UserCollection.builder()
                     .collectionId(collection.getCollectionId())
                     .content(collection.getContent())
                     .title(collection.getTitle())
                     .collectionLike(collection.getCollectionLikes().stream().count())
+                    .userLike(collection.isUserLike())
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .build();
         }
     }
+
     @Getter
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class BookmarkedCollection{
+    public static class BookmarkedCollection {
         private Long collectionId;
         private String title;
         private String content;
         private String userName;
         private Long collectionLike;
+        private boolean userLike;
         private List<BookDto.CollectionBook> books;
-//        private Image bookCover;
 
-        public static BookCollectionDto.BookmarkedCollection of(BookCollection collection){
+        public static BookmarkedCollection of(BookCollection collection) {
             return BookmarkedCollection.builder()
                     .collectionId(collection.getCollectionId())
                     .title(collection.getTitle())
                     .content(collection.getContent())
                     .userName(collection.getUser().getNickName())
                     .collectionLike(collection.getCollectionLikes().stream().count())
+                    .userLike(collection.isUserLike())
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .build();
         }
     }
+
 //    @Getter
 //    @Builder
 //    @AllArgsConstructor
@@ -195,13 +207,13 @@ public class BookCollectionDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class TagCollection{
+    public static class TagCollection {
         private Long collectionId;
         private String title;
         private String author;
         private List<BookDto.CollectionBook> books;
 
-        public static BookCollectionDto.TagCollection of(BookCollection collection){
+        public static BookCollectionDto.TagCollection of(BookCollection collection) {
             return TagCollection.builder()
                     .collectionId(collection.getCollectionId())
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
@@ -215,14 +227,16 @@ public class BookCollectionDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class AuthorCollection{
+    public static class AuthorCollection {
+        private Long collectionId;
         private String title;
         private List<BookDto.CollectionBook> books;
 
 
         //collection book
-        public static AuthorCollection of(BookCollection collection){
+        public static AuthorCollection of(BookCollection collection) {
             return AuthorCollection.builder()
+                    .collectionId(collection.getCollectionId())
                     .title(collection.getTitle())
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .build();
@@ -233,14 +247,16 @@ public class BookCollectionDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class CriticCollection{
+    public static class CriticCollection {
+        private Long collectionId;
         private String title;
         private List<BookDto.CollectionBook> books;
 
 
         //collection book
-        public static CriticCollection of(BookCollection collection){
+        public static CriticCollection of(BookCollection collection) {
             return CriticCollection.builder()
+                    .collectionId(collection.getCollectionId())
                     .title("00 평론가가 평가한 그 책")
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))
                     .build();

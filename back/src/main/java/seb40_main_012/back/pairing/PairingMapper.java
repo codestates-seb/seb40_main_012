@@ -11,6 +11,7 @@ import seb40_main_012.back.user.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
@@ -22,7 +23,6 @@ public interface PairingMapper {
                 .title(postPairing.getTitle())
                 .body(postPairing.getBody())
                 .pairingCategory(postPairing.getPairingCategory())
-                .imagePath(postPairing.getImagePath())
                 .outLinkPath(postPairing.getOutLinkPath())
                 .build();
 
@@ -83,7 +83,8 @@ public interface PairingMapper {
                 .isBookmarked(pairing.getIsBookmarked())
                 .likeCount(pairing.getLikeCount())
                 .view(pairing.getView())
-                .imagePath(pairing.getImagePath())
+                .imagePath(pairing.getImagePath() != null ? pairing.getImagePath() : null)
+//                .imagePath(pairing.getImagePath())
                 .outLinkPath(pairing.getOutLinkPath())
                 .comments(commentResponses)
                 .createdAt(pairing.getCreatedAt())
@@ -98,47 +99,99 @@ public interface PairingMapper {
 
         return new SliceImpl<>(
                 pairings.stream()
-                        .map(pairing -> PairingDto.Response.builder()
-                                .isbn13(pairing.getBook().getIsbn13())
-                                .pairingId(pairing.getPairingId())
-                                .userInformation(
-                                        UserDto.ResponseDto.builder()
-                                                .email(pairing.getUser().getEmail())
-                                                .nickName(pairing.getUser().getNickName())
-                                                .roles(pairing.getUser().getRoles())
-                                                .build()
-                                )
-                                .pairingCategory(pairing.getPairingCategory())
-                                .title(pairing.getTitle())
-                                .body(pairing.getBody())
-                                .likeCount(pairing.getLikeCount())
-                                .view(pairing.getView())
-                                .imagePath(pairing.getImagePath())
-                                .outLinkPath(pairing.getOutLinkPath())
-                                .comments(
-                                        pairing.getComments().stream()
-                                                .map(comment ->
-                                                        CommentDto.Response.builder()
-                                                                .commentId(comment.getCommentId())
-                                                                .userInformation(
-                                                                        UserDto.ResponseDto.builder()
-                                                                                .email(comment.getUser().getEmail())
-                                                                                .nickName(comment.getUser().getNickName())
-                                                                                .build()
-                                                                )
-                                                                .commentType(comment.getCommentType())
-                                                                .body(comment.getBody())
-                                                                .likeCount(comment.getLikeCount())
-                                                                .view(comment.getView())
-                                                                .createdAt(comment.getCreatedAt())
-                                                                .modifiedAt(comment.getModifiedAt())
-                                                                .build()
-                                                ).collect(Collectors.toList())
-                                )
-                                .createdAt(pairing.getCreatedAt())
-                                .modifiedAt(pairing.getModifiedAt())
-                                .build()
+                        .map(pairing -> {
+                                    return PairingDto.Response.builder()
+                                            .isbn13(pairing.getBook().getIsbn13())
+                                            .pairingId(pairing.getPairingId())
+                                            .userInformation(
+                                                    UserDto.ResponseDto.builder()
+                                                            .email(pairing.getUser().getEmail())
+                                                            .nickName(pairing.getUser().getNickName())
+                                                            .roles(pairing.getUser().getRoles())
+                                                            .bookTemp(pairing.getUser().getBookTemp())
+                                                            .build()
+                                            )
+                                            .pairingCategory(pairing.getPairingCategory())
+                                            .title(pairing.getTitle())
+                                            .body(pairing.getBody())
+                                            .likeCount(pairing.getLikeCount())
+                                            .view(pairing.getView())
+                                            .imagePath(pairing.getImagePath() != null ? pairing.getImagePath() : null)
+                                            .outLinkPath(pairing.getOutLinkPath())
+                                            .comments(
+                                                    pairing.getComments().stream()
+                                                            .map(comment ->
+                                                                    CommentDto.Response.builder()
+                                                                            .commentId(comment.getCommentId())
+                                                                            .userInformation(
+                                                                                    UserDto.ResponseDto.builder()
+                                                                                            .email(comment.getUser().getEmail())
+                                                                                            .nickName(comment.getUser().getNickName())
+                                                                                            .build()
+                                                                            )
+                                                                            .commentType(comment.getCommentType())
+                                                                            .body(comment.getBody())
+                                                                            .likeCount(comment.getLikeCount())
+                                                                            .view(comment.getView())
+                                                                            .createdAt(comment.getCreatedAt())
+                                                                            .modifiedAt(comment.getModifiedAt())
+                                                                            .build()
+                                                            ).collect(Collectors.toList())
+                                            )
+                                            .createdAt(pairing.getCreatedAt())
+                                            .modifiedAt(pairing.getModifiedAt())
+                                            .build();
+                                }
                         ).collect(Collectors.toList())
         );
+
+
+//        return new SliceImpl<>(
+//                pairings.stream()
+//                        .map(pairing -> {
+//                                    assert pairing.getImage() != null;
+//                                    return PairingDto.Response.builder()
+//                                            .isbn13(pairing.getBook().getIsbn13())
+//                                            .pairingId(pairing.getPairingId())
+//                                            .userInformation(
+//                                                    UserDto.ResponseDto.builder()
+//                                                            .email(pairing.getUser().getEmail())
+//                                                            .nickName(pairing.getUser().getNickName())
+//                                                            .roles(pairing.getUser().getRoles())
+//                                                            .build()
+//                                            )
+//                                            .pairingCategory(pairing.getPairingCategory())
+//                                            .title(pairing.getTitle())
+//                                            .body(pairing.getBody())
+//                                            .likeCount(pairing.getLikeCount())
+//                                            .view(pairing.getView())
+//                                            .imagePath(pairing.getImage().getStoredPath())
+//                                            .outLinkPath(pairing.getOutLinkPath())
+//                                            .comments(
+//                                                    pairing.getComments().stream()
+//                                                            .map(comment ->
+//                                                                    CommentDto.Response.builder()
+//                                                                            .commentId(comment.getCommentId())
+//                                                                            .userInformation(
+//                                                                                    UserDto.ResponseDto.builder()
+//                                                                                            .email(comment.getUser().getEmail())
+//                                                                                            .nickName(comment.getUser().getNickName())
+//                                                                                            .build()
+//                                                                            )
+//                                                                            .commentType(comment.getCommentType())
+//                                                                            .body(comment.getBody())
+//                                                                            .likeCount(comment.getLikeCount())
+//                                                                            .view(comment.getView())
+//                                                                            .createdAt(comment.getCreatedAt())
+//                                                                            .modifiedAt(comment.getModifiedAt())
+//                                                                            .build()
+//                                                            ).collect(Collectors.toList())
+//                                            )
+//                                            .createdAt(pairing.getCreatedAt())
+//                                            .modifiedAt(pairing.getModifiedAt())
+//                                            .build();
+//                                }
+//                        ).collect(Collectors.toList())
+//        );
     }
 }

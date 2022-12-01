@@ -1,7 +1,7 @@
 package seb40_main_012.back.user.entity.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.Getter;
+
 
 public enum AgeType {
     TEENAGER(),
@@ -11,7 +11,8 @@ public enum AgeType {
     FIFTIES(),
     SIXTIES(),
     SEVENTIES(),
-    OTHERS();
+    OTHERS(),
+    NONE; //선택 안했을 경우
 
 //    @Getter
 //    private String value;
@@ -24,4 +25,5 @@ public enum AgeType {
         /** value로 키타입 조회하도록 변경해야됨*/
         return AgeType.valueOf(x.toUpperCase());
     }
+//    Nullable<AgeType> ageType = null;
 }

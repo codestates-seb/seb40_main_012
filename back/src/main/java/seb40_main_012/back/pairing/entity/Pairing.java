@@ -9,6 +9,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.lang.Nullable;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.comment.entity.Comment;
@@ -17,9 +18,12 @@ import seb40_main_012.back.common.like.entity.Like;
 import seb40_main_012.back.user.entity.User;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Long.MAX_VALUE;
 
 @Data
 @Builder
@@ -61,7 +65,7 @@ public class Pairing {
     private long view;
 
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
@@ -70,8 +74,9 @@ public class Pairing {
     @JoinColumn(name = "isbn13")
     private Book book;
 
+    @Nullable
     @JsonManagedReference
-    @OneToOne(mappedBy = "pairing")
+    @OneToOne(mappedBy = "pairing", cascade = CascadeType.REMOVE)
     private Image image;
 
     @JsonManagedReference
@@ -85,7 +90,7 @@ public class Pairing {
     @NotFound(action = NotFoundAction.IGNORE)
     private List<Like> likes = new ArrayList<>();
 
-    @OneToMany(mappedBy = "pairing")
+    @OneToMany(mappedBy = "pairing", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<Bookmark> bookmarks = new ArrayList<>();
@@ -97,7 +102,6 @@ public class Pairing {
     @LastModifiedDate
     @Column(nullable = false, name = "MODIFIED_AT")
     private LocalDateTime modifiedAt = LocalDateTime.now();
-
 
 
 }

@@ -5,11 +5,16 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 import seb40_main_012.back.bookWiki.BookWiki;
 import seb40_main_012.back.common.bookmark.Bookmark;
+import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.rating.Rating;
 import seb40_main_012.back.pairing.entity.Pairing;
 
 import javax.persistence.*;
@@ -22,6 +27,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Book {
+
 
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
@@ -64,6 +70,9 @@ public class Book {
     @Column
     private long bookCollectionCount;
 
+    @Transient
+    private boolean isBookmarked;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "genre")
     private Genre genre;
@@ -84,9 +93,9 @@ public class Book {
     @Column
     private long ratingCount;
 
-//    @JsonManagedReference
-//    @OneToMany(mappedBy = "book")
-//    private List<Rating> ratings;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "book")
+    private List<Rating> ratings;
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
     /*도서 파고들기*/
@@ -102,6 +111,12 @@ public class Book {
     @OneToMany(mappedBy = "book")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Comment> comments = new ArrayList<>();
+
+//    SliceImpl<Comment> getComments() {
+//        SliceImpl<Comment> findComments =
+//    }
+
+
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
     /*추천 페어링 목록*/
@@ -119,6 +134,7 @@ public class Book {
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<BookCollection> bookCollections = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "book") // 다대 다
     private List<BookCollectionBook> bookCollectionBooks = new ArrayList<>();
     //    --------------------------------------------------------------------------------------------
@@ -133,7 +149,12 @@ public class Book {
     //    --------------------------------------------------------------------------------------------
     /*북마크*/
     //    --------------------------------------------------------------------------------------------
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book",cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Bookmark> bookmarks = new ArrayList<>();
+
+    public void setIsBookmarked(boolean bookmark){
+        this.isBookmarked = bookmark;
+    }
+
 }

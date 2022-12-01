@@ -1,6 +1,5 @@
-package seb40_main_012.back.config.auth.userdetails;
+package seb40_main_012.back.config.auth.service;
 
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -43,6 +42,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             setIntroduction(user.getIntroduction());
             setPassword(user.getPassword());
             setRoles(user.getRoles());
+            setProfileImage(user.getProfileImage());
+            //setProviderType(user.getProviderType()); // OAuth2 반영 안함
         }
 
         @Override

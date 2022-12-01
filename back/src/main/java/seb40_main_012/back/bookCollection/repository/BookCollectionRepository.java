@@ -1,5 +1,7 @@
 package seb40_main_012.back.bookCollection.repository;
 
+import com.querydsl.core.QueryResults;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -14,13 +16,10 @@ import java.util.List;
 
 public interface BookCollectionRepository extends JpaRepository<BookCollection, Long> {
     Long countBy();
-
+    Long countByUser(User user);
     List<BookCollection> findByUserUserId(Long userId);
+    void deleteAllByUser(User user);
 
-    Long countByUserUserId(Long userId);
-
-    //    @Query()
-//    List<BookCollection> findByTag(List<Tag> tags);
 
     @Query(nativeQuery = true,
             value = "SELECT * FROM BOOK_COLLECTION " +
@@ -38,4 +37,10 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection, 
                     "OR LOWER(CONTENT) LIKE %:queryParam%")
     List<BookCollection> findTest(@Param("queryParam") String queryParam);
 
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM BOOK_COLLECTION " +
+            "INNER JOIN BOOK_COLLECTION_BOOK " +
+            "ON BOOK_COLLECTION.COLLECTION_ID = BOOK_COLLECTION_BOOK.COLLECTION_ID " +
+            "WHERE BOOK_ID = :isbn13")
+    List<BookCollection> findAllCollectionsForTheBook(String isbn13);
 }

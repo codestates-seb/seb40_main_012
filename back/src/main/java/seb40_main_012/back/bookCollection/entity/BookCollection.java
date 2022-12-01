@@ -33,10 +33,20 @@ public class BookCollection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long collectionId;
     private String title;
+
+    @ElementCollection
+    private List<String> collectionCover = new ArrayList<>(); // 컬렉션에 속한 책 커버 4개. 컬렉션에 추가된 순으로 오름차순
     private String content;
     private Long likeCount;
+    @Transient
+    private boolean userLike;
+    @Transient
+    private boolean userBookmark;
+    @Transient
+    private boolean userCollection;
     private Long view;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
     private List<BookCollectionTag> collectionTags = new ArrayList<>();
 
@@ -51,7 +61,8 @@ public class BookCollection {
     @ElementCollection
     private List<String> bookIsbn13 = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<BookCollectionBook> collectionBooks = new ArrayList<>();
@@ -83,6 +94,9 @@ public class BookCollection {
         this.content= content;
         this.bookIsbn13 = bookIsbn13;
         this.likeCount = 0L;
+        this.userLike = false;
+        this.userBookmark=false;
+        this.userCollection=false;
         this.view = 0L;
         this.createdAt = LocalDateTime.now();
         this.lastModifiedAt = LocalDate.now();

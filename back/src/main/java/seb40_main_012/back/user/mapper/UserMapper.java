@@ -1,5 +1,6 @@
 package seb40_main_012.back.user.mapper;
 
+import lombok.Getter;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import seb40_main_012.back.config.auth.dto.LoginDto;
@@ -7,6 +8,7 @@ import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.entity.User;
 
 import java.util.stream.Collectors;
+
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
@@ -29,6 +31,7 @@ public interface UserMapper {
                 .map(userCategory -> userCategory.getCategory().getGenre()
                 ).collect(Collectors.toList())
         );
+        responseDto.setProfileImage(user.getProfileImage());
 
         return responseDto;
     }

@@ -2,6 +2,7 @@ package seb40_main_012.back.book;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Range;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.SliceImpl;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
@@ -60,6 +61,9 @@ public class BookDto {
     public static class Response {
 
         private String isbn13;
+        private Double myRating;
+        private boolean isBookmarked;
+        private Optional<Comment> myComment;
         private String cover;
         private String title;
         private String author;
@@ -78,10 +82,11 @@ public class BookDto {
         private long commentCount;
         private long pairingCount;
         private long bookCollectionCount;
-        private SliceImpl<Comment> comments;
+//        private SliceImpl<Comment> comments;
+        private Page<Comment> comments;
         private SliceImpl<Pairing> pairings;
         private SliceImpl<BookCollection> bookCollections;
-        private List<Book> similarBooks;
+//        private List<Book> similarBooks;
 
     }
 
@@ -89,7 +94,23 @@ public class BookDto {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
+    public static class BookmarkResponse{
+        private boolean result;
+        private String isbn13;
+        public static BookmarkResponse of(Book book,boolean result){
+            return BookmarkResponse.builder()
+                    .result(result)
+                    .isbn13(book.getIsbn13())
+                    .build();
+        }
+    }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
     public static class BookmarkedBook{
+        private String isbn13;
         private String title;
         private String author;
         private Long ratingCount;
@@ -97,6 +118,7 @@ public class BookDto {
 
         public static BookmarkedBook of(Book book){
             return BookmarkedBook.builder()
+                    .isbn13(book.getIsbn13())
                     .title(book.getTitle())
                     .author(book.getAuthor())
                     .ratingCount(book.getRatingCount())

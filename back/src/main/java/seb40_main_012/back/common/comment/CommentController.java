@@ -8,7 +8,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
-import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.like.LikeService;
@@ -34,8 +33,8 @@ public class CommentController {
     private final LikeService likeService;
 
     //    ------------------------------------------------------------
-    private final NotificationService noticeService;
-//    ------------------------------------------------------------
+    private final NotificationService noticeService; // 알림 설정을 위한 의존성 주입
+    //    ------------------------------------------------------------
 
     @PostMapping("/books/{isbn13}/comments/add")
     public ResponseEntity postBookComment(@PathVariable("isbn13") @Positive String isbn13,
@@ -72,8 +71,13 @@ public class CommentController {
     public CommentDto.Response postBookCollectionComment(@PathVariable("collection-id") Long collectionId, @Valid @RequestBody CommentDto.Post request) {
 
         Comment comment = commentMapper.commentPostToComment(request);
-        Comment createdComment = commentService.createBookCollectionComment(comment,collectionId);
+        Comment createdComment = commentService.createBookCollectionComment(comment, collectionId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
+
+//        ------------------------------------------------------------
+        noticeService.notifyPostBookCollectionCommentEvent(createdComment);
+//        ------------------------------------------------------------
+
         return response;
     }
 
@@ -150,24 +154,32 @@ public class CommentController {
                     new SingleResponseDto<>(response), HttpStatus.OK);
         }
 
-        }
-
-        @GetMapping("/comments")
-        public ResponseEntity getComments () {
-
-            List<Comment> sliceComments = commentService.findComments();
-            Slice<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(sliceComments);
-
-            return new ResponseEntity<>(
-                    new SingleResponseDto<>(responses), HttpStatus.OK
-            );
-        }
-
-        @DeleteMapping("/comments/{comment_id}/delete")
-        public ResponseEntity deleteComment ( @PathVariable("comment_id") @Positive long commentId){
-
-            commentService.deleteComment(commentId);
-
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
     }
+
+    @GetMapping("/comments")
+    public ResponseEntity getComments() {
+
+        List<Comment> sliceComments = commentService.findComments();
+        Slice<CommentDto.Response> responses = commentMapper.commentsToCommentResponses(sliceComments);
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(responses), HttpStatus.OK
+        );
+    }
+
+    @DeleteMapping("/comments/{comment_id}/delete")
+    public ResponseEntity deleteComment(@PathVariable("comment_id") @Positive long commentId) {
+
+        commentService.deleteComment(commentId);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/comments/delete")
+    public ResponseEntity deleteComments() {
+
+        commentService.deleteComments();
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+}

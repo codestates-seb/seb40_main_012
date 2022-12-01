@@ -18,6 +18,12 @@ public class BookInfoSearchDto {
 
         List<Item> item = new ArrayList<>();
 
+        public int totalResults;
+        public int itemsPerPage;
+        public int startIndex;
+
+        @Builder
+        @NoArgsConstructor
         public static class Item {
 
             public String isbn13; // 책 식별자로 사용하기
@@ -27,6 +33,18 @@ public class BookInfoSearchDto {
             public String categoryName;
             public String pubDate;
             public String description;
+
+
+
+            public Item(String isbn13, String cover, String title, String author, String categoryName, String pubDate, String description) {
+                this.isbn13 = isbn13;
+                this.cover = cover;
+                this.title = title;
+                this.author = author;
+                this.categoryName = categoryName;
+                this.pubDate = pubDate;
+                this.description = description;
+            }
         }
     }
 

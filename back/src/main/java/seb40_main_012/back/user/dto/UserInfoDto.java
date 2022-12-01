@@ -20,6 +20,7 @@ public class UserInfoDto {
     @AllArgsConstructor
     @Builder
     public static class Post{
+        private String profileImage;
         private String introduction;
         private String gender;
         private String age;
@@ -27,12 +28,24 @@ public class UserInfoDto {
         private List<Genre> category;
 
         public User toEntity(){
-            return User.builder()
+            /** 로직 dto에서 제거 예정 */
+            if(profileImage==null) {
+                profileImage = "http://url";
+            }
+            if(gender == "NONE"){
+                gender = "NONE";
+            }
+            if(age == "NONE"){
+                age = "NONE";
+            }
+            User user = User.builder()
                     .introduction(introduction)
                     .gender(GenderType.from(gender))
                     .age(AgeType.from(age))
+                    .profileImage(profileImage)
                     .nickName(nickname)
                     .build();
+            return user;
         }
     }
 
@@ -42,6 +55,7 @@ public class UserInfoDto {
     @Builder
 //    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Response{
+        private String profileImage;
         private String introduction;
         private String gender;
         private String age;
@@ -52,10 +66,12 @@ public class UserInfoDto {
 
 
         public static Response of(User user){
-            /** null을 더 효율적으로 처리할 수 있는 방법 고민, */
+            /** 로직 dto에서 제거 예정 */
             String introduction;
             String genderType;
             String ageType;
+            String profileImage;
+            List<Genre> category;
             if(user.getGender()==null){
                 genderType = "";
             }
@@ -74,8 +90,25 @@ public class UserInfoDto {
             else{
                 introduction = user.getIntroduction();
             }
+            if(user.getProfileImage()==null){
+                profileImage = "http://url";
+            }
+            else{
+                profileImage = user.getProfileImage();
+            }
+            if(!user.getCategories().isEmpty()){
+                System.out.println("=====================");
+                System.out.println(user.getCategories().size());
+                System.out.println("=====================");
+                category = user.getCategories().stream()
+                        .map(x -> x.getCategory().getGenre()).collect(Collectors.toList());
+            }else {
+                category = null;
+            }
+
 
             return Response.builder()
+                    .profileImage(profileImage)
                     .introduction(introduction)
                     .gender(genderType)
                     .age(ageType)
@@ -83,8 +116,7 @@ public class UserInfoDto {
                     .temp(user.getBookTemp())
 //                    .category(user.getCategories().stream()
 //                            .map(x -> CategoryDto.Response.of(x.getCategory().getGenre().getValue())).collect(Collectors.toList()))
-                    .category(user.getCategories().stream()
-                            .map(x -> x.getCategory().getGenre()).collect(Collectors.toList()))
+                    .category(category)
                     .build();
         }
     }

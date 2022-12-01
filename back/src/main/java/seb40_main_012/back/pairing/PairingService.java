@@ -68,26 +68,29 @@ public class PairingService {
 
         Pairing findPairing = findVerifiedPairing(pairingId);
 
-        Pairing updatedPairing =
-                Pairing.builder()
-                        .book(findPairing.getBook())
-                        .user(findPairing.getUser())
-                        .pairingId(findPairing.getPairingId())
-                        .imagePath(pairing.getImagePath())
-                        .title(pairing.getTitle())
-                        .body(pairing.getBody())
-                        .pairingCategory(pairing.getPairingCategory())
-                        .outLinkPath(pairing.getOutLinkPath())
-                        .likeCount(findPairing.getLikeCount())
-                        .view(findPairing.getView())
-                        .image(findPairing.getImage())
-                        .comments(findPairing.getComments())
-                        .likes(findPairing.getLikes())
-                        .createdAt(findPairing.getCreatedAt())
-                        .modifiedAt(LocalDateTime.now())
-                        .build();
+        if (findUser == findPairing.getUser()) {
 
-        return pairingRepository.save(updatedPairing);
+            Pairing updatedPairing =
+                    Pairing.builder()
+                            .book(findPairing.getBook())
+                            .user(findPairing.getUser())
+                            .pairingId(findPairing.getPairingId())
+                            .imagePath(pairing.getImagePath())
+                            .title(pairing.getTitle())
+                            .body(pairing.getBody())
+                            .pairingCategory(pairing.getPairingCategory())
+                            .outLinkPath(pairing.getOutLinkPath())
+                            .likeCount(findPairing.getLikeCount())
+                            .view(findPairing.getView())
+                            .image(findPairing.getImage())
+                            .comments(findPairing.getComments())
+                            .likes(findPairing.getLikes())
+                            .createdAt(findPairing.getCreatedAt())
+                            .modifiedAt(LocalDateTime.now())
+                            .build();
+
+            return pairingRepository.save(updatedPairing);
+        } else throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }
 
     public Pairing addLike(long pairingId) {
@@ -175,11 +178,12 @@ public class PairingService {
         return comment;
     }
 
-    public Pairing isBookMarkedPairing(Pairing pairing, User user) {
+    public Pairing isBookMarkedPairing(Pairing pairing) {
+        User findUser = userService.getLoginUser();
 
         Boolean isBookmarked;
 
-        if (bookmarkRepository.findByUserAndPairing(user,pairing) == null) { //좋아요 안 누른 경우
+        if (bookmarkRepository.findByUserAndPairing(findUser,pairing) == null) { //북마크 안 누른 경우
             isBookmarked = false;
         } else {
             isBookmarked = true;
@@ -228,6 +232,13 @@ public class PairingService {
         return pairingRepository.findCategorySliceByNewestDesc("FILM", pageRequest);
     }
 
+    public List<Pairing> findFilmPairingsRandom() { // 영화 카테고리 무작위
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        return pairingRepository.findAllByCategory("FILM", pageRequest);
+    }
+
     public List<Pairing> findCuisinePairingsLikes() { // 음식/장소 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
@@ -241,6 +252,14 @@ public class PairingService {
 
 
         return pairingRepository.findCategorySliceByNewestDesc("CUISINE", pageRequest);
+    }
+
+    public List<Pairing> findCuisinePairingsRandom() { // 음식/장소 카테고리 무작위
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+
+        return pairingRepository.findAllByCategory("CUISINE", pageRequest);
     }
 
     public List<Pairing> findMusicPairingsLikes() { // 음악 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
@@ -258,6 +277,14 @@ public class PairingService {
         return pairingRepository.findCategorySliceByNewestDesc("MUSIC", pageRequest);
     }
 
+    public List<Pairing> findMusicPairingsRandom() { // 음악 카테고리 무작위
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+
+        return pairingRepository.findAllByCategory("MUSIC", pageRequest);
+    }
+
     public List<Pairing> findBookPairingsLikes() { // 책 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
 
         PageRequest pageRequest = PageRequest.of(0, 10);
@@ -269,8 +296,14 @@ public class PairingService {
 
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "created_At"));
 
-
         return pairingRepository.findCategorySliceByNewestDesc("BOOK", pageRequest);
+    }
+
+    public List<Pairing> findBookPairingsRandom() { // 책 카테고리 무작위
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        return pairingRepository.findAllByCategory("BOOK", pageRequest);
     }
 
     public List<Pairing> findEtcPairingsLikes() { // 기타 카테고리 슬라이스 처리 및 좋아요 내림차순 정렬
@@ -287,9 +320,21 @@ public class PairingService {
         return pairingRepository.findCategorySliceByNewestDesc("ETC", pageRequest);
     }
 
-    public List<Pairing> findBestPairingsLikes() { // 기타 카테고리 슬라이스 처리 및 등록일 내림차순 정렬
+    public List<Pairing> findEtcPairingsRandom() { // 기타 카테고리 무작위
+
+        PageRequest pageRequest = PageRequest.of(0, 10);
+
+        return pairingRepository.findAllByCategory("ETC", pageRequest);
+    }
+
+    public List<Pairing> findBestPairingsLikes() {
 
         return pairingRepository.findBestTenCategory();
+    }
+
+    public List<Pairing> findRandomPairings() {
+
+        return pairingRepository.findAll();
     }
 
 //    --------------------------------------------------------------------------------------------
@@ -311,7 +356,18 @@ public class PairingService {
 
         Pairing findPairing = findVerifiedPairing(pairingId);
 
-        pairingRepository.delete(findPairing);
+        if (findUser == findPairing.getUser()) {
+            pairingRepository.delete(findPairing);
+        } else throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+    }
+
+    public void deletePairings() {
+
+        User findUser = userService.getLoginUser();
+
+        long userId = findUser.getUserId();
+
+        pairingRepository.deleteAllByUserId(userId);
     }
 
 

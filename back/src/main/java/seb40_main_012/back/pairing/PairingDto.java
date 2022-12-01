@@ -2,6 +2,7 @@ package seb40_main_012.back.pairing;
 
 import lombok.*;
 import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.pairing.entity.ParingCategory;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -32,10 +33,13 @@ public class PairingDto {
         @NotNull(message = "카테고리를 선택하셔야 합니다.")
         private ParingCategory pairingCategory;
 
-        private String imagePath;
-
         private String outLinkPath;
 
+        public Post(String title, String body, ParingCategory pairingCategory) {
+            this.title = title;
+            this.body = body;
+            this.pairingCategory = pairingCategory;
+        }
     }
 
     @Data
@@ -110,6 +114,7 @@ public class PairingDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class UserPairing{
+        private long pairingId;
         private String content;
         private String bookName;
         private String author;
@@ -118,6 +123,7 @@ public class PairingDto {
 
         public static PairingDto.UserPairing of(Pairing pairing){
             return UserPairing.builder()
+                    .pairingId(pairing.getPairingId())
                     .content(pairing.getBody())
                     .bookName(pairing.getBook().getTitle())
                     .author(pairing.getBook().getAuthor())
@@ -131,6 +137,7 @@ public class PairingDto {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class BookmarkedPairing{
+        private long pairingId;
         private String content;
         private String bookName;
         private String author;
@@ -139,6 +146,7 @@ public class PairingDto {
 
         public static PairingDto.BookmarkedPairing of(Pairing pairing){
             return BookmarkedPairing.builder()
+                    .pairingId(pairing.getPairingId())
                     .content(pairing.getBody())
                     .bookName(pairing.getBook().getTitle())
                     .author(pairing.getBook().getAuthor())
