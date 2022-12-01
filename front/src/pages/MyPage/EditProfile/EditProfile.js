@@ -24,6 +24,7 @@ import {
   genreData,
 } from 'util/util';
 import WithDrawal from './WithDrawalModal';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 const WrapperStyled = styled.div`
   display: flex;
@@ -84,6 +85,7 @@ const ItemWrapperChangePasswordStyled = styled(ItemWrapperStyled)`
 const EditProfile = () => {
   const inputRef = useRef([]);
   const dispatch = useDispatch();
+  const loading = useSelector((state) => state.auth.loading);
   const userInfo = useSelector((state) => state.auth);
   const { email, nickName, roles } = userInfo;
 
@@ -113,8 +115,13 @@ const EditProfile = () => {
   });
   const [profileImage, setProfileImage] = useState('');
   const [openModal, setOpenModal] = useState(false);
+  const [backdropOpen, setBackdropOpen] = useState(false);
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
+
+  useEffect(() => {
+    setBackdropOpen(loading);
+  }, [loading]);
 
   useEffect(() => {
     inputRef.current[0].focus();
@@ -123,6 +130,7 @@ const EditProfile = () => {
 
   const getUserInfo = async () => {
     try {
+      setBackdropOpen(true);
       const response = await myPageApi.getUserInfo();
       const { age, category, gender, introduction, nickname, profileImage } =
         response;
@@ -140,8 +148,16 @@ const EditProfile = () => {
       setAge(age === 'NONE' ? '' : age);
       setChecked({ ...checked, ...categoryObj });
       setProfileImage(profileImage);
+      setBackdropOpen(false);
     } catch (error) {
-      console.log(error);
+      setBackdropOpen(false);
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
     }
   };
 
@@ -227,13 +243,33 @@ const EditProfile = () => {
       // profileImage, // api 변경되면 params에 필요할 수도 있음
     };
     const userInfo = { email, roles };
-    dispatch(patchUserInfoAsync({ params, userInfo }));
+    dispatch(patchUserInfoAsync({ params, userInfo }))
+      .unwrap()
+      .then(() => {
+        dispatch(
+          setOpenSnackbar({
+            severity: 'success',
+            message: '회원정보 수정이 완료되었습니다.',
+          })
+        );
+        setInputStatus({ ...inputStatus, nickName: '' });
+        setInputHelperText({ ...inputHelperText, nickName: '' });
+      })
+      .catch((error) => {
+        const { message } = error;
+        dispatch(
+          setOpenSnackbar({
+            severity: 'error',
+            message: message,
+          })
+        );
+      });
   };
 
   const checkCount = Object.values(checked).filter((v) => v).length >= 3;
 
   return (
-    <PageContainer footer center maxWidth="sm" bmt={5}>
+    <PageContainer footer center maxWidth="sm" bmt={5} backdrop={backdropOpen}>
       <Avatar
         src={profileImage ? profileImage : ''}
         sx={{ width: 80, height: 80 }}
