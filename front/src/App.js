@@ -1,30 +1,11 @@
-import { Suspense, lazy, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { Suspense, lazy } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import { GlobalStyle } from 'styles';
-import { authApi } from 'api';
-import { selectIsLogin } from 'store/modules/authSlice';
 import { ScrollToTop, Loading, Snackbar } from 'components';
 
 const RoutesComponent = lazy(() => import('components/RoutesComponent'));
 
 const App = () => {
-  const isLogin = useSelector(selectIsLogin);
-
-  useEffect(() => {
-    if (isLogin) getToken();
-  }, []);
-
-  const getToken = async () => {
-    try {
-      await authApi.refreshToken();
-    } catch (e) {
-      console.log(e);
-      // 에러코드 나오면 처리 필요
-      authApi.logout();
-    }
-  };
-
   return (
     <BrowserRouter>
       <ScrollToTop />
