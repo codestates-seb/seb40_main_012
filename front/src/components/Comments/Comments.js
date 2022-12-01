@@ -8,6 +8,9 @@ import CommentAdd from './CommentAdd';
 const CommentsContainer = styled.div`
   width: 100%;
   padding: 0 20px;
+  @media screen and (max-width: 640px) {
+    padding: 0;
+  }
 `;
 
 const Comments = ({

@@ -30,16 +30,23 @@ const BookInfo = styled.div`
     font-size: 13px;
     color: ${({ theme }) => theme.colors.dark};
     word-wrap: normal;
+    @media screen and (max-width: 500px) {
+      font-size: 11px;
+      font-weight: 600;
+    }
   }
   .author {
     font-size: 11px;
     color: ${({ theme }) => theme.colors.darkgray};
+    @media screen and (max-width: 640px) {
+      display: none;
+    }
   }
   .rating {
     color: ${({ theme }) => theme.colors.mainColor};
-  }
-  @media screen and (max-width: 640px) {
-    display: none;
+    @media screen and (max-width: 640px) {
+      display: none;
+    }
   }
 `;
 

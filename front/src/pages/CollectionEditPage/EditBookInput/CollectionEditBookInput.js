@@ -6,6 +6,15 @@ import NewBooks from 'pages/CollectionWritePage/BookInput/NewBooks';
 const CollectionEditBookInputContainer = styled.div`
   background-color: #f5f5f5;
   padding: 0 60px 30px;
+  @media screen and (max-width: 980px) {
+    padding: 20px 40px;
+  }
+  @media screen and (max-width: 640px) {
+    padding: 20px 20px;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 5px 10px;
+  }
 `;
 
 const CollectionEditBookInput = ({

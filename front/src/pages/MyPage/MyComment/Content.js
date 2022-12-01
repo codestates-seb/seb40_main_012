@@ -7,28 +7,16 @@ import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import MyCommentDetail from './MyCommentDetail';
-// import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from '../../../api/axios';
+import { COMMENT_URL } from '../../../api/requests';
+import { useNavigate } from 'react-router-dom';
+import { BasicButton } from '../../../components/Buttons';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
-  input {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 1.5px solid gainsboro;
-    border-radius: 0.35rem;
-    margin-top: -0.1px;
-    &:checked {
-      border-color: transparent;
-      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-      background-size: 100% 100%;
-      background-position: 50%;
-      background-repeat: no-repeat;
-      background-color: #cfc3ff;
-    }
-  }
-  img {
+
+  .loading {
     align-items: center;
     justify-content: center;
     align-content: center;
@@ -38,13 +26,11 @@ const ContentContainer = styled.div`
   .fixed {
     position: fixed;
   }
-`;
-const BookImg = styled.div`
-  .resize {
-    box-sizing: inherit;
-    width: 108px !important;
-    height: 164px !important;
-    margin-left: 10px;
+  p {
+    text-align: center;
+  }
+  .no-data-notice {
+    text-align: center;
   }
 `;
 
@@ -89,60 +75,45 @@ const Remove = styled.div`
   }
 `;
 
-const ItemContainer = styled.div`
-  &:hover {
-    ${Remove} {
-      opacity: 1;
-    }
-  }
-`;
+const Content = () => {
+  const [hasMore, setHasMore] = useState(true);
+  const navigate = useNavigate();
+  const [content, setContent] = useState({
+    data: [],
+  });
+  const [page, setPage] = useState(2);
 
-const Content = ({ content, setContent, fetchData }) => {
-  // 스크롤이 바닥에 닿을때 동작하는 함수
+  const fetchData = async () => {
+    axios
+      .get(`api/mypage/userComment?page=1`)
+      .then((response) => {
+        console.log('response배열', response.data.data.content);
+        setContent({
+          data: response.data.data.content,
+        });
+        console.log('response.data.isLast', response.data.isLast);
+        setHasMore(response.data.isLast === false ? true : false);
+      })
+      .catch((error) => console.log('에러', error));
+  };
+
   const fetchMoreData = () => {
-    if (content.listCount >= 100) {
-      // setContent({
-      //   bookComment: content.bookComment,
-      //   pairingComment: content.pairingComment,
-      //   collectionComment: content.collectionComment,
-      //   hasMore: false,
-      //   listCount: 0,
-      // });
-      // return;
-    }
-    if (content.listCount < 10) {
-      // setContent({
-      //   bookComment: content.bookComment,
-      //   pairingComment: content.pairingComment,
-      //   collectionComment: content.collectionComment,
-      //   hasMore: false,
-      //   listCount: 0,
-      // });
-      // return;
-    }
-
-    //content.data 배열
-
-    ////// 나중에 통신하는 거 붙여주기
-    // setTimeout(() => {
-    //   setInfiniteData({
-    //     bookComment: infiniteData.bookComment.concat(infiniteData.bookComment),
-    //     pairingComment: infiniteData.pairingComment.concat(
-    //       infiniteData.pairingComment
-    //     ),
-    //     collectionComment: infiniteData.collectionComment.concat(
-    //       infiniteData.collectionComment
-    //     ),
-    //     hasMore: true,
-    //   });
-    // }, 800);
     setTimeout(() => {
-      setContent({
-        data: content.data.concat(content.data),
-        listCount: 0,
-      });
-    }, 800);
-    /////
+      if (hasMore === true && page) {
+        axios
+          .get(`api/mypage/userComment?page=${page}`)
+          .then((response) => {
+            setContent({
+              data: content.data.concat(response.data.data.content),
+            });
+            setHasMore(response.data.isLast === false ? true : false);
+            {
+              response.data.isLast !== true ? setPage(page + 1) : null;
+            }
+          })
+          .catch((error) => console.log('에러', error));
+      }
+    }, 500);
   };
 
   const removeAll = () => {
@@ -153,8 +124,12 @@ const Content = ({ content, setContent, fetchData }) => {
         .catch((error) => console.log('에러', error));
     }
   };
-  console.log('hasmore상태', content.hasMore);
 
+  useEffect(() => {
+    fetchData();
+    setHasMore(content.data.isLast === false ? true : false);
+  }, []);
+  console.log(hasMore);
   return (
     <>
       <ContentContainer>
@@ -187,56 +162,114 @@ const Content = ({ content, setContent, fetchData }) => {
           </Grid>
         </Grid>
 
-        <InfiniteScroll
-          dataLength={content.listCount}
-          // dataLength={data.content.length}
-          // next={data.content && fetchMoreData}
-          next={content && fetchMoreData}
-          hasMore={true} // 스크롤 막을지 말지 결정
-          loader={
-            <div
-              style={{
-                textAlign: 'center',
-              }}
-            >
-              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>
-              <div>열심히 읽어오는 중..</div>
-            </div>
-          }
-          height={400}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <Typography
-                sx={{
-                  mt: 1,
-                  mb: 1,
-                  fontSize: 17,
-                  fontWeight: 300,
+        {content.data.length ? (
+          <InfiniteScroll
+            dataLength={content.data.length}
+            // dataLength={data.content.length}
+            // next={data.content && fetchMoreData}
+            next={fetchMoreData}
+            hasMore={hasMore} // 스크롤 막을지 말지 결정
+            loader={
+              <div
+                style={{
+                  textAlign: 'center',
                 }}
-                color="#2e3031"
-                variant="body2"
-                gutterBottom
-                component={'span'}
               >
-                모든 코멘트를 다 읽었어요!
-              </Typography>
-            </p>
-          }
-        >
-          <div>
-            {content.data ? (
-              content.data.map((data) => (
-                <MyCommentDetail
-                  key={data.commentId}
-                  data={data}
-                  fetchData={fetchData}
-                />
-              ))
-            ) : (
-              <div>데이터가 없어요</div>
-            )}
+                <img
+                  className="loading"
+                  src={'/images/spinner.gif'}
+                  alt="loading cherrypick"
+                ></img>
+                <Typography
+                  color="#737373"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  variant="body2"
+                  component={'span'}
+                >
+                  열심히 읽어오는 중..
+                </Typography>
+              </div>
+            }
+            height={400}
+            endMessage={
+              <p style={{ textAlign: 'center' }}>
+                <Typography
+                  sx={{
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  color="#2e3031"
+                  variant="body2"
+                  gutterBottom
+                  component={'span'}
+                >
+                  모든 코멘트를 다 읽었어요!
+                </Typography>
+              </p>
+            }
+          >
+            <div>
+              {content.data ? (
+                content.data?.map((data) => (
+                  <MyCommentDetail
+                    key={data.commentId}
+                    data={data}
+                    fetchData={fetchData}
+                  />
+                ))
+              ) : (
+                <Typography
+                  color="#737373"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  variant="body2"
+                  component={'span'}
+                >
+                  데이터가 없어요
+                </Typography>
+              )}
+            </div>
+          </InfiniteScroll>
+        ) : (
+          <div className="no-data-notice">
+            <Typography
+              sx={{
+                mt: 1,
+                mb: 1,
+                fontSize: 17,
+                fontWeight: 300,
+              }}
+              color="#2e3031"
+              variant="body2"
+              gutterBottom
+              component={'span'}
+            >
+              읽어올 데이터가 없습니다
+              <br />
+              메인 페이지에서 체리픽의 인기 컨텐츠를 추천해드릴게요!
+              <br />
+              <br />
+              <BasicButton onClick={() => navigate(`/`)}>
+                메인 페이지
+              </BasicButton>
+            </Typography>
           </div>
-        </InfiniteScroll>
+        )}
       </ContentContainer>
     </>
   );

@@ -35,6 +35,7 @@ const MyPairing = () => {
     data: [],
   });
   const [lastId, setLastId] = useState();
+  const [hasMore, setHasMore] = useState(true);
 
   const fetchData = async () => {
     axios
@@ -52,12 +53,14 @@ const MyPairing = () => {
               )
             : null;
         }
+        setHasMore(response.data.data.size < 5 ? false : true);
       })
       .catch((error) => console.log('에러', error));
   };
 
   useEffect(() => {
     fetchData();
+    setHasMore(content.data.length < 5 ? false : true);
   }, []);
 
   return (
@@ -73,6 +76,8 @@ const MyPairing = () => {
               fetchData={fetchData}
               lastId={lastId}
               setLastId={setLastId}
+              setHasMore={setHasMore}
+              hasMore={hasMore}
             ></Content>
           </Container>
         ) : (
