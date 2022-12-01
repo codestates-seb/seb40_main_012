@@ -1,0 +1,74 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  datasource:
+    url: jdbc:h2:mem:CherryPick
+    driver-class-name: org.h2.Driver
+    username: sa
+  h2:
+    console:
+      enabled: true
+      path: /h2
+    #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    open-in-view: true
+  spring:
+    profiles:
+      include: database
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
+
+server:
+  servlet:
+    encoding:
+      force-response: true
+    # 이미지 로컬에 저장하기 위한 설정. S3 사용시 바꾸어야 함!
+#    multipart:
+#      location: ""
+#      maxFileSize: 5MB
+#      maxRequestSize: 10MB
+#  error:
+#    include-stacktrace: never
+#   이미지 S3에 올리기 위한 설정.
+cloud:
+  aws:
+    credentials:
+      accessKey:
+      secretKey:
+    s3:
+      bucket: main-012-images
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
+#  port: 443
+#  ssl:
+#    enabled: true
+#    key-store: back/src/main/resources/bootsecurity.p12
+#    key-store-password: mhyMHY#1040
+#    key-store-type: PKCS12
+#    key-alias: bootsecurity
+mail:
+  smtp.host: smtp.gmail.com
+  smtp.port: 587
+  smtp.username: cherrypick.official.012
+  smtp.password: thmhbdarrtpawdwa
+  smtp.auth: true
+  smtp.starttls.enable: true
+  #mail:
+  address:
+    admin: admin@gmail.com
+jwt:
+  secret-key: temporary1111potato1111temporary1111potato # ${JWT_SECRET_KEY}
+  access-token-expiration-minutes: 120
+  refresh-token-expiration-minutes: 1440
+aladin:
+  url: http://www.aladin.co.kr/ttb/api/ItemSearch.aspx
+  ttb: ttbgcnb871441001
+
