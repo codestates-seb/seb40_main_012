@@ -47,8 +47,6 @@ public class BookCollectionRepositorySupport extends QuerydslRepositorySupport {
                         .where(
                                 bookCollection.collectionBooks.contains(collectionBook)
                         )
-                        .orderBy(bookCollection.likeCount.desc())
-                        .orderBy(bookCollection.view.desc())
                         .fetch();
         return collections;
     }
@@ -58,6 +56,8 @@ public class BookCollectionRepositorySupport extends QuerydslRepositorySupport {
         List<BookCollectionBook> collections =
                 queryFactory.selectFrom(collectionBook)
                         .where(collectionBook.book.genre.stringValue().eq(genre))
+                        .orderBy(bookCollection.likeCount.desc())
+                        .orderBy(bookCollection.view.desc())
                         .fetch();
         return collections;
     }
