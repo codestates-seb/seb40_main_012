@@ -2,17 +2,15 @@
 
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
+
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useState, useEffect } from 'react';
 import { MY_PICK_COLLECTION } from '../../../api/requests';
 import { BasicButton } from '../../../components/Buttons';
-import CollectionThumbnail from '../MyComment/CollectionThumbnail';
+
 import MyPickCollectionThumbnail from './MyPickCollectionThumbnail';
 
 const Remove = styled.div`
@@ -352,9 +350,7 @@ const MyPickCollection = () => {
                   <Remove>
                     <RemoveButton
                       onClick={() => {
-                        if (window.confirm(`북마크를 삭제하시겠습니까?`)) {
-                          onRemove(data.collections.collectionId);
-                        }
+                        onRemove(data.collections.collectionId);
                       }}
                     >
                       <img
