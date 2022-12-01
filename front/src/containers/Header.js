@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -24,6 +24,7 @@ import { Searchbar } from 'components';
 import { selectIsLogin, selectProfileImage } from 'store/modules/authSlice';
 import { dummyUserImgUrl } from 'util/userAvatar';
 import { authApi } from 'api';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 const drawerWidth = 240;
 const PAIRING = '페어링';
@@ -123,7 +124,8 @@ const logo = (
   </Link>
 );
 
-function Header(props) {
+const Header = (props) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const isLogin = useSelector(selectIsLogin);
@@ -216,8 +218,20 @@ function Header(props) {
   const handleClickLogoutButton = async () => {
     try {
       await authApi.logout();
-    } catch (e) {
-      console.log(e);
+      dispatch(
+        setOpenSnackbar({
+          severity: 'success',
+          message: '로그아웃되었습니다.',
+        })
+      );
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
     }
   };
 
@@ -381,6 +395,6 @@ function Header(props) {
       </Box>
     </Box>
   );
-}
+};
 
 export default Header;
