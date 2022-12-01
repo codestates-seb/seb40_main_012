@@ -7,7 +7,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
 };
 
-const LoadingComponent = () => {
+const Loading = () => {
   return (
     <Box sx={style}>
       <img src={process.env.PUBLIC_URL + '/images/spinner.gif'} alt="loading" />
@@ -15,4 +15,4 @@ const LoadingComponent = () => {
   );
 };
 
-export default LoadingComponent;
+export default Loading;
