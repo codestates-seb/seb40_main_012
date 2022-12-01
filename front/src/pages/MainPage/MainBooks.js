@@ -95,6 +95,7 @@ const MainBooks = () => {
                 genre={el.genre}
                 rating={el.averageRating}
                 cover={el.cover}
+                comments={el.comments}
               />
             );
           })}
