@@ -12,7 +12,11 @@ import Typography from '@mui/material/Typography';
 import { PageContainer } from 'containers';
 import { ContainedButton } from 'components';
 
-import { selectValidCheckArray, setIsValid } from 'store/modules/signInSlice';
+import {
+  selectValidCheckArray,
+  setIsValid,
+  setInitLoginInput,
+} from 'store/modules/signInSlice';
 import { signInAsync } from 'store/modules/authSlice';
 import SignInTextFields from './SignInTextFields';
 import { setOpenSnackbar } from 'store/modules/snackbarSlice';
@@ -69,6 +73,7 @@ const SignInPage = () => {
             message: '로그인이 완료되었습니다.',
           })
         );
+        dispatch(setInitLoginInput());
 
         navigate('/', { replace: true });
       })
