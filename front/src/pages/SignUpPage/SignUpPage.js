@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import styled from 'styled-components';
@@ -29,6 +30,13 @@ const SignUpPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const validCheckArray = useSelector(selectValidCheckArray, shallowEqual);
+  const loading = useSelector((state) => state.signUp.loading);
+
+  const [backdropOpen, setBackdropOpen] = useState(false);
+
+  useEffect(() => {
+    setBackdropOpen(loading);
+  }, [loading]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -71,7 +79,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <PageContainer footer center maxWidth="xs">
+    <PageContainer footer center maxWidth="xs" backdrop={backdropOpen}>
       <AvatarStyled sx={{ m: 1 }}>
         <LockOutlinedIcon />
       </AvatarStyled>
