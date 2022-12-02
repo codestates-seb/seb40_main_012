@@ -1,21 +1,23 @@
-/*eslint-disable*/
-
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
-
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useState, useEffect } from 'react';
 import { MY_PICK_COLLECTION } from '../../../api/requests';
 import { BasicButton } from '../../../components/Buttons';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 import MyPickCollectionThumbnail from './MyPickCollectionThumbnail';
 
 const Remove = styled.div`
   color: #dee2e6;
   opacity: 0;
+  @media screen and (max-width: 870px) {
+    display: none !important;
+  }
 `;
 
 const RemoveButton = styled.button`
@@ -41,6 +43,12 @@ const ItemContainer = styled.div`
       }
     }
   }
+  .move {
+    @media screen and (max-width: 750px) {
+      width: 100%;
+      flex-direction: column;
+    }
+  }
 `;
 
 const BookImg = styled.div`
@@ -58,7 +66,10 @@ const BookImg = styled.div`
     padding: 10px !important;
     margin-left: 8px;
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
-    /* background-color: navy; */
+  }
+  .move-image {
+    width: 112px !important;
+    height: 158px !important;
   }
 `;
 
@@ -67,8 +78,19 @@ const FlexBox = styled.div`
   flex-direction: column;
   margin-left: 20px;
   margin-right: 10px;
+  padding-right: 20px;
   font-size: 13px;
   border-bottom: 1px solid #e9e9e9;
+  width: 100%;
+
+  .content-body {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
 
   cursor: pointer;
   .comment {
@@ -92,6 +114,12 @@ const FlexBox = styled.div`
       color: #795af5;
       transition: color 0.5s;
     }
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
   }
 `;
 
@@ -102,12 +130,11 @@ const MyPickCollection = () => {
     data: [],
   });
   const [lastId, setLastId] = useState();
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
-    axios
-      .get(MY_PICK_COLLECTION)
-      .then((response) => {
-        console.log('response');
+    try {
+      axios.get(MY_PICK_COLLECTION).then((response) => {
         setContent({
           data: response.data.data.content,
         });
@@ -121,43 +148,65 @@ const MyPickCollection = () => {
             : null;
         }
         setHasMore(response.data.data.size < 5 ? false : true);
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   const onRemove = (id) => {
-    axios
-      .post(`/api/collections/${id}/bookmark`)
-      .then(() => fetchData())
-      .catch((error) => console.log('에러', error));
+    try {
+      axios.post(`/api/collections/${id}/bookmark`).then(() => fetchData());
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
-  // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    setTimeout(() => {
-      if (hasMore === true && lastId) {
-        axios
-          .get(`/api/mypage/bookmark/collection?lastId=${lastId}`)
-          .then((response) => {
-            console.log('응답', response.data.data.content);
-            setContent({
-              data: content.data.concat(response.data.data.content),
-              size: response.data.data.size,
+    try {
+      setTimeout(() => {
+        if (hasMore === true && lastId) {
+          axios
+            .get(`/api/mypage/bookmark/collection?lastId=${lastId}`)
+            .then((response) => {
+              setContent({
+                data: content.data.concat(response.data.data.content),
+                size: response.data.data.size,
+              });
+              setHasMore(response.data.data.size < 5 ? false : true);
+              {
+                response.data.data.size >= 5
+                  ? setLastId(
+                      response.data.data.content[
+                        response.data.data.content.length - 1
+                      ].bookmarkId
+                    )
+                  : null;
+              }
             });
-            setHasMore(response.data.data.size < 5 ? false : true);
-            {
-              response.data.data.size >= 5
-                ? setLastId(
-                    response.data.data.content[
-                      response.data.data.content.length - 1
-                    ].bookmarkId
-                  )
-                : null;
-            }
-          })
-          .catch((error) => console.log('에러', error));
-      }
-    }, 500);
+        }
+      }, 500);
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {
@@ -222,6 +271,7 @@ const MyPickCollection = () => {
             <ItemContainer key={data.bookmarkId}>
               <Grid
                 container
+                className="move"
                 item
                 xs={12}
                 sx={{
@@ -229,8 +279,9 @@ const MyPickCollection = () => {
                   flexDirection: 'row',
                 }}
               >
-                <Grid item xs={1.8} aria-hidden="true">
+                <Grid item xs={1.8} aria-hidden="true" className="move-image">
                   <BookImg
+                    className="move-image"
                     onClick={() =>
                       navigate(`/collection/${data.collections.collectionId}`)
                     }
@@ -277,17 +328,19 @@ const MyPickCollection = () => {
                       </Typography>
                     </Grid>
                     <Grid sx={{ height: '98.4px' }}>
-                      <Typography
-                        color="#232627"
-                        sx={{
-                          fontWeight: 200,
-                          height: 'auto',
-                        }}
-                        variant="body2"
-                        component={'span'}
-                      >
-                        {data.collections.content}
-                      </Typography>
+                      <div className="content-body">
+                        <Typography
+                          color="#232627"
+                          sx={{
+                            fontWeight: 200,
+                            height: 'auto',
+                          }}
+                          variant="body2"
+                          component={'span'}
+                        >
+                          {data.collections.content}
+                        </Typography>
+                      </div>
                     </Grid>
 
                     <Grid sx={{ height: '32.8px' }}>

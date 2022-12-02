@@ -8,6 +8,15 @@ const GuideContainer = styled.div`
   color: ${({ theme }) => theme.colors.gray};
   padding: 0 30px;
   display: flex;
+  flex-direction: left;
+
+  .guide-move {
+    display: flex !important;
+
+    @media screen and (max-width: 870px) {
+      display: none !important;
+    }
+  }
 
   div {
     margin-right: 5px;
@@ -65,7 +74,6 @@ const ModalBox = styled.div`
   }
 `;
 
-//TODO: 페어링, 컬렉션 안내 메시지 추가
 const MyPickGuide = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -73,27 +81,30 @@ const MyPickGuide = () => {
 
   return (
     <GuideContainer>
-      <Typography
-        color="#737373"
-        sx={{
-          display: 'flex',
-        }}
-        variant="body2"
-        gutterBottom
-        style={{
-          textAlign: 'center',
-          alignItems: 'center',
-          marginBottom: 0,
-        }}
-      >
-        나의 픽이란?
-      </Typography>
-      <div className="questionmark" onClick={handleOpen} role="presentation">
-        <img
-          src={process.env.PUBLIC_URL + '/images/question_info_icon.svg'}
-          alt="question"
-        />
+      <div className="guide-move ">
+        <Typography
+          color="#737373"
+          sx={{
+            display: 'flex',
+          }}
+          variant="body2"
+          gutterBottom
+          style={{
+            textAlign: 'center',
+            alignItems: 'center',
+            marginBottom: 0,
+          }}
+        >
+          나의 픽이란?
+        </Typography>
+        <div className="questionmark" onClick={handleOpen} role="presentation">
+          <img
+            src={process.env.PUBLIC_URL + '/images/question_info_icon.svg'}
+            alt="question"
+          />
+        </div>
       </div>
+
       <Modal
         open={open}
         onClose={handleClose}

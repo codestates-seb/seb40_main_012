@@ -1,7 +1,5 @@
-/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from '../../../api/axios';
@@ -10,6 +8,8 @@ import MyPairingDetail from './MyPairingDetail';
 import { useEffect, useState } from 'react';
 import { BasicButton } from '../../../components/Buttons';
 import Modal from '@mui/material/Modal';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -30,11 +30,6 @@ const ContentContainer = styled.div`
   .no-data-notice {
     text-align: center;
   }
-`;
-
-const CommentContainer = styled.div`
-  display: flex;
-  flex-direction: row;
 `;
 
 const ButtonCSS = styled.button`
@@ -106,45 +101,59 @@ const Content = ({
   hasMore,
   setHasMore,
 }) => {
-  //Delete Modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    setTimeout(() => {
-      if (hasMore === true && lastId) {
-        axios
-          .get(`/api/mypage/userPairing?lastId=${lastId}`)
-          .then((response) => {
-            setContent({
-              data: content.data.concat(response.data.data.content),
-              size: response.data.data.size,
+    try {
+      setTimeout(() => {
+        if (hasMore === true && lastId) {
+          axios
+            .get(`/api/mypage/userPairing?lastId=${lastId}`)
+            .then((response) => {
+              setContent({
+                data: content.data.concat(response.data.data.content),
+                size: response.data.data.size,
+              });
+              setHasMore(response.data.data.size < 5 ? false : true);
+              {
+                response.data.data.size >= 5
+                  ? setLastId(
+                      response.data.data.content[
+                        response.data.data.content.length - 1
+                      ].pairingId
+                    )
+                  : null;
+              }
             });
-            setHasMore(response.data.data.size < 5 ? false : true);
-            {
-              response.data.data.size >= 5
-                ? setLastId(
-                    response.data.data.content[
-                      response.data.data.content.length - 1
-                    ].pairingId
-                  )
-                : null;
-            }
-          })
-          .catch((error) => console.log('에러', error));
-      }
-    }, 500);
+        }
+      }, 500);
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   const removeAll = () => {
-    axios
-      .delete(`/api/books/pairings/delete`)
-      .then(() => fetchData())
-      .catch((error) => console.log('에러', error));
+    try {
+      axios.delete(`/api/books/pairings/delete`).then(() => fetchData());
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {

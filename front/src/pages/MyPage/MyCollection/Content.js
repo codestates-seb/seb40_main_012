@@ -1,7 +1,5 @@
-/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import axios from '../../../api/axios';
@@ -11,6 +9,8 @@ import { useEffect, useState } from 'react';
 import { BasicButton } from '../../../components/Buttons';
 import { MY_COLLECTION_URL } from '../../../api/requests';
 import Modal from '@mui/material/Modal';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
@@ -109,12 +109,11 @@ const Content = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
-    axios
-      .get(MY_COLLECTION_URL)
-      .then((response) => {
-        console.log('response배열', response.data.data.content);
+    try {
+      axios.get(MY_COLLECTION_URL).then((response) => {
         setContent({
           data: response.data.data.content,
         });
@@ -128,42 +127,65 @@ const Content = () => {
             : null;
         }
         setHasMore(response.data.data.size < 5 ? false : true);
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
-  console.log(lastId);
 
   const fetchMoreData = () => {
     setTimeout(() => {
       if (hasMore === true && lastId) {
-        axios
-          .get(`/api/mypage/userCollection?lastId=${lastId}`)
-          .then((response) => {
-            setContent({
-              data: content.data.concat(response.data.data.content),
-              size: response.data.data.size,
+        try {
+          axios
+            .get(`/api/mypage/userCollection?lastId=${lastId}`)
+            .then((response) => {
+              setContent({
+                data: content.data.concat(response.data.data.content),
+                size: response.data.data.size,
+              });
+              setHasMore(response.data.data.size < 5 ? false : true);
+              {
+                response.data.data.size >= 5
+                  ? setLastId(
+                      response.data.data.content[
+                        response.data.data.content.length - 1
+                      ].collectionId
+                    )
+                  : null;
+              }
             });
-            setHasMore(response.data.data.size < 5 ? false : true);
-            {
-              response.data.data.size >= 5
-                ? setLastId(
-                    response.data.data.content[
-                      response.data.data.content.length - 1
-                    ].collectionId
-                  )
-                : null;
-            }
-          })
-          .catch((error) => console.log('에러', error));
+        } catch (error) {
+          const { message } = error;
+          dispatch(
+            setOpenSnackbar({
+              severity: 'error',
+              message: message,
+            })
+          );
+        }
       }
     }, 500);
   };
 
   const removeAll = () => {
-    axios
-      .delete(`/api/mypage/userCollection/delete`)
-      .then(() => fetchData())
-      .catch((error) => console.log('에러', error));
+    try {
+      axios.delete(`/api/mypage/userCollection/delete`).then(() => fetchData());
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {

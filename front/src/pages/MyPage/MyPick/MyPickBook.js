@@ -1,20 +1,22 @@
-/*eslint-disable*/
-
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-
 import Typography from '@mui/material/Typography';
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
-
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useState, useEffect } from 'react';
 import { BasicButton } from '../../../components/Buttons';
 import { MY_PICK_BOOK } from '../../../api/requests';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
+
 const Remove = styled.div`
   color: #dee2e6;
   opacity: 0;
+  @media screen and (max-width: 870px) {
+    display: none !important;
+  }
 `;
 
 const RemoveButton = styled.button`
@@ -40,6 +42,12 @@ const ItemContainer = styled.div`
       }
     }
   }
+  .move {
+    @media screen and (max-width: 750px) {
+      width: 100%;
+      flex-direction: column;
+    }
+  }
 `;
 
 const BookImg = styled.div`
@@ -57,7 +65,10 @@ const BookImg = styled.div`
     padding: 10px !important;
     margin-left: 8px;
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
-    /* background-color: navy; */
+  }
+  .move-image {
+    width: 112px !important;
+    height: 158px !important;
   }
 `;
 
@@ -91,6 +102,20 @@ const FlexBox = styled.div`
       color: #795af5;
       transition: color 0.5s;
     }
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+  .content-body {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
   }
 `;
 
@@ -101,19 +126,25 @@ const MyPickBook = () => {
     data: [],
   });
   const [lastId, setLastId] = useState();
+  const dispatch = useDispatch();
 
   const onRemove = (id) => {
-    axios
-      .post(`/api/books/${id}/bookmark`)
-      .then(() => fetchBookData())
-      .catch((error) => console.log('에러', error));
+    try {
+      axios.post(`/api/books/${id}/bookmark`).then(() => fetchBookData());
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   const fetchBookData = async () => {
-    axios
-      .get(MY_PICK_BOOK)
-      .then((response) => {
-        console.log('response');
+    try {
+      axios.get(MY_PICK_BOOK).then((response) => {
         setContent({
           data: response.data.data.content,
         });
@@ -127,36 +158,51 @@ const MyPickBook = () => {
             : null;
         }
         setHasMore(response.data.data.size < 5 ? false : true);
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
-  // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    setTimeout(() => {
-      if (hasMore === true && lastId) {
-        axios
-          .get(`/api/mypage/bookmark/book?lastId=${lastId}`)
-          .then((response) => {
-            console.log('응답', response.data.data.content);
-            setContent({
-              data: content.data.concat(response.data.data.content),
-              size: response.data.data.size,
+    try {
+      setTimeout(() => {
+        if (hasMore === true && lastId) {
+          axios
+            .get(`/api/mypage/bookmark/book?lastId=${lastId}`)
+            .then((response) => {
+              setContent({
+                data: content.data.concat(response.data.data.content),
+                size: response.data.data.size,
+              });
+              setHasMore(response.data.data.size < 5 ? false : true);
+              {
+                response.data.data.size >= 5
+                  ? setLastId(
+                      response.data.data.content[
+                        response.data.data.content.length - 1
+                      ].bookmarkId
+                    )
+                  : null;
+              }
             });
-            setHasMore(response.data.data.size < 5 ? false : true);
-            {
-              response.data.data.size >= 5
-                ? setLastId(
-                    response.data.data.content[
-                      response.data.data.content.length - 1
-                    ].bookmarkId
-                  )
-                : null;
-            }
-          })
-          .catch((error) => console.log('에러', error));
-      }
-    }, 500);
+        }
+      }, 500);
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
   useEffect(() => {
     fetchBookData();
@@ -168,10 +214,8 @@ const MyPickBook = () => {
       {content.data.length ? (
         <InfiniteScroll
           dataLength={content.data.length}
-          // dataLength={data.content.length}
-          // next={data.content && fetchMoreData}
           next={fetchMoreData}
-          hasMore={hasMore} // 스크롤 막을지 말지 결정
+          hasMore={hasMore}
           loader={
             <div
               style={{
@@ -221,14 +265,16 @@ const MyPickBook = () => {
               <Grid
                 container
                 item
+                className="move"
                 xs={12}
                 sx={{
                   display: 'flex',
                   flexDirection: 'row',
                 }}
               >
-                <Grid item xs={1.8}>
+                <Grid item xs={1.8} className="move-image">
                   <BookImg
+                    className="move-image"
                     onClick={() => navigate(`/book/${data.collections.isbn13}`)}
                   >
                     {data.collections.bookCover ? (
@@ -333,9 +379,7 @@ const MyPickBook = () => {
                           }}
                           align="right"
                           color="#b3b3b3"
-                        >
-                          {/* <div>{data.collections.author}</div> */}
-                        </Grid>
+                        ></Grid>
                       </div>
                     </Grid>
                   </FlexBox>
