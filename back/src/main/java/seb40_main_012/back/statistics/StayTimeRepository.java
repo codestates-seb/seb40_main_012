@@ -23,7 +23,7 @@ public interface StayTimeRepository extends JpaRepository<StayTime, Long> {
 
     @Query(nativeQuery = true, value =
             "SELECT * FROM STAY_TIME " +
-                    "WHERE SIGN_OUT = :localDate"
+                    "WHERE SIGN_OUT_DAY = :localDate"
     )
     List<StayTime> findByLocalDate(LocalDate localDate);
 
@@ -32,7 +32,7 @@ public interface StayTimeRepository extends JpaRepository<StayTime, Long> {
     void deleteByToken(String token);
 
     @Modifying
-    @Query(nativeQuery = true, value = "DELETE FROM STAY_TIME WHERE SIGN_IN = :localDate")
+    @Query(nativeQuery = true, value = "DELETE FROM STAY_TIME WHERE SIGN_OUT_DAY = :localDate")
     void deleteByLocalDate(LocalDate localDate);
 
 }
