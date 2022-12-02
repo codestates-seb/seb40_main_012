@@ -107,15 +107,16 @@ public class CherriPickAop {
     public void signInStatistics(JoinPoint joinPoint, User user, String refreshToken) { // 로그인 하는 경우
 
         HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String ip = req.getRemoteAddr();;
+        String ip = req.getRemoteAddr();
+        ;
 
-            StayTime newSignIn = StayTime.builder()
-                    .signIn(LocalDateTime.now())
-                    .user(user)
-                    .refreshToken(refreshToken)
-                    .build();
+        StayTime newSignIn = StayTime.builder()
+                .signIn(LocalDateTime.now())
+                .user(user)
+                .refreshToken(refreshToken)
+                .build();
 
-            stayTimeRepository.save(newSignIn);
+        stayTimeRepository.save(newSignIn);
     }
 
 //    @After(value = "execution(* seb40_main_012.back.config.auth.jwt.JwtTokenizer.removeRefreshToken(..)) && args(tokenValue)")
@@ -138,9 +139,24 @@ public class CherriPickAop {
 //
 //            statisticsRepository.save(newStatistics);
 //
-//        } else {
+//            stayTimeRepository.deleteByLocalDate(LocalDate.now().minusDays(1)); // 하루 전 로그아웃 자료 날리기
+//            stayTimeRepository.deleteByLocalDate(LocalDate.now().minusDays(2)); // 이틀 전 로그아웃 자료 날리기
 //
-//            Statistics statistics = statisticsRepository.findByDate(LocalDate.now());
+//        } else if (statisticsRepository.findByDate(LocalDate.now()) != null) { // 오늘 첫 로그아웃이 아닐 경우
+//
+//            Statistics statistics = statisticsRepository.findByDate(LocalDate.now()); // 오늘의 통계 객체 불러오기
+//
+//            long signOutNumToday = stayTimeRepository.findByLocalDate(LocalDate.now()).size(); // 오늘 로그아웃 한 총 사용자(본인 포함)
+//
+//            long durationBefore = statistics.getAverageStayTimeSec(); // 기존 평균 체류시간
+//
+//            long durationAfter = (durationBefore * (signOutNumToday - 1) + duration) / signOutNumToday; // 수정된 평균 체류시간
+//
+//            statistics.setAverageStayTimeSec(durationAfter); // 어제의 로그아웃 기록이 포함된 자료 지우기
+//            statistics.setAverageStayTimeStr(durationForStat); // 그저께의 로그아웃 기록이 포함된 자료 지우기
+//
+//            statisticsRepository.save(statistics);
+//
 //        }
 //
 //        stayTimeRepository.deleteByToken(tokenValue);

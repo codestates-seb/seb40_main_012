@@ -18,7 +18,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     @Query(nativeQuery = true, value = "select * " +
             "from Book " +
             "order by " + "average_rating " + "desc " +
-            "limit 5")
+            "limit 6")
     List<Book> findCarouselBooks();
 
     @Query(nativeQuery = true, value = "select * " +

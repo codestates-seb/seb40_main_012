@@ -23,6 +23,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Validated
 @RestController
@@ -71,7 +72,7 @@ public class PairingController {
             @RequestParam(value = "image") @Nullable MultipartFile file,
             @Valid @RequestPart(value = "patchPairingDto") PairingDto.Patch patchPairing) throws Exception {
 
-        if (pairingService.findPairing(pairingId).getImage() == null && file == null) {
+        if (pairingService.findPairing(pairingId).getImagePath() == null && file == null) {
 
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
             pairing.setImagePath(null);
@@ -81,7 +82,7 @@ public class PairingController {
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
 
-        } else if (pairingService.findPairing(pairingId).getImage() == null && file != null) {
+        } else if (pairingService.findPairing(pairingId).getImagePath() == null && file != null) {
 
             String imagePath = awsS3Service.uploadToS3(file);
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
@@ -94,17 +95,22 @@ public class PairingController {
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
 
-        } else if (pairingService.findPairing(pairingId).getImage() != null && file == null) {
+        } else if (pairingService.findPairing(pairingId).getImagePath() != null && file == null) {
+
+            String originalImgPath = pairingService.findPairing(pairingId).getImagePath();
 
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
-            pairing.setImagePath(pairing.getImagePath());
+            pairing.setImagePath(originalImgPath);
             Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
+//            response.setImagePath(originalImgPath);
+
+
 
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
 
-        } else if (pairingService.findPairing(pairingId).getImage() != null && file != null) {
+        } else if (pairingService.findPairing(pairingId).getImagePath() != null && file != null) {
 
             awsS3Service.removeFromS3(pairingService.findPairing(pairingId).getImagePath()); // 기존 이미지 삭제
             String imagePath = awsS3Service.uploadToS3(file); // 새 이미지 저장
