@@ -31,7 +31,7 @@ const BestBooks = () => {
 
   return (
     <BestBooksContainer>
-      <MainBooksTitle title="체리픽에서 많이 본 책" />
+      <MainBooksTitle title="체리픽에서 많이 본 책" type="best" />
       <BooksContainer>
         {bestBooks?.map((el, idx) => {
           return (

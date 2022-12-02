@@ -4,6 +4,7 @@ import BestBooks from './BestBooks';
 import UserBooks from './UserBooks';
 import BestCollections from './BestCollections';
 import BestPairings from './BestPairings';
+import MainInformation from './MainInformation';
 import { useSelector } from 'react-redux';
 import { selectIsLogin, selectnickName } from '../../store/modules/authSlice';
 
@@ -14,6 +15,7 @@ const MainPage = () => {
   return (
     <PageContainer footer>
       <MainBooks />
+      <MainInformation />
       <BestBooks />
       {isLogin ? <UserBooks nickname={userNickname} /> : null}
       <BestCollections />
