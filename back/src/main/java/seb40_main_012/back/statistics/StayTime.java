@@ -9,6 +9,7 @@ import seb40_main_012.back.user.entity.User;
 
 import javax.persistence.*;
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -26,17 +27,23 @@ public class StayTime {
     private String refreshToken;
 
     @Column
+    private LocalDate signInDay;
+
+    @Column
     private LocalDateTime signIn;
 
     @Column
     private LocalDateTime signOut;
 
     @Column
-    private Duration stayTime;
+    private long stayTime;
+
+    @Column
+    private String stayTimeStr;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "email")
+    @JoinColumn(name = "user_Id")
     private User user;
 
 

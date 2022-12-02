@@ -119,6 +119,7 @@ public class BookCollectionDto {
                                             .commentId(comment.getCommentId())
                                             .userInformation(
                                                     UserDto.ResponseDto.builder()
+                                                            .profileImage(comment.getUser().getProfileImage())
                                                             .email(comment.getUser().getEmail())
                                                             .nickName(comment.getUser().getNickName())
                                                             .build()
