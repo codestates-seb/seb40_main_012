@@ -97,9 +97,6 @@ public class UserInfoDto {
                 profileImage = user.getProfileImage();
             }
             if(!user.getCategories().isEmpty()){
-                System.out.println("=====================");
-                System.out.println(user.getCategories().size());
-                System.out.println("=====================");
                 category = user.getCategories().stream()
                         .map(x -> x.getCategory().getGenre()).collect(Collectors.toList());
             }else {

@@ -146,6 +146,7 @@ public class UserController {
     public UserInfoDto.Response getUserInfo() {
         User findUser = userService.getLoginUser();
         User user = userService.findVerifiedUser(findUser.getUserId());
+        user.setBookTemp(userService.calcBookTemp());
         return UserInfoDto.Response.of(user);
     }
 
