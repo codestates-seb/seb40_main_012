@@ -39,8 +39,8 @@ server:
 cloud:
   aws:
     credentials:
-      accessKey: AKIAW3QYKW5IHBS7BH4B
-      secretKey: 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
+      accessKey:
+      secretKey:
     s3:
       bucket: main-012-images
     region:
