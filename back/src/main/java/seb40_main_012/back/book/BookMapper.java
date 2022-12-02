@@ -86,7 +86,7 @@ public interface BookMapper {
         return response.build();
     }
 
-    default BookDto.Response bookToBookResponses(Book book,List<BookCollection> collections) {
+    default BookDto.Response bookToBookResponses(Book book, List<BookCollection> collections) {
 
         if (book == null) {
             return null;
