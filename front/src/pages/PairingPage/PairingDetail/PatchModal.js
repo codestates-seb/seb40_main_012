@@ -187,14 +187,13 @@ export default function DeleteModal() {
   const [outLink, outLinkBind, outLinkReset] = useInput(
     pairingData.outLinkPath
   );
-  const [imgData, setImgData] = useState({});
+  const [imgData, setImgData] = useState();
 
   const onChangeImg = (e) => {
     e.preventDefault();
 
     if (e.target.files) {
       const uploadFile = e.target.files[0];
-      console.log('uploadFile', uploadFile);
       setImgData(uploadFile);
     }
   };
