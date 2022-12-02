@@ -16,6 +16,7 @@
 //import seb40_main_012.back.bookCollection.repository.BookCollectionTagRepository;
 //import seb40_main_012.back.bookCollection.repository.TagRepository;
 //import seb40_main_012.back.bookCollection.service.BookCollectionService;
+//import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
 //import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
 //import seb40_main_012.back.common.bookmark.Bookmark;
 //import seb40_main_012.back.common.bookmark.BookmarkRepository;

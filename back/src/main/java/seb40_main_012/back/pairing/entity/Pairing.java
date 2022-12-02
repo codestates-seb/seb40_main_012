@@ -47,7 +47,7 @@ public class Pairing {
     @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(columnDefinition = "LONGTEXT")
     private String body;
 
     @Column
