@@ -17,7 +17,7 @@ import {
   asyncLikePairingComment,
   asyncDislikePairingComment,
 } from '../../../store/modules/pairingSlice';
-import { selectEmail } from '../../../store/modules/authSlice';
+import { selectEmail, selectIsLogin } from '../../../store/modules/authSlice';
 import Comments from '../../../components/Comments/Comments';
 import PatchModal from './PatchModal';
 import DeleteModal from './DeleteModal';
@@ -106,6 +106,7 @@ const ImgBox = styled.div`
 const PairingDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isLogin = useSelector(selectIsLogin);
   const { pairingId } = useParams();
   const [isMine, setIsMine] = useState(false);
 
@@ -171,7 +172,7 @@ const PairingDetail = () => {
         taglist={[]}
       />
       <BtnStyleBox>
-        {isMine ? (
+        {isLogin && isMine ? (
           <EditModeStyleBox>
             <PatchModal />
             <DeleteModal deleteId={pairingData?.pairingId} />

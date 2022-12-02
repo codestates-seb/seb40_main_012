@@ -84,8 +84,7 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
         return;
       }
       setPasswordErrMsg('');
-      await myPageApi.withdrawal();
-      await authApi.logout(); // 회원탈퇴 api 단에서 로그아웃 api 로직까지 같이 처리해주는게 좋을 것 같음
+      await Promise.all[(myPageApi.withdrawal(), authApi.logout())]; // 회원탈퇴 api 단에서 로그아웃 api 로직까지 같이 처리해주는게 좋을 것 같음
       navigate('/', { replace: true });
       dispatch(
         setOpenSnackbar({
