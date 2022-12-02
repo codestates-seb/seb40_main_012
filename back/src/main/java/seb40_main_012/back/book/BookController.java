@@ -8,6 +8,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import seb40_main_012.back.advice.BusinessLogicException;
+import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
@@ -57,7 +59,7 @@ public class BookController {
                                   @PathVariable("isbn13") @Positive String isbn13) {
         String refreshToken = cookieManager.outCookie(request, "refreshToken");
         if(refreshToken != null) {
-            if(refreshTokenRepository.findByTokenValue(refreshToken) != null && token == null)
+            if(refreshTokenRepository.findByTokenValue(refreshToken) != null && token == null) // 로그인 유저인데 authorization이 없는 경우
                 throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
         }
 
