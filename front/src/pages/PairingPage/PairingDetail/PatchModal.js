@@ -187,7 +187,7 @@ export default function DeleteModal() {
   const [outLink, outLinkBind, outLinkReset] = useInput(
     pairingData.outLinkPath
   );
-  const [imgData, setImgData] = useState();
+  const [imgData, setImgData] = useState({});
 
   const onChangeImg = (e) => {
     e.preventDefault();
