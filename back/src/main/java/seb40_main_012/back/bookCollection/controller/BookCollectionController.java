@@ -155,8 +155,8 @@ public class BookCollectionController {
     @GetMapping("/author")
     @ResponseStatus(HttpStatus.OK)
     public BookCollectionDto.AuthorCollection getCollectionByAuthor() {
-        String title = "양귀자 모음";
-        BookCollection collection = collectionRepository.findByTitle(title);
+//        String title = "양귀자 모음";
+        BookCollection collection = collectionService.findCollectionByAuthor();
         return BookCollectionDto.AuthorCollection.of(collection);
     }
 
