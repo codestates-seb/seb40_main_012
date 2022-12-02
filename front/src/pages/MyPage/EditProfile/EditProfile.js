@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
@@ -83,6 +83,7 @@ const ItemWrapperChangePasswordStyled = styled(ItemWrapperStyled)`
 `;
 
 const EditProfile = () => {
+  const navigate = useNavigate();
   const inputRef = useRef([]);
   const dispatch = useDispatch();
   const loading = useSelector((state) => state.auth.loading);
@@ -254,6 +255,7 @@ const EditProfile = () => {
         );
         setInputStatus({ ...inputStatus, nickName: '' });
         setInputHelperText({ ...inputHelperText, nickName: '' });
+        navigate('/mypage');
       })
       .catch((error) => {
         const { message } = error;
