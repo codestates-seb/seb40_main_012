@@ -61,7 +61,7 @@ public class CherriPickAop {
         }
     }
 
-    @After(value = "execution(* seb40_main_012.back.book.BookController.carouselBooks())")
+    @After(value = "execution(* seb40_main_012.back.book.BookController.carouselBooks())") // 메인화면 접근시
     public void createTable(JoinPoint joinPoint) { // 오늘의 첫 방문자가 있을 시 테이블 생성 및 정보 입력
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); // 유저 인증 정보
