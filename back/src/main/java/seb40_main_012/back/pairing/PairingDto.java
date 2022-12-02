@@ -27,7 +27,7 @@ public class PairingDto {
         @Size(max = 30, message = "30자를 넘을 수 없습니다.")
         private String title;
 
-        @Size(max = 500, message = "500자를 넘을 수 없습니다.")
+        @Size(max = 1000, message = "1000자를 넘을 수 없습니다.")
         private String body;
 
         @NotNull(message = "카테고리를 선택하셔야 합니다.")
