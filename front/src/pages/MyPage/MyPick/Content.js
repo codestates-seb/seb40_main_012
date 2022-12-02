@@ -166,7 +166,6 @@ const Content = ({ content }) => {
         </ContentContainer>
       ) : (
         <>
-          <Grid item xs={0.5}></Grid>
           <ContentContainer>
             <Grid
               container
@@ -175,38 +174,42 @@ const Content = ({ content }) => {
                 alignItems: 'center',
               }}
             >
-              <Grid item xs={5} sx={{ mt: 1, mb: 1 }}>
-                <CommentContainer>
-                  <Typography
-                    color="#737373"
-                    sx={{
-                      display: 'flex',
-                    }}
-                    variant="body2"
-                    gutterBottom
+              <Grid item xs={5} sx={{ mt: 1, mb: 1, ml: 1 }}>
+                <CommentContainer className="buttons">
+                  <StyledToggleButtonGroup
+                    className="button-container"
+                    size="small"
+                    value={alignment}
+                    exclusive
+                    onChange={handleAlignment}
+                    aria-label="text alignment"
+                    sx={{ ml: 0 }}
                   >
-                    <input
-                      type="radio"
-                      onChange={() => setView(1)}
-                      defaultChecked={true}
-                      name="xxx"
-                    />
-                    페어링
-                    <input
-                      type="radio"
-                      onChange={() => setView(2)}
-                      defaultChecked={false}
-                      name="xxx"
-                    />
-                    컬렉션
-                    <input
-                      type="radio"
-                      onChange={() => setView(3)}
-                      defaultChecked={false}
-                      name="xxx"
-                    />
-                    책
-                  </Typography>
+                    <ToggleButton
+                      className="toggle-button"
+                      onClick={() => setView(1)}
+                      value="left"
+                      aria-label="left aligned"
+                    >
+                      페어링
+                    </ToggleButton>
+                    <ToggleButton
+                      className="toggle-button"
+                      onClick={() => setView(2)}
+                      value="center"
+                      aria-label="centered"
+                    >
+                      컬렉션
+                    </ToggleButton>
+                    <ToggleButton
+                      className="toggle-button"
+                      onClick={() => setView(3)}
+                      value="right"
+                      aria-label="right aligned"
+                    >
+                      책
+                    </ToggleButton>
+                  </StyledToggleButtonGroup>
                 </CommentContainer>
               </Grid>
 
@@ -248,7 +251,6 @@ const Content = ({ content }) => {
                 </BasicButton>
               </Typography>
             </div>
-            {/* ///////////// */}
           </ContentContainer>
         </>
       )}

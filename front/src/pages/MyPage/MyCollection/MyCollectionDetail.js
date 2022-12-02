@@ -216,7 +216,7 @@ const MyCollectionDetail = ({ data, fetchData }) => {
               </BookImg>
             </Grid>
 
-            <Grid item xs={10} sx={{ height: '164px', marginBottom: '5px' }}>
+            <Grid item xs={9.9} sx={{ height: '164px', marginBottom: '5px' }}>
               <FlexBox
                 onClick={() => navigate(`/collection/${data.collectionId}`)}
               >

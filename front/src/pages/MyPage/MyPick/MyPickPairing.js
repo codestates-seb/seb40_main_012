@@ -304,7 +304,7 @@ const MyPickPairing = () => {
 
                 <Grid
                   item
-                  xs={10}
+                  xs={9.9}
                   sx={{ height: '164px', marginBottom: '5px' }}
                 >
                   <FlexBox

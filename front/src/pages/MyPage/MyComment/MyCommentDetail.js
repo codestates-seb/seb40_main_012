@@ -210,7 +210,7 @@ const MyCommentDetail = ({ data, fetchData }) => {
                 ) : null}
               </Grid>
 
-              <Grid item xs={10} sx={{ height: '164px', marginBottom: '5px' }}>
+              <Grid item xs={9.9} sx={{ height: '164px', marginBottom: '5px' }}>
                 {data.commentType === 'BOOK' ? (
                   <NavigateBook data={data} navigate={navigate} />
                 ) : null}
