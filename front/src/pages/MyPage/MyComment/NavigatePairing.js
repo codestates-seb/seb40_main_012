@@ -1,19 +1,35 @@
-/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import axios from '../../../api/axios';
 
 const FlexBox = styled.div`
   display: flex;
   flex-direction: column;
   margin-left: 20px;
   margin-right: 10px;
+  padding-right: 20px;
   font-size: 13px;
   border-bottom: 1px solid #e9e9e9;
+  width: 100%;
+
+  .title-author {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .content-body {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
 
   cursor: pointer;
   .comment {
@@ -37,6 +53,12 @@ const FlexBox = styled.div`
       color: #b09dff;
       transition: color 0.5s;
     }
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
   }
 `;
 
@@ -61,17 +83,19 @@ const NavigatePairing = ({ data, navigate }) => {
         </Typography>
       </Grid>
       <Grid sx={{ height: '98.4px' }}>
-        <Typography
-          color="#232627"
-          sx={{
-            fontWeight: 200,
-            height: 'auto',
-          }}
-          variant="body2"
-          component={'span'}
-        >
-          {data.body}
-        </Typography>
+        <div className="content-body">
+          <Typography
+            color="#232627"
+            sx={{
+              fontWeight: 200,
+              height: 'auto',
+            }}
+            variant="body2"
+            component={'span'}
+          >
+            {data.body}
+          </Typography>
+        </div>
       </Grid>
 
       <Grid sx={{ height: '32.8px' }}>

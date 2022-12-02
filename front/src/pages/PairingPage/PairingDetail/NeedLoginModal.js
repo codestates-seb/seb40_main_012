@@ -19,10 +19,13 @@ const style = {
 const BtnStyleBox = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
   margin-top: 30px;
   margin-left: -15px;
+  button {
+    margin: 0 10px;
+  }
 `;
 
 const Btns = styled.div`
@@ -51,6 +54,18 @@ const InfoContainer = styled.div`
   align-items: center;
 `;
 
+const DeleteIconContainer = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 export default function NeedLoginModal({ children }) {
   const navigate = useNavigate();
   const [open, setOpen] = React.useState(false);
@@ -67,6 +82,12 @@ export default function NeedLoginModal({ children }) {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
+          <DeleteIconContainer onClick={handleClose}>
+            <img
+              src={process.env.PUBLIC_URL + '/images/close_icon.svg'}
+              alt="modal close"
+            />
+          </DeleteIconContainer>
           <InfoContainer>
             <Typography id="modal-modal-title" variant="h6" component="h2">
               로그인이 필요한 서비스입니다.
@@ -76,17 +97,14 @@ export default function NeedLoginModal({ children }) {
             </Typography>
           </InfoContainer>
           <BtnStyleBox>
-            <TextButton width={'100px'} onClick={handleClose}>
-              창 닫기
-            </TextButton>
-            <ContainedButton
+            <TextButton
               width={'100px'}
               onClick={() => {
                 navigate('/user/signin');
               }}
             >
               로그인
-            </ContainedButton>
+            </TextButton>
             <ContainedButton
               width={'100px'}
               onClick={() => {

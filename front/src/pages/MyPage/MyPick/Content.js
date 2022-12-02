@@ -1,23 +1,34 @@
-/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-// import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
-// import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import MyPickBook from './MyPickBook';
-
 import MyPickPairing from './MyPickPairing';
 import MyPickCollection from './MyPickCollection';
 import { useState } from 'react';
 import MyPickGuide from './MyPickGuide';
 import { BasicButton } from '../../../components/Buttons';
 import * as React from 'react';
-
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { useNavigate } from 'react-router-dom';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
+
+  .buttons {
+    @media screen and (max-width: 490px) {
+      justify-content: center;
+    }
+  }
+
+  .toggle-button {
+    @media screen and (max-width: 490px) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 50px;
+    }
+  }
 
   img {
     align-items: center;
@@ -29,11 +40,27 @@ const ContentContainer = styled.div`
   .fixed {
     position: fixed;
   }
+  .button-container {
+    @media screen and (max-width: 490px) {
+      display: flex;
+      align-items: center;
+      justify-content: center !important;
+    }
+  }
+  .toggle-button {
+    @media screen and (max-width: 490px) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 50px;
+    }
+  }
 `;
 
 const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
   '& .MuiToggleButtonGroup-grouped': {
     margin: theme.spacing(0.5),
+
     border: 0,
     '&.Mui-disabled': {
       border: 0,
@@ -55,6 +82,7 @@ const CommentContainer = styled.div`
 const Content = ({ content }) => {
   const [view, setView] = useState(1);
   const [alignment, setAlignment] = React.useState('left');
+  const navigate = useNavigate();
 
   const handleAlignment = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -66,14 +94,16 @@ const Content = ({ content }) => {
         <ContentContainer>
           <Grid
             container
+            className="button-container"
             style={{
               textAlign: 'center',
               alignItems: 'center',
             }}
           >
             <Grid item xs={5} sx={{ mt: 1, mb: 1, ml: 1 }}>
-              <CommentContainer>
+              <CommentContainer className="buttons">
                 <StyledToggleButtonGroup
+                  className="button-container"
                   size="small"
                   value={alignment}
                   exclusive
@@ -82,6 +112,7 @@ const Content = ({ content }) => {
                   sx={{ ml: 0 }}
                 >
                   <ToggleButton
+                    className="toggle-button"
                     onClick={() => setView(1)}
                     value="left"
                     aria-label="left aligned"
@@ -89,6 +120,7 @@ const Content = ({ content }) => {
                     페어링
                   </ToggleButton>
                   <ToggleButton
+                    className="toggle-button"
                     onClick={() => setView(2)}
                     value="center"
                     aria-label="centered"
@@ -96,6 +128,7 @@ const Content = ({ content }) => {
                     컬렉션
                   </ToggleButton>
                   <ToggleButton
+                    className="toggle-button"
                     onClick={() => setView(3)}
                     value="right"
                     aria-label="right aligned"
@@ -189,7 +222,7 @@ const Content = ({ content }) => {
                   alignItems: 'center',
                 }}
               >
-                <MyPickGuide />
+                <MyPickGuide className="move-guide" />
               </Grid>
             </Grid>
             <div className="no-data-notice">

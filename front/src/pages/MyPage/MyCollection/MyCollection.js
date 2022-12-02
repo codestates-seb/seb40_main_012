@@ -4,13 +4,12 @@ import Nav from '../Nav';
 import Content from './Content';
 import Container from '@mui/material/Container';
 import styled from 'styled-components';
-// import { useSelector, useDispatch } from 'react-redux';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-// import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import axios from '../../../api/axios';
 import { MY_COLLECTION_URL } from '../../../api/requests';
 import Scroll from '../Scroll';
-// 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
 
 const Void = styled.div`
   min-width: 50vw;
@@ -28,21 +27,28 @@ const Void = styled.div`
 `;
 
 const MyCollection = () => {
-  console.log('마이컬렉션 시작');
   const [view, setView] = useState(3);
   const [content, setContent] = useState({
     data: [],
   });
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
-    axios
-      .get(MY_COLLECTION_URL)
-      .then((response) => {
+    try {
+      axios.get(MY_COLLECTION_URL).then((response) => {
         setContent({
           data: response.data.data.content,
         });
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {

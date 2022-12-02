@@ -8,6 +8,12 @@ const CollectionMediumBookContainer = styled.div`
     object-fit: cover;
     padding: 5px;
   }
+  @media screen and (max-width: 500px) {
+    width: 33%;
+    img {
+      padding: 2px;
+    }
+  }
 `;
 
 const CollectionBookTitle = styled.div`

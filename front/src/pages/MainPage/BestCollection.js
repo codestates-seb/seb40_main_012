@@ -8,6 +8,9 @@ const BestCollectionContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 500px) {
+    margin: 0 3px;
+  }
 `;
 
 const BookColumn = styled.div`

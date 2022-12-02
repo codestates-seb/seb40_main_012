@@ -1,17 +1,15 @@
-/*eslint-disable*/
 import Header from '../Header';
 import { PageContainer } from 'containers';
 import Nav from '../Nav';
 import Content from './Content';
 import Container from '@mui/material/Container';
 import styled from 'styled-components';
-// import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-// import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import axios from '../../../api/axios';
 import { MY_PAIRING_URL } from '../../../api/requests';
 import Scroll from '../Scroll';
-// 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const Void = styled.div`
   min-width: 50vw;
@@ -29,18 +27,17 @@ const Void = styled.div`
 `;
 
 const MyPairing = () => {
-  console.log('마이페어링 시작');
   const [view, setView] = useState(2);
   const [content, setContent] = useState({
     data: [],
   });
   const [lastId, setLastId] = useState();
   const [hasMore, setHasMore] = useState(true);
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
-    axios
-      .get(MY_PAIRING_URL)
-      .then((response) => {
+    try {
+      axios.get(MY_PAIRING_URL).then((response) => {
         setContent({
           data: response.data.data.content,
         });
@@ -54,8 +51,16 @@ const MyPairing = () => {
             : null;
         }
         setHasMore(response.data.data.size < 5 ? false : true);
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {

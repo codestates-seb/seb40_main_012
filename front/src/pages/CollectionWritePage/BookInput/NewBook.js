@@ -9,6 +9,9 @@ const NewBookContainer = styled.div`
   &.search:hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 500px) {
+    width: 20%;
+  }
 `;
 
 const CoverContainer = styled.div`
@@ -20,6 +23,12 @@ const CoverContainer = styled.div`
     image-rendering: -webkit-optimize-contrast;
     backface-visibility: hidden;
     transform: translateZ(0);
+    border: 1px solid transparent;
+  }
+  &.search:hover {
+    img {
+      border: 1px solid ${({ theme }) => theme.colors.mainColor};
+    }
   }
 `;
 
@@ -27,6 +36,7 @@ const TitleContainer = styled.div`
   font-size: 12px;
   font-weight: 600;
   color: ${({ theme }) => theme.colors.dark};
+  margin-top: 5px;
   @media screen and (max-width: 500px) {
     font-size: 7px;
   }
@@ -88,7 +98,7 @@ const NewBook = ({
             handleSetNewBooks(isbn);
           }}
         >
-          <CoverContainer>
+          <CoverContainer className={search ? 'search' : null}>
             <img src={cover} alt="book cover" />
           </CoverContainer>
           <TitleContainer>{title}</TitleContainer>
