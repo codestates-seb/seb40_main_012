@@ -100,9 +100,10 @@ public class PairingController {
             String originalImgPath = pairingService.findPairing(pairingId).getImagePath();
 
             Pairing pairing = pairingMapper.pairingPatchToPairing(patchPairing);
+            pairing.setImagePath(originalImgPath);
             Pairing updatedPairing = pairingService.updatePairing(pairing, pairingId);
             PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedPairing);
-            response.setImagePath(originalImgPath);
+//            response.setImagePath(originalImgPath);
 
 
 
