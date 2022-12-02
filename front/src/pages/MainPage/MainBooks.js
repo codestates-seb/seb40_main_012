@@ -10,7 +10,7 @@ import { NextArrow, PrevArrow } from '../../components/CarouselArrows';
 const MainBooksContainer = styled.div`
   display: flex;
   justify-content: center;
-  margin: 25px 0;
+  margin: 25px 0 0 0;
   min-width: 650px;
   @media screen and (max-width: 640px) {
     min-width: 490px;
