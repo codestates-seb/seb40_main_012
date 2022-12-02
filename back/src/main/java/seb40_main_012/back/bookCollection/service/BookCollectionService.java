@@ -266,7 +266,7 @@ public class BookCollectionService {
     }
 
 
-//    public BookCollection findCollectionByAuthor() {
+    public BookCollection findCollectionByAuthor() {
 //        String author = "양귀자 (지은이)";
 //        String title = "양귀자 모음";
 //        String content = "";
@@ -276,7 +276,7 @@ public class BookCollectionService {
 //        List<BookCollectionBook> collectionBooks = new ArrayList<>();
 //        books.forEach(
 //                x -> {
-//                    BookCollectionBook collectionBook = BookCollectionBook.builder().book(x).build();
+//                    BookCollectionBook collectionBook  = BookCollectionBook.builder().book(x).build();
 //                    collectionBookRepository.save(collectionBook);
 //                    collectionBooks.add(collectionBook);
 //                }
@@ -288,7 +288,8 @@ public class BookCollectionService {
 //                .collectionBooks(collectionBooks)
 //                .build();
 //        return collectionRepository.save(collection);
-//    }
+        return findVerifiedCollection(101L);
+    }
 
     public BookCollection findCollectionByCritic() {
         return findVerifiedCollection(3L);
