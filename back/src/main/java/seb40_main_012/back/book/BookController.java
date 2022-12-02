@@ -63,9 +63,9 @@ public class BookController {
                     .collect(Collectors.toList());
         }
 
-        book.setBookCollections(bookCollectionService.getAllCollectionsForTheBook(isbn13));
+        List<BookCollection> collections = bookCollectionService.getAllCollectionsForTheBook(isbn13);
 
-        BookDto.Response response = bookMapper.bookToBookResponse(book);
+        BookDto.Response response = bookMapper.bookToBookResponses(book,collections);
 //        if ( response.getComments() == null ) {
 //            response.setComments(commentService.findBookComments(book.getIsbn13())); // 이거 주석 해제하면 무한스크롤
 //        }
