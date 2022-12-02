@@ -246,11 +246,17 @@ public class BookCollectionService {
 
 
     public List<BookCollection> findCollectionByUserCategory() {
+        String genre = "";
         User findUser = userService.getLoginUser();
         List<Genre> genres = findUser.getCategories().stream().map(x -> x.getCategory().getGenre()).collect(Collectors.toList());
+        List<Genre> rdmGenres = new ArrayList<>(List.of(Genre.ESSAY,Genre.NOVEL,Genre.ETC));
         Collections.shuffle(genres);
-        String genre = genres.get(0).name();
-        log.info("this genre : " + genre);
+        Collections.shuffle(rdmGenres);
+
+        if(genres.isEmpty()){
+            genre = rdmGenres.get(0).name();
+        }else genre = genres.get(0).name();
+
 
         List<BookCollectionBook> collectionBooks = collectionRepositorySupport.findCollectionBook(genre);
         List<BookCollection> collections = collectionBooks.stream().map(x -> x.getBookCollection()).distinct().collect(Collectors.toList());

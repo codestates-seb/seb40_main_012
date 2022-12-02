@@ -113,7 +113,7 @@ public class BookDto {
         private String isbn13;
         private String title;
         private String author;
-        private Long ratingCount;
+        private double averageRating;
         private String bookCover;
 
         public static BookmarkedBook of(Book book){
@@ -121,7 +121,7 @@ public class BookDto {
                     .isbn13(book.getIsbn13())
                     .title(book.getTitle())
                     .author(book.getAuthor())
-                    .ratingCount(book.getRatingCount())
+                    .averageRating(book.getAverageRating())
                     .bookCover(book.getCover())
                     .build();
         }
@@ -135,7 +135,7 @@ public class BookDto {
         private String isbn13;
         private String title;
         private String author;
-        private Long ratingCount;
+        private double averageRating;
         private String bookCover;
 
         public static CollectionBook of(Book book){
@@ -143,7 +143,7 @@ public class BookDto {
                     .isbn13(book.getIsbn13())
                     .title(book.getTitle())
                     .author(book.getAuthor())
-                    .ratingCount(book.getRatingCount())
+                    .averageRating(book.getAverageRating())
                     .bookCover(book.getCover())
                     .build();
         }
