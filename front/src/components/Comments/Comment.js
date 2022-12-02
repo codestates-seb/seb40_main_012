@@ -238,7 +238,7 @@ const Comment = ({
   return (
     <CommentContainer className={isMyComment ? 'mine' : null}>
       <UserImgContainer>
-        {profileImg ? (
+        {profileImg && isMyComment ? (
           <img src={profileImg} alt="user profile" />
         ) : (
           <img
