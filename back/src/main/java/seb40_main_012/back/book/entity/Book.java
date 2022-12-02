@@ -95,6 +95,7 @@ public class Book {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "book")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Rating> ratings;
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
