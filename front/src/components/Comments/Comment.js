@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ToDateString } from '../../util/ToDateString';
+import { useSelector } from 'react-redux';
+import { selectProfileImage } from 'store/modules/authSlice';
 
 const CommentContainer = styled.div`
   display: flex;
@@ -199,6 +201,8 @@ const Comment = ({
   const [editContent, setEditContent] = useState(data?.body);
   const [isLiked, setIsLiked] = useState(data?.isLiked);
 
+  const profileImg = useSelector(selectProfileImage);
+
   useEffect(() => {
     setIsMyComment(userEmail === data?.userInformation?.email);
   }, []);
@@ -234,10 +238,14 @@ const Comment = ({
   return (
     <CommentContainer className={isMyComment ? 'mine' : null}>
       <UserImgContainer>
-        <img
-          src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
-          alt="user icon"
-        />
+        {profileImg ? (
+          <img src={profileImg} alt="user profile" />
+        ) : (
+          <img
+            src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
+            alt="user profile"
+          />
+        )}
       </UserImgContainer>
       <CommentBodyContainer>
         <BodyContainer>
