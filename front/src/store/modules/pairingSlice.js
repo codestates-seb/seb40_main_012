@@ -26,18 +26,18 @@ export const asyncGetOnePairing = createAsyncThunk(
 
 export const asyncDeletePairing = createAsyncThunk(
   'pairingSlice/asyncDeletePairing',
-  async ({ deleteId }) => {
+  async ({ deleteId }, thunkAPI) => {
     try {
       return await axios.delete(`${PAIRING_URL}/${deleteId}/delete`);
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
 export const asyncPatchPairing = createAsyncThunk(
   'pairingSlice/asyncPatchPairing',
-  async ({ formData, pairingId }) => {
+  async ({ formData, pairingId }, thunkAPI) => {
     try {
       const pairingRes = await axios.patch(
         `${PAIRING_URL}/${pairingId}/edit`,
@@ -52,27 +52,27 @@ export const asyncPatchPairing = createAsyncThunk(
       const bookRes = await axios.get(`api/books/${isbn}`);
       return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
 export const asyncPairingLike = createAsyncThunk(
   'pairingSlice/asyncPairingLike',
-  async (pairingId) => {
+  async (pairingId, thunkAPI) => {
     try {
       const pairingRes = await axios.patch(`${PAIRING_URL}/${pairingId}/like`);
       const isbn = pairingRes.data.data.isbn13;
       const bookRes = await axios.get(`api/books/${isbn}`);
       return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 export const asyncPairingDislike = createAsyncThunk(
   'pairingSlice/asyncPairingDislike',
-  async (pairingId) => {
+  async (pairingId, thunkAPI) => {
     try {
       const pairingRes = await axios.patch(
         `${PAIRING_URL}/${pairingId}/dislike`
@@ -81,14 +81,14 @@ export const asyncPairingDislike = createAsyncThunk(
       const bookRes = await axios.get(`api/books/${isbn}`);
       return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
 export const asyncPairingPick = createAsyncThunk(
   'pairingSlice/asyncPairingPick',
-  async (pairingId) => {
+  async (pairingId, thunkAPI) => {
     try {
       const pairingRes = await axios.post(
         `${PAIRING_URL}/${pairingId}/bookmark`
@@ -97,7 +97,7 @@ export const asyncPairingPick = createAsyncThunk(
       const bookRes = await axios.get(`api/books/${isbn}`);
       return { pairingRes: pairingRes.data, bookRes: bookRes.data.data };
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );

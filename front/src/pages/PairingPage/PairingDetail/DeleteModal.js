@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { asyncDeletePairing } from '../../../store/modules/pairingSlice';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 const style = {
   position: 'absolute',
@@ -91,8 +92,27 @@ export default function DeleteModal({ deleteId }) {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handlePairingDelete = () => {
-    dispatch(asyncDeletePairing({ deleteId }));
-    navigate(-1, { replace: true });
+    dispatch(asyncDeletePairing({ deleteId }))
+      .unwrap()
+      .then(() => {
+        dispatch(
+          setOpenSnackbar({
+            severity: 'success',
+            message: '페어링이 삭제되었습니다.',
+          })
+        );
+
+        navigate(-1, { replace: true });
+      })
+      .catch((error) => {
+        const { message } = error;
+        dispatch(
+          setOpenSnackbar({
+            severity: 'error',
+            message: message,
+          })
+        );
+      });
   };
 
   return (
