@@ -295,19 +295,39 @@ const MyPickBook = () => {
 
                 <Grid
                   item
-                  xs={10}
+                  xs={9.9}
                   sx={{ height: '164px', marginBottom: '5px' }}
                 >
                   <FlexBox
                     onClick={() => navigate(`/book/${data.collections.isbn13}`)}
                   >
-                    <Grid sx={{ height: '32.8px' }}>
+                    <Grid
+                      sx={{
+                        height: '12.8px',
+                        marginBottom: '5px',
+                        marginTop: '3px',
+                      }}
+                    >
+                      <Typography
+                        color="#6741ff"
+                        sx={{
+                          fontWeight: 400,
+                          fontSize: 12,
+                          mb: 0,
+                          mt: 0,
+                        }}
+                        variant="body2"
+                        component={'span'}
+                      >
+                        책
+                      </Typography>
+                    </Grid>
+                    <Grid sx={{ height: '29.8px' }}>
                       <Typography
                         className="title"
                         sx={{
                           display: 'flex',
-                          mt: 1,
-                          mb: 1,
+
                           fontSize: 17,
                           fontWeight: 400,
                         }}
@@ -318,7 +338,7 @@ const MyPickBook = () => {
                         {data.collections.title}
                       </Typography>
                     </Grid>
-                    <Grid sx={{ height: '98.4px' }}>
+                    <Grid sx={{ height: '89.2px', marginTop: '2px' }}>
                       <Typography
                         color="#232627"
                         sx={{
@@ -332,7 +352,7 @@ const MyPickBook = () => {
                       </Typography>
                     </Grid>
 
-                    <Grid sx={{ height: '32.8px' }}>
+                    <Grid sx={{ height: '21.2px', marginBottom: '1px' }}>
                       <div className="heart-star-title">
                         <Grid
                           item
