@@ -86,6 +86,7 @@ const ScrollContainer = styled.div`
   overflow-y: auto;
   flex-wrap: wrap;
   width: 100%;
+  justify-content: center;
 `;
 
 const BookSearch = ({
@@ -112,7 +113,6 @@ const BookSearch = ({
       axios
         .get(`/api/search/collectionbooks?Query=${searchInput}`)
         .then((res) => {
-          console.log(res.data);
           setSearchedBooks(res.data);
           setIsLoading(false);
         })

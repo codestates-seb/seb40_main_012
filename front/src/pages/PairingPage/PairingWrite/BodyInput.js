@@ -18,6 +18,7 @@ export default function MultilineTextFields({ bodyBind }) {
         {...bodyBind}
         multiline
         rows={10}
+        inputProps={{ maxLength: 1000 }}
       />
     </Box>
   );

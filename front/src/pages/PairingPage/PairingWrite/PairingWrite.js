@@ -120,7 +120,6 @@ const PairingWrite = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const curBookData = useSelector((state) => state.book.data);
-  console.log(curBookData);
   const preventClose = (e) => {
     e.preventDefault();
     e.returnValue = '\\o/';
@@ -148,7 +147,6 @@ const PairingWrite = () => {
 
     if (e.target.files) {
       const uploadFile = e.target.files[0];
-      console.log('uploadFile', uploadFile);
       setImgData(uploadFile);
     }
   };

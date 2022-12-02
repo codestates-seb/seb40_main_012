@@ -21,16 +21,13 @@ const ImgTest = () => {
 
     if (e.target.files) {
       const uploadFile = e.target.files[0];
-      console.log('uploadFile', uploadFile);
       setImgData(uploadFile);
     }
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('ff', imgData);
     const formData = new FormData();
     formData.append('image', imgData);
-    console.log('formData', formData);
 
     await axios.post('/api/images/upload', formData, {
       headers: {
