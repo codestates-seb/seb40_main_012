@@ -8,6 +8,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
@@ -16,14 +18,19 @@ import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.CommentMapper;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.rating.Rating;
 import seb40_main_012.back.common.rating.RatingService;
 import seb40_main_012.back.dto.SingleResponseDto;
+import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Validated
@@ -39,6 +46,8 @@ public class BookController {
     private final BookmarkService bookmarkService;
     private final BookMapper bookMapper;
     private final RatingService ratingService;
+
+    private final UserService userService;
 
     @GetMapping("/{isbn13}")
     public ResponseEntity getBook(
@@ -65,7 +74,10 @@ public class BookController {
 
         List<BookCollection> collections = bookCollectionService.getAllCollectionsForTheBook(isbn13);
 
-        BookDto.Response response = bookMapper.bookToBookResponses(book,collections);
+        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+        String reqIp = req.getRemoteAddr();
+
+        BookDto.Response response = bookMapper.bookToBookResponses(book, collections, reqIp);
 //        if ( response.getComments() == null ) {
 //            response.setComments(commentService.findBookComments(book.getIsbn13())); // 이거 주석 해제하면 무한스크롤
 //        }
