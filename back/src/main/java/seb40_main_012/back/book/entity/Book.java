@@ -129,10 +129,11 @@ public class Book {
     //    --------------------------------------------------------------------------------------------
     /*관련 컬렉션 목록*/
     //    --------------------------------------------------------------------------------------------
-    @JsonManagedReference
-    @OneToMany(mappedBy = "book")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<BookCollection> bookCollections = new ArrayList<>();
+
+//    @JsonManagedReference
+//    @OneToMany(mappedBy = "book")
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<BookCollection> bookCollections = new ArrayList<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "book") // 다대 다

@@ -77,10 +77,10 @@ public class BookCollection {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "isbn13")
-    private Book book;
+//    @JsonBackReference
+//    @ManyToOne
+//    @JoinColumn(name = "isbn13")
+//    private Book book;
 
     @CreatedDate
     @Column(updatable = false)
