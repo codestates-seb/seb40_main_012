@@ -24,7 +24,7 @@ const BestBooks = () => {
     axios
       .get('/api/books/best')
       .then((response) => {
-        setBestBooks(response.data.data);
+        setBestBooks([...response.data.data]);
       })
       .catch((error) => console.error(error));
   }, []);
