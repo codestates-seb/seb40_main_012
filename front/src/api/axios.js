@@ -1,6 +1,11 @@
 import axios from 'axios';
 import { authApi } from 'api';
-import { TOKEN_REFRESH_URL, LOGOUT_URL } from './requests';
+import {
+  TOKEN_REFRESH_URL,
+  LOGOUT_URL,
+  USERS_URL,
+  SIGN_IN_URL,
+} from './requests';
 
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -50,6 +55,8 @@ instance.interceptors.response.use(
     if (
       config.url === TOKEN_REFRESH_URL ||
       config.url === LOGOUT_URL ||
+      config.url === USERS_URL ||
+      config.url === SIGN_IN_URL ||
       status !== 401
     ) {
       return Promise.reject({ error, status, message });
