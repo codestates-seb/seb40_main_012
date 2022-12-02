@@ -294,11 +294,11 @@ public class BookCollectionService {
 //                .collectionBooks(collectionBooks)
 //                .build();
 //        return collectionRepository.save(collection);
-        return findVerifiedCollection(101L);
+        return findVerifiedCollection(108L);
     }
 
     public BookCollection findCollectionByCritic() {
-        return findVerifiedCollection(3L);
+        return findVerifiedCollection(107L);
 
     }
 
