@@ -99,7 +99,7 @@ public class User {
     private List<Bookmark> collectionBookmarks = new ArrayList<>();
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<StayTime> stayTimes = new ArrayList<>();
 
 
