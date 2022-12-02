@@ -10,7 +10,7 @@ spring:
     #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: true
   profiles:
-    include: database, security, oauth
+    include: database #, oauth
   servlet:
     multipart:
       max-file-size: 5MB
@@ -39,13 +39,6 @@ cloud:
       static: ap-northeast-2
     stack:
       auto: false
-#  port: 443
-#  ssl:
-#    enabled: true
-#    key-store: back/src/main/resources/bootsecurity.p12
-#    key-store-password: mhyMHY#1040
-#    key-store-type: PKCS12
-#    key-alias: bootsecurity
 mail:
   smtp.host: smtp.gmail.com
   smtp.port: 587
