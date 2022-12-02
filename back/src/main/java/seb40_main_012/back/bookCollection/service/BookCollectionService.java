@@ -266,29 +266,29 @@ public class BookCollectionService {
     }
 
 
-    public BookCollection findCollectionByAuthor() {
-        String author = "양귀자 (지은이)";
-        String title = "양귀자 모음";
-        String content = "";
-
-        List<Book> books = bookRepository.findWritersBooks(author);
-
-        List<BookCollectionBook> collectionBooks = new ArrayList<>();
-        books.forEach(
-                x -> {
-                    BookCollectionBook collectionBook = BookCollectionBook.builder().book(x).build();
-                    collectionBookRepository.save(collectionBook);
-                    collectionBooks.add(collectionBook);
-                }
-        );
-        BookCollection collection = BookCollection.builder()
-                .collectionId(30L)
-                .title(title)
-                .content(content)
-                .collectionBooks(collectionBooks)
-                .build();
-        return collectionRepository.save(collection);
-    }
+//    public BookCollection findCollectionByAuthor() {
+//        String author = "양귀자 (지은이)";
+//        String title = "양귀자 모음";
+//        String content = "";
+//
+//        List<Book> books = bookRepository.findWritersBooks(author);
+//
+//        List<BookCollectionBook> collectionBooks = new ArrayList<>();
+//        books.forEach(
+//                x -> {
+//                    BookCollectionBook collectionBook = BookCollectionBook.builder().book(x).build();
+//                    collectionBookRepository.save(collectionBook);
+//                    collectionBooks.add(collectionBook);
+//                }
+//        );
+//        BookCollection collection = BookCollection.builder()
+//                .collectionId(30L)
+//                .title(title)
+//                .content(content)
+//                .collectionBooks(collectionBooks)
+//                .build();
+//        return collectionRepository.save(collection);
+//    }
 
     public BookCollection findCollectionByCritic() {
         return findVerifiedCollection(3L);

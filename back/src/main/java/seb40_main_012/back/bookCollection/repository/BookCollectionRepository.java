@@ -18,6 +18,9 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection, 
     Long countBy();
     Long countByUser(User user);
     List<BookCollection> findByUserUserId(Long userId);
+
+    BookCollection findByTitle(String title);
+
     void deleteAllByUser(User user);
 
 
