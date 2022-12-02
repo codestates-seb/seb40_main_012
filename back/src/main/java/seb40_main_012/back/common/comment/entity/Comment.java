@@ -38,7 +38,7 @@ public class Comment {
     @Column(nullable = false)
     private CommentType commentType;
 
-    @Column
+    @Column(columnDefinition = "LONGTEXT")
     private String body;
 
     @Column

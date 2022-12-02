@@ -18,6 +18,7 @@ import seb40_main_012.back.common.comment.CommentMapper;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.common.image.AwsS3Service;
+import seb40_main_012.back.common.rating.RatingRepository;
 import seb40_main_012.back.config.auth.dto.LoginDto;
 
 import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
@@ -68,6 +69,7 @@ public class UserController {
     private final AwsS3Service awsS3Service;
     private final MyPageRepositorySupport collectionRepositorySupport;
     private final EmailSenderService emailSenderService;
+    private final RatingRepository ratingRepository;
 
     @PostMapping("/users")
     public ResponseEntity postUser(@Valid @RequestBody UserDto.PostDto postDto) {
@@ -131,7 +133,7 @@ public class UserController {
 
     @DeleteMapping("/mypage/userCollection/delete")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteAllUserCollection(){
+    public void deleteAllUserCollection() {
         userService.deleteAllUserCollection();
     }
 
@@ -156,8 +158,15 @@ public class UserController {
         List<Comment> findComments = commentService.findMyCommentAll(page);
         Slice<CommentDto.myPageResponse> responses = commentMapper.commentsToMyPageResponse(findComments);
 
+        responses.stream()
+                .filter(comment -> comment.getCommentType() == CommentType.BOOK)
+                .filter(comment -> ratingRepository.findByIsbn13AndUserId(String.valueOf(comment.getContentId()), findUser.getUserId()) != null)
+                .forEach(comment -> comment.setMyBookRating(
+                        ratingRepository.findByIsbn13AndUserId(String.valueOf(comment.getContentId()), findUser.getUserId()).getUserBookRating()
+                ));
+
         Boolean isLast = false;
-        if(page * 5 >= listCount) {
+        if (page * 5 >= listCount) {
             isLast = true;
         }
 

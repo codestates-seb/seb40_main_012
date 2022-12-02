@@ -175,10 +175,11 @@ public interface CommentMapper {
 
             // 책에 매긴 나의 별점과 책 저자
             if (comments.get(i).getCommentType() == CommentType.BOOK) {
-                String isbn13 = comments.get(i).getBook().getIsbn13();
-                myPageResponse.setMyBookRating(comments.get(i).getBook().getRatings().stream()
-                        .filter(rating -> Objects.equals(rating.getBook().getIsbn13(), isbn13))
-                        .mapToDouble(Rating::getUserBookRating).sum());
+                String isbn13 = comments.get(i).getBook().getIsbn13(); // 코멘트가 달린 책 ISBN
+                myPageResponse.setMyBookRating(null);
+//                myPageResponse.setMyBookRating(comments.get(i).getBook().getRatings().stream() // 책에 달린 별점들 스트림
+//                        .filter(rating -> Objects.equals(rating.getBook().getIsbn13(), isbn13))
+//                        .mapToDouble(rating1 -> rating1.getUserBookRating()).sum());
                 myPageResponse.setAuthor(comments.get(i).getBook().getAuthor());
             } else {
                 myPageResponse.setMyBookRating(null);
@@ -202,17 +203,17 @@ public interface CommentMapper {
         return responses;
     }
 
-    public static <T> List<T> makePageable(List<T> sourceList, int page, int pageSize) {
-        if (pageSize <= 0 || page <= 0) {
-            throw new IllegalArgumentException("invalid page size: " + pageSize);
-        }
-
-        int fromIndex = (page - 1) * pageSize;
-        if (sourceList == null || sourceList.size() <= fromIndex) {
-            return Collections.emptyList();
-        }
-
-        // toIndex exclusive
-        return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
-    }
+//    public static <T> List<T> makePageable(List<T> sourceList, int page, int pageSize) {
+//        if (pageSize <= 0 || page <= 0) {
+//            throw new IllegalArgumentException("invalid page size: " + pageSize);
+//        }
+//
+//        int fromIndex = (page - 1) * pageSize;
+//        if (sourceList == null || sourceList.size() <= fromIndex) {
+//            return Collections.emptyList();
+//        }
+//
+//        // toIndex exclusive
+//        return sourceList.subList(fromIndex, Math.min(fromIndex + pageSize, sourceList.size()));
+//    }
 }
