@@ -27,7 +27,7 @@ public class StayTime {
     private String refreshToken;
 
     @Column
-    private LocalDate signInDay;
+    private LocalDate signOutDay;
 
     @Column
     private LocalDateTime signIn;
