@@ -125,6 +125,7 @@ const CommentAdd = ({ commentAdd }) => {
           onChange={handleInputChange}
           onKeyPress={handleOnKeyPress}
           value={input}
+          maxLength="1000"
         />
         <CommentAddBtn
           className={isAbleAdd ? 'able' : ''}
