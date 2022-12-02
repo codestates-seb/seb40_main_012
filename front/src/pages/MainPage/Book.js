@@ -17,7 +17,7 @@ const BookContainer = styled.div`
     cursor: pointer;
   }
   @media screen and (max-width: 500px) {
-    padding: 5px;
+    padding: 2px;
   }
 `;
 
@@ -53,6 +53,11 @@ const RankInfo = styled.div`
   text-align: center;
   font-weight: 700;
   font-size: 15px;
+  @media screen and (max-width: 500px) {
+    width: 15px;
+    height: 15px;
+    font-size: 10px;
+  }
 `;
 
 const Book = ({ bookTitle, isbn, ranking = 0, isBest = false, cover }) => {

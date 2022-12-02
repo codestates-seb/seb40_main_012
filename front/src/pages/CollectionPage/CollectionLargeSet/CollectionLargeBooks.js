@@ -5,6 +5,7 @@ const CollectionLargeBooksContainer = styled.div`
   display: flex;
   margin: 0 15px;
   justify-content: space-between;
+  flex-wrap: wrap;
   @media screen and (max-width: 500px) {
     margin: 0 5px;
   }

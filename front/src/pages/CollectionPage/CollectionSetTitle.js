@@ -15,6 +15,9 @@ const CollectionTitle = styled.div`
   @media screen and (max-width: 640px) {
     font-size: 18px;
   }
+  @media screen and (max-width: 500px) {
+    font-size: 16px;
+  }
   span.nickName {
     color: ${({ theme }) => theme.colors.mainColor};
   }

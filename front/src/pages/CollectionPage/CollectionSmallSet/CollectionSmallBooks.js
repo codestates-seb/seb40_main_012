@@ -46,11 +46,16 @@ const CollectionSmallInfo = styled.div`
   margin-top: 10px;
   color: ${({ theme }) => theme.colors.darkgray};
   @media screen and (max-width: 640px) {
-    font-size: 12px;
+    .title {
+      font-size: 12px;
+      font-weight: 600;
+    }
   }
   @media screen and (max-width: 500px) {
-    font-size: 10px;
-    font-weight: 600;
+    .title {
+      font-size: 10px;
+      font-weight: 600;
+    }
   }
 `;
 

@@ -86,6 +86,7 @@ const ScrollContainer = styled.div`
   overflow-y: auto;
   flex-wrap: wrap;
   width: 100%;
+  justify-content: center;
 `;
 
 const BookSearch = ({

@@ -83,7 +83,7 @@ const CommentContent = styled.div`
   color: ${({ theme }) => theme.colors.darkgray};
   word-break: break-all;
   @media screen and (max-width: 500px) {
-    font-size: 10px;
+    font-size: 12px;
   }
 `;
 const CommentEditInput = styled.textarea`

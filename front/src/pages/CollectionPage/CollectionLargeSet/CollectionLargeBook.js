@@ -7,6 +7,9 @@ const CollectionLargeBookContainer = styled.div`
     aspect-ratio: 7 / 10;
     object-fit: cover;
   }
+  @media screen and (max-width: 500px) {
+    width: 16%;
+  }
 `;
 
 const CollectionBookTitle = styled.div`
@@ -23,11 +26,15 @@ const CollectionBookTitle = styled.div`
     -webkit-box-orient: vertical;
   }
   @media screen and (max-width: 640px) {
-    font-size: 12px;
-    font-weight: 500;
+    .title {
+      font-size: 12px;
+      font-weight: 500;
+    }
   }
   @media screen and (max-width: 500px) {
-    font-size: 10px;
+    .title {
+      font-size: 10px;
+    }
   }
 `;
 
