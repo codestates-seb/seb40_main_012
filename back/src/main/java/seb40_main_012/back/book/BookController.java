@@ -74,10 +74,7 @@ public class BookController {
 
         List<BookCollection> collections = bookCollectionService.getAllCollectionsForTheBook(isbn13);
 
-        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String reqIp = req.getRemoteAddr();
-
-        BookDto.Response response = bookMapper.bookToBookResponses(book, collections, reqIp);
+        BookDto.Response response = bookMapper.bookToBookResponses(book, collections);
 //        if ( response.getComments() == null ) {
 //            response.setComments(commentService.findBookComments(book.getIsbn13())); // 이거 주석 해제하면 무한스크롤
 //        }

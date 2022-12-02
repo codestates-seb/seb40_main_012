@@ -86,19 +86,16 @@ public interface BookMapper {
         return response.build();
     }
 
-    default BookDto.Response bookToBookResponses(Book book, List<BookCollection> collections, String reqIp) {
+    default BookDto.Response bookToBookResponses(Book book, List<BookCollection> collections) {
 
         if (book == null) {
             return null;
         }
 
-        HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-        String reqAuthIp = req.getRemoteAddr();
-
         BookDto.Response.ResponseBuilder response = BookDto.Response.builder();
 
         response.isbn13(book.getIsbn13());
-        if (Objects.equals(reqIp, reqAuthIp)
+        if (!Objects.equals(SecurityContextHolder.getContext().getAuthentication().getName(), "anonymousUser")
                 && book.getRatings() != null) {
             response.myRating(book.getRatings().stream()
                     .filter(rating -> Objects.equals(rating.getUser().getEmail(), SecurityContextHolder.getContext().getAuthentication().getName()))
