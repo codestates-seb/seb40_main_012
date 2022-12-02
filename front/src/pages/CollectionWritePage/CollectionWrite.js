@@ -39,7 +39,6 @@ const CollectionWritePage = () => {
           ...data,
         })
         .then((res) => {
-          console.log(res.data);
           navigate(`/collection/${res.data.collectionId}`);
         })
         .catch((error) => console.error(error));

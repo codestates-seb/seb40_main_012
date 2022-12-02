@@ -113,7 +113,6 @@ const BookSearch = ({
       axios
         .get(`/api/search/collectionbooks?Query=${searchInput}`)
         .then((res) => {
-          console.log(res.data);
           setSearchedBooks(res.data);
           setIsLoading(false);
         })
