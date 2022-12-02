@@ -312,13 +312,31 @@ const MyPickPairing = () => {
                       navigate(`/pairing/${data.collections.pairingId}`)
                     }
                   >
-                    <Grid sx={{ height: '32.8px' }}>
+                    <Grid
+                      sx={{
+                        height: '12.8px',
+                        marginBottom: '5px',
+                        marginTop: '3px',
+                      }}
+                    >
+                      <Typography
+                        color="#6741ff"
+                        sx={{
+                          fontWeight: 400,
+                          fontSize: 12,
+                        }}
+                        variant="body2"
+                        component={'span'}
+                      >
+                        페어링
+                      </Typography>
+                    </Grid>
+                    <Grid sx={{ height: '29.8px' }}>
                       <Typography
                         className="title"
                         sx={{
                           display: 'flex',
-                          mt: 1,
-                          mb: 1,
+
                           fontSize: 17,
                           fontWeight: 400,
                         }}
@@ -329,7 +347,7 @@ const MyPickPairing = () => {
                         {data.collections.bookName}
                       </Typography>
                     </Grid>
-                    <Grid sx={{ height: '98.4px' }}>
+                    <Grid sx={{ height: '89.2px', marginTop: '2px' }}>
                       <div className="content-body">
                         <Typography
                           color="#232627"
@@ -345,7 +363,7 @@ const MyPickPairing = () => {
                       </div>
                     </Grid>
 
-                    <Grid sx={{ height: '32.8px' }}>
+                    <Grid sx={{ height: '21.2px', marginBottom: '1px' }}>
                       <div className="heart-star-title">
                         <Grid
                           item
