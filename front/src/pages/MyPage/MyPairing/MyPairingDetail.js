@@ -1,15 +1,13 @@
-/*eslint-disable*/
-
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import Modal from '@mui/material/Modal';
 import { useState } from 'react';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -18,6 +16,9 @@ const Remove = styled.div`
   cursor: pointer;
   &:hover {
     color: #6741ff;
+  }
+  @media screen and (max-width: 870px) {
+    display: none !important;
   }
 `;
 const ItemContainer = styled.div`
@@ -32,6 +33,12 @@ const ItemContainer = styled.div`
       }
     }
   }
+  .move {
+    @media screen and (max-width: 750px) {
+      width: 100%;
+      flex-direction: column;
+    }
+  }
 `;
 
 const BookImg = styled.div`
@@ -41,7 +48,6 @@ const BookImg = styled.div`
     width: 108px !important;
     height: 164px !important;
     margin-left: 10px;
-    /* background-color: navy; */
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
   }
   .resize-book {
@@ -51,7 +57,6 @@ const BookImg = styled.div`
     padding: 10px !important;
     margin-left: 8px;
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
-    /* background-color: navy; */
   }
 `;
 const FlexBox = styled.div`
@@ -59,8 +64,28 @@ const FlexBox = styled.div`
   flex-direction: column;
   margin-left: 20px;
   margin-right: 10px;
+  padding-right: 20px;
   font-size: 13px;
   border-bottom: 1px solid #e9e9e9;
+  width: 100%;
+
+  .title-author {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
+
+  .content-body {
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+  }
 
   cursor: pointer;
   .comment {
@@ -84,6 +109,12 @@ const FlexBox = styled.div`
       color: #795af5;
       transition: color 0.5s;
     }
+    line-height: 1.5 !important;
+    max-height: 3 !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
   }
 `;
 
@@ -138,17 +169,23 @@ const ModalBox = styled.div`
 
 const MyPairingDetail = ({ data, fetchData }) => {
   const navigate = useNavigate();
-  //Delete Modal
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  // console.log('data는어디에 ', data);
+  const dispatch = useDispatch();
 
   const onRemove = (id) => {
-    axios
-      .delete(`/api/books/pairings/${id}/delete`)
-      .then(() => fetchData())
-      .catch((error) => console.log('에러', error));
+    try {
+      axios.delete(`/api/books/pairings/${id}/delete`).then(() => fetchData());
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   return (
@@ -157,6 +194,7 @@ const MyPairingDetail = ({ data, fetchData }) => {
         <ItemContainer key={data.pairingId}>
           <Grid
             container
+            className="move"
             item
             xs={12}
             sx={{
@@ -207,18 +245,20 @@ const MyPairingDetail = ({ data, fetchData }) => {
                   </Typography>
                 </Grid>
                 <Grid sx={{ height: '98.4px' }}>
-                  <Typography
-                    color="#232627"
-                    sx={{
-                      fontWeight: 200,
-                      height: 'auto',
-                    }}
-                    variant="body2"
-                    gutterBottom
-                    component={'span'}
-                  >
-                    {data.content}
-                  </Typography>
+                  <div className="content-body">
+                    <Typography
+                      color="#232627"
+                      sx={{
+                        fontWeight: 200,
+                        height: 'auto',
+                      }}
+                      variant="body2"
+                      gutterBottom
+                      component={'span'}
+                    >
+                      {data.content}
+                    </Typography>
+                  </div>
                 </Grid>
 
                 <Grid sx={{ height: '32.8px' }}>
@@ -262,7 +302,7 @@ const MyPairingDetail = ({ data, fetchData }) => {
                       align="right"
                       color="#b3b3b3"
                     >
-                      <div>{data.author}</div>
+                      <div className="title-author">{data.author}</div>
                     </Grid>
                   </div>
                 </Grid>

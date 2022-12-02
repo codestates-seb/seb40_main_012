@@ -194,7 +194,6 @@ export default function DeleteModal() {
 
     if (e.target.files) {
       const uploadFile = e.target.files[0];
-      console.log('uploadFile', uploadFile);
       setImgData(uploadFile);
     }
   };

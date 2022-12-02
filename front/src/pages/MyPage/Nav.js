@@ -3,6 +3,22 @@ import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+const NavContainer = styled.div`
+  @media screen and (max-width: 490px) {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .nav-container-first {
+    @media screen and (max-width: 490px) {
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 50%;
+    }
+  }
+`;
+
 const BorderCSS = styled.button`
   outline: none;
   display: inline-block;
@@ -34,7 +50,6 @@ const BorderCSS = styled.button`
 
 const BottomBorder = styled.div`
   position: relative;
-  /* border-bottom: solid 1px ${({ theme }) => theme.colors.lightgray}; */
   ::before {
     content: '';
     display: block;
@@ -63,16 +78,10 @@ const CommentBorderCSS = styled.button`
     margin-right: 5px;
   }
 `;
-// const Circle = styled.div`
-//   width: 30px;
-//   height: 30px;
-//   background-color: ${({ theme }) => theme.colors.mainColor};
-//   border-radius: 50%;
-// `;
 
 const Nav = ({ view, setView }) => {
   return (
-    <div>
+    <NavContainer>
       <Grid container justifyContent="space-around">
         <Grid
           item
@@ -82,6 +91,7 @@ const Nav = ({ view, setView }) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
+          className="nav-container-first"
           onClick={() => setView(1)}
         >
           {view === 1 ? (
@@ -95,11 +105,6 @@ const Nav = ({ view, setView }) => {
                   나의 코멘트
                 </Typography>
               </CommentBorderCSS>
-              {/* <Circle className="circle">
-                <Typography variant="h6" style={{ color: 'white' }}>
-                  {size}
-                </Typography>
-              </Circle> */}
             </>
           ) : (
             <Link to="/mypage/mycomment">
@@ -113,6 +118,7 @@ const Nav = ({ view, setView }) => {
         <Grid
           item
           align="center"
+          className="nav-container-first"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -131,11 +137,6 @@ const Nav = ({ view, setView }) => {
                   나의 페어링
                 </Typography>
               </CommentBorderCSS>
-              {/* <Circle className="circle">
-                <Typography variant="h6" style={{ color: 'white' }}>
-                  {size}
-                </Typography>
-              </Circle> */}
             </>
           ) : (
             <Link to="/mypage/mypairing">
@@ -149,6 +150,7 @@ const Nav = ({ view, setView }) => {
         <Grid
           item
           align="center"
+          className="nav-container-first"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -169,11 +171,6 @@ const Nav = ({ view, setView }) => {
                   나의 컬렉션
                 </Typography>
               </CommentBorderCSS>
-              {/* <Circle className="circle">
-                <Typography variant="h6" style={{ color: 'white' }}>
-                  {size}
-                </Typography>
-              </Circle> */}
             </>
           ) : (
             <Link to="/mypage/mycollection">
@@ -187,6 +184,7 @@ const Nav = ({ view, setView }) => {
         <Grid
           item
           align="center"
+          className="nav-container-first"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -205,11 +203,6 @@ const Nav = ({ view, setView }) => {
                   나의 픽
                 </Typography>
               </CommentBorderCSS>
-              {/* <Circle className="circle">
-                <Typography variant="h6" style={{ color: 'white' }}>
-                  {size}
-                </Typography>
-              </Circle> */}
             </>
           ) : (
             <Link to="/mypage/mypick">
@@ -221,7 +214,7 @@ const Nav = ({ view, setView }) => {
         </Grid>
       </Grid>
       <BottomBorder />
-    </div>
+    </NavContainer>
   );
 };
 export default Nav;

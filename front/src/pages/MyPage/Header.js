@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import axios from 'api/axios';
 import { useEffect, useState } from 'react';
 import { USER_INFO_URL } from 'api/requests';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const Progress = styled.div`
   #progress {
@@ -25,8 +27,52 @@ const Progress = styled.div`
     background: linear-gradient(to right, #5b32ff, #b09dff);
   }
 
-  @media screen and (max-width: 100px) {
-    margin-right: 100px;
+  .header-move {
+    @media screen and (max-width: 490px) {
+      flex-direction: column;
+      align-items: center;
+      margin-top: 20px;
+      justify-content: center;
+    }
+  }
+  .temp {
+    @media screen and (max-width: 490px) {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .title {
+    @media screen and (max-width: 490px) {
+      align-items: center;
+    }
+  }
+  .align-header {
+    @media screen and (max-width: 490px) {
+      align-items: center;
+      margin-top: 0;
+      margin-bottom: 4px;
+    }
+  }
+  .edit-profile {
+    a {
+      font-size: 11px;
+    }
+
+    display: flex;
+    align-items: center;
+    height: 70%;
+    justify-content: center;
+
+    @media screen and (max-width: 490px) {
+      display: flex;
+      margin-top: -20px;
+      min-width: 140px;
+      align-items: center;
+      justify-content: center;
+    }
   }
 `;
 const ButtonCSS = styled.button`
@@ -55,12 +101,11 @@ const Header = () => {
     temp: '',
     category: [],
   });
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
-    axios
-      .get(USER_INFO_URL)
-
-      .then((response) => {
+    try {
+      axios.get(USER_INFO_URL).then((response) => {
         setUserInfo({
           introduction: response.data.introduction,
           gender: response.data.gender,
@@ -70,8 +115,16 @@ const Header = () => {
           category: response.data.category,
           profileImage: response.data.profileImage,
         });
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {
@@ -80,8 +133,6 @@ const Header = () => {
 
   return (
     <>
-      {/* xs , sm, md, lg, xl 사이즈 */}
-
       <Container component="main" maxWidth="xs">
         <Progress>
           <Box
@@ -91,34 +142,33 @@ const Header = () => {
               alignItems: 'center',
             }}
           >
-            <Grid container>
+            <Grid container className="header-move">
               <Grid
                 item
-                xs={2.4}
+                xs={'auto'}
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
-                <Avatar
-                  sx={{
-                    bgcolor: '#A28BFF',
-                    width: 80,
-                    height: 80,
-                  }}
-                  src={userInfo.profileImage ? userInfo.profileImage : ''}
-                ></Avatar>
+                <div className="avatar">
+                  <Avatar
+                    sx={{
+                      bgcolor: '#A28BFF',
+                      width: 80,
+                      height: 80,
+                    }}
+                    src={userInfo.profileImage ? userInfo.profileImage : ''}
+                  ></Avatar>
+                </div>
               </Grid>
 
-              <Grid item xs={7.2}>
+              <Grid item xs={6.5} sx={{ padding: 2 }}>
                 <Box
                   sx={{
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'left',
                     mt: 3,
                     mb: 2,
                   }}
-                  style={{
-                    marginLeft: 20,
-                  }}
+                  className="align-header"
                 >
                   <Typography
                     className="title"
@@ -140,7 +190,6 @@ const Header = () => {
                     color="#232627"
                     sx={{
                       fontWeight: 200,
-                      height: 'auto',
                     }}
                     variant="body2"
                     gutterBottom
@@ -160,20 +209,20 @@ const Header = () => {
                       min="0"
                       max="100"
                     ></progress>
-                    <div> 책의 온기 {userInfo.temp}도</div>
+                    <div className="temp"> 책의 온기 {userInfo.temp}도</div>
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={2.4}>
-                <ButtonCSS>
-                  <Grid item>
-                    <Link to="/mypage/profile" variant="body2">
-                      <Typography sx={{ mt: 4 }} variant="body2" gutterBottom>
+              <Grid item sx={{ justifyContent: 'center' }}>
+                <div className="edit-profile">
+                  <ButtonCSS>
+                    <Grid item>
+                      <Link to="/mypage/profile" variant="body2">
                         내 정보 수정
-                      </Typography>
-                    </Link>
-                  </Grid>
-                </ButtonCSS>
+                      </Link>
+                    </Grid>
+                  </ButtonCSS>
+                </div>
               </Grid>
             </Grid>
           </Box>

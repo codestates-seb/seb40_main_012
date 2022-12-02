@@ -1,12 +1,13 @@
-// import { useNavigate } from 'react-router-dom';
-/*eslint-disable*/
 import styled from 'styled-components';
-import CollectionSmallBook from '../../CollectionPage/CollectionSmallSet/CollectionSmallBook';
 
 const CollectionSmallBooksContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 112px !important;
+  height: 158px !important;
+  padding: 10px !important;
   margin: 0 10px;
+
   &:hover {
     cursor: pointer;
   }
@@ -40,39 +41,9 @@ const BookColumn = styled.div`
   background-color: #f5f5f5 !important;
 `;
 
-// const CollectionSmallBookContainer = styled.div`
-//   width: 50%;
-//   img {
-//     width: 100%;
-//     aspect-ratio: 7 / 10;
-//     object-fit: cover;
-//     padding: 2px;
-//   }
-// `;
-
-// const CollectionSmallInfo = styled.div`
-//   font-size: 14px;
-//   font-weight: 700;
-//   color: ${({ theme }) => theme.colors.darkgray};
-// `;
-
 const MyCollectionThumbnail = ({ data }) => {
-  // const navigate = useNavigate();
-
-  // const onClickCollectionInfo = () => {
-  //   navigate(`/collection/${collectionId}`);
-  // };
   return (
-    <CollectionSmallBooksContainer
-    //  onClick={onClickCollectionInfo}
-    >
-      {/* {data.collectionCover.slice(0, 2)?.map((el, index) => {
-          <>
-            <CollectionSmallBookContainer key={index}>
-              <img src={el} alt="book cover" />
-            </CollectionSmallBookContainer>
-          </>;
-        })} */}
+    <CollectionSmallBooksContainer>
       <BookColumn>
         <CollectionSmallBookContainer>
           {data.books[0] ? (
@@ -105,15 +76,6 @@ const MyCollectionThumbnail = ({ data }) => {
           )}
         </CollectionSmallBookContainer>
       </BookColumn>
-      {/* {data.collectionCover.slice(0, 2)?.map((el, index) => {
-          return <CollectionSmallBook key={index} cover={el} />;
-        })}
-      </BookColumn>
-      <BookColumn>
-        {data.collectionCover.slice(2, 4)?.map((el, index) => {
-          return <CollectionSmallBook key={index} cover={el} />;
-        })}
-      </BookColumn> */}
     </CollectionSmallBooksContainer>
   );
 };

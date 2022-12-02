@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../api/axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Book from './Book';
@@ -24,14 +24,14 @@ const BestBooks = () => {
     axios
       .get('/api/books/best')
       .then((response) => {
-        setBestBooks(response.data.data);
+        setBestBooks([...response.data.data]);
       })
       .catch((error) => console.error(error));
   }, []);
 
   return (
     <BestBooksContainer>
-      <MainBooksTitle title="체리픽에서 많이 본 책" />
+      <MainBooksTitle title="체리픽에서 많이 본 책" type="best" />
       <BooksContainer>
         {bestBooks?.map((el, idx) => {
           return (
