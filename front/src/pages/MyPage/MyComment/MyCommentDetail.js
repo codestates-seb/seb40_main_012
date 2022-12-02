@@ -1,10 +1,7 @@
-/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
 import NavigateBook from './NavigateBook';
@@ -13,6 +10,8 @@ import NavigateCollection from './NavigateCollection';
 import CollectionThumbnail from './CollectionThumbnail';
 import Modal from '@mui/material/Modal';
 import { useState } from 'react';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -53,7 +52,7 @@ const BookImg = styled.div`
     width: 108px !important;
     height: 164px !important;
     margin-left: 10px;
-    /* background-color: navy; */
+
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
   }
   .resize-book {
@@ -63,44 +62,11 @@ const BookImg = styled.div`
     padding: 10px !important;
     margin-left: 8px;
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
-    /* background-color: navy; */
   }
   .move-image {
     width: 112px !important;
     height: 158px !important;
     margin: 0 10px;
-  }
-`;
-const FlexBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 20px;
-  margin-right: 10px;
-  font-size: 13px;
-  border-bottom: 1px solid #e9e9e9;
-
-  cursor: pointer;
-  .comment {
-    height: 125px;
-    color: #232627;
-  }
-  .heart-star-title {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    text-align: center;
-
-    img {
-      width: 20px;
-      height: 20px;
-      margin-right: 2px;
-    }
-  }
-  .title {
-    :hover {
-      color: #b09dff;
-      transition: color 0.5s;
-    }
   }
 `;
 
@@ -158,12 +124,20 @@ const MyCommentDetail = ({ data, fetchData }) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
 
   const onRemove = (id) => {
-    axios
-      .delete(`/api/comments/${id}/delete`)
-      .then(() => fetchData())
-      .catch((error) => console.log('에러', error));
+    try {
+      axios.delete(`/api/comments/${id}/delete`).then(() => fetchData());
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   return (
@@ -204,10 +178,7 @@ const MyCommentDetail = ({ data, fetchData }) => {
                       }}
                     >
                       {data.collectionCover !== null ? (
-                        <CollectionThumbnail
-                          data={data}
-                          // collectionCover={data.collectionCover}
-                        />
+                        <CollectionThumbnail data={data} />
                       ) : null}
                       {data.collectionCover == null ? (
                         <img

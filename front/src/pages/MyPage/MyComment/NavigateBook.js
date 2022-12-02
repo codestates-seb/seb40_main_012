@@ -1,12 +1,7 @@
-/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import axios from '../../../api/axios';
-// import { useNavigate } from 'react-router-dom';
 
 const FlexBox = styled.div`
   display: flex;

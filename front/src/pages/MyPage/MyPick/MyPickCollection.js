@@ -1,15 +1,14 @@
-/*eslint-disable*/
-
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
 import Typography from '@mui/material/Typography';
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
-
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useState, useEffect } from 'react';
 import { MY_PICK_COLLECTION } from '../../../api/requests';
 import { BasicButton } from '../../../components/Buttons';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 import MyPickCollectionThumbnail from './MyPickCollectionThumbnail';
 
@@ -67,7 +66,6 @@ const BookImg = styled.div`
     padding: 10px !important;
     margin-left: 8px;
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
-    /* background-color: navy; */
   }
   .move-image {
     width: 112px !important;
@@ -132,12 +130,11 @@ const MyPickCollection = () => {
     data: [],
   });
   const [lastId, setLastId] = useState();
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
-    axios
-      .get(MY_PICK_COLLECTION)
-      .then((response) => {
-        console.log('response');
+    try {
+      axios.get(MY_PICK_COLLECTION).then((response) => {
         setContent({
           data: response.data.data.content,
         });
@@ -151,43 +148,65 @@ const MyPickCollection = () => {
             : null;
         }
         setHasMore(response.data.data.size < 5 ? false : true);
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   const onRemove = (id) => {
-    axios
-      .post(`/api/collections/${id}/bookmark`)
-      .then(() => fetchData())
-      .catch((error) => console.log('에러', error));
+    try {
+      axios.post(`/api/collections/${id}/bookmark`).then(() => fetchData());
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
-  // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    setTimeout(() => {
-      if (hasMore === true && lastId) {
-        axios
-          .get(`/api/mypage/bookmark/collection?lastId=${lastId}`)
-          .then((response) => {
-            console.log('응답', response.data.data.content);
-            setContent({
-              data: content.data.concat(response.data.data.content),
-              size: response.data.data.size,
+    try {
+      setTimeout(() => {
+        if (hasMore === true && lastId) {
+          axios
+            .get(`/api/mypage/bookmark/collection?lastId=${lastId}`)
+            .then((response) => {
+              setContent({
+                data: content.data.concat(response.data.data.content),
+                size: response.data.data.size,
+              });
+              setHasMore(response.data.data.size < 5 ? false : true);
+              {
+                response.data.data.size >= 5
+                  ? setLastId(
+                      response.data.data.content[
+                        response.data.data.content.length - 1
+                      ].bookmarkId
+                    )
+                  : null;
+              }
             });
-            setHasMore(response.data.data.size < 5 ? false : true);
-            {
-              response.data.data.size >= 5
-                ? setLastId(
-                    response.data.data.content[
-                      response.data.data.content.length - 1
-                    ].bookmarkId
-                  )
-                : null;
-            }
-          })
-          .catch((error) => console.log('에러', error));
-      }
-    }, 500);
+        }
+      }, 500);
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {

@@ -1,7 +1,4 @@
-// import { useNavigate } from 'react-router-dom';
-/*eslint-disable*/
 import styled from 'styled-components';
-import CollectionSmallBook from '../../CollectionPage/CollectionSmallSet/CollectionSmallBook';
 
 const CollectionSmallBooksContainer = styled.div`
   display: flex;
@@ -38,7 +35,6 @@ const BookImg = styled.div`
     padding: 10px !important;
     margin-left: 8px;
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
-    /* background-color: navy; */
   }
 `;
 
@@ -60,43 +56,12 @@ const BookColumn = styled.div`
   background-color: #f5f5f5 !important;
 `;
 
-// const CollectionSmallBookContainer = styled.div`
-//   width: 50%;
-//   img {
-//     width: 100%;
-//     aspect-ratio: 7 / 10;
-//     object-fit: cover;
-//     padding: 2px;
-//   }
-// `;
-
-// const CollectionSmallInfo = styled.div`
-//   font-size: 14px;
-//   font-weight: 700;
-//   color: ${({ theme }) => theme.colors.darkgray};
-// `;
-
 const MyPickCollectionThumbnail = ({ data }) => {
-  // const navigate = useNavigate();
-
-  // const onClickCollectionInfo = () => {
-  //   navigate(`/collection/${collectionId}`);
-  // };
   return (
     <>
       {data[0]?.bookCover ? (
         <>
-          <CollectionSmallBooksContainer
-            className="move-image"
-            //  onClick={onClickCollectionInfo}
-          >
-            {/* {data.collectionCover.slice(0, 2)?.map((el, index) => {
-          <>
-            <CollectionSmallBookContainer key={index}>
-              <img src={el} alt="book cover" />
-            </CollectionSmallBookContainer>
-          </>;
-        })} */}
+          <CollectionSmallBooksContainer className="move-image">
             <BookColumn>
               <CollectionSmallBookContainer>
                 {data[0]?.bookCover ? (
@@ -141,15 +106,6 @@ const MyPickCollectionThumbnail = ({ data }) => {
                 )}
               </CollectionSmallBookContainer>
             </BookColumn>
-            {/* {data.collectionCover.slice(0, 2)?.map((el, index) => {
-          return <CollectionSmallBook key={index} cover={el} />;
-        })}
-      </BookColumn>
-      <BookColumn>
-        {data.collectionCover.slice(2, 4)?.map((el, index) => {
-          return <CollectionSmallBook key={index} cover={el} />;
-        })}
-      </BookColumn> */}
           </CollectionSmallBooksContainer>
         </>
       ) : (

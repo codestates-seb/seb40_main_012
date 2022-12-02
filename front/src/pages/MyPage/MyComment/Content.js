@@ -1,15 +1,12 @@
-/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 import Typography from '@mui/material/Typography';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import MyCommentDetail from './MyCommentDetail';
 import { useState, useEffect } from 'react';
 import axios from '../../../api/axios';
-import { COMMENT_URL } from '../../../api/requests';
 import { useNavigate } from 'react-router-dom';
 import { BasicButton } from '../../../components/Buttons';
 import Modal from '@mui/material/Modal';
@@ -84,26 +81,6 @@ const ModalBox = styled.div`
   }
 `;
 
-const CommentContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-const FlexBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-left: 20px;
-  margin-right: 10px;
-  font-size: 13px;
-  border-bottom: 1px solid #e9e9e9;
-  .comment {
-    height: 125px;
-    color: #232627;
-  }
-  .heart-star-title {
-    display: flex;
-    flex-direction: row;
-  }
-`;
 const ButtonCSS = styled.button`
   outline: none;
   display: inline-block;
@@ -113,16 +90,6 @@ const ButtonCSS = styled.button`
   border: 0;
   outline: 0;
   background: transparent;
-`;
-
-const Remove = styled.div`
-  color: #dee2e6;
-  font-size: 24px;
-  cursor: pointer;
-  opacity: 0;
-  &:hover {
-    color: #6741ff;
-  }
 `;
 
 const Content = () => {
@@ -136,27 +103,33 @@ const Content = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
-    axios
-      .get(`api/mypage/userComment?page=1`)
-      .then((response) => {
-        console.log('response배열', response.data.data.content);
+    try {
+      axios.get(`api/mypage/userComment?page=1`).then((response) => {
         setContent({
           data: response.data.data.content,
         });
-        console.log('response.data.isLast', response.data.isLast);
+
         setHasMore(response.data.isLast === false ? true : false);
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   const fetchMoreData = () => {
-    setTimeout(() => {
-      if (hasMore === true && page) {
-        axios
-          .get(`api/mypage/userComment?page=${page}`)
-          .then((response) => {
+    try {
+      setTimeout(() => {
+        if (hasMore === true && page) {
+          axios.get(`api/mypage/userComment?page=${page}`).then((response) => {
             setContent({
               data: content.data.concat(response.data.data.content),
             });
@@ -164,24 +137,39 @@ const Content = () => {
             {
               response.data.isLast !== true ? setPage(page + 1) : null;
             }
-          })
-          .catch((error) => console.log('에러', error));
-      }
-    }, 500);
+          });
+        }
+      }, 500);
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   const removeAll = () => {
-    axios
-      .delete(`api/comments/delete`)
-      .then(() => fetchData())
-      .catch((error) => console.log('에러', error));
+    try {
+      axios.delete(`api/comments/delete`).then(() => fetchData());
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {
     fetchData();
     setHasMore(content.data.isLast === false ? true : false);
   }, []);
-  console.log(hasMore);
+
   return (
     <>
       <ContentContainer>
@@ -250,10 +238,8 @@ const Content = () => {
         {content.data.length ? (
           <InfiniteScroll
             dataLength={content.data.length}
-            // dataLength={data.content.length}
-            // next={data.content && fetchMoreData}
             next={fetchMoreData}
-            hasMore={hasMore} // 스크롤 막을지 말지 결정
+            hasMore={hasMore}
             loader={
               <div
                 style={{

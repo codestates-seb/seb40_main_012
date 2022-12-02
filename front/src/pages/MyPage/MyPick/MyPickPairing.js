@@ -1,18 +1,14 @@
-/*eslint-disable*/
-
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
 import axios from '../../../api/axios';
 import { useNavigate } from 'react-router-dom';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useEffect, useState } from 'react';
 import { MY_PICK_PAIRING } from '../../../api/requests';
 import { BasicButton } from '../../../components/Buttons';
-import Modal from '@mui/material/Modal';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const Remove = styled.div`
   color: #dee2e6;
@@ -60,7 +56,6 @@ const BookImg = styled.div`
     width: 108px !important;
     height: 164px !important;
     margin-left: 10px;
-    /* background-color: navy; */
   }
   .resize-book {
     box-sizing: inherit;
@@ -69,7 +64,6 @@ const BookImg = styled.div`
     padding: 10px !important;
     margin-left: 8px;
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
-    /* background-color: navy; */
   }
 `;
 
@@ -131,55 +125,6 @@ const FlexBox = styled.div`
   }
 `;
 
-const ModalBox = styled.div`
-  width: 300px;
-  height: 150px;
-  position: absolute;
-  background-color: white;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  .info {
-    font-weight: 700;
-  }
-  .container {
-    display: flex;
-    margin-top: 20px;
-  }
-  .delete {
-    width: 80px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 5px;
-    font-size: 14px;
-    font-weight: 700;
-    background-color: #ffc5c5;
-    color: #850000;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-  .close {
-    width: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 5px;
-    font-size: 14px;
-    font-weight: 700;
-    background-color: #e8e8e8;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-`;
-
 const MyPickPairing = () => {
   const navigate = useNavigate();
   const [hasMore, setHasMore] = useState(true);
@@ -187,16 +132,11 @@ const MyPickPairing = () => {
     data: [],
   });
   const [lastId, setLastId] = useState();
-  //Delete Modal
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
 
   const fetchPairingData = async () => {
-    axios
-      .get(MY_PICK_PAIRING)
-      .then((response) => {
-        console.log('response');
+    try {
+      axios.get(MY_PICK_PAIRING).then((response) => {
         setPairingContent({
           data: response.data.data.content,
         });
@@ -210,43 +150,67 @@ const MyPickPairing = () => {
             : null;
         }
         setHasMore(response.data.data.size < 5 ? false : true);
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   const onRemove = (id) => {
-    axios
-      .post(`/api/books/pairings/${id}/bookmark`)
-      .then(() => fetchPairingData())
-      .catch((error) => console.log('에러', error));
+    try {
+      axios
+        .post(`/api/books/pairings/${id}/bookmark`)
+        .then(() => fetchPairingData());
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
-  // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    setTimeout(() => {
-      if (hasMore === true && lastId) {
-        axios
-          .get(`/api/mypage/bookmark/pairing?lastId=${lastId}`)
-          .then((response) => {
-            console.log('응답', response.data.data.content);
-            setPairingContent({
-              data: pairingContent.data.concat(response.data.data.content),
-              size: response.data.data.size,
+    try {
+      setTimeout(() => {
+        if (hasMore === true && lastId) {
+          axios
+            .get(`/api/mypage/bookmark/pairing?lastId=${lastId}`)
+            .then((response) => {
+              setPairingContent({
+                data: pairingContent.data.concat(response.data.data.content),
+                size: response.data.data.size,
+              });
+              setHasMore(response.data.data.size < 5 ? false : true);
+              {
+                response.data.data.size >= 5
+                  ? setLastId(
+                      response.data.data.content[
+                        response.data.data.content.length - 1
+                      ].bookmarkId
+                    )
+                  : null;
+              }
             });
-            setHasMore(response.data.data.size < 5 ? false : true);
-            {
-              response.data.data.size >= 5
-                ? setLastId(
-                    response.data.data.content[
-                      response.data.data.content.length - 1
-                    ].bookmarkId
-                  )
-                : null;
-            }
-          })
-          .catch((error) => console.log('에러', error));
-      }
-    }, 500);
+        }
+      }, 500);
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {
@@ -258,10 +222,8 @@ const MyPickPairing = () => {
       {pairingContent.data.length ? (
         <InfiniteScroll
           dataLength={pairingContent.data.length}
-          // dataLength={data.content.length}
-          // next={data.content && fetchMoreData}
           next={fetchMoreData}
-          hasMore={hasMore} // 스크롤 막을지 말지 결정
+          hasMore={hasMore}
           loader={
             <div
               style={{

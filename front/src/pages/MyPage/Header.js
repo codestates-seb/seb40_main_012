@@ -8,6 +8,8 @@ import { Link } from 'react-router-dom';
 import axios from 'api/axios';
 import { useEffect, useState } from 'react';
 import { USER_INFO_URL } from 'api/requests';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const Progress = styled.div`
   #progress {
@@ -25,14 +27,8 @@ const Progress = styled.div`
     background: linear-gradient(to right, #5b32ff, #b09dff);
   }
 
-  /* @media screen and (max-width: 100px) {
-    margin-right: 100px;
-  } */
-
   .header-move {
     @media screen and (max-width: 490px) {
-      /* display: flex; */
-
       flex-direction: column;
       align-items: center;
       margin-top: 20px;
@@ -61,16 +57,6 @@ const Progress = styled.div`
     }
   }
   .edit-profile {
-    /* width: 100%;
-    flex-direction: row-reverse;
-    display: flex; */
-    /* 
-    @media screen and (max-width: 450px) {
-      flex-direction: row-reverse;
-      width: 100%;
-      display: flex;
-    } */
-
     a {
       font-size: 11px;
     }
@@ -115,12 +101,11 @@ const Header = () => {
     temp: '',
     category: [],
   });
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
-    axios
-      .get(USER_INFO_URL)
-
-      .then((response) => {
+    try {
+      axios.get(USER_INFO_URL).then((response) => {
         setUserInfo({
           introduction: response.data.introduction,
           gender: response.data.gender,
@@ -130,8 +115,16 @@ const Header = () => {
           category: response.data.category,
           profileImage: response.data.profileImage,
         });
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {
@@ -140,8 +133,6 @@ const Header = () => {
 
   return (
     <>
-      {/* xs , sm, md, lg, xl 사이즈 */}
-
       <Container component="main" maxWidth="xs">
         <Progress>
           <Box
@@ -222,7 +213,6 @@ const Header = () => {
                   </Typography>
                 </Box>
               </Grid>
-              {/* <div className="edit-profile"> */}
               <Grid item sx={{ justifyContent: 'center' }}>
                 <div className="edit-profile">
                   <ButtonCSS>
@@ -234,7 +224,6 @@ const Header = () => {
                   </ButtonCSS>
                 </div>
               </Grid>
-              {/* </div> */}
             </Grid>
           </Box>
         </Progress>

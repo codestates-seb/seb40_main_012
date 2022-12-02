@@ -74,7 +74,6 @@ const ModalBox = styled.div`
   }
 `;
 
-//TODO: 페어링, 컬렉션 안내 메시지 추가
 const MyPickGuide = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);

@@ -1,35 +1,28 @@
-/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-// import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import Typography from '@mui/material/Typography';
-// import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import MyPickBook from './MyPickBook';
-
 import MyPickPairing from './MyPickPairing';
 import MyPickCollection from './MyPickCollection';
 import { useState } from 'react';
 import MyPickGuide from './MyPickGuide';
 import { BasicButton } from '../../../components/Buttons';
 import * as React from 'react';
-
 import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import { useNavigate } from 'react-router-dom';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
 
   .buttons {
     @media screen and (max-width: 490px) {
-      //450이상이어야 적용
       justify-content: center;
     }
   }
 
   .toggle-button {
     @media screen and (max-width: 490px) {
-      //450이상이어야 적용
-
       display: flex;
       align-items: center;
       justify-content: center;
@@ -56,8 +49,6 @@ const ContentContainer = styled.div`
   }
   .toggle-button {
     @media screen and (max-width: 490px) {
-      //450이상이어야 적용
-
       display: flex;
       align-items: center;
       justify-content: center;
@@ -86,13 +77,12 @@ const StyledToggleButtonGroup = styled(ToggleButtonGroup)(({ theme }) => ({
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: row;
-  /* justify-content: center;
-  align-items: center; */
 `;
 
 const Content = ({ content }) => {
   const [view, setView] = useState(1);
   const [alignment, setAlignment] = React.useState('left');
+  const navigate = useNavigate();
 
   const handleAlignment = (event, newAlignment) => {
     setAlignment(newAlignment);

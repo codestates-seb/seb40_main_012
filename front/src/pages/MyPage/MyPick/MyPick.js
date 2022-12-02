@@ -1,17 +1,15 @@
-/*eslint-disable*/
-
 import Header from '../Header';
 import { PageContainer } from 'containers';
 import Nav from '../Nav';
 import Content from './Content';
 import Container from '@mui/material/Container';
 import styled from 'styled-components';
-// import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-// import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import axios from '../../../api/axios';
 import { MY_PICK_BOOK } from '../../../api/requests';
 import Scroll from '../Scroll';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const Void = styled.div`
   min-width: 50vw;
@@ -29,24 +27,29 @@ const Void = styled.div`
 `;
 
 const MyPick = () => {
-  console.log('마이픽 시작');
   const [view, setView] = useState(4);
   const [content, setContent] = useState({
     data: [],
   });
+  const dispatch = useDispatch();
 
-  // 책 북마크 데이터 가져오기
   const fetchData = async () => {
-    axios
-      .get(MY_PICK_BOOK)
-      .then((response) => {
-        console.log('then?', response);
+    try {
+      axios.get(MY_PICK_BOOK).then((response) => {
         setContent({
           data: response.data.data,
           content,
         });
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {
