@@ -141,9 +141,6 @@ public class BookCollectionController {
     }
 
 
-
-
-
     @GetMapping("/tag")
     @ResponseStatus(HttpStatus.OK)
     public ListResponseDto<BookCollectionDto.TagCollection> getCollectionByCollectionTag() {
