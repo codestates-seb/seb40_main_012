@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../api/axios';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Book from './Book';
