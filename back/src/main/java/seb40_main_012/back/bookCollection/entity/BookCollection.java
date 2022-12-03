@@ -55,7 +55,7 @@ public class BookCollection {
     private List<BookCollectionLike> collectionLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
-    @LazyCollection(LazyCollectionOption.FALSE)
+//    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<Bookmark> collectionBookmarks = new ArrayList<>();
 
