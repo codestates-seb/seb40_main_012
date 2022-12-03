@@ -138,9 +138,11 @@ public interface CommentMapper {
             else myPageResponse.setCover(null);
 
             // 페어링 커버
-            if (comments.get(i).getCommentType() == CommentType.PAIRING)
+            if (comments.get(i).getCommentType() == CommentType.PAIRING) {
+                myPageResponse.setCover(comments.get(i).getBook().getCover());
                 myPageResponse.setPairingCover(comments.get(i).getPairing().getImagePath());
-            else myPageResponse.setPairingCover(null);
+            } else myPageResponse.setPairingCover(null);
+
 
             // 북 컬렉션 커버
             if (comments.get(i).getCommentType() == CommentType.BOOK_COLLECTION) {
