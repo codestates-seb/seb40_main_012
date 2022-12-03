@@ -181,6 +181,7 @@ public class BookCollectionService {
                 BookCollectionLike bookCollectionLike = new BookCollectionLike(findUser, findCollection);
                 collectionLikeRepository.save(bookCollectionLike);
                 findUser.addCollectionLike(bookCollectionLike);
+                findCollection.addCollectionLike(bookCollectionLike); //순환참조
                 count += 1L;
                 findCollection.setLikeCount(count);
             }

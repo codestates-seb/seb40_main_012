@@ -50,6 +50,7 @@ public class BookCollection {
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
     private List<BookCollectionTag> collectionTags = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
     private List<BookCollectionLike> collectionLikes = new ArrayList<>();
 
