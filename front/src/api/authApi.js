@@ -11,18 +11,20 @@ import {
 const ACCESS_EXPIRY_TIME = 2 * 60 * 60 * 1000; // 2시간
 const REFRESH_EXPIRY_TIME = 24 * 60 * 60 * 1000; // 24시간
 
-const setAxiosHeaderAuth = (value) =>
-  (axios.defaults.headers.common['Authorization'] = value);
+// const setAxiosHeaderAuth = (value) =>
+//   (axios.defaults.headers.common['Authorization'] = value);
 
 const signInSuccess = (response) => {
-  setAxiosHeaderAuth(response.headers.authorization);
+  // setAxiosHeaderAuth(response.headers.authorization);
+  localStorage.setItem('accessToken', response.headers.authorization);
 
   // accessToken 만료하기 1분 전에 로그인 연장
   setTimeout(authApi.refreshToken, ACCESS_EXPIRY_TIME - 60000);
 };
 
 const refreshUserData = () => {
-  setAxiosHeaderAuth();
+  // setAxiosHeaderAuth();
+  localStorage.removeItem('accessToken');
   purge();
 };
 
@@ -65,7 +67,6 @@ const authApi = {
         .catch((error) => reject(error))
         .finally(() => {
           refreshUserData();
-          // window.location.reload(true);
         });
     });
   },
