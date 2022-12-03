@@ -427,7 +427,7 @@ const BookDetail = () => {
         </DescContainer>
         <DescContainer>
           <h1>코멘트 {bookData?.comments?.content?.length}</h1>
-          {bookData?.myRating || bookData?.myComment ? (
+          {isLogin && (bookData?.myRating || bookData?.myComment) ? (
             <MyComment
               isbn={isbn}
               getBookData={getBookData}
