@@ -201,7 +201,7 @@ const Comment = ({
 
   useEffect(() => {
     setIsMyComment(userEmail === data?.userInformation?.email);
-  }, []);
+  }, [isLogin]);
 
   const handleDeleteComment = () => {
     if (isMyComment) commentDelete(commentId);
