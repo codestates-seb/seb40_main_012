@@ -115,6 +115,7 @@ public class PairingDto {
     @NoArgsConstructor
     public static class UserPairing{
         private long pairingId;
+        private String pairingCover; // 요거 추가됩니당
         private String title;
         private String content;
         private String bookName;
@@ -125,6 +126,7 @@ public class PairingDto {
         public static PairingDto.UserPairing of(Pairing pairing){
             return UserPairing.builder()
                     .pairingId(pairing.getPairingId())
+                    .pairingCover(pairing.getImagePath())
                     .title(pairing.getTitle())
                     .content(pairing.getBody())
                     .bookName(pairing.getBook().getTitle())
@@ -140,6 +142,7 @@ public class PairingDto {
     @NoArgsConstructor
     public static class BookmarkedPairing{
         private long pairingId;
+        private String pairingCover; // 요거 추가됩니당
         private String title;
         private String content;
         private String bookName;
@@ -150,6 +153,7 @@ public class PairingDto {
         public static PairingDto.BookmarkedPairing of(Pairing pairing){
             return BookmarkedPairing.builder()
                     .pairingId(pairing.getPairingId())
+                    .pairingCover(pairing.getImagePath())
                     .title(pairing.getTitle())
                     .content(pairing.getBody())
                     .bookName(pairing.getBook().getTitle())
