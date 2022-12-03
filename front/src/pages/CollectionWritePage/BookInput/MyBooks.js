@@ -111,7 +111,7 @@ const MyBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
               key={idx}
               title={el.title}
               author={el.author}
-              rating={el.ratingCount}
+              rating={el.averageRating}
               isbn={el.isbn13}
               handleSetNewBooks={handleSetNewBooks}
             />
