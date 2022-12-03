@@ -20,6 +20,8 @@ import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.rating.Rating;
 import seb40_main_012.back.common.rating.RatingService;
+import seb40_main_012.back.config.auth.cookie.CookieManager;
+import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
@@ -48,11 +50,20 @@ public class BookController {
     private final RatingService ratingService;
 
     private final UserService userService;
+    private final CookieManager cookieManager;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @GetMapping("/{isbn13}")
-    public ResponseEntity getBook(
+    public ResponseEntity getBook(HttpServletRequest request,
             @RequestHeader(value = "Authorization", required = false) @Valid @Nullable String token,
                                   @PathVariable("isbn13") @Positive String isbn13) {
+        if(request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
+            String refreshToken = cookieManager.outCookie(request, "refreshToken");
+            if(refreshToken != null) {
+                if(refreshTokenRepository.findByTokenValue(refreshToken) != null && token == null) // 로그인 유저인데 authorization이 없는 경우
+                    throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+            }
+        }
 
         Book book = bookService.updateView(isbn13);
         if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
