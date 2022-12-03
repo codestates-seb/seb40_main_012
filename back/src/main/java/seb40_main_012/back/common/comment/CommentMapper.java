@@ -139,7 +139,7 @@ public interface CommentMapper {
 
             // 페어링 커버
             if (comments.get(i).getCommentType() == CommentType.PAIRING)
-                myPageResponse.setCover(comments.get(i).getPairing().getImagePath());
+                myPageResponse.setPairingCover(comments.get(i).getPairing().getImagePath());
             else myPageResponse.setCover(null);
 
             // 북 컬렉션 커버
