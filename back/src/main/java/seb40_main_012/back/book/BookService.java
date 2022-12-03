@@ -189,6 +189,10 @@ public class BookService {
                 .map(userCategory -> userCategory.getCategory().getGenre().toString())
                 .collect(Collectors.toList());
 
+        if (genreList.isEmpty()) {
+            return bookRepository.findRandomBooks();
+        }
+
         // 각각 5권씩 조회수대로 불러온 후 다시 조회수 순으로 5권 정렬 후 반환
         return genreList.stream()
                 .map(bookRepository::findRecommendedBooks)
