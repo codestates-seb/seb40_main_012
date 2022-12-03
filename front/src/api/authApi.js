@@ -65,7 +65,7 @@ const authApi = {
         .catch((error) => reject(error))
         .finally(() => {
           refreshUserData();
-          window.location.reload(true);
+          // window.location.reload(true);
         });
     });
   },
