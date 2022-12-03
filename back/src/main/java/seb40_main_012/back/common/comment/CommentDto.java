@@ -93,6 +93,7 @@ public class CommentDto {
         private long likeCount; // 코멘트 현재 좋아요 개수
         private String title; // 책,페어링,컬렉션 통합 타이틀 가능한지 화인할 것
         private String cover; // 책 커버
+        private String pairingCover; // 페어링 커버
         private List<String> collectionCover; // 컬렉션에 속한 책 커버 4개. 컬렉션에 추가된 순으로 오름차순
         private Double myBookRating; // 내가 매긴 별점. 책의 경우에만 표시. 나머지는 null 처리
         private String author; // 책의 경우에만 표시. 나머지는 null 처리
