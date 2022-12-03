@@ -1,4 +1,4 @@
-package seb40_main_012.back.dto;
+package seb40_main_012.back.bookWiki.dto;
 
 import lombok.Getter;
 import seb40_main_012.back.common.comment.CommentDto;
