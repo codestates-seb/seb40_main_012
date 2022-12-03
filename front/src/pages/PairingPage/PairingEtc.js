@@ -1,5 +1,6 @@
 import { PageContainer } from 'containers';
 import PairingTab from './PairingComponents/PairingTab';
+import PairingCherryPick from './PairingComponents/PairingCherryPick';
 import PairingCuration from './PairingComponents/PairingCuration';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -25,6 +26,16 @@ const PairingEtc = () => {
   return (
     <PageContainer footer>
       <PairingTab pathname="/pairing/etc" />
+      <PairingCherryPick
+        img="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtT5lb%2FbtrSKRvxcr9%2FbKv0FkT3UIAyJ1QyA5Tie1%2Fimg.jpg"
+        pairingId="110"
+      >
+        <div>
+          우주를 물리의 시선에서 바라보았다면
+          <br />
+          이번엔 생명의 시선에서 바라보는 건 어떠세요?
+        </div>
+      </PairingCherryPick>
       <PairingCuration title={titleLike} pairingData={pairingLikeData} />
       <PairingCuration title={titleNewest} pairingData={pairingNewestData} />
       <PairingCuration title={titleRandom} pairingData={pairingRandomData} />
