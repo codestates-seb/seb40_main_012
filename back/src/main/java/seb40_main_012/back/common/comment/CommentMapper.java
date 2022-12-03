@@ -137,6 +137,11 @@ public interface CommentMapper {
                 myPageResponse.setCover(comments.get(i).getBook().getCover());
             else myPageResponse.setCover(null);
 
+            // 책 커버
+            if (comments.get(i).getCommentType() == CommentType.PAIRING)
+                myPageResponse.setCover(comments.get(i).getPairing().getImagePath());
+            else myPageResponse.setCover(null);
+
             // 북 컬렉션 커버
             if (comments.get(i).getCommentType() == CommentType.BOOK_COLLECTION) {
 
