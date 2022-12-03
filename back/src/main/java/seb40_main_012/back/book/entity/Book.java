@@ -109,7 +109,7 @@ public class Book {
     /*도서 평가*/
     //    --------------------------------------------------------------------------------------------
     @JsonManagedReference
-    @OneToMany(mappedBy = "book")
+    @OneToMany(mappedBy = "book", cascade = CascadeType.REMOVE)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Comment> comments = new ArrayList<>();
 
@@ -123,7 +123,7 @@ public class Book {
     /*추천 페어링 목록*/
     //    --------------------------------------------------------------------------------------------
     @JsonManagedReference
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "book")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Pairing> pairings = new ArrayList<>();
     //    --------------------------------------------------------------------------------------------
