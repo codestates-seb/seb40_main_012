@@ -8,8 +8,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import seb40_main_012.back.config.auth.cookie.CookieManager;
-import seb40_main_012.back.config.auth.entity.RefreshToken;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 
@@ -24,7 +22,6 @@ import java.util.*;
 public class JwtVerificationFilter extends OncePerRequestFilter {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
-    private final CookieManager cookieManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
