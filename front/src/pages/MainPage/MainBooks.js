@@ -73,7 +73,7 @@ const MainBooks = () => {
     slidesToShow: 1,
     dots: true,
     slidesToScroll: 1,
-    //autoplay: true,
+    autoplay: true,
     autoplaySpeed: 3000,
     pauseOnHover: true,
     nextArrow: <NextArrow />,

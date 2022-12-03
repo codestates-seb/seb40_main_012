@@ -260,7 +260,7 @@ export const pairingSlice = createSlice({
       state.data.pairingRes.comments = state.data.pairingRes.comments.map(
         (el) => {
           if (el.commentId === action.payload.commentId) {
-            return action.payload;
+            return { ...el, body: action.payload.body };
           } else return el;
         }
       );
@@ -277,7 +277,7 @@ export const pairingSlice = createSlice({
       state.data.pairingRes.comments = state.data.pairingRes.comments.map(
         (el) => {
           if (el.commentId === action.payload.commentId) {
-            return action.payload;
+            return { ...el, likeCount: action.payload.likeCount };
           } else return el;
         }
       );
@@ -294,7 +294,7 @@ export const pairingSlice = createSlice({
       state.data.pairingRes.comments = state.data.pairingRes.comments.map(
         (el) => {
           if (el.commentId === action.payload.commentId) {
-            return action.payload;
+            return { ...el, likeCount: action.payload.likeCount };
           } else return el;
         }
       );
