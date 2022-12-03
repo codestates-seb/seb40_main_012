@@ -216,17 +216,36 @@ const MyCollectionDetail = ({ data, fetchData }) => {
               </BookImg>
             </Grid>
 
-            <Grid item xs={10} sx={{ height: '164px', marginBottom: '5px' }}>
+            <Grid item xs={9.9} sx={{ height: '164px', marginBottom: '5px' }}>
               <FlexBox
                 onClick={() => navigate(`/collection/${data.collectionId}`)}
               >
-                <Grid sx={{ height: '32.8px' }}>
+                <Grid
+                  sx={{
+                    height: '12.8px',
+                    marginBottom: '5px',
+                    marginTop: '3px',
+                  }}
+                >
+                  <Typography
+                    color="#6741ff"
+                    sx={{
+                      fontWeight: 400,
+                      fontSize: 12,
+                    }}
+                    variant="body2"
+                    component={'span'}
+                  >
+                    컬렉션
+                  </Typography>
+                </Grid>
+
+                <Grid sx={{ height: '29.8px' }}>
                   <Typography
                     className="title"
                     sx={{
                       display: 'flex',
-                      mt: 1,
-                      mb: 1,
+
                       fontSize: 17,
                       fontWeight: 400,
                     }}
@@ -238,7 +257,7 @@ const MyCollectionDetail = ({ data, fetchData }) => {
                     {data.title}
                   </Typography>
                 </Grid>
-                <Grid sx={{ height: '98.4px' }}>
+                <Grid sx={{ height: '89.2px', marginTop: '2px' }}>
                   <div className="content-body">
                     <Typography
                       color="#232627"
@@ -255,7 +274,7 @@ const MyCollectionDetail = ({ data, fetchData }) => {
                   </div>
                 </Grid>
 
-                <Grid sx={{ height: '32.8px' }}>
+                <Grid sx={{ height: '21.2px', marginBottom: '1px' }}>
                   <div className="heart-star-title">
                     <Grid
                       item

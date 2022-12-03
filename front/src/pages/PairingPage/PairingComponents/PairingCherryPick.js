@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
   width: 100%;
   height: 300px;
   border-radius: 5px;
-  background-image: url('https://main-012-images.s3.ap-northeast-2.amazonaws.com/%E1%84%89%E1%85%A9%E1%84%80%E1%85%A9%E1%86%BC%E1%84%82%E1%85%A7%E1%84%8E%E1%85%A6%E1%84%85%E1%85%B5%E1%84%91%E1%85%B5%E1%86%A8%E1%84%80%E1%85%A1%E1%84%8B%E1%85%A1%E1%86%AB1%E1%84%8E%E1%85%A1.JPG');
+  background-image: url(${(props) => props.img});
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -12,30 +13,38 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-between;
   h1 {
-    color: beige;
+    color: white;
     font-weight: bold;
-    font-size: 22px;
+    font-size: 15px;
     padding: 20px;
     text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.3);
+    @media screen and (min-width: 641px) {
+      font-size: 20px;
+    }
   }
   div {
+    display: none;
     padding: 20px;
     text-align: end;
-    color: beige;
+    color: white;
+    font-size: 13px;
     text-shadow: 2px 1px 1px rgba(0, 0, 0, 0.3);
     font-weight: bold;
+    @media screen and (min-width: 641px) {
+      display: block;
+    }
   }
 `;
 
-const PairingCherryPick = () => {
+const PairingCherryPick = ({ img, pairingId, children }) => {
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate(`/pairing/${pairingId}`);
+  };
   return (
-    <Wrapper>
+    <Wrapper onClick={onClick} img={img}>
       <h1>이번 주 Cherry Pick</h1>
-      <div>
-        세상을 홀로 견디는 기분.
-        <br />
-        우주도, 지구도, 서울도 똑같은 마음으로 여행중인 당신을 위해.
-      </div>
+      <div>{children}</div>
     </Wrapper>
   );
 };
