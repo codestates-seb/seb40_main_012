@@ -140,7 +140,7 @@ public interface CommentMapper {
             // 페어링 커버
             if (comments.get(i).getCommentType() == CommentType.PAIRING)
                 myPageResponse.setPairingCover(comments.get(i).getPairing().getImagePath());
-            else myPageResponse.setCover(null);
+            else myPageResponse.setPairingCover(null);
 
             // 북 컬렉션 커버
             if (comments.get(i).getCommentType() == CommentType.BOOK_COLLECTION) {
