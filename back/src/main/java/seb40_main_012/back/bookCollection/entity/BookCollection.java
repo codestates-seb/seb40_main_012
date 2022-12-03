@@ -1,6 +1,7 @@
 package seb40_main_012.back.bookCollection.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.Getter;
@@ -27,6 +28,7 @@ import java.util.List;
 @Builder
 @Entity
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BookCollection {
 
     @Id
@@ -64,7 +66,7 @@ public class BookCollection {
 
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
-    @LazyCollection(LazyCollectionOption.FALSE)
+//    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<BookCollectionBook> collectionBooks = new ArrayList<>();
 
