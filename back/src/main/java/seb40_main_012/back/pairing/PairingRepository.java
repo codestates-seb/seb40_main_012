@@ -73,7 +73,7 @@ public interface PairingRepository extends JpaRepository<Pairing, Long> {
     List<Pairing> findPairingsByQuery(@Param("queryParam") String queryParam, Pageable pageable);
 
     @Modifying
-    @Query(nativeQuery = true, value = "DELETE FROM PAIRING WHERE USER_ID = :userId")
+    @Query(nativeQuery = true, value ="DELETE FROM PAIRING WHERE USER_ID = :userId")
     void deleteAllByUserId(long userId);
 
 }
