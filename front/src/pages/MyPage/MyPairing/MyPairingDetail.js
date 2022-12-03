@@ -40,6 +40,23 @@ const ItemContainer = styled.div`
     }
   }
 `;
+const ResizePairing = styled.div`
+  cursor: pointer;
+  box-sizing: inherit;
+  width: 92px !important;
+  height: 138px !important;
+  margin-left: 15px !important;
+  margin: 15px !important;
+
+  background-image: url(${(props) => props.img});
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-right: 0;
+  filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 
 const BookImg = styled.div`
   cursor: pointer;
@@ -203,25 +220,26 @@ const MyPairingDetail = ({ data, fetchData }) => {
             }}
           >
             <Grid item xs={1.8}>
-              <BookImg
-                onClick={() => {
-                  navigate(`/pairing/${data.pairingId}`);
-                }}
-              >
-                {data.bookCover ? (
+              {data.pairingCover ? (
+                <ResizePairing
+                  onClick={() => {
+                    navigate(`/pairing/${data.pairingId}`);
+                  }}
+                  img={data.pairingCover}
+                ></ResizePairing>
+              ) : (
+                <BookImg
+                  onClick={() => {
+                    navigate(`/pairing/${data.pairingId}`);
+                  }}
+                >
                   <img
                     className="resize-book"
                     src={data.bookCover}
                     alt="book thumbnail"
                   ></img>
-                ) : (
-                  <img
-                    className="resize"
-                    src="/images/pairing.png"
-                    alt="book thumbnail"
-                  ></img>
-                )}
-              </BookImg>
+                </BookImg>
+              )}
             </Grid>
 
             <Grid item xs={9.9} sx={{ height: '164px', marginBottom: '5px' }}>

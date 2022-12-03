@@ -49,6 +49,23 @@ const ItemContainer = styled.div`
   }
 `;
 
+const ResizePairing = styled.div`
+  cursor: pointer;
+  box-sizing: inherit;
+  width: 92px !important;
+  height: 138px !important;
+  margin-left: 15px !important;
+  margin: 15px !important;
+  background-image: url(${(props) => props.img});
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-right: 0;
+  filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const BookImg = styled.div`
   cursor: pointer;
   .resize {
@@ -281,25 +298,26 @@ const MyPickPairing = () => {
                 }}
               >
                 <Grid item xs={1.8} aria-hidden="true">
-                  <BookImg
-                    onClick={() =>
-                      navigate(`/pairing/${data.collections.pairingId}`)
-                    }
-                  >
-                    {data.collections.bookCover ? (
+                  {data.collections.pairingCover ? (
+                    <ResizePairing
+                      onClick={() => {
+                        navigate(`/pairing/${data.collections.pairingId}`);
+                      }}
+                      img={data.collections.pairingCover}
+                    ></ResizePairing>
+                  ) : (
+                    <BookImg
+                      onClick={() => {
+                        navigate(`/pairing/${data.collections.pairingId}`);
+                      }}
+                    >
                       <img
                         className="resize-book"
                         src={data.collections.bookCover}
                         alt="book thumbnail"
                       ></img>
-                    ) : (
-                      <img
-                        className="resize"
-                        src="/images/pairing.png"
-                        alt="book thumbnail"
-                      ></img>
-                    )}
-                  </BookImg>
+                    </BookImg>
+                  )}
                 </Grid>
 
                 <Grid
