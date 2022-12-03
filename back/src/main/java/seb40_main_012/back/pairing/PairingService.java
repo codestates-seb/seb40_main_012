@@ -12,7 +12,9 @@ import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
+import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.common.like.LikeRepository;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
@@ -37,6 +39,7 @@ public class PairingService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final BookInfoSearchService bookInfoSearchService;
+    private final CommentRepository commentRepository;
 
     public Pairing createPairing(Pairing pairing, String isbn13) {
 
@@ -183,7 +186,7 @@ public class PairingService {
 
         Boolean isBookmarked;
 
-        if (bookmarkRepository.findByUserAndPairing(findUser,pairing) == null) { //북마크 안 누른 경우
+        if (bookmarkRepository.findByUserAndPairing(findUser, pairing) == null) { //북마크 안 누른 경우
             isBookmarked = false;
         } else {
             isBookmarked = true;
@@ -199,7 +202,7 @@ public class PairingService {
         return findVerifiedPairing(pairingId);
     }
 
-//    --------------------------------------------------------------------------------------------
+    //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    조회 API 세분화
 //    --------------------------------------------------------------------------------------------
@@ -366,6 +369,10 @@ public class PairingService {
         User findUser = userService.getLoginUser();
 
         long userId = findUser.getUserId();
+
+        findUser.getPairings().stream()
+                .map(Pairing::getPairingId)
+                .forEach(commentRepository::deleteAllByPairingId);
 
         pairingRepository.deleteAllByUserId(userId);
     }
