@@ -38,7 +38,7 @@ public class Comment {
     @Column(nullable = false)
     private CommentType commentType;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Column
     private String body;
 
     @Column
@@ -57,13 +57,6 @@ public class Comment {
 
     @ElementCollection
     private Map<String, String> userInformation = new HashMap<>();
-
-//    private List<String> userInfo;
-
-//    @JsonBackReference
-//    @OneToOne
-//    @JoinColumn(name = "user_Info_id")
-//    private UserInfo userInfo = new UserInfo();
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

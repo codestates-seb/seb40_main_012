@@ -18,6 +18,8 @@ import seb40_main_012.back.common.like.LikeService;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.service.UserService;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
@@ -40,6 +42,7 @@ public class PairingController {
     private final AwsS3Service awsS3Service;
     private final ImageService imageService;
     private final MultipartResolver multipartResolver;
+    private final UserService userService;
     //    ------------------------------------------------------------
     private final NotificationService noticeService;
 //    ------------------------------------------------------------

@@ -46,6 +46,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(nativeQuery = true, value = "DELETE FROM COMMENT WHERE USER_ID = :userId")
     void deleteAllByUserId(long userId);
 
+    @Modifying
+    @Query(nativeQuery = true, value = "DELETE FROM COMMENT WHERE PAIRING_ID = :pairingId")
+    void deleteAllByPairingId(long pairingId);
+
     @Query(nativeQuery = true, value = "select * " +
             "from Comment " +
             "where User_Id = :userId "
