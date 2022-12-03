@@ -376,8 +376,8 @@ const MyPickBook = () => {
                               variant="body2"
                             />
 
-                            {data.collections.ratingCount
-                              ? data.collections.ratingCount
+                            {data.collections.averageRating
+                              ? data.collections.averageRating
                               : 0}
                           </>
                         </Grid>
