@@ -47,6 +47,7 @@ public interface CommentMapper {
         response.commentId(comment.getCommentId());
         response.userInformation(
                 UserDto.ResponseDto.builder()
+                        .profileImage(comment.getUser().getProfileImage())
                         .email(comment.getUser().getEmail())
                         .nickName(comment.getUser().getNickName())
                         .bookTemp(comment.getUser().getBookTemp())
