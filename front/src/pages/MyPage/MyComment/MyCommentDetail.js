@@ -44,17 +44,35 @@ const ItemContainer = styled.div`
     }
   }
 `;
+const ResizePairing = styled.div`
+  cursor: pointer;
+  box-sizing: inherit;
+  width: 92px !important;
+  height: 138px !important;
+  margin-left: 15px !important;
+  margin: 15px !important;
 
+  background-image: url(${(props) => props.img});
+  background-repeat: no-repeat;
+  background-size: cover;
+  margin-right: 0;
+  filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const BookImg = styled.div`
   cursor: pointer;
   .resize {
     box-sizing: inherit;
-    width: 108px !important;
-    height: 164px !important;
-    margin-left: 10px;
+    width: 112px !important;
+    height: 158px !important;
+    padding: 10px !important;
+    margin-left: 8px;
 
     filter: drop-shadow(3px 3px 3px rgb(93 93 93 / 80%));
   }
+
   .resize-book {
     box-sizing: inherit;
     width: 112px !important;
@@ -157,17 +175,28 @@ const MyCommentDetail = ({ data, fetchData }) => {
             >
               <Grid item xs={1.8} className="move-image">
                 {data.commentType === 'PAIRING' ? (
-                  <BookImg
-                    onClick={() => {
-                      navigate(`/pairing/${data.contentId}`);
-                    }}
-                  >
-                    <img
-                      className="resize"
-                      src={data.cover ? data.cover : '/images/pairing.png'}
-                      alt="book thumbnail"
-                    ></img>
-                  </BookImg>
+                  <>
+                    {data.pairingCover ? (
+                      <ResizePairing
+                        onClick={() => {
+                          navigate(`/pairing/${data.contentId}`);
+                        }}
+                        img={data.pairingCover}
+                      ></ResizePairing>
+                    ) : (
+                      <BookImg
+                        onClick={() => {
+                          navigate(`/pairing/${data.contentId}`);
+                        }}
+                      >
+                        <img
+                          className="resize-book"
+                          src={data.cover}
+                          alt="book thumbnail"
+                        ></img>
+                      </BookImg>
+                    )}
+                  </>
                 ) : null}
 
                 {data.commentType === 'BOOK_COLLECTION' ? (
