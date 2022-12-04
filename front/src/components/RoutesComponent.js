@@ -28,6 +28,7 @@ import {
   NoMatch,
   SearchBookPage,
   CollectionEditPage,
+  SearchCollectionPage,
 } from 'pages';
 
 //임시 페이지!
@@ -110,6 +111,14 @@ const RoutesComponent = () => {
       <Route
         path="/search/book/:keyword"
         element={getElement(SearchBookPage, null)}
+      />
+      <Route
+        path="/search/collection"
+        element={getElement(SearchCollectionPage, null)}
+      />
+      <Route
+        path="/search/collection/:keyword"
+        element={getElement(SearchCollectionPage, null)}
       />
       <Route path="/redux" element={<ReduxPage />} />
       <Route path="/button-test" element={<ButtonTest />} />
