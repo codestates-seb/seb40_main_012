@@ -8,6 +8,9 @@ const UserBooksContainer = styled.div`
   display: flex;
   padding: 10px 40px;
   flex-direction: column;
+  @media screen and (max-width: 640px) {
+    padding: 0;
+  }
 `;
 
 const BooksContainer = styled.div`
@@ -30,7 +33,7 @@ const UserBooks = ({ nickname }) => {
     <UserBooksContainer>
       <MainBooksTitle title={`${nickname}님을 위한 책`} />
       <BooksContainer>
-        {userBooks.map((el) => {
+        {userBooks?.map((el) => {
           return (
             <Book
               key={el.isbn13}

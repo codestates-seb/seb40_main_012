@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const BookContainer = styled.div`
-  width: 25%;
+  width: 20%;
   padding: 10px;
   position: relative;
   img {
@@ -16,13 +16,29 @@ const BookContainer = styled.div`
   &:hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 500px) {
+    padding: 2px;
+  }
 `;
 
 const BookTitle = styled.div`
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: ${({ theme }) => theme.colors.darkgray};
-  white-space: nowrap;
+  word-wrap: break-all;
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  @media screen and (max-width: 640px) {
+    font-size: 12px;
+    font-weight: 500;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
+  }
 `;
 
 const RankInfo = styled.div`
@@ -37,6 +53,11 @@ const RankInfo = styled.div`
   text-align: center;
   font-weight: 700;
   font-size: 15px;
+  @media screen and (max-width: 500px) {
+    width: 15px;
+    height: 15px;
+    font-size: 10px;
+  }
 `;
 
 const Book = ({ bookTitle, isbn, ranking = 0, isBest = false, cover }) => {

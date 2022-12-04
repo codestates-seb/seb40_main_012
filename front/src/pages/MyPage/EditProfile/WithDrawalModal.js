@@ -5,27 +5,12 @@ import CloseIcon from '@mui/icons-material/Close';
 import { ContainedButton } from 'components';
 import { myPageApi, authApi } from 'api';
 import { useNavigate } from 'react-router-dom';
-
-const ContainerStyled = styled.div`
-  color: ${({ theme }) => theme.colors.gray};
-  display: flex;
-  margin-top: 2rem;
-  margin-bottom: 4rem;
-  .with-drawal-text {
-    cursor: pointer;
-    width: 100%;
-    font-size: 15px;
-    font-weight: 300;
-    margin-top: 10px;
-    color: #737373;
-  }
-`;
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const PasswordCheckInputStyled = styled.input`
-  // design fluff
   width: 100%;
   display: block;
-  -webkit-appearance: none;
   border: 1px solid white;
   border-radius: 50px;
   padding: 10px;
@@ -49,7 +34,6 @@ const ModalBoxStyled = styled.form`
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  border-radius: 25px;
 
   .title {
     font-size: 18px;
@@ -75,7 +59,7 @@ const ModalBoxStyled = styled.form`
 `;
 
 const ContainedButtonStyled = styled(ContainedButton)`
-  margin-top: 20px;
+  margin: 10px 0 15px;
 `;
 
 const PasswordErrorMessageStyled = styled.p`
@@ -86,8 +70,8 @@ const PasswordErrorMessageStyled = styled.p`
 `;
 
 const WithDrawalModal = ({ open, handleCloseModal }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const [passwordValue, setPasswordValue] = useState('');
   const [passwordErrMsg, setPasswordErrMsg] = useState('');
 
@@ -97,14 +81,25 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
       const response = await myPageApi.currentPasswordCheck(passwordValue);
       if (!response) {
         setPasswordErrMsg('현재 비밀번호를 다시 확인해주세요.');
-      } else {
-        setPasswordErrMsg('');
-        await myPageApi.withdrawal(); // 회원탈퇴 안내 메시지 필요
-        await authApi.logout(); // 회원탈퇴 api 단에서 로그아웃 api 로직까지 같이 처리해주는게 좋을 것 같음
-        navigate('/', { replace: true });
+        return;
       }
+      setPasswordErrMsg('');
+      await Promise.all[(myPageApi.withdrawal(), authApi.logout())]; // 회원탈퇴 api 단에서 로그아웃 api 로직까지 같이 처리해주는게 좋을 것 같음
+      navigate('/', { replace: true });
+      dispatch(
+        setOpenSnackbar({
+          severity: 'info',
+          message: '그동안 체리픽 서비스를 이용해 주셔서 감사합니다.',
+        })
+      );
     } catch (error) {
-      console.log(error);
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
     }
   };
 
@@ -113,50 +108,48 @@ const WithDrawalModal = ({ open, handleCloseModal }) => {
   };
 
   return (
-    <ContainerStyled>
-      <Modal
-        open={open}
-        onClose={handleCloseModal}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <ModalBoxStyled onSubmit={hadleClickSubmit}>
-          <div className="close-icon">
-            <CloseIcon
-              width="100%"
-              style={{ textAlign: 'right' }}
-              sx={{
-                align: 'right',
-                flexDirection: 'row-reverse',
-              }}
-              align="right"
-              onClick={handleCloseModal}
-              color="disabled"
-            ></CloseIcon>
-          </div>
-          <div className="title">회원 탈퇴</div>
-          <div className="info">
-            정말로 회원을 탈퇴 하시겠어요? <br />
-            즉시 로그아웃 되며
-            <br />
-            다시 로그인 하실 수 없어요.
-            <br />
-          </div>
-          <div className="password-check">비밀번호</div>
-          <PasswordCheckInputStyled
-            type="password"
-            value={passwordValue}
-            onChange={handleChangePasswordValue}
-          ></PasswordCheckInputStyled>
-          <PasswordErrorMessageStyled>
-            {passwordErrMsg}
-          </PasswordErrorMessageStyled>
-          <ContainedButtonStyled size="medium" onClick={hadleClickSubmit}>
-            탈퇴하기
-          </ContainedButtonStyled>
-        </ModalBoxStyled>
-      </Modal>
-    </ContainerStyled>
+    <Modal
+      open={open}
+      onClose={handleCloseModal}
+      aria-labelledby="modal-modal-title"
+      aria-describedby="modal-modal-description"
+    >
+      <ModalBoxStyled onSubmit={hadleClickSubmit}>
+        <div className="close-icon">
+          <CloseIcon
+            width="100%"
+            style={{ textAlign: 'right' }}
+            sx={{
+              align: 'right',
+              flexDirection: 'row-reverse',
+            }}
+            align="right"
+            onClick={handleCloseModal}
+            color="disabled"
+          ></CloseIcon>
+        </div>
+        <div className="title">회원 탈퇴</div>
+        <p className="info">
+          탈퇴 후에는 회원정보 및 서비스 이용기록이
+          <br />
+          모두 삭제되어 복구할 수 없습니다.
+          {/* <br />
+          안내 사항을 모두 확인하였으며, 이에 동의합니다. */}
+        </p>
+        <div className="password-check">비밀번호</div>
+        <PasswordCheckInputStyled
+          type="password"
+          value={passwordValue}
+          onChange={handleChangePasswordValue}
+        ></PasswordCheckInputStyled>
+        <PasswordErrorMessageStyled>
+          {passwordErrMsg}
+        </PasswordErrorMessageStyled>
+        <ContainedButtonStyled size="medium" onClick={hadleClickSubmit}>
+          탈퇴하기
+        </ContainedButtonStyled>
+      </ModalBoxStyled>
+    </Modal>
   );
 };
 

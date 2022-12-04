@@ -43,26 +43,18 @@ const authApi = {
         })
         .catch((error) => {
           return reject(error);
-
-          // 에러코드 나오면 처리 필요
-          // logoutApi();
         });
     });
   },
   refreshToken: () => {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       return axios
         .get(TOKEN_REFRESH_URL)
         .then((response) => {
           signInSuccess(response);
           return resolve();
         })
-        .catch((error) => {
-          return reject(error);
-
-          // 에러코드 나오면 처리 필요
-          // logoutApi();
-        });
+        .catch(() => authApi.logout());
     });
   },
   logout: () => {
@@ -73,6 +65,7 @@ const authApi = {
         .catch((error) => reject(error))
         .finally(() => {
           refreshUserData();
+          // window.location.reload(true);
         });
     });
   },

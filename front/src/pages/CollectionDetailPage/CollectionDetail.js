@@ -42,7 +42,9 @@ const CollectionDetailPage = () => {
       .then((res) => {
         setCollectionData(res.data);
       })
-      .catch((error) => console.error(error));
+      .catch(() => {
+        navigate('/404');
+      });
   };
 
   const handleCollectionLike = () => {
@@ -74,8 +76,7 @@ const CollectionDetailPage = () => {
   const handleCollectionDelete = () => {
     //컬렉션 삭제
     axios.delete(`/api/collections/${collectionId}`).then(() => {
-      navigate('/collection');
-      console.log('삭제');
+      navigate(-1, { replace: true });
     });
   };
 
@@ -113,8 +114,7 @@ const CollectionDetailPage = () => {
   const handleCommentLike = (commentId) => {
     axios
       .patch(`/api/comments/${commentId}/like`)
-      .then((res) => {
-        console.log(res.data.data);
+      .then(() => {
         getCollectionData(collectionId);
       })
       .catch((error) => console.error(error));
@@ -123,8 +123,7 @@ const CollectionDetailPage = () => {
   const handleCommentDislike = (commentId) => {
     axios
       .patch(`/api/comments/${commentId}/dislike`)
-      .then((res) => {
-        console.log(res.data.data);
+      .then(() => {
         getCollectionData(collectionId);
       })
       .catch((error) => console.error(error));

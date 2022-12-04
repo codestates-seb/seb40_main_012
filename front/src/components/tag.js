@@ -9,6 +9,10 @@ const TagContainer = styled.div`
   font-weight: 500;
   color: ${({ theme }) => theme.colors.darkgray};
   white-space: nowrap;
+  @media screen and (max-width: 500px) {
+    font-size: 8px;
+    padding: 2px 8px;
+  }
 `;
 
 export const Tag = ({ children, width, height, fontSize, fontWeight }) => {

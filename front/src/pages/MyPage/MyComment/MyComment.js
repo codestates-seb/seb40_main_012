@@ -1,18 +1,15 @@
-/*eslint-disable*/
 import Header from '../Header';
 import { PageContainer } from 'containers';
 import Nav from '../Nav';
 import Content from './Content';
 import Container from '@mui/material/Container';
 import styled from 'styled-components';
-// import { useSelector, useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-// import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import axios from '../../../api/axios';
 import { COMMENT_URL } from '../../../api/requests';
 import Scroll from '../Scroll';
-
-// 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const Void = styled.div`
   min-width: 50vw;
@@ -30,65 +27,50 @@ const Void = styled.div`
 `;
 
 const MyComment = () => {
-  console.log('마이코멘트 시작');
   const [view, setView] = useState(1);
+  const dispatch = useDispatch();
   const [content, setContent] = useState({
-    bookComment: [],
-    pairingComment: [],
-    collectionComment: [],
-    hasMore: true,
-    listCount: 7,
+    data: [],
   });
 
   const fetchData = async () => {
-    axios
-      .get(COMMENT_URL)
-      .then((response) => {
-        console.log(response);
+    try {
+      axios.get(COMMENT_URL).then((response) => {
         setContent({
-          bookComment: response.data.bookComment,
-          pairingComment: response.data.pairingComment,
-          collectionComment: response.data.collectionComment,
-          hasMore: true,
-          listCount: 0,
+          data: response.data.data.content,
         });
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
-
-  const dataArray = content.bookComment
-    .concat(content.pairingComment)
-    .concat(content.collectionComment);
 
   useEffect(() => {
     fetchData();
   }, []);
 
-  console.log('content확인', content);
-  console.log('dataArray', dataArray);
   return (
     <Scroll>
       <PageContainer header footer>
         {content ? (
           <Container maxWidth="md">
             <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
-            <Content
-              commentLength={content.listCount}
-              dataArray={dataArray}
-              content={content}
-              setContent={setContent}
-            ></Content>
+            <Nav view={view} setView={setView}></Nav>
+            <Content></Content>
           </Container>
         ) : (
           <Container maxWidth="md">
             <Header></Header>
+            <Nav view={view} setView={setView}></Nav>
             <Void>
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-              더 읽어올 데이터가 없군요 📕
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>더
+              읽어올 데이터가 없군요 📕
             </Void>
           </Container>
         )}

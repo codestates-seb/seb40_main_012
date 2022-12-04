@@ -9,6 +9,9 @@ const CommentContainer = styled.div`
   &.mine {
     background-color: #f5f5f5;
   }
+  @media screen and (max-width: 500px) {
+    padding: 5px 10px;
+  }
 `;
 
 const UserImgContainer = styled.div`
@@ -16,6 +19,13 @@ const UserImgContainer = styled.div`
   img {
     width: 25px;
     height: 25px;
+    @media screen and (max-width: 500px) {
+      width: 15px;
+      height: 15px;
+    }
+  }
+  @media screen and (max-width: 500px) {
+    margin: 0 5px 0 0;
   }
 `;
 
@@ -55,15 +65,24 @@ const UserNickname = styled.div`
   &.my {
     color: ${({ theme }) => theme.colors.mainColor};
   }
+  @media screen and (max-width: 500px) {
+    font-size: 11px;
+  }
 `;
 const CreatedAt = styled.div`
   font-size: 14px;
   color: ${({ theme }) => theme.colors.gray};
+  @media screen and (max-width: 500px) {
+    font-size: 11px;
+  }
 `;
 const CommentContent = styled.div`
   font-size: 13px;
   color: ${({ theme }) => theme.colors.darkgray};
   word-break: break-all;
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 const CommentEditInput = styled.textarea`
   font-size: 13px;
@@ -75,6 +94,9 @@ const CommentEditInput = styled.textarea`
     'Nanum Gothic', 'Malgun Gothic', sans-serif;
   &:focus {
     outline: none;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 10px;
   }
 `;
 const LikeBtn = styled.div`
@@ -92,9 +114,16 @@ const LikeBtn = styled.div`
         fill: ${({ theme }) => theme.colors.mainColor};
       }
     }
+    @media screen and (max-width: 500px) {
+      width: 15px;
+      height: 15px;
+    }
   }
   font-size: 14px;
   font-weight: 700;
+  @media screen and (max-width: 500px) {
+    font-size: 11px;
+  }
   color: ${({ theme }) => theme.colors.gray};
   &.liked {
     path {
@@ -115,6 +144,10 @@ const DeleteBtn = styled.div`
         fill: ${({ theme }) => theme.colors.mainColor};
       }
     }
+    @media screen and (max-width: 500px) {
+      width: 15px;
+      height: 15px;
+    }
   }
   &.notmine {
     display: none;
@@ -127,6 +160,12 @@ const EditBtn = styled.button`
   &:hover {
     cursor: pointer;
   }
+  @media screen and (max-width: 500px) {
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
 `;
 const CheckBtn = styled.button`
   background-color: transparent;
@@ -134,6 +173,12 @@ const CheckBtn = styled.button`
   padding: 0;
   &:hover {
     cursor: pointer;
+  }
+  @media screen and (max-width: 500px) {
+    svg {
+      width: 15px;
+      height: 15px;
+    }
   }
 `;
 
@@ -151,12 +196,12 @@ const Comment = ({
 }) => {
   const [isMyComment, setIsMyComment] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editContent, setEditContent] = useState(data.body);
-  const [isLiked, setIsLiked] = useState(data.isLiked);
+  const [editContent, setEditContent] = useState(data?.body);
+  const [isLiked, setIsLiked] = useState(data?.isLiked);
 
   useEffect(() => {
-    setIsMyComment(userEmail === data.userInformation.email);
-  }, []);
+    setIsMyComment(userEmail === data?.userInformation?.email);
+  }, [isLogin]);
 
   const handleDeleteComment = () => {
     if (isMyComment) commentDelete(commentId);
@@ -168,7 +213,7 @@ const Comment = ({
     if (editContent.length >= 5) {
       commentEdit(commentId, editContent);
     } else {
-      setEditContent(data.body);
+      setEditContent(data?.body);
     }
   };
 
@@ -189,17 +234,22 @@ const Comment = ({
   return (
     <CommentContainer className={isMyComment ? 'mine' : null}>
       <UserImgContainer>
-        <img
-          src={process.env.PUBLIC_URL + '/images/mypage_icon.svg'}
-          alt="user icon"
-        />
+        {data.userInformation.profileImage === null ||
+        data.userInformation.profileImage.length <= 10 ? (
+          <img
+            src={process.env.PUBLIC_URL + '/images/Mypage_Icon.svg'}
+            alt="user profile"
+          />
+        ) : (
+          <img src={data.userInformation.profileImage} alt="user profile" />
+        )}
       </UserImgContainer>
       <CommentBodyContainer>
         <BodyContainer>
           <UserNickname className={isMyComment ? 'my' : null}>
             {data.userInformation.nickName}
           </UserNickname>
-          <CreatedAt>{ToDateString(data.createdAt)}</CreatedAt>
+          <CreatedAt>{ToDateString(data?.createdAt)}</CreatedAt>
         </BodyContainer>
         <BodyContainer>
           <div className="content">
@@ -209,7 +259,7 @@ const Comment = ({
                 onChange={handleOnChangeEditContent}
               ></CommentEditInput>
             ) : (
-              <CommentContent>{data.body}</CommentContent>
+              <CommentContent>{data?.body}</CommentContent>
             )}
           </div>
           <div className={`edit ${isMyComment ? 'show' : 'hide'} ${type}`}>
@@ -251,7 +301,7 @@ const Comment = ({
                 fill="#232627"
               />
             </svg>
-            <div>{data.likeCount}</div>
+            <div>{data?.likeCount}</div>
           </LikeBtn>
           <DeleteBtn
             className={isMyComment ? null : 'notmine'}

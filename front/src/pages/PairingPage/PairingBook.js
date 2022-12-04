@@ -1,5 +1,6 @@
 import { PageContainer } from 'containers';
 import PairingTab from './PairingComponents/PairingTab';
+import PairingCherryPick from './PairingComponents/PairingCherryPick';
 import PairingCuration from './PairingComponents/PairingCuration';
 import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
@@ -29,6 +30,15 @@ const PairingBook = () => {
   return (
     <PageContainer footer>
       <PairingTab pathname="/pairing/book" />
+      <PairingCherryPick
+        img="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbuxv4w%2FbtrSJn3p6bF%2FyEzkXf5dr3Tkfk3JQc6HvK%2Fimg.jpg"
+        pairingId="79"
+      >
+        <div>
+          한 쪽은 다이빙을 잘 해서 다이빙의 왕이 되고,
+          <br />한 쪽은 물까지 가는데 오랜 결심이 필요하고.
+        </div>
+      </PairingCherryPick>
       <PairingCuration title={titleLike} pairingData={pairingLikeData} />
       <PairingCuration title={titleNewest} pairingData={pairingNewestData} />
       <PairingCuration title={titleRandom} pairingData={pairingRandomData} />

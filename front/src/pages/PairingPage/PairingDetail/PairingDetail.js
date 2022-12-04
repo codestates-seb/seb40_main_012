@@ -4,7 +4,7 @@ import CollectionDetailHeader from '../../CollectionDetailPage/CollectionDetailH
 import PairingOriginBook from './PairingOriginBook';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   asyncGetOnePairing,
@@ -17,7 +17,7 @@ import {
   asyncLikePairingComment,
   asyncDislikePairingComment,
 } from '../../../store/modules/pairingSlice';
-import { selectEmail } from '../../../store/modules/authSlice';
+import { selectEmail, selectIsLogin } from '../../../store/modules/authSlice';
 import Comments from '../../../components/Comments/Comments';
 import PatchModal from './PatchModal';
 import DeleteModal from './DeleteModal';
@@ -29,6 +29,7 @@ import CopyUrlButton from './CopyUrlButton';
 const BtnStyleBox = styled.div`
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   border-bottom: 1px solid ${({ theme }) => theme.colors.lightgray};
 `;
 
@@ -104,19 +105,26 @@ const ImgBox = styled.div`
 
 const PairingDetail = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isLogin = useSelector(selectIsLogin);
   const { pairingId } = useParams();
   const [isMine, setIsMine] = useState(false);
 
   useEffect(() => {
-    dispatch(asyncGetOnePairing(pairingId));
+    dispatch(asyncGetOnePairing(pairingId))
+      .unwrap()
+      .catch((error) => {
+        if (error.status === 404) {
+          navigate('/404');
+        }
+      });
   }, [dispatch]);
 
   const pairingData = useSelector((state) => state.pairing.data.pairingRes);
-  console.log('여기보세여!', pairingData);
   const bookData = useSelector((state) => state.pairing.data.bookRes);
 
   useEffect(() => {
-    setIsMine(userEmail === pairingData.userInformation?.email);
+    setIsMine(userEmail === pairingData?.userInformation?.email);
   }, [dispatch, pairingData]);
 
   const userEmail = useSelector(selectEmail);
@@ -158,33 +166,31 @@ const PairingDetail = () => {
   return (
     <PageContainer footer>
       <CollectionDetailHeader
-        title={pairingData.title}
-        writer={
-          pairingData.userInformation && pairingData.userInformation.nickName
-        }
-        update={new Date(pairingData.modifiedAt).toLocaleDateString()}
+        title={pairingData?.title}
+        writer={pairingData?.userInformation?.nickName}
+        update={new Date(pairingData?.modifiedAt).toLocaleDateString()}
         taglist={[]}
       />
       <BtnStyleBox>
-        {isMine ? (
+        {isLogin && isMine ? (
           <EditModeStyleBox>
             <PatchModal />
-            <DeleteModal deleteId={pairingData.pairingId} />
+            <DeleteModal deleteId={pairingData?.pairingId} />
           </EditModeStyleBox>
         ) : (
           <div></div>
         )}
         <BtnsContainer>
           <PickButton
-            isBookmarked={pairingData.isBookmarked}
+            isBookmarked={pairingData?.isBookmarked}
             handleBookmark={handlePairingBookmark}
           />
           <LikeButton
-            isLiked={pairingData.isLiked}
+            isLiked={pairingData?.isLiked}
             LikePlus={handlePairingLike}
             LikeMinus={handlePairingDislike}
           >
-            {pairingData.likeCount}
+            {pairingData?.likeCount}
           </LikeButton>
           <CopyUrlButton />
         </BtnsContainer>
@@ -192,41 +198,41 @@ const PairingDetail = () => {
       <OriginBookWrapper>
         <InfoTitle>How about pairing this book</InfoTitle>
         <PairingOriginBook
-          bookTitle={bookData.title}
-          author={bookData.author}
-          cover={bookData.cover}
-          publisher={bookData.publisher}
-          year={bookData.pubDate}
-          category={GenterMatcherToKor(bookData.genre)}
-          rating={bookData.averageRating}
-          bookId={pairingData.isbn13}
+          bookTitle={bookData?.title}
+          author={bookData?.author}
+          cover={bookData?.cover}
+          publisher={bookData?.publisher}
+          year={bookData?.pubDate}
+          category={GenterMatcherToKor(bookData?.genre)}
+          rating={bookData?.averageRating}
+          bookId={pairingData?.isbn13}
           disabled={false}
         ></PairingOriginBook>
       </OriginBookWrapper>
       <MainBody>
         <InfoTitle>
-          With this&nbsp; <p>{pairingData.pairingCategory}</p>
+          With this&nbsp; <p>{pairingData?.pairingCategory}</p>
         </InfoTitle>
         <InfoContent>
-          {pairingData.imagePath ? (
+          {pairingData?.imagePath ? (
             <ImgBox>
-              <img src={pairingData.imagePath} alt="pairing img" />
+              <img src={pairingData?.imagePath} alt="pairing img" />
             </ImgBox>
           ) : null}
           <InfoBody>
-            <p>{pairingData.body}</p>
+            <p>{pairingData?.body}</p>
             <a
-              href={pairingData.outLinkPath}
+              href={pairingData?.outLinkPath}
               target="_blank"
               rel="noopener noreferrer"
             >
-              {pairingData.outLinkPath}
+              {pairingData?.outLinkPath}
             </a>
           </InfoBody>
         </InfoContent>
       </MainBody>
       <Comments
-        commentsData={pairingData.comments}
+        commentsData={pairingData?.comments}
         commentAdd={handleCommentAdd}
         commentDelete={handleCommentDelete}
         commentEdit={handleCommentEdit}

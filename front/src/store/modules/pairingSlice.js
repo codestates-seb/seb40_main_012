@@ -12,47 +12,32 @@ const initialState = {
 
 export const asyncGetOnePairing = createAsyncThunk(
   'pairingSlice/asyncGetOnePairing',
-  async (pairingId) => {
+  async (pairingId, thunkAPI) => {
     try {
       const pairingRes = await axios.get(`${PAIRING_URL}/${pairingId}`);
       const isbn = pairingRes.data.data.isbn13;
       const bookRes = await axios.get(`api/books/${isbn}`);
       return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
     } catch (error) {
-      console.log(error);
-    }
-  }
-);
-
-export const asyncPostPairing = createAsyncThunk(
-  'pairingSlice/asyncPostPairing',
-  async ({ formData, isbn }) => {
-    try {
-      return await axios.post(`/api/books/${isbn}/pairings/add`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-    } catch (error) {
-      console.log('페어링 post 실패', error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
 export const asyncDeletePairing = createAsyncThunk(
   'pairingSlice/asyncDeletePairing',
-  async ({ deleteId }) => {
+  async ({ deleteId }, thunkAPI) => {
     try {
       return await axios.delete(`${PAIRING_URL}/${deleteId}/delete`);
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
 export const asyncPatchPairing = createAsyncThunk(
   'pairingSlice/asyncPatchPairing',
-  async ({ formData, pairingId }) => {
+  async ({ formData, pairingId }, thunkAPI) => {
     try {
       const pairingRes = await axios.patch(
         `${PAIRING_URL}/${pairingId}/edit`,
@@ -67,27 +52,27 @@ export const asyncPatchPairing = createAsyncThunk(
       const bookRes = await axios.get(`api/books/${isbn}`);
       return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
 export const asyncPairingLike = createAsyncThunk(
   'pairingSlice/asyncPairingLike',
-  async (pairingId) => {
+  async (pairingId, thunkAPI) => {
     try {
       const pairingRes = await axios.patch(`${PAIRING_URL}/${pairingId}/like`);
       const isbn = pairingRes.data.data.isbn13;
       const bookRes = await axios.get(`api/books/${isbn}`);
       return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 export const asyncPairingDislike = createAsyncThunk(
   'pairingSlice/asyncPairingDislike',
-  async (pairingId) => {
+  async (pairingId, thunkAPI) => {
     try {
       const pairingRes = await axios.patch(
         `${PAIRING_URL}/${pairingId}/dislike`
@@ -96,14 +81,14 @@ export const asyncPairingDislike = createAsyncThunk(
       const bookRes = await axios.get(`api/books/${isbn}`);
       return { pairingRes: pairingRes.data.data, bookRes: bookRes.data.data };
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
 export const asyncPairingPick = createAsyncThunk(
   'pairingSlice/asyncPairingPick',
-  async (pairingId) => {
+  async (pairingId, thunkAPI) => {
     try {
       const pairingRes = await axios.post(
         `${PAIRING_URL}/${pairingId}/bookmark`
@@ -112,7 +97,7 @@ export const asyncPairingPick = createAsyncThunk(
       const bookRes = await axios.get(`api/books/${isbn}`);
       return { pairingRes: pairingRes.data, bookRes: bookRes.data.data };
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error);
     }
   }
 );
@@ -187,17 +172,7 @@ export const pairingSlice = createSlice({
     });
     builder.addCase(asyncGetOnePairing.rejected, (state) => {
       state.data = [];
-      state.status = 'asyncGetOnePairing/rejected';
-    });
-    //페어링 작성
-    builder.addCase(asyncPostPairing.pending, (state) => {
-      state.status = 'asyncPostPairing/pending';
-    });
-    builder.addCase(asyncPostPairing.fulfilled, (state) => {
-      state.status = 'asyncPostPairing/fulfilled';
-    });
-    builder.addCase(asyncPostPairing.rejected, (state) => {
-      state.status = 'asyncPostPairing/rejected';
+      state.status = 'rejected';
     });
     //페어링 삭제
     builder.addCase(asyncDeletePairing.pending, (state) => {
@@ -207,7 +182,7 @@ export const pairingSlice = createSlice({
       state.status = 'asyncDeletePairing/fulfilled';
     });
     builder.addCase(asyncDeletePairing.rejected, (state) => {
-      state.status = 'asyncDeletePairing/rejected';
+      state.status = 'rejected';
     });
     //페어링 수정
     builder.addCase(asyncPatchPairing.pending, (state) => {
@@ -218,7 +193,7 @@ export const pairingSlice = createSlice({
       state.status = 'asyncPatchPairing/fulfilled';
     });
     builder.addCase(asyncPatchPairing.rejected, (state) => {
-      state.status = 'asyncPatchPairing/rejected';
+      state.status = 'rejected';
     });
     //페어링 좋아요
     builder.addCase(asyncPairingLike.pending, (state) => {
@@ -229,7 +204,7 @@ export const pairingSlice = createSlice({
       state.status = 'asyncPairingLike/fulfilled';
     });
     builder.addCase(asyncPairingLike.rejected, (state) => {
-      state.status = 'asyncPairingLike/rejected';
+      state.status = 'rejected';
     });
     //페어링 좋아요 취소
     builder.addCase(asyncPairingDislike.pending, (state) => {
@@ -240,7 +215,7 @@ export const pairingSlice = createSlice({
       state.status = 'asyncPairingDislike/fulfilled';
     });
     builder.addCase(asyncPairingDislike.rejected, (state) => {
-      state.status = 'asyncPairingDislike/rejected';
+      state.status = 'rejected';
     });
     //페어링 북마크(나의 픽)
     builder.addCase(asyncPairingPick.pending, (state) => {
@@ -251,7 +226,7 @@ export const pairingSlice = createSlice({
       state.status = 'asyncPairingPick/fulfilled';
     });
     builder.addCase(asyncPairingPick.rejected, (state) => {
-      state.status = 'asyncPairingPick/rejected';
+      state.status = 'rejected';
     });
     //comment 추가
     builder.addCase(asyncPostPairingComment.pending, (state) => {
@@ -285,7 +260,7 @@ export const pairingSlice = createSlice({
       state.data.pairingRes.comments = state.data.pairingRes.comments.map(
         (el) => {
           if (el.commentId === action.payload.commentId) {
-            return action.payload;
+            return { ...el, body: action.payload.body };
           } else return el;
         }
       );
@@ -302,7 +277,7 @@ export const pairingSlice = createSlice({
       state.data.pairingRes.comments = state.data.pairingRes.comments.map(
         (el) => {
           if (el.commentId === action.payload.commentId) {
-            return action.payload;
+            return { ...el, likeCount: action.payload.likeCount };
           } else return el;
         }
       );
@@ -319,7 +294,7 @@ export const pairingSlice = createSlice({
       state.data.pairingRes.comments = state.data.pairingRes.comments.map(
         (el) => {
           if (el.commentId === action.payload.commentId) {
-            return action.payload;
+            return { ...el, likeCount: action.payload.likeCount };
           } else return el;
         }
       );

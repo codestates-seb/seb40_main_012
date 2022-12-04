@@ -39,7 +39,6 @@ const CollectionWritePage = () => {
           ...data,
         })
         .then((res) => {
-          console.log(res.data);
           navigate(`/collection/${res.data.collectionId}`);
         })
         .catch((error) => console.error(error));
@@ -50,10 +49,7 @@ const CollectionWritePage = () => {
     <PageContainer footer>
       <CollectionWritePageContainer>
         <div className="content">
-          <CollectionInfoInput
-            data={data}
-            setData={setData}
-          ></CollectionInfoInput>
+          <CollectionInfoInput data={data} setData={setData} />
           <CollectionBookInput data={data} setData={setData} />
         </div>
         <CollectionWriteBtns

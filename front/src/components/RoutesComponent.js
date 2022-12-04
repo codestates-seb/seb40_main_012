@@ -27,6 +27,7 @@ import {
   MyCollection,
   NoMatch,
   SearchBookPage,
+  CollectionEditPage,
 } from 'pages';
 
 //임시 페이지!
@@ -88,6 +89,10 @@ const RoutesComponent = () => {
         path="/collection/write"
         element={getElement(CollectionWritePage, true)}
       />
+      <Route
+        path="/collection/edit/:collectionId"
+        element={getElement(CollectionEditPage, true)}
+      />
       <Route path="/mypage" element={getElement(MyComment, true)} />
       <Route path="/mypage/mycomment" element={getElement(MyComment, true)} />
       <Route path="/mypage/mypairing" element={getElement(MyParing, true)} />
@@ -96,10 +101,10 @@ const RoutesComponent = () => {
         element={getElement(MyCollection, true)}
       />
       <Route path="/mypage/mypick" element={getElement(MyPick, true)} />
-      <Route path="/mypage/profile" element={getElement(EditProfile, null)} />
+      <Route path="/mypage/profile" element={getElement(EditProfile, true)} />
       <Route
         path="/mypage/profile/password"
-        element={getElement(ChangePassWd, null)}
+        element={getElement(ChangePassWd, true)}
       />
       <Route path="/search/book" element={getElement(SearchBookPage, null)} />
       <Route

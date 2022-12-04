@@ -4,6 +4,12 @@ import CollectionDetailBook from './CollectionDetailBook';
 
 const CollectionDetailBooksContainer = styled.div`
   padding: 25px 20px;
+  @media screen and (max-width: 640px) {
+    padding: 15px 10px;
+  }
+  @media screen and (max-width: 500px) {
+    padding: 10px 5px;
+  }
 `;
 
 const CollectionBooksTitle = styled.div`
@@ -11,6 +17,9 @@ const CollectionBooksTitle = styled.div`
   color: ${({ theme }) => theme.colors.dark};
   font-weight: 700;
   padding-bottom: 10px;
+  @media screen and (max-width: 500px) {
+    font-size: 16px;
+  }
 `;
 
 const BooksContainer = styled.div`
@@ -42,19 +51,6 @@ const CollectionDetailBooks = ({ books }) => {
             />
           );
         })}
-        {/* <CollectionDetailBook
-          bookTitle={booksData.length === 0 ? '' : booksData[0].item[0].title}
-          rating="1.0"
-          bookid="1"
-          cover={booksData.length === 0 ? '' : booksData[0].item[0].cover}
-          author={booksData.length === 0 ? '' : booksData[0].item[0].author}
-        /> */}
-        {/* <CollectionDetailBook
-          bookTitle="제목"
-          rating="1.0"
-          bookid="1"
-          cover="cover"
-        /> */}
       </BooksContainer>
     </CollectionDetailBooksContainer>
   );

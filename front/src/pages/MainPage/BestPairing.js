@@ -1,25 +1,30 @@
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
-const randomColor = () => {
-  //130 ~ 200
-  return Math.floor(Math.random() * 70) + 130;
-};
-
 const BestPairingContainer = styled.div`
   display: flex;
-  width: 20%;
+  width: 18%;
   aspect-ratio: 1 / 1;
-  background-color: ${(props) => props.bgcolor};
+  background-image: url(${(props) => props.img});
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: ${(props) => props.color || 'rgba(0,0,0,0.5)'};
+  background-blend-mode: multiply;
+  border-radius: 5px;
   box-sizing: border-box;
-  margin: 7px;
+  margin: 5px;
   position: relative;
   &:hover {
     cursor: pointer;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
   }
-  @media screen and (max-width: 640px) {
-    width: 60%;
+  @media screen and (max-width: 800px) {
+    width: 30%;
+    margin: 3px;
+  }
+  @media screen and (max-width: 500px) {
+    width: 45%;
+    margin: 5px;
   }
 `;
 
@@ -30,19 +35,26 @@ const PairingTitle = styled.div`
   left: 50%;
   text-align: center;
   word-wrap: break-word;
+  overflow: hidden;
+  line-height: 1.5;
+  max-height: 3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   transform: translate(-50%, -50%);
   color: white;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 700;
   text-shadow: 3px 3px 3px rgba(109, 109, 109, 0.3);
   @media screen and (max-width: 980px) {
     font-size: 14px;
   }
+  @media screen and (max-width: 500px) {
+    font-size: 12px;
+  }
 `;
 
-const BestPairing = ({ pairingTitle, pairingId }) => {
-  const randomRGB = `rgb(${randomColor()}, ${randomColor()}, 255)`;
-
+const BestPairing = ({ pairingTitle, pairingImg, pairingId }) => {
   const navigate = useNavigate();
 
   const onClickPairing = () => {
@@ -50,7 +62,11 @@ const BestPairing = ({ pairingTitle, pairingId }) => {
   };
 
   return (
-    <BestPairingContainer bgcolor={randomRGB} onClick={onClickPairing}>
+    <BestPairingContainer
+      img={pairingImg}
+      color={pairingImg ? null : '#A28BFF'}
+      onClick={onClickPairing}
+    >
       <PairingTitle>{pairingTitle}</PairingTitle>
     </BestPairingContainer>
   );

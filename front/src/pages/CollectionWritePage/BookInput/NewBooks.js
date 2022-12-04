@@ -12,6 +12,9 @@ const NewBooksTitle = styled.div`
   font-size: 24px;
   font-weight: 700;
   color: ${({ theme }) => theme.colors.mainColor};
+  @media screen and (max-width: 500px) {
+    font-size: 16px;
+  }
 `;
 
 const Books = styled.div`
@@ -45,7 +48,7 @@ const NewBooks = ({ newBooks, setNewBooks, newBooksInfo, setNewBooksInfo }) => {
               key={idx}
               title={el.title}
               author={el.author}
-              cover={el.cover}
+              cover={el.cover ? el.cover : el.bookCover}
               isbn={el.isbn13}
               remove={true}
               handleDeleteBook={handleDeleteBook}

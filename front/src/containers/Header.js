@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Divider from '@mui/material/Divider';
@@ -24,6 +24,7 @@ import { Searchbar } from 'components';
 import { selectIsLogin, selectProfileImage } from 'store/modules/authSlice';
 import { dummyUserImgUrl } from 'util/userAvatar';
 import { authApi } from 'api';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 const drawerWidth = 240;
 const PAIRING = '페어링';
@@ -66,6 +67,7 @@ const LogoSytled = styled.img`
 const HeaderBtn = styled(Button)`
   color: ${({ theme }) => theme.colors.dark};
   border: none;
+  white-space: nowrap;
   &:hover {
     background-color: transparent;
   }
@@ -79,6 +81,7 @@ const HeaderItemButtonStyled = styled(HeaderBtn)`
   height: 60px;
   border-top: 3px solid transparent;
   border-radius: 0;
+  white-space: nowrap;
   &:hover,
   &.selected {
     border-bottom: 3px solid ${({ theme }) => theme.colors.mainColor};
@@ -121,7 +124,8 @@ const logo = (
   </Link>
 );
 
-function Header(props) {
+const Header = (props) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const isLogin = useSelector(selectIsLogin);
@@ -214,8 +218,20 @@ function Header(props) {
   const handleClickLogoutButton = async () => {
     try {
       await authApi.logout();
-    } catch (e) {
-      console.log(e);
+      dispatch(
+        setOpenSnackbar({
+          severity: 'success',
+          message: '로그아웃되었습니다.',
+        })
+      );
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
     }
   };
 
@@ -320,6 +336,7 @@ function Header(props) {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
+            zIndex: '1500',
             display: { xs: 'block', md: 'none' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
@@ -358,6 +375,7 @@ function Header(props) {
             keepMounted: true, // Better open performance on mobile.
           }}
           sx={{
+            zIndex: '1500',
             display: { xs: 'block', md: 'none' },
             '& .MuiDrawer-paper': {
               boxSizing: 'border-box',
@@ -379,6 +397,6 @@ function Header(props) {
       </Box>
     </Box>
   );
-}
+};
 
 export default Header;

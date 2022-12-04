@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
@@ -9,7 +11,7 @@ import { PageContainer } from 'containers';
 import { ContainedButton, ValidationTextFields } from 'components';
 import { validationCheck } from 'util/util';
 import { myPageApi } from 'api';
-import { useNavigate } from 'react-router-dom';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 const inputInfo = [
   {
@@ -37,6 +39,7 @@ const AvatarStyled = styled(Avatar)`
 `;
 
 const ChangePassWd = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const inputRef = useRef([]);
 
@@ -55,6 +58,7 @@ const ChangePassWd = () => {
     newPassword: '',
     newPasswordCheck: '',
   });
+  const [backdropOpen, setBackdropOpen] = useState(false);
 
   useEffect(() => {
     inputRef.current[0].focus();
@@ -139,18 +143,32 @@ const ChangePassWd = () => {
     event.preventDefault();
     if (Object.values(inputStatus).filter((v) => v === 'error').length > 0)
       return;
-    // 비밀번호 변경 api
+
     try {
+      setBackdropOpen(true);
       await myPageApi.passwordUpdate(inputValue.newPasswordCheck);
-      // 성공 메시지
+      dispatch(
+        setOpenSnackbar({
+          severity: 'success',
+          message: '비밀번호가 변경되었습니다.',
+        })
+      );
+      setBackdropOpen(false);
       navigate('/mypage', { replace: true });
     } catch (error) {
-      console.log(error);
+      setBackdropOpen(false);
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
     }
   };
 
   return (
-    <PageContainer footer center maxWidth="xs">
+    <PageContainer footer center maxWidth="xs" backdrop={backdropOpen}>
       <AvatarStyled sx={{ m: 1 }}>
         <LockOutlinedIcon />
       </AvatarStyled>

@@ -1,36 +1,20 @@
-/*eslint-disable*/
 import Grid from '@mui/material/Grid';
 import styled from 'styled-components';
-import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 import Typography from '@mui/material/Typography';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import StarRoundedIcon from '@mui/icons-material/StarRounded';
-import MyCommentBook from './MyCommentBook';
-// import { useState } from 'react';
+import MyCommentDetail from './MyCommentDetail';
+import { useState, useEffect } from 'react';
 import axios from '../../../api/axios';
-import MyCommentPairing from './MyCommentPairing';
-import MyCommentCollection from './MyCommentCollection';
+import { useNavigate } from 'react-router-dom';
+import { BasicButton } from '../../../components/Buttons';
+import Modal from '@mui/material/Modal';
 
 const ContentContainer = styled.div`
   margin-bottom: 10rem;
-  input {
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 1.5px solid gainsboro;
-    border-radius: 0.35rem;
-    margin-top: -0.1px;
-    &:checked {
-      border-color: transparent;
-      background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M5.707 7.293a1 1 0 0 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 0 0-1.414-1.414L7 8.586 5.707 7.293z'/%3e%3c/svg%3e");
-      background-size: 100% 100%;
-      background-position: 50%;
-      background-repeat: no-repeat;
-      background-color: #cfc3ff;
-    }
-  }
-  img {
+
+  .loading {
     align-items: center;
     justify-content: center;
     align-content: center;
@@ -40,36 +24,63 @@ const ContentContainer = styled.div`
   .fixed {
     position: fixed;
   }
-`;
-const BookImg = styled.div`
-  .resize {
-    box-sizing: inherit;
-    width: 108px !important;
-    height: 164px !important;
-    margin-left: 10px;
+  p {
+    text-align: center;
+  }
+  .no-data-notice {
+    text-align: center;
   }
 `;
 
-const CommentContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-const FlexBox = styled.div`
+const ModalBox = styled.div`
+  width: 300px;
+  height: 150px;
+  position: absolute;
+  background-color: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
-  margin-left: 20px;
-  margin-right: 10px;
-  font-size: 13px;
-  border-bottom: 1px solid #e9e9e9;
-  .comment {
-    height: 125px;
-    color: #232627;
+  align-items: center;
+  justify-content: center;
+  .info {
+    font-weight: 700;
   }
-  .heart-star-title {
+  .container {
     display: flex;
-    flex-direction: row;
+    margin-top: 20px;
+  }
+  .delete {
+    width: 80px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #ffc5c5;
+    color: #850000;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  .close {
+    width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 5px;
+    font-size: 14px;
+    font-weight: 700;
+    background-color: #e8e8e8;
+    &:hover {
+      cursor: pointer;
+    }
   }
 `;
+
 const ButtonCSS = styled.button`
   outline: none;
   display: inline-block;
@@ -81,93 +92,89 @@ const ButtonCSS = styled.button`
   background: transparent;
 `;
 
-const Remove = styled.div`
-  color: #dee2e6;
-  font-size: 24px;
-  cursor: pointer;
-  opacity: 0;
-  &:hover {
-    color: #6741ff;
-  }
-`;
+const Content = () => {
+  const [hasMore, setHasMore] = useState(true);
+  const navigate = useNavigate();
+  const [content, setContent] = useState({
+    data: [],
+  });
+  const [page, setPage] = useState(2);
+  //Delete Modal
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const dispatch = useDispatch();
 
-const ItemContainer = styled.div`
-  &:hover {
-    ${Remove} {
-      opacity: 1;
+  const fetchData = async () => {
+    try {
+      axios.get(`api/mypage/userComment?page=1`).then((response) => {
+        setContent({
+          data: response.data.data.content,
+        });
+
+        setHasMore(response.data.isLast === false ? true : false);
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
     }
-  }
-`;
+  };
 
-const Content = ({ commentLength, content, setContent }) => {
-  // 스크롤이 바닥에 닿을때 동작하는 함수
   const fetchMoreData = () => {
-    if (commentLength >= 100) {
-      setContent({
-        bookComment: content.bookComment,
-        pairingComment: content.pairingComment,
-        collectionComment: content.collectionComment,
-        hasMore: false,
-        listCount: 0,
-      });
-      return;
+    try {
+      setTimeout(() => {
+        if (hasMore === true && page) {
+          axios.get(`api/mypage/userComment?page=${page}`).then((response) => {
+            setContent({
+              data: content.data.concat(response.data.data.content),
+            });
+            setHasMore(response.data.isLast === false ? true : false);
+            {
+              response.data.isLast !== true ? setPage(page + 1) : null;
+            }
+          });
+        }
+      }, 500);
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
     }
-    if (commentLength < 10) {
-      setContent({
-        bookComment: content.bookComment,
-        pairingComment: content.pairingComment,
-        collectionComment: content.collectionComment,
-        hasMore: false,
-        listCount: 0,
-      });
-
-      return;
-    }
-
-    ////// 나중에 통신하는 거 붙여주기
-    // setTimeout(() => {
-    //   setInfiniteData({
-    //     bookComment: infiniteData.bookComment.concat(infiniteData.bookComment),
-    //     pairingComment: infiniteData.pairingComment.concat(
-    //       infiniteData.pairingComment
-    //     ),
-    //     collectionComment: infiniteData.collectionComment.concat(
-    //       infiniteData.collectionComment
-    //     ),
-    //     hasMore: true,
-    //   });
-    // }, 800);
-    setTimeout(() => {
-      setContent({
-        bookComment: content.bookComment.concat(content.bookComment),
-        pairingComment: content.pairingComment.concat(content.pairingComment),
-        collectionComment: content.collectionComment.concat(
-          content.collectionComment
-        ),
-        hasMore: true,
-        listCount: 0,
-      });
-    }, 800);
-    /////
   };
 
   const removeAll = () => {
-    if (window.confirm(`모든 데이터를 정말 삭제하시겠습니까?`)) {
-      axios
-        .delete(`api/comments/delete`)
-        .then(location.reload())
-        .catch((error) => console.log('에러', error));
+    try {
+      axios.delete(`api/comments/delete`).then(() => fetchData());
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
     }
   };
-  console.log('hasmore상태', content.hasMore);
+
+  useEffect(() => {
+    fetchData();
+    setHasMore(content.data.isLast === false ? true : false);
+  }, []);
 
   return (
     <>
       <ContentContainer>
         <Grid container>
-          <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}>
-            <CommentContainer></CommentContainer>
-          </Grid>
+          <Grid item xs={5.5} sx={{ mt: 1, mb: 1 }}></Grid>
 
           <Grid
             item
@@ -177,7 +184,7 @@ const Content = ({ commentLength, content, setContent }) => {
               flexDirection: 'row-reverse',
             }}
           >
-            <ButtonCSS onClick={removeAll}>
+            <ButtonCSS onClick={handleOpen}>
               <Typography
                 color="#737373"
                 sx={{
@@ -187,46 +194,153 @@ const Content = ({ commentLength, content, setContent }) => {
                   mb: 1,
                 }}
                 variant="body2"
-                gutterBottom
+                component={'span'}
               >
                 전체 삭제
               </Typography>
             </ButtonCSS>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <ModalBox>
+                <div className="info">
+                  모든 코멘트가 삭제됩니다.
+                  <br />
+                  정말 삭제하시겠습니까?
+                </div>
+                <div className="container">
+                  <div
+                    className="close"
+                    role="presentation"
+                    onClick={handleClose}
+                  >
+                    취소
+                  </div>
+                  <div
+                    className="delete"
+                    onClick={() => {
+                      removeAll();
+                      handleClose();
+                    }}
+                    role="presentation"
+                  >
+                    삭제하기
+                  </div>
+                </div>
+              </ModalBox>
+            </Modal>
           </Grid>
         </Grid>
 
-        <InfiniteScroll
-          dataLength={content.bookComment.length}
-          // dataLength={data.content.length}
-          // next={data.content && fetchMoreData}
-          next={content && fetchMoreData}
-          hasMore={content.hasMore} // 스크롤 막을지 말지 결정
-          loader={
-            <p
-              style={{
-                textAlign: 'center',
+        {content.data.length ? (
+          <InfiniteScroll
+            dataLength={content.data.length}
+            next={fetchMoreData}
+            hasMore={hasMore}
+            loader={
+              <div
+                style={{
+                  textAlign: 'center',
+                }}
+              >
+                <img
+                  className="loading"
+                  src={'/images/spinner.gif'}
+                  alt="loading cherrypick"
+                ></img>
+                <Typography
+                  color="#737373"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  variant="body2"
+                  component={'span'}
+                >
+                  열심히 읽어오는 중..
+                </Typography>
+              </div>
+            }
+            height={400}
+            endMessage={
+              <p style={{ textAlign: 'center' }}>
+                <Typography
+                  sx={{
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  color="#2e3031"
+                  variant="body2"
+                  gutterBottom
+                  component={'span'}
+                >
+                  모든 코멘트를 다 읽었어요!
+                </Typography>
+              </p>
+            }
+          >
+            <div>
+              {content.data ? (
+                content.data?.map((data) => (
+                  <MyCommentDetail
+                    key={data.commentId}
+                    data={data}
+                    fetchData={fetchData}
+                  />
+                ))
+              ) : (
+                <Typography
+                  color="#737373"
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    mt: 1,
+                    mb: 1,
+                    fontSize: 17,
+                    fontWeight: 300,
+                  }}
+                  variant="body2"
+                  component={'span'}
+                >
+                  데이터가 없어요
+                </Typography>
+              )}
+            </div>
+          </InfiniteScroll>
+        ) : (
+          <div className="no-data-notice">
+            <Typography
+              sx={{
+                mt: 1,
+                mb: 1,
+                fontSize: 17,
+                fontWeight: 300,
               }}
+              color="#2e3031"
+              variant="body2"
+              gutterBottom
+              component={'span'}
             >
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-              <div>열심히 읽어오는 중..</div>
-            </p>
-          }
-          height={400}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yayy! 모든 코멘트를 다 읽었어요!</b>
-            </p>
-          }
-        >
-          <div>
-            <MyCommentBook content={content} setContent={setContent} />
-            <MyCommentPairing content={content} setContent={setContent} />
-            <MyCommentCollection content={content} setContent={setContent} />
+              읽어올 데이터가 없습니다
+              <br />
+              메인 페이지에서 체리픽의 인기 컨텐츠를 추천해드릴게요!
+              <br />
+              <br />
+              <BasicButton onClick={() => navigate(`/`)}>
+                메인 페이지
+              </BasicButton>
+            </Typography>
           </div>
-        </InfiniteScroll>
+        )}
       </ContentContainer>
     </>
   );

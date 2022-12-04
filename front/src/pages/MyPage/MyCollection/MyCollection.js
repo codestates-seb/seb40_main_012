@@ -4,13 +4,12 @@ import Nav from '../Nav';
 import Content from './Content';
 import Container from '@mui/material/Container';
 import styled from 'styled-components';
-// import { useSelector, useDispatch } from 'react-redux';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
-// import { asyncGetMyCommentList } from '../../../store/modules/commentSlice';
 import axios from '../../../api/axios';
 import { MY_COLLECTION_URL } from '../../../api/requests';
 import Scroll from '../Scroll';
-// 페이지네이션 처럼, 페이지네이션 요청하는 쿼리 string
 
 const Void = styled.div`
   min-width: 50vw;
@@ -27,69 +26,51 @@ const Void = styled.div`
   }
 `;
 
-const MyPairing = () => {
-  console.log('마이컬렉션 시작');
+const MyCollection = () => {
   const [view, setView] = useState(3);
   const [content, setContent] = useState({
-    listCount: '',
     data: [],
-    hasMore: true,
   });
-  const [infiniteData, setInfiniteData] = useState({
-    data: [],
-    hasMore: true,
-  });
+  const dispatch = useDispatch();
 
   const fetchData = async () => {
-    axios
-      .get(MY_COLLECTION_URL)
-      .then((response) => {
+    try {
+      axios.get(MY_COLLECTION_URL).then((response) => {
         setContent({
-          listCount: response.data.listCount,
-          data: response.data.data,
-          hasMore: true,
+          data: response.data.data.content,
         });
-        setInfiniteData({
-          content: response.data,
-          hasMore: true,
-        });
-      })
-      .catch((error) => console.log('에러', error));
+      });
+    } catch (error) {
+      const { message } = error;
+      dispatch(
+        setOpenSnackbar({
+          severity: 'error',
+          message: message,
+        })
+      );
+    }
   };
 
   useEffect(() => {
     fetchData();
-    console.log('useEffect의 state 현재값', content);
   }, []);
-
-  useEffect(() => {
-    console.log('infiniteData 변경', infiniteData);
-  }, [infiniteData]);
 
   return (
     <Scroll>
       <PageContainer header footer>
-        {content.data.length !== 0 ? (
+        {content ? (
           <Container maxWidth="md">
             <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
-            <Content
-              content={content}
-              setInfiniteData={setInfiniteData}
-              infiniteData={infiniteData}
-              setContent={setContent}
-            ></Content>
+            <Nav view={view} setView={setView}></Nav>
+            <Content></Content>
           </Container>
         ) : (
           <Container maxWidth="md">
             <Header></Header>
-            <Nav view={view} setView={setView} content={content}></Nav>
+            <Nav view={view} setView={setView}></Nav>
             <Void>
-              <img
-                src={'/images/cherrypick_loading.gif'}
-                alt="loading cherrypick"
-              ></img>
-              더 읽어올 데이터가 없군요 📕
+              <img src={'/images/spinner.gif'} alt="loading cherrypick"></img>더
+              읽어올 데이터가 없군요 📕
             </Void>
           </Container>
         )}
@@ -98,4 +79,4 @@ const MyPairing = () => {
   );
 };
 
-export default MyPairing;
+export default MyCollection;

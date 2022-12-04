@@ -3,6 +3,22 @@ import Typography from '@mui/material/Typography';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+const NavContainer = styled.div`
+  @media screen and (max-width: 490px) {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .nav-container-first {
+    @media screen and (max-width: 490px) {
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      width: 50%;
+    }
+  }
+`;
+
 const BorderCSS = styled.button`
   outline: none;
   display: inline-block;
@@ -34,14 +50,12 @@ const BorderCSS = styled.button`
 
 const BottomBorder = styled.div`
   position: relative;
-  /* border-bottom: solid 1px ${({ theme }) => theme.colors.lightgray}; */
   ::before {
     content: '';
     display: block;
     position: absolute;
     top: 0;
-    width: 94.2%;
-    left: 5.8%;
+    width: 100%;
     border-bottom: solid 1px #eaeaea;
   }
 `;
@@ -58,19 +72,16 @@ const CommentBorderCSS = styled.button`
   content: '';
   border-bottom: solid 3px ${({ theme }) => theme.colors.mainColor};
   align-items: center;
-`;
-const Circle = styled.div`
-  width: 30px;
-  height: 30px;
-  background-color: ${({ theme }) => theme.colors.mainColor};
-  border-radius: 50%;
+  img {
+    width: 18px;
+    height: 18px;
+    margin-right: 5px;
+  }
 `;
 
-const Nav = ({ content, view, setView }) => {
-  console.log(content);
-
+const Nav = ({ view, setView }) => {
   return (
-    <div>
+    <NavContainer>
       <Grid container justifyContent="space-around">
         <Grid
           item
@@ -80,18 +91,20 @@ const Nav = ({ content, view, setView }) => {
             alignItems: 'center',
             justifyContent: 'center',
           }}
+          className="nav-container-first"
           onClick={() => setView(1)}
         >
           {view === 1 ? (
             <>
               <CommentBorderCSS>
-                <Typography variant="h6">나의 코멘트</Typography>
-              </CommentBorderCSS>
-              <Circle className="circle">
-                <Typography variant="h6" style={{ color: 'white' }}>
-                  {content?.listCount}
+                <Typography variant="h6">
+                  <img
+                    src={process.env.PUBLIC_URL + '/images/mycomment_icon.svg'}
+                    alt="my comment"
+                  />
+                  나의 코멘트
                 </Typography>
-              </Circle>
+              </CommentBorderCSS>
             </>
           ) : (
             <Link to="/mypage/mycomment">
@@ -105,6 +118,7 @@ const Nav = ({ content, view, setView }) => {
         <Grid
           item
           align="center"
+          className="nav-container-first"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -115,13 +129,14 @@ const Nav = ({ content, view, setView }) => {
           {view === 2 ? (
             <>
               <CommentBorderCSS>
-                <Typography variant="h6">나의 페어링</Typography>
-              </CommentBorderCSS>
-              <Circle className="circle">
-                <Typography variant="h6" style={{ color: 'white' }}>
-                  {content?.listCount}
+                <Typography variant="h6">
+                  <img
+                    src={process.env.PUBLIC_URL + '/images/mypairing_icon.svg'}
+                    alt="my pairing"
+                  />
+                  나의 페어링
                 </Typography>
-              </Circle>
+              </CommentBorderCSS>
             </>
           ) : (
             <Link to="/mypage/mypairing">
@@ -135,6 +150,7 @@ const Nav = ({ content, view, setView }) => {
         <Grid
           item
           align="center"
+          className="nav-container-first"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -145,13 +161,16 @@ const Nav = ({ content, view, setView }) => {
           {view === 3 ? (
             <>
               <CommentBorderCSS>
-                <Typography variant="h6">나의 컬렉션</Typography>
-              </CommentBorderCSS>
-              <Circle className="circle">
-                <Typography variant="h6" style={{ color: 'white' }}>
-                  {content?.listCount}
+                <Typography variant="h6">
+                  <img
+                    src={
+                      process.env.PUBLIC_URL + '/images/mycollection_icon.svg'
+                    }
+                    alt="my collection"
+                  />
+                  나의 컬렉션
                 </Typography>
-              </Circle>
+              </CommentBorderCSS>
             </>
           ) : (
             <Link to="/mypage/mycollection">
@@ -165,6 +184,7 @@ const Nav = ({ content, view, setView }) => {
         <Grid
           item
           align="center"
+          className="nav-container-first"
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -175,13 +195,14 @@ const Nav = ({ content, view, setView }) => {
           {view === 4 ? (
             <>
               <CommentBorderCSS>
-                <Typography variant="h6">나의 픽</Typography>
-              </CommentBorderCSS>
-              <Circle className="circle">
-                <Typography variant="h6" style={{ color: 'white' }}>
-                  {content?.listCount}
+                <Typography variant="h6">
+                  <img
+                    src={process.env.PUBLIC_URL + '/images/cherry.png'}
+                    alt="bookmark icon"
+                  />
+                  나의 픽
                 </Typography>
-              </Circle>
+              </CommentBorderCSS>
             </>
           ) : (
             <Link to="/mypage/mypick">
@@ -193,7 +214,7 @@ const Nav = ({ content, view, setView }) => {
         </Grid>
       </Grid>
       <BottomBorder />
-    </div>
+    </NavContainer>
   );
 };
 export default Nav;
