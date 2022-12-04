@@ -2,6 +2,8 @@ import Box from '@mui/material/Box';
 import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setSearchKeyword } from 'store/modules/searchSlice';
 
 const SearchbarContainer = styled(Box)`
   height: 40px;
@@ -34,6 +36,7 @@ const SearchbarInput = styled.input`
 const Searchbar = () => {
   const [input, setInput] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleChangeInput = (e) => {
     setInput(e.target.value);
@@ -41,8 +44,8 @@ const Searchbar = () => {
 
   const handleOnKeyPressEnter = (e) => {
     if (e.key === 'Enter') {
+      dispatch(setSearchKeyword({ keyword: input }));
       navigate(`/search/book/${input}`);
-      window.location.reload();
     }
   };
 

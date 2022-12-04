@@ -44,7 +44,7 @@ const CollectionDetailBooks = ({ books }) => {
             <CollectionDetailBook
               key={idx}
               bookTitle={el.title}
-              rating={el.ratingCount}
+              rating={el.averageRating}
               bookId={el.isbn13}
               cover={el.bookCover}
               author={el.author}

@@ -19,6 +19,13 @@ const SearchTabBtn = styled.button`
     cursor: pointer;
     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
   }
+  @media screen and (max-width: 640px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 15px;
+    padding: 10px;
+  }
 `;
 
 const SearchBookBtn = styled(SearchTabBtn)`
@@ -31,27 +38,27 @@ const SearchBookBtn = styled(SearchTabBtn)`
 //     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
 //   }
 // `;
-// const SearchCollectionBtn = styled(SearchTabBtn)`
-//   &.collection {
-//     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
-//   }
-// `;
+const SearchCollectionBtn = styled(SearchTabBtn)`
+  &.collection {
+    border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
+  }
+`;
 
 const SearchTab = () => {
   const location = useLocation();
-  const current = location.pathname.split('/')[2];
+  const type = location.pathname.split('/')[2];
 
   return (
     <SearchTabContainer>
       <Link to="/search/book">
-        <SearchBookBtn className={current}>검색 결과</SearchBookBtn>
+        <SearchBookBtn className={type}>책</SearchBookBtn>
       </Link>
       {/* <Link to="/search/pairing">
         <SearchPairingBtn className={current}>페어링</SearchPairingBtn>
-      </Link>
-      <Link to="/search/collection">
-        <SearchCollectionBtn className={current}>컬렉션</SearchCollectionBtn>
       </Link> */}
+      <Link to="/search/collection">
+        <SearchCollectionBtn className={type}>컬렉션</SearchCollectionBtn>
+      </Link>
     </SearchTabContainer>
   );
 };
