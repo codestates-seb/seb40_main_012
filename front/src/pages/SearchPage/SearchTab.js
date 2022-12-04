@@ -19,6 +19,13 @@ const SearchTabBtn = styled.button`
     cursor: pointer;
     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
   }
+  @media screen and (max-width: 640px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 15px;
+    padding: 10px;
+  }
 `;
 
 const SearchBookBtn = styled(SearchTabBtn)`
@@ -44,7 +51,7 @@ const SearchTab = () => {
   return (
     <SearchTabContainer>
       <Link to="/search/book">
-        <SearchBookBtn className={type}>검색 결과</SearchBookBtn>
+        <SearchBookBtn className={type}>책</SearchBookBtn>
       </Link>
       {/* <Link to="/search/pairing">
         <SearchPairingBtn className={current}>페어링</SearchPairingBtn>
