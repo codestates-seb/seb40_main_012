@@ -29,6 +29,7 @@ import {
   SearchBookPage,
   CollectionEditPage,
   SearchCollectionPage,
+  SearchPairingPage,
 } from 'pages';
 
 //임시 페이지!
@@ -119,6 +120,14 @@ const RoutesComponent = () => {
       <Route
         path="/search/collection/:keyword"
         element={getElement(SearchCollectionPage, null)}
+      />
+      <Route
+        path="/search/pairing"
+        element={getElement(SearchPairingPage, null)}
+      />
+      <Route
+        path="/search/pairing/:keyword"
+        element={getElement(SearchPairingPage, null)}
       />
       <Route path="/redux" element={<ReduxPage />} />
       <Route path="/button-test" element={<ButtonTest />} />
