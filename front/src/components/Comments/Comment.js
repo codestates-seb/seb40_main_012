@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { ToDateString } from '../../util/ToDateString';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import { useDispatch } from 'react-redux';
 
 const CommentContainer = styled.div`
   display: flex;
@@ -182,7 +184,6 @@ const CheckBtn = styled.button`
   }
 `;
 
-//TODO: 본인이 작성한 코멘트만 삭제 버튼 활성화되도록
 const Comment = ({
   isLogin,
   commentId,
@@ -198,6 +199,7 @@ const Comment = ({
   const [isEditMode, setIsEditMode] = useState(false);
   const [editContent, setEditContent] = useState(data?.body);
   const [isLiked, setIsLiked] = useState(data?.isLiked);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setIsMyComment(userEmail === data?.userInformation?.email);
@@ -286,7 +288,18 @@ const Comment = ({
         </BodyContainer>
         <BodyContainer className="btns">
           <LikeBtn
-            onClick={handleOnClickLikeBtn}
+            onClick={
+              isLogin
+                ? handleOnClickLikeBtn
+                : () => {
+                    dispatch(
+                      setOpenSnackbar({
+                        severity: 'info',
+                        message: '로그인이 필요한 서비스입니다.',
+                      })
+                    );
+                  }
+            }
             className={isLiked ? 'liked' : 'not'}
           >
             <svg
