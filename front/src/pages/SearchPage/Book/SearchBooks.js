@@ -25,6 +25,14 @@ const LoadingContainer = styled.div`
   }
 `;
 
+export const NoResultContainer = styled.div`
+  width: 100%;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const SearchBooks = () => {
   const keyword = useSelector(selectSearchKeyword);
   const [books, setBooks] = useState([]);
@@ -52,18 +60,26 @@ const SearchBooks = () => {
         </LoadingContainer>
       ) : (
         <>
-          {books.map((el, idx) => {
-            return (
-              <SearchBook
-                key={idx}
-                cover={el.cover}
-                title={el.title}
-                author={el.author}
-                year={el.pubDate}
-                isbn={el.isbn13}
-              />
-            );
-          })}
+          {books.length === 0 ? (
+            <NoResultContainer>
+              검색 결과가 존재하지 않습니다.
+            </NoResultContainer>
+          ) : (
+            <>
+              {books.map((el, idx) => {
+                return (
+                  <SearchBook
+                    key={idx}
+                    cover={el.cover}
+                    title={el.title}
+                    author={el.author}
+                    year={el.pubDate}
+                    isbn={el.isbn13}
+                  />
+                );
+              })}
+            </>
+          )}
         </>
       )}
     </SearchBooksContainer>

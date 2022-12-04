@@ -4,6 +4,7 @@ import axios from '../../../api/axios';
 import { useSelector } from 'react-redux';
 import { selectSearchKeyword } from 'store/modules/searchSlice';
 import SearchCollection from './SearchCollection';
+import { NoResultContainer } from '../Book/SearchBooks';
 
 const SearchCollectionsContainer = styled.div`
   display: flex;
@@ -52,19 +53,27 @@ const SearchCollections = () => {
         </LoadingContainer>
       ) : (
         <>
-          {collections?.map((el) => {
-            return (
-              <SearchCollection
-                key={el.collectionId}
-                collectionId={el.collectionId}
-                title={el.title}
-                content={el.content}
-                like={el.likeCount}
-                comment={el.comments}
-                date={el.lastModifiedAt}
-              />
-            );
-          })}
+          {collections.length === 0 ? (
+            <NoResultContainer>
+              검색 결과가 존재하지 않습니다.
+            </NoResultContainer>
+          ) : (
+            <>
+              {collections?.map((el) => {
+                return (
+                  <SearchCollection
+                    key={el.collectionId}
+                    collectionId={el.collectionId}
+                    title={el.title}
+                    content={el.content}
+                    like={el.likeCount}
+                    comment={el.comments}
+                    date={el.lastModifiedAt}
+                  />
+                );
+              })}
+            </>
+          )}
         </>
       )}
     </SearchCollectionsContainer>
