@@ -34,6 +34,7 @@ const Wrapper = styled.div`
       display: block;
     }
   }
+  cursor: pointer;
 `;
 
 const PairingCherryPick = ({ img, pairingId, children }) => {

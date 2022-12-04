@@ -27,7 +27,7 @@ const PairingEtc = () => {
     <PageContainer footer>
       <PairingTab pathname="/pairing/etc" />
       <PairingCherryPick
-        img="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbtT5lb%2FbtrSKRvxcr9%2FbKv0FkT3UIAyJ1QyA5Tie1%2Fimg.jpg"
+        img="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fcn6aSw%2FbtrSLJqXE2l%2FD2NcTDiAdRsYKD6qPk6zC0%2Fimg.jpg"
         pairingId="110"
       >
         <div>
