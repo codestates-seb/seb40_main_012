@@ -80,7 +80,7 @@ public class Pairing {
     private Image image;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "pairing", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(mappedBy = "pairing", cascade = CascadeType.PERSIST)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Comment> comments;
 
