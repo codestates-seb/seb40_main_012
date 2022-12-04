@@ -119,19 +119,34 @@ public class CherriPickAop {
         stayTimeRepository.save(newSignIn);
     }
 
-//    @After(value = "execution(* seb40_main_012.back.config.auth.jwt.JwtTokenizer.removeRefreshToken(..)) && args(tokenValue)")
+//    @Before(value = "execution(* seb40_main_012.back.config.auth.jwt.JwtTokenizer.removeRefreshToken(..)) && args(tokenValue)")
 //    public void signOutStatistics(JoinPoint joinPoint, String tokenValue) { // 로그아웃 한 경우
 //
 //        String userEmail = refreshTokenRepository.findUserEmailByToken(tokenValue); // 유저 이메일
 //        User user = userService.findUserByEmail(userEmail); // 로그아웃 하는 유저
 //
-//        StayTime findStayTime = stayTimeRepository.findByToken(tokenValue);
-//        long duration = Duration.between(findStayTime.getSignIn(), LocalDateTime.now()).getSeconds(); // 로그인 - 로그아웃 간격(초)
-//        String durationForStat = duration / 60 + "분 " + duration % 60 + "초";
+//        StayTime findStayTime = stayTimeRepository.findByToken(tokenValue); // 토큰으로 StayTime 객체 불러오기
+//        findStayTime.setSignOut(LocalDateTime.now());
+//        findStayTime.setSignOutDay(LocalDate.now()); // 로그아웃 한 날짜 추가(쿼리용)
 //
-//        if (statisticsRepository.findByDate(LocalDate.now()) == null && findStayTime.getSignIn().getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) { // 전날 로그인 해서 오늘 처음으로 로그아웃 하는 경우
+//        long duration = 0;
 //
-//            Statistics newStatistics = Statistics.builder()
+//
+//        if (findStayTime.getSignIn() == null) {
+//            duration = 3600;
+//        } else {
+//            duration = Duration.between(findStayTime.getSignIn(), findStayTime.getSignOut()).getSeconds(); // 로그인 - 로그아웃 간격(초)
+//        }
+//        String durationForStat = duration / 60 + "분 " + duration % 60 + "초"; // 보기 좋게 분-초로 계산
+//
+//        findStayTime.setStayTime(duration);
+//        findStayTime.setStayTimeStr(durationForStat);
+//
+//        stayTimeRepository.save(findStayTime); // DB에 바로 반영
+//
+//        if (statisticsRepository.findByDate(LocalDate.now()) == null && findStayTime.getSignIn().getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) { // 전날 로그인 해서 오늘의 첫 로그아웃일 경우
+//
+//            Statistics newStatistics = Statistics.builder() // Statistics 객체 새로 생성
 //                    .date(LocalDate.now())
 //                    .averageStayTimeSec(duration)
 //                    .averageStayTimeStr(durationForStat)
@@ -146,20 +161,22 @@ public class CherriPickAop {
 //
 //            Statistics statistics = statisticsRepository.findByDate(LocalDate.now()); // 오늘의 통계 객체 불러오기
 //
-//            long signOutNumToday = stayTimeRepository.findByLocalDate(LocalDate.now()).size(); // 오늘 로그아웃 한 총 사용자(본인 포함)
+//            long signOutNumToday = stayTimeRepository.findByLocalDate(LocalDate.now()).size(); // 오늘 로그아웃 한 총 사용자(본인 제외)
 //
-//            long durationBefore = statistics.getAverageStayTimeSec(); // 기존 평균 체류시간
+//            // 새롭게 계산된 평균 체류시간(초)
+//            long averageStayTime = stayTimeRepository.findByLocalDate(LocalDate.now()).stream()
+//                    .map(StayTime::getStayTime)
+//                    .flatMapToLong(LongStream::of)
+//                    .sum() / (signOutNumToday + 1);
 //
-//            long durationAfter = (durationBefore * (signOutNumToday - 1) + duration) / signOutNumToday; // 수정된 평균 체류시간
+//            // 새롭게 계산된 평균 체류시간(분-초)
+//            String averageStayTimeStr = averageStayTime / 60 + "분 " + averageStayTime % 60 + "초";
 //
-//            statistics.setAverageStayTimeSec(durationAfter); // 어제의 로그아웃 기록이 포함된 자료 지우기
-//            statistics.setAverageStayTimeStr(durationForStat); // 그저께의 로그아웃 기록이 포함된 자료 지우기
+//            statistics.setAverageStayTimeSec(averageStayTime);
+//            statistics.setAverageStayTimeStr(averageStayTimeStr);
 //
 //            statisticsRepository.save(statistics);
-//
 //        }
-//
-//        stayTimeRepository.deleteByToken(tokenValue);
 //    }
 
 
