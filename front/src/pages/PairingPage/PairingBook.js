@@ -31,7 +31,7 @@ const PairingBook = () => {
     <PageContainer footer>
       <PairingTab pathname="/pairing/book" />
       <PairingCherryPick
-        img="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fw0889%2FbtrSIo2seMd%2FY21IfRAGSGvxtDmPDkdYB0%2Fimg.jpg"
+        img="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fbuxv4w%2FbtrSJn3p6bF%2FyEzkXf5dr3Tkfk3JQc6HvK%2Fimg.jpg"
         pairingId="79"
       >
         <div>

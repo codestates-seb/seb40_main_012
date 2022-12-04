@@ -32,7 +32,7 @@ const PairingMusic = () => {
     <PageContainer footer>
       <PairingTab pathname="/pairing/music" />
       <PairingCherryPick
-        img="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FpdYAo%2FbtrSJywv3d8%2FQ5rRbh3Bvr31xgKa4gPd50%2Fimg.jpg"
+        img="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F80o0S%2FbtrSI8SMN6u%2FTYXRpMdwHyv1vsEfexuZk0%2Fimg.jpg"
         pairingId="9"
       >
         <div>
