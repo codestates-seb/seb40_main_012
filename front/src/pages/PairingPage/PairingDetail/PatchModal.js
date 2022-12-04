@@ -23,6 +23,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '80%',
+  minWidth: '375px',
   height: '70%',
   overflow: 'scroll',
   bgcolor: 'background.paper',
