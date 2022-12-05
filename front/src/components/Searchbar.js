@@ -48,7 +48,6 @@ const Searchbar = () => {
   const handleOnKeyPressEnter = (e) => {
     if (e.key === 'Enter') {
       dispatch(setSearchMode({ mode: true }));
-      //dispatch(setSearchKeyword({ keyword: input }));
       navigate(`/search/book/${keyword}`);
     }
   };
