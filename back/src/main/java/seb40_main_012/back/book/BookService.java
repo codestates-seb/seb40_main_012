@@ -182,7 +182,7 @@ public class BookService {
 
     public List<Book> findRecommendedBooks() {
 
-        User findUser = userService.getLoginUserSec();
+        User findUser = userService.getLoginUser();
 
         // 유저 선호 장르 리스트로 받기
         List<String> genreList = findUser.getCategories().stream()
