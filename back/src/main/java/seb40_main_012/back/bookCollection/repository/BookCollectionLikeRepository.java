@@ -6,5 +6,5 @@ import seb40_main_012.back.bookCollection.entity.BookCollectionLike;
 public interface BookCollectionLikeRepository extends JpaRepository<BookCollectionLike,Long> {
     BookCollectionLike findByUserUserIdAndBookCollectionCollectionId(Long userId, Long collectionId);
 
-    Long countByCollectionId(Long id);
+    Long countByBookCollectionCollectionId(Long id);
 }
