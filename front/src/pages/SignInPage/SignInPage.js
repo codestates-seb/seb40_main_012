@@ -19,6 +19,7 @@ import {
 import { signInAsync } from 'store/modules/authSlice';
 import SignInTextFields from './SignInTextFields';
 import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import axios from 'api/axios';
 
 const LoginErrorMsgStyled = styled.div`
   font-size: 0.75rem;
@@ -81,6 +82,15 @@ const SignInPage = () => {
       });
   };
 
+  const handleGoogleOauth = () => {
+    axios
+      .get('http://localhost:8080/oauth2/authorization/google')
+      .then(() => {
+        console.log('구글 로그인 되나?');
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <PageContainer footer center maxWidth="xs" backdrop={backdropOpen}>
       <AvatarStyled sx={{ m: 1 }}>
@@ -125,6 +135,7 @@ const SignInPage = () => {
           </Grid>
         </Grid>
       </Box>
+      <button onClick={handleGoogleOauth}>google 로그인</button>
     </PageContainer>
   );
 };
