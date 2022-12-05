@@ -1,9 +1,19 @@
 import { PageContainer } from 'containers';
+import LandingPC from './LandingPC';
+import LandingMobile from './LandingMobile';
+import LandingPad from './LandingPad';
 
 const LandingPage = () => {
   return (
-    <PageContainer footer center maxWidth="sm" bmt={5}>
-      <h1>랜딩페이지</h1>
+    <PageContainer
+      footer
+      center
+      // maxWidth="sm"
+      bmt={5}
+    >
+      <LandingPC />
+      <LandingPad />
+      <LandingMobile />
     </PageContainer>
   );
 };
