@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectIsLogin } from '../../store/modules/authSlice';
+import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 import styled from 'styled-components';
 
 const CommentAddContainer = styled.div`
@@ -94,6 +95,7 @@ const CommentAdd = ({ commentAdd }) => {
   const [isAbleAdd, setIsAbleAdd] = useState(false);
   const [input, setInput] = useState('');
 
+  const dispatch = useDispatch();
   const isLogin = useSelector(selectIsLogin);
 
   const handleInputChange = (e) => {
@@ -129,7 +131,18 @@ const CommentAdd = ({ commentAdd }) => {
         />
         <CommentAddBtn
           className={isAbleAdd ? 'able' : ''}
-          onClick={handleCommentAdd}
+          onClick={
+            isLogin
+              ? handleCommentAdd
+              : () => {
+                  dispatch(
+                    setOpenSnackbar({
+                      severity: 'info',
+                      message: '로그인이 필요한 서비스입니다.',
+                    })
+                  );
+                }
+          }
         >
           <svg
             width="25"

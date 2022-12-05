@@ -1,11 +1,13 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import SearchBook from './SearchBook';
-import { useEffect, useState } from 'react';
 import axios from '../../../api/axios';
 import { useSelector } from 'react-redux';
 import { selectSearchKeyword } from 'store/modules/searchSlice';
+import { NoResultContainer } from '../Book/SearchBooks';
+import SearchPairing from './SearchPairing';
 
-const SearchBooksContainer = styled.div`
+const SearchPairingsContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
 `;
@@ -25,32 +27,24 @@ const LoadingContainer = styled.div`
   }
 `;
 
-export const NoResultContainer = styled.div`
-  width: 100%;
-  height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SearchBooks = () => {
+const SearchPairings = () => {
   const keyword = useSelector(selectSearchKeyword);
-  const [books, setBooks] = useState([]);
+  const [pairings, setPairings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`/api/search?Category=books&Query=${keyword}&Sort=accuracy`)
+      .get(`/api/search?Category=pairings&Query=${keyword}`)
       .then((res) => {
-        setBooks(res.data);
+        setPairings([...res.data]);
         setIsLoading(false);
       })
       .catch((error) => console.error(error));
   }, [keyword]);
 
   return (
-    <SearchBooksContainer>
+    <SearchPairingsContainer>
       {isLoading ? (
         <LoadingContainer className={isLoading ? 'show' : 'hide'}>
           <img
@@ -60,21 +54,21 @@ const SearchBooks = () => {
         </LoadingContainer>
       ) : (
         <>
-          {books.length === 0 ? (
+          {pairings.length === 0 ? (
             <NoResultContainer>
               검색 결과가 존재하지 않습니다.
             </NoResultContainer>
           ) : (
             <>
-              {books.map((el, idx) => {
+              {pairings?.map((el) => {
                 return (
-                  <SearchBook
-                    key={idx}
-                    cover={el.cover}
+                  <SearchPairing
+                    key={el.pairingId}
+                    pairingId={el.pairingId}
                     title={el.title}
-                    author={el.author}
-                    year={el.pubDate}
-                    isbn={el.isbn13}
+                    img={el.imagePath}
+                    like={el.likeCount}
+                    comment={el.comments}
                   />
                 );
               })}
@@ -82,8 +76,8 @@ const SearchBooks = () => {
           )}
         </>
       )}
-    </SearchBooksContainer>
+    </SearchPairingsContainer>
   );
 };
 
-export default SearchBooks;
+export default SearchPairings;

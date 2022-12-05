@@ -17,6 +17,9 @@ const GuideContainer = styled.div`
       cursor: pointer;
     }
   }
+  &.best {
+    display: none;
+  }
 `;
 
 const ModalBox = styled.div`
@@ -63,7 +66,7 @@ const Guide = ({ type }) => {
   const handleClose = () => setOpen(false);
 
   return (
-    <GuideContainer>
+    <GuideContainer className={type}>
       {type === 'pairing' ? (
         <>
           <div
