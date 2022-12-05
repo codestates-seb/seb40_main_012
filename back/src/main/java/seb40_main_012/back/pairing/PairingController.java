@@ -5,6 +5,7 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -109,7 +110,6 @@ public class PairingController {
 //            response.setImagePath(originalImgPath);
 
 
-
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
 
@@ -126,7 +126,7 @@ public class PairingController {
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
 
-        } else return new ResponseEntity<>(null,HttpStatus.I_AM_A_TEAPOT);
+        } else return new ResponseEntity<>(null, HttpStatus.I_AM_A_TEAPOT);
 
     }
 
@@ -197,11 +197,13 @@ public class PairingController {
         }
     }
 
-//    --------------------------------------------------------------------------------------------
+    //    --------------------------------------------------------------------------------------------
 //    --------------------------------------------------------------------------------------------
 //    조회 API 세분화
 //    --------------------------------------------------------------------------------------------
-//    --------------------------------------------------------------------------------------------
+//    -------------------
+//    -------------------------------------------------------------------------
+    @Transactional
     @GetMapping("/pairings/likes") // 좋아요 > 최신순 슬라이스로 받기
     public ResponseEntity getPairings() {
 
