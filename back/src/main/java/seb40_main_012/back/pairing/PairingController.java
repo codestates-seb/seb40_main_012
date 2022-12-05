@@ -167,9 +167,9 @@ public class PairingController {
 
     @GetMapping("/pairings/{pairing_id}")
     public ResponseEntity getPairing(
-            @RequestHeader("cookie") @Valid @Nullable String token,
+            @RequestHeader(value = "cookie", required = false) @Valid @Nullable String token,
             @PathVariable("pairing_id") @Positive long pairingId) {
-        if (token == null) {
+        if (!token.contains("refreshToken")) {
 
             Pairing pairing = pairingService.updateView(pairingId);
             pairing.setIsLiked(null);

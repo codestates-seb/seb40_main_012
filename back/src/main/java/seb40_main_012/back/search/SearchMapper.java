@@ -9,6 +9,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface SearchMapper {
 
-    List<BookCollection> bookCollectionSearchsToBookCollections(List<BookCollection> bookCollections);
+    List<BookCollection> bookCollectionsSearchToBookCollections(List<BookCollection> bookCollections);
 
 }
