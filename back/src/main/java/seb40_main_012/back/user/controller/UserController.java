@@ -7,6 +7,7 @@ import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import seb40_main_012.back.book.BookDto;
@@ -55,6 +56,7 @@ import java.util.stream.Collectors;
 
 @RequestMapping("/api")
 @RestController
+@Transactional
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -240,6 +242,7 @@ public class UserController {
     }
 
 
+    @Transactional
     @PatchMapping("/users/firstLogin")
     public ResponseEntity patchUserOnFirstLogin(@Valid @RequestBody LoginDto.PatchDto patchDto) {
         User user = userService.updateOnFirstLogin(patchDto);

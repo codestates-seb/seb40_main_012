@@ -3,6 +3,7 @@ package seb40_main_012.back.bookWiki;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.dto.SingleResponseDto;
@@ -11,6 +12,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 
 @Validated
+@Transactional
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/books")
