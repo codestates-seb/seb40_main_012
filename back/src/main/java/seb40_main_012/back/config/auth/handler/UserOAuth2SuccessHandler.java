@@ -61,25 +61,25 @@ public class UserOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);
 
-        // check
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("accessToken", "Bearer " + accessToken);
-        queryParams.add("refreshToken", cookie.toString());
-        queryParams.add("responseDto", json);
+//        // check
+//        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+//        queryParams.add("accessToken", "Bearer " + accessToken);
+//        queryParams.add("refreshToken", cookie.toString());
+//        queryParams.add("responseDto", json);
 
-        String uri = createURI(queryParams).toString();
+        String uri = createURI().toString();
 
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
-    private URI createURI(MultiValueMap<String, String> queryParams) {
+    private URI createURI() {
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
                 .port(3000)
                 //.path("/receive-token.html")
-                .queryParams(queryParams)
+                //.queryParams(queryParams)
                 .build()
                 .toUri();
     }
