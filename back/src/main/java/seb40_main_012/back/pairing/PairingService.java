@@ -360,6 +360,7 @@ public class PairingService {
         Pairing findPairing = findVerifiedPairing(pairingId);
 
         if (findUser == findPairing.getUser()) {
+            commentRepository.deleteAllByPairingId(pairingId);
             pairingRepository.delete(findPairing);
         } else throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
     }

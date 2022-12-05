@@ -74,6 +74,7 @@ public class User {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<Like> likes = new ArrayList<>();
 
     @Nullable

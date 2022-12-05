@@ -56,6 +56,7 @@ public class Comment {
     private User user;
 
     @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
     private Map<String, String> userInformation = new HashMap<>();
 
     @JsonBackReference

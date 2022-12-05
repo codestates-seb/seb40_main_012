@@ -138,6 +138,7 @@ public class Book {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "book") // 다대 다
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<BookCollectionBook> bookCollectionBooks = new ArrayList<>();
     //    --------------------------------------------------------------------------------------------
     //    --------------------------------------------------------------------------------------------
