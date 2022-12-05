@@ -10,12 +10,14 @@ const SearchCollectionContainer = styled.div`
     cursor: pointer;
   }
   padding: 10px 15px;
+  margin-bottom: 15px;
   @media screen and (max-width: 980px) {
     padding: 5px 10px;
     width: 50%;
   }
   @media screen and (max-width: 500px) {
     padding: 5px;
+    margin-bottom: 10px;
   }
 `;
 
