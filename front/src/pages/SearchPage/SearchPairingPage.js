@@ -1,11 +1,12 @@
 import { PageContainer } from 'containers';
 import SearchTab from './SearchTab';
+import SearchPairings from './Pairing/SearchPairings';
 
 const SearchPairingPage = () => {
   return (
     <PageContainer footer>
       <SearchTab />
-      <div>페어링</div>
+      <SearchPairings />
     </PageContainer>
   );
 };

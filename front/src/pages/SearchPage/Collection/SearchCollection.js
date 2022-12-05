@@ -76,8 +76,8 @@ const CollectionInfoContainer = styled.div`
     @media screen and (max-width: 640px) {
       font-size: 14px;
     }
-    @media screen and (max-width: 640px) {
-      font-size: 12px;
+    @media screen and (max-width: 500px) {
+      font-size: 13px;
     }
   }
   .date {
@@ -127,7 +127,7 @@ const SearchCollection = ({
           <div className="comment">
             <img
               src={process.env.PUBLIC_URL + '/images/comment_icon.svg'}
-              alt="like"
+              alt="comment"
             />
             {comment.length}
           </div>
