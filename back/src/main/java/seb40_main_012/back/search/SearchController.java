@@ -39,8 +39,8 @@ public class SearchController {
     ) {
 
 //        BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), sort, page, size);
-        List<Pairing> pairingsResult = searchService.findAllPairingByQuery(queryParam.toLowerCase(), 1, 100);
-        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), 1, 100);
+        List<Pairing> pairingsResult = searchService.findAllPairingByQuery(queryParam, 1, 100);
+        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam, 1, 100);
 
         if (category.equals("books") && sort.equals("accuracy")) {
 

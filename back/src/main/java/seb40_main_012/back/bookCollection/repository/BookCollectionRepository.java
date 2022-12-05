@@ -16,7 +16,9 @@ import java.util.List;
 
 public interface BookCollectionRepository extends JpaRepository<BookCollection, Long> {
     Long countBy();
+
     Long countByUser(User user);
+
     List<BookCollection> findByUserUserId(Long userId);
 
     BookCollection findByTitle(String title);
@@ -26,7 +28,10 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection, 
 
     @Query(nativeQuery = true,
             value = "SELECT * FROM BOOK_COLLECTION " +
-                    "CROSS JOIN BOOK " +
+                    "INNER JOIN BOOK_COLLECTION_BOOK " +
+                    "ON BOOK_COLLECTION.COLLECTION_ID = BOOK_COLLECTION_BOOK.COLLECTION_ID " +
+                    "INNER JOIN BOOK " +
+                    "ON BOOK_COLLECTION_BOOK.BOOK_ID = BOOK.ISBN13 " +
                     "WHERE LOWER(TITLE) LIKE %:queryParam% " +
                     "OR LOWER(BOOK_TITLE) LIKE %:queryParam% " +
                     "OR LOWER(CONTENT) LIKE %:queryParam%")
@@ -42,8 +47,8 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection, 
 
     @Query(nativeQuery = true,
             value = "SELECT * FROM BOOK_COLLECTION " +
-            "INNER JOIN BOOK_COLLECTION_BOOK " +
-            "ON BOOK_COLLECTION.COLLECTION_ID = BOOK_COLLECTION_BOOK.COLLECTION_ID " +
-            "WHERE BOOK_ID = :isbn13")
+                    "INNER JOIN BOOK_COLLECTION_BOOK " +
+                    "ON BOOK_COLLECTION.COLLECTION_ID = BOOK_COLLECTION_BOOK.COLLECTION_ID " +
+                    "WHERE BOOK_ID = :isbn13")
     List<BookCollection> findAllCollectionsForTheBook(String isbn13);
 }
