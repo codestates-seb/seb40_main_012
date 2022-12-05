@@ -69,6 +69,7 @@ const SearchCollections = () => {
                     like={el.likeCount}
                     comment={el.comments}
                     date={el.lastModifiedAt}
+                    cover={el.collectionCover}
                   />
                 );
               })}
