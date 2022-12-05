@@ -150,7 +150,6 @@ public class BookController {
 //        );
 //    }
 
-    @Transactional
     @GetMapping("/carousel")
     public ResponseEntity carouselBooks() { // 별점으로 5개 내림차순
 
