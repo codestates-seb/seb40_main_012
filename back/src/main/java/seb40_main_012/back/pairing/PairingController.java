@@ -10,18 +10,23 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
+import seb40_main_012.back.advice.BusinessLogicException;
+import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.image.AwsS3Service;
 import seb40_main_012.back.common.image.ImageController;
 import seb40_main_012.back.common.image.ImageService;
 import seb40_main_012.back.common.like.LikeService;
+import seb40_main_012.back.config.auth.cookie.CookieManager;
+import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.Collections;
@@ -45,6 +50,8 @@ public class PairingController {
     private final ImageService imageService;
     private final MultipartResolver multipartResolver;
     private final UserService userService;
+    private final CookieManager cookieManager;
+    private final RefreshTokenRepository refreshTokenRepository;
     //    ------------------------------------------------------------
     private final NotificationService noticeService;
 //    ------------------------------------------------------------
@@ -167,35 +174,56 @@ public class PairingController {
 
     @GetMapping("/pairings/{pairing_id}")
     public ResponseEntity getPairing(
-            @RequestHeader("cookie") @Valid @Nullable String token,
+            HttpServletRequest request,
+            @RequestHeader(value = "Authorization", required = false) @Valid @Nullable String token,
             @PathVariable("pairing_id") @Positive long pairingId) {
-        if (token == null) {
 
-            Pairing pairing = pairingService.updateView(pairingId);
-            pairing.setIsLiked(null);
-            pairing.setIsBookmarked(null);
-            PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
+        PairingDto.Response response = new PairingDto.Response();
 
-            if (pairing.getImage() != null) {
-                response.setImagePath(pairing.getImage().getStoredPath());
+        if (request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
+
+            String refreshToken = cookieManager.outCookie(request, "refreshToken");
+
+            if (refreshToken != null) { // refreshToken 가진 경우
+
+                if (refreshTokenRepository.findByTokenValue(refreshToken).isPresent() && token == null) { // 로그인 유저인데 authorization이 없는 경우
+
+                    throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+
+                } else { // 로그인 사용자이면서 Auth가 있는 경우
+
+                    Pairing pairing = pairingService.updateView(pairingId);
+                    pairing.setIsLiked(null);
+                    pairing.setIsBookmarked(null);
+
+                    response = pairingMapper.pairingToPairingResponse(pairing);
+
+                    if (pairing.getImage() != null) {
+                        response.setImagePath(pairing.getImage().getStoredPath());
+                    }
+
+                    return new ResponseEntity<>(
+                            new SingleResponseDto<>(response), HttpStatus.OK);
+                }
+            } else { // refreshToken 없는(=비로그인 사용자) 경우
+
+                Pairing pairing = pairingService.updateView(pairingId);
+                pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
+                Pairing isLikedComments = pairingService.isLikedComments(pairingId);
+
+                response = pairingMapper.pairingToPairingResponse(pairing);
+
+                if (pairing.getImage() != null) {
+                    response.setImagePath(pairing.getImage().getStoredPath());
+                }
+
+                return new ResponseEntity<>(
+                        new SingleResponseDto<>(response), HttpStatus.OK);
             }
-
-            return new ResponseEntity<>(
-                    new SingleResponseDto<>(response), HttpStatus.OK);
-        } else {
-
-            Pairing pairing = pairingService.updateView(pairingId);
-            pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
-            Pairing isLikedComments = pairingService.isLikedComments(pairingId);
-            PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
-
-            if (pairing.getImage() != null) {
-                response.setImagePath(pairing.getImage().getStoredPath());
-            }
-
-            return new ResponseEntity<>(
-                    new SingleResponseDto<>(response), HttpStatus.OK);
         }
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK);
     }
 
     //    --------------------------------------------------------------------------------------------

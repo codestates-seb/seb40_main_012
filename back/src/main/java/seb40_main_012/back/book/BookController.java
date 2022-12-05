@@ -1,5 +1,6 @@
 package seb40_main_012.back.book;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.rating.Rating;
 import seb40_main_012.back.common.rating.RatingService;
 import seb40_main_012.back.config.auth.cookie.CookieManager;
+import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.user.entity.User;
@@ -54,6 +56,7 @@ public class BookController {
     private final UserService userService;
     private final CookieManager cookieManager;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtTokenizer jwtTokenizer;
 
     @GetMapping("/{isbn13}")
     public ResponseEntity getBook(HttpServletRequest request,
@@ -62,7 +65,12 @@ public class BookController {
         if(request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
             String refreshToken = cookieManager.outCookie(request, "refreshToken");
             if(refreshToken != null) {
-                if(refreshTokenRepository.findByTokenValue(refreshToken) != null && token == null) // 로그인 유저인데 authorization이 없는 경우
+                try {
+                    jwtTokenizer.verifySignature(refreshToken);
+                } catch (ExpiredJwtException ee) {
+                    throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+                }
+                if(refreshTokenRepository.findByTokenValue(refreshToken).isPresent() && token == null) // 로그인 유저인데 authorization이 없는 경우
                     throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
             }
         }
