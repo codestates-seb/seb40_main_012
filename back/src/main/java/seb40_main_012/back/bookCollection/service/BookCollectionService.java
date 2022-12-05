@@ -154,11 +154,11 @@ public class BookCollectionService {
         BookCollection findBookCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
 
-        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
-            isUserLike(collectionId);
-            isUserBookmark(collectionId);
-            isUserCollection(collectionId);
-        }
+//        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+//        }
+        isUserLike(collectionId);
+        isUserBookmark(collectionId);
+        isUserCollection(collectionId);
 
         findBookCollection.setView(findBookCollection.getView() + 1);
 
