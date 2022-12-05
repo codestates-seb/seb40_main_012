@@ -23,7 +23,7 @@ public interface StayTimeRepository extends JpaRepository<StayTime, Long> {
 
     @Query(nativeQuery = true, value =
             "SELECT * FROM STAY_TIME " +
-                    "WHERE SIGN_OUT = :localDate"
+                    "WHERE SIGN_OUT_DAY = :localDate"
     )
     List<StayTime> findByLocalDate(LocalDate localDate);
 

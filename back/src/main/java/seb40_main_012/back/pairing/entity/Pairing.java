@@ -67,6 +67,7 @@ public class Pairing {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @LazyCollection(LazyCollectionOption.FALSE)
     private User user;
 
     @JsonBackReference

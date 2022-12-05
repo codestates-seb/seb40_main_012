@@ -5,24 +5,25 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.context.request.ServletWebRequest;
+import seb40_main_012.back.config.auth.cookie.CookieManager;
 import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
-import seb40_main_012.back.config.auth.service.UserDetailsServiceImpl;
 import seb40_main_012.back.email.EmailSenderService;
 import seb40_main_012.back.statistics.*;
 import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.entity.User;
-import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;
 import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
-import javax.servlet.FilterChain;
 import javax.servlet.annotation.WebListener;
 import javax.servlet.http.*;
 import java.security.GeneralSecurityException;
@@ -32,6 +33,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.LongStream;
 
 
 @Aspect
@@ -48,6 +50,8 @@ public class CherriPickAop {
     private final StayTimeRepository stayTimeRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
+    private final CookieManager cookieManager;
+
     @AfterReturning(value = "execution(* seb40_main_012.back.user.controller.UserController.postUser(..)) && args(postDto))", returning = "response")
     public void sendSignUpEmail(JoinPoint joinPoint, UserDto.PostDto postDto, ResponseEntity response) { // 회원가입 이메일
 
@@ -58,10 +62,46 @@ public class CherriPickAop {
         }
     }
 
-    @After(value = "execution(* seb40_main_012.back.book.BookController.carouselBooks())") // 메인화면 접근시
+    @Before(value = "execution(* seb40_main_012.back.book.BookController.carouselBooks())") // 메인화면 접근시
     public void createTable(JoinPoint joinPoint) { // 오늘의 첫 방문자가 있을 시 테이블 생성 및 정보 입력
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication(); // 유저 인증 정보
+        ServletRequestAttributes attr = (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
+
+//        HttpServletRequest req = attr.getRequest(); // Http Request
+//        HttpServletResponse res = attr.getResponse(); // Http Response
+//        Cookie[] cookies = req.getCookies(); // Request Cookies
+//        String token = req.getHeader("Cookie"); // Cookie에서 뜯어온 토큰들
+//        List<String> refreshToken = Arrays.stream(token.split("refreshToken=")) // Refresh Token 골라내기
+//                .filter(a -> a.startsWith("ey"))
+//                .collect(Collectors.toList());
+//        String userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(0)); // Refresh Token으로 이메일 검색
+//        System.out.println("-----------------------------------------");
+//        System.out.println(userEmail);
+//        System.out.println("-----------------------------------------");
+//
+//        if (cookies != null) { // 쿠키를 가진 경우
+//            for (Cookie cookie : cookies) {
+//                if (cookie.getValue().contains("statistics") && !cookie.getValue().contains(req.getHeader("Origin"))) {
+//                    cookie.setValue(cookie.getValue() + "_" + "[" + req.getHeader("Origin") + "]");
+//                    res.addCookie(cookie);
+//                }
+//            }
+//        }
+//        else {
+//            ResponseCookie statCookie = cookieManager.statCookie("visit_cookie", "statistics");
+//            res.setHeader("Set-Cookie", statCookie.toString());
+//        }
+
+//        System.out.println("-----------------------------------------");
+//        Arrays.stream(cookies).map(Cookie::getValue).forEach(System.out::println);
+//        System.out.println("-----------------------------------------");
+
+        // 유저 인증 정보
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+//        System.out.println("------------------------------------------------------");
+//        System.out.println(authentication.getName());
+//        System.out.println("------------------------------------------------------");
 
         if (statisticsRepository.findByDate(LocalDate.now()) == null && authentication.getName().equals("anonymousUser")) { // 오늘의 첫 방문자이면서 로그인 하지 않은 상태
 
@@ -94,7 +134,8 @@ public class CherriPickAop {
             User findUser = userService.getLoginUser();
             List<String> genre = userService.getAllGenre(findUser);
             Statistics statistics = statisticsService.findByDate(LocalDate.now());
-            statistics.setTotalVisitor(statistics.getTotalVisitor() + 1);
+
+//            calcTotalVisitorWithCookies(cookies, req, res, statistics); // 쿠키 확인 후 방문자 증가
 
             notFirstVisitWithAuth(findUser, genre, statistics);
 
@@ -108,7 +149,6 @@ public class CherriPickAop {
 
         HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String ip = req.getRemoteAddr();
-        ;
 
         StayTime newSignIn = StayTime.builder()
                 .signIn(LocalDateTime.now())
@@ -119,6 +159,97 @@ public class CherriPickAop {
         stayTimeRepository.save(newSignIn);
     }
 
+
+    @Before(value = "execution(* seb40_main_012.back.config.auth.jwt.JwtTokenizer.removeRefreshToken(..)) && args(tokenValue)")
+    public void signOutStatistics(JoinPoint joinPoint, String tokenValue) { // 로그아웃 하려는 경우
+
+        String userEmail = refreshTokenRepository.findUserEmailByToken(tokenValue); // 유저 이메일
+
+        User user = userService.findUserByEmail(userEmail); // 로그아웃 하는 유저
+
+        StayTime findStayTime = stayTimeRepository.findByToken(tokenValue); // 토큰으로 StayTime 객체 불러오기
+        findStayTime.setSignOut(LocalDateTime.now());
+        findStayTime.setSignOutDay(LocalDate.now()); // 로그아웃 한 날짜 추가(쿼리용)
+
+        long duration = 0;
+
+        if (findStayTime.getSignIn() == null) {
+            duration = 3600;
+        } else {
+            duration = Duration.between(findStayTime.getSignIn(), findStayTime.getSignOut()).getSeconds(); // 로그인 - 로그아웃 간격(초)
+        }
+        String durationStr = duration / 60 + "분 " + duration % 60 + "초"; // 보기 좋게 분-초로 계산
+
+        findStayTime.setStayTime(duration);
+        findStayTime.setStayTimeStr(durationStr);
+
+        stayTimeRepository.save(findStayTime); // DB에 바로 반영
+
+        if (statisticsRepository.findByDate(LocalDate.now()) == null && findStayTime.getSignIn().getDayOfMonth() != LocalDateTime.now().getDayOfMonth()) { // 전날 로그인 해서 오늘의 첫 로그아웃일 경우
+
+            Statistics newStatistics = Statistics.builder() // Statistics 객체 새로 생성
+                    .date(LocalDate.now())
+                    .averageStayTimeSec(duration)
+                    .averageStayTimeStr(durationStr)
+                    .build();
+
+            statisticsRepository.save(newStatistics);
+
+            stayTimeRepository.deleteByLocalDate(LocalDate.now().minusDays(1)); // 하루 전 로그아웃 자료 날리기
+            stayTimeRepository.deleteByLocalDate(LocalDate.now().minusDays(2)); // 이틀 전 로그아웃 자료 날리기
+
+        } else if (statisticsRepository.findByDate(LocalDate.now()) != null && findStayTime.getSignIn().getDayOfMonth() == LocalDateTime.now().getDayOfMonth()) { // 오늘 로그인 해서 첫 로그아웃 이벤트를 생성했을 경우
+
+            Statistics statistics = statisticsService.findByDate(LocalDate.now()); // 오늘의 통계 객체
+
+            long signOutNumToday = stayTimeRepository.findByLocalDate(LocalDate.now()).size(); // 오늘 로그아웃 한 총 사용자(본인 포함)
+
+            if (signOutNumToday == 1) {
+
+                statistics.setAverageStayTimeSec(duration);
+                statistics.setAverageStayTimeStr(durationStr);
+
+                statisticsRepository.save(statistics);
+
+            } else {
+
+                // 새롭게 계산된 평균 체류시간(초)
+                long averageStayTime = (long) stayTimeRepository.findByLocalDate(LocalDate.now()).stream()
+                        .map(StayTime::getStayTime)
+                        .flatMapToLong(LongStream::of)
+                        .average()
+                        .getAsDouble();
+
+                // 새롭게 계산된 평균 체류시간(분-초)
+                String averageStayTimeStr = averageStayTime / 60 + "분 " + averageStayTime % 60 + "초";
+
+                statistics.setAverageStayTimeSec(averageStayTime);
+                statistics.setAverageStayTimeStr(averageStayTimeStr);
+
+                statisticsRepository.save(statistics);
+            }
+        }
+    }
+
+    public void calcTotalVisitorWithCookies(Cookie[] cookies, HttpServletRequest req, HttpServletResponse res, Statistics statistics) {
+
+//        if (cookies != null) { // 쿠키를 가진 경우
+//            for (Cookie cookie : cookies) {
+//                if (!cookie.getValue().contains(req.getHeader("Origin"))) {
+//                    cookie.setValue(cookie.getValue() + "_" + "[" + req.getHeader("Origin") + "]");
+//                    cookie.setMaxAge(60 * 60 * 2);
+//                    res.addCookie(cookie);
+//                    statistics.setTotalVisitor(statistics.getTotalVisitor() + 3);
+//                }
+//            }
+//        } else { // 쿠키가 없는 경우
+//
+//            Cookie visitCookie = new Cookie("visit_Cookie", req.getHeader("Origin")); // 헤더를 가진 새로운 쿠키 생성
+//            visitCookie.setMaxAge(60 * 60 * 2);
+//            res.addCookie(visitCookie);
+//            statistics.setTotalVisitor(statistics.getTotalVisitor() + 3);
+//        }
+    }
 //    @Before(value = "execution(* seb40_main_012.back.config.auth.jwt.JwtTokenizer.removeRefreshToken(..)) && args(tokenValue)")
 //    public void signOutStatistics(JoinPoint joinPoint, String tokenValue) { // 로그아웃 한 경우
 //
@@ -178,6 +309,7 @@ public class CherriPickAop {
 //            statisticsRepository.save(statistics);
 //        }
 //    }
+
 
 
     public void firstVisitWithAuth(User findUser, List<String> genre, Statistics newStatistics) {
@@ -528,3 +660,4 @@ public class CherriPickAop {
     }
 
 }
+
