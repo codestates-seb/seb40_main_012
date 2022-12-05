@@ -29,6 +29,8 @@ public interface SearchMapper {
             bookCollection.setCollectionCover(collections.get(i).getCollectionCover());
             bookCollection.setLikeCount(collections.get(i).getLikeCount());
             bookCollection.setComments(collections.get(i).getComments());
+
+            response.add(bookCollection);
         }
 
         return response;

@@ -116,9 +116,9 @@ public class JwtTokenizer {
     }
 
     private String generateAccessToken(Map<String, Object> claims,
-                                      String subject,
-                                      Date expiration,
-                                      String base64EncodedSecretKey) {
+                                       String subject,
+                                       Date expiration,
+                                       String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         return Jwts.builder()
@@ -157,10 +157,11 @@ public class JwtTokenizer {
     }
 
     public Boolean checkUserWithToken(HttpServletRequest request, String auth) {
-        if(request.getHeader("Cookie") == null)
+        if (request.getHeader("Cookie") == null)
             return false;
 
         String refreshToken = cookieManager.outCookie(request, "refreshToken");
+        if (refreshToken == null) return false;
 
         try {
             verifySignature(refreshToken);
@@ -169,7 +170,7 @@ public class JwtTokenizer {
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED); // 토큰 만료
         }
 
-        if(getRefreshToken(refreshToken) == null || auth == null)
+        if (getRefreshToken(refreshToken) == null || auth == null)
             throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED); // 쿠키나 auth가 없는 경우
 
         return true;
