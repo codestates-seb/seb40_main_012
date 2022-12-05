@@ -178,6 +178,7 @@ public class PairingController {
             @RequestHeader(value = "Authorization", required = false) @Valid @Nullable String token,
             @PathVariable("pairing_id") @Positive long pairingId) {
 
+
         PairingDto.Response response = new PairingDto.Response();
 
         if (request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
@@ -186,26 +187,12 @@ public class PairingController {
 
             if (refreshToken != null) { // refreshToken 가진 경우
 
-                if (refreshTokenRepository.findByTokenValue(refreshToken).isPresent() && token == null) { // 로그인 유저인데 authorization이 없는 경우
+                if (refreshTokenRepository.findByTokenValue(refreshToken) != null && token == null) { // 로그인 유저인데 authorization이 없는 경우
 
                     throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
 
-                } else { // 로그인 사용자이면서 Auth가 있는 경우
-
-                    Pairing pairing = pairingService.updateView(pairingId);
-                    pairing.setIsLiked(null);
-                    pairing.setIsBookmarked(null);
-
-                    response = pairingMapper.pairingToPairingResponse(pairing);
-
-                    if (pairing.getImage() != null) {
-                        response.setImagePath(pairing.getImage().getStoredPath());
-                    }
-
-                    return new ResponseEntity<>(
-                            new SingleResponseDto<>(response), HttpStatus.OK);
                 }
-            } else { // refreshToken 없는(=비로그인 사용자) 경우
+            } else { // 로그인 사용자이면서 Auth가 있는 경우
 
                 Pairing pairing = pairingService.updateView(pairingId);
                 pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
@@ -219,6 +206,20 @@ public class PairingController {
                 return new ResponseEntity<>(
                         new SingleResponseDto<>(response), HttpStatus.OK);
             }
+        } else {
+            // 비로그인 사용자
+            Pairing pairing = pairingService.updateView(pairingId);
+            pairing.setIsLiked(null);
+            pairing.setIsBookmarked(null);
+
+            response = pairingMapper.pairingToPairingResponse(pairing);
+
+            if (pairing.getImage() != null) {
+                response.setImagePath(pairing.getImage().getStoredPath());
+            }
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.OK);
         }
 
         return new ResponseEntity<>(

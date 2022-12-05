@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import seb40_main_012.back.advice.BusinessLogicException;
+import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
@@ -16,6 +19,8 @@ import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
+import seb40_main_012.back.config.auth.cookie.CookieManager;
+import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.dto.ListResponseDto;
 import seb40_main_012.back.dto.MultiResponseDto;
 import seb40_main_012.back.dto.SingleResponseDto;
@@ -23,6 +28,8 @@ import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -43,6 +50,8 @@ public class BookCollectionController {
     private final BookmarkService bookmarkService;
     private final BookCollectionRepository collectionRepository;
     private final NotificationService noticeService;
+    private final CookieManager cookieManager;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
@@ -60,19 +69,33 @@ public class BookCollectionController {
 
     @GetMapping("/{collection-id}")
     @ResponseStatus(HttpStatus.OK)
-    public BookCollectionDto.CollectionDetails getCollection(@PathVariable("collection-id") Long collectionId) {
-        BookCollection collection = collectionService.getCollection(collectionId);
-        List<String> collectionCovers = collection.getBookIsbn13().stream()
-                .map(a -> bookService.findBook(a).getCover())
-                .limit(4)
-                .collect(Collectors.toList());
-//        collection.setCollectionCover(
-//                collection.getBookIsbn13().stream()
-//                        .map(a -> bookService.findBook(a).getCover())
-//                        .limit(4)
-//                        .collect(Collectors.toList())
-//        );
-        return BookCollectionDto.CollectionDetails.of(collection, collectionCovers);
+    public BookCollectionDto.CollectionDetails getCollection(HttpServletRequest request,
+                                                             @RequestHeader(value = "Authorization", required = false) @Valid @Nullable String token,
+                                                             @PathVariable("collection-id") Long collectionId) {
+        if (request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
+            String refreshToken = cookieManager.outCookie(request, "refreshToken");
+            if (refreshToken != null) {
+                if (refreshTokenRepository.findByTokenValue(refreshToken) != null && token == null) // 로그인 유저인데 authorization이 없는 경우
+                    throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+            } else {
+                // 제대로 요청 받은 로그인 유저
+                BookCollection collection = collectionService.getCollection(collectionId);
+                List<String> collectionCovers = collection.getBookIsbn13().stream()
+                        .map(a -> bookService.findBook(a).getCover())
+                        .limit(4)
+                        .collect(Collectors.toList());
+                return BookCollectionDto.CollectionDetails.of(collection, collectionCovers);
+            }
+        } else {
+            // 비로그인 유저
+            BookCollection collection = collectionService.getCollectionAnonymousUser(collectionId);
+            List<String> collectionCovers = collection.getBookIsbn13().stream()
+                    .map(a -> bookService.findBook(a).getCover())
+                    .limit(4)
+                    .collect(Collectors.toList());
+            return BookCollectionDto.CollectionDetails.of(collection, collectionCovers);
+        }
+        return null;
     }
 
 
