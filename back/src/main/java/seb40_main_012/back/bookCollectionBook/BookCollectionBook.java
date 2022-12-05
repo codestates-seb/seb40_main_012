@@ -23,13 +23,13 @@ public class BookCollectionBook {
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "book_id")
-    @LazyCollection(LazyCollectionOption.FALSE)
+//    @LazyCollection(LazyCollectionOption.FALSE)
     private Book book;
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "collection_id")
-    @LazyCollection(LazyCollectionOption.FALSE)
+//    @LazyCollection(LazyCollectionOption.FALSE)
     private BookCollection bookCollection;
 
     public BookCollectionBook(Book book,BookCollection collection){
