@@ -139,7 +139,11 @@ const CollectionSmallSet = () => {
     <CollectionSmallSetContainer>
       {isLogin ? (
         <>
-          <CollectionSetTitle title="나의 컬렉션" isMyCollection={true} />
+          <CollectionSetTitle
+            title="나의 컬렉션"
+            isMyCollection={true}
+            isLogin={isLogin}
+          />
           {data.length === 0 ? (
             <NoCollectionContainer>
               <div className="img">

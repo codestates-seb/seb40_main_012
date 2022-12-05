@@ -43,9 +43,9 @@ const MyCollectionBtn = styled.button`
 
 const CollectionSetTitle = ({
   title,
-  isMyCollection,
   type = 'basic',
   nickName = '',
+  isLogin = false,
 }) => {
   const navigate = useNavigate();
 
@@ -63,7 +63,7 @@ const CollectionSetTitle = ({
       ) : (
         <CollectionTitle>{title}</CollectionTitle>
       )}
-      {isMyCollection ? (
+      {isLogin ? (
         <MyCollectionBtn onClick={onClickMyCollectionBtn}>
           모두보기
           <img
