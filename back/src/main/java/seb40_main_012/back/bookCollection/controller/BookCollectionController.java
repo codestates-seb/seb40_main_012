@@ -36,9 +36,11 @@ public class BookCollectionController {
     private final BookCollectionService collectionService;
     private final UserService userService;
     private final BookService bookService;
+    private final BookCollectionService bookCollectionService;
     private final BookInfoSearchService bookInfoSearchService;
     private final BookmarkService bookmarkService;
     private final BookCollectionRepository collectionRepository;
+    private final NotificationService noticeService;
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
@@ -68,7 +70,7 @@ public class BookCollectionController {
 //                        .limit(4)
 //                        .collect(Collectors.toList())
 //        );
-        return BookCollectionDto.CollectionDetails.of(collection,collectionCovers);
+        return BookCollectionDto.CollectionDetails.of(collection, collectionCovers);
     }
 
 
@@ -81,6 +83,13 @@ public class BookCollectionController {
     @PostMapping("/{collection-id}/like")
     @ResponseStatus(HttpStatus.OK)
     public boolean likeCollection(@PathVariable("collection-id") Long collectionId) {
+
+        BookCollection findCollection = bookCollectionService.findVerifiedCollection(collectionId);
+
+//        ------------------------------------------------------------
+        noticeService.notifyLikeCollectionEvent(findCollection);
+//        ------------------------------------------------------------
+
         return collectionService.likeCollection(collectionId);
     }
 

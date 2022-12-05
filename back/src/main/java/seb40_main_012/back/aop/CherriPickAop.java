@@ -74,10 +74,18 @@ public class CherriPickAop {
         List<String> refreshToken = Arrays.stream(token.split("refreshToken=")) // Refresh Token 골라내기
                 .filter(a -> a.startsWith("ey"))
                 .collect(Collectors.toList());
-        String userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(0)); // Refresh Token으로 이메일 검색
+        String userEmail = null;
+        if (refreshToken.size() != 0) {
+            userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(0));
+        }
+        // Refresh Token으로 이메일 검색
         System.out.println("-----------------------------------------");
+        Arrays.stream(cookies).map(Cookie::getValue).forEach(System.out::println);
         System.out.println(userEmail);
         System.out.println("-----------------------------------------");
+
+        ResponseCookie statCookie = cookieManager.statCookie("visit_cookie", "statisticss");
+        res.setHeader("Set-Cookie", statCookie.toString());
 
         if (cookies != null) { // 쿠키를 가진 경우
             for (Cookie cookie : cookies) {
@@ -88,8 +96,7 @@ public class CherriPickAop {
             }
         }
         else {
-            ResponseCookie statCookie = cookieManager.statCookie("visit_cookie", "statistics");
-            res.setHeader("Set-Cookie", statCookie.toString());
+
         }
 
 //        System.out.println("-----------------------------------------");

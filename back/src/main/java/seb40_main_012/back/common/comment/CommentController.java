@@ -121,10 +121,6 @@ public class CommentController {
         Comment updatedLikeComment = commentService.removeLike(commentId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(updatedLikeComment);
 
-//        ------------------------------------------------------------
-        noticeService.notifyUpdateLikeCommentEvent(updatedLikeComment);
-//        ------------------------------------------------------------
-
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
         );
