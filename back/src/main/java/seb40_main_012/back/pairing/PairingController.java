@@ -30,6 +30,7 @@ import java.util.Objects;
 
 @Validated
 @RestController
+@Transactional
 @RequiredArgsConstructor
 @RequestMapping("/api/books")
 public class PairingController {
