@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.advice.BusinessLogicException;
@@ -148,6 +149,7 @@ public class BookController {
 //        );
 //    }
 
+    @Transactional
     @GetMapping("/carousel")
     public ResponseEntity carouselBooks() { // 별점으로 5개 내림차순
 
