@@ -19,8 +19,7 @@ import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
-import seb40_main_012.back.config.auth.cookie.CookieManager;
-import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
+import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.dto.ListResponseDto;
 import seb40_main_012.back.dto.MultiResponseDto;
 import seb40_main_012.back.dto.SingleResponseDto;
@@ -50,8 +49,7 @@ public class BookCollectionController {
     private final BookmarkService bookmarkService;
     private final BookCollectionRepository collectionRepository;
     private final NotificationService noticeService;
-    private final CookieManager cookieManager;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtTokenizer jwtTokenizer;
 
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
@@ -72,30 +70,23 @@ public class BookCollectionController {
     public BookCollectionDto.CollectionDetails getCollection(HttpServletRequest request,
                                                              @RequestHeader(value = "Authorization", required = false) @Valid @Nullable String token,
                                                              @PathVariable("collection-id") Long collectionId) {
-        if (request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
-            String refreshToken = cookieManager.outCookie(request, "refreshToken");
-            if (refreshToken != null) {
-                if (refreshTokenRepository.findByTokenValue(refreshToken) != null && token == null) // 로그인 유저인데 authorization이 없는 경우
-                    throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
-            } else {
-                // 제대로 요청 받은 로그인 유저
-                BookCollection collection = collectionService.getCollection(collectionId);
-                List<String> collectionCovers = collection.getBookIsbn13().stream()
-                        .map(a -> bookService.findBook(a).getCover())
-                        .limit(4)
-                        .collect(Collectors.toList());
-                return BookCollectionDto.CollectionDetails.of(collection, collectionCovers);
-            }
-        } else {
-            // 비로그인 유저
-            BookCollection collection = collectionService.getCollectionAnonymousUser(collectionId);
+        if(jwtTokenizer.checkUserWithToken(request, token)) { // 로그인 사용자
+            // 제대로 요청 받은 로그인 유저
+            BookCollection collection = collectionService.getCollection(collectionId);
             List<String> collectionCovers = collection.getBookIsbn13().stream()
                     .map(a -> bookService.findBook(a).getCover())
                     .limit(4)
                     .collect(Collectors.toList());
             return BookCollectionDto.CollectionDetails.of(collection, collectionCovers);
         }
-        return null;
+
+        // 비로그인 유저
+        BookCollection collection = collectionService.getCollectionAnonymousUser(collectionId);
+        List<String> collectionCovers = collection.getBookIsbn13().stream()
+                .map(a -> bookService.findBook(a).getCover())
+                .limit(4)
+                .collect(Collectors.toList());
+        return BookCollectionDto.CollectionDetails.of(collection, collectionCovers);
     }
 
 
