@@ -10,7 +10,7 @@ spring:
     #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     open-in-view: true
   profiles:
-    include: database #, oauth
+    include: database , oauth
   servlet:
     multipart:
       max-file-size: 5MB

@@ -7,7 +7,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-//import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.net.URI;
 
 @Slf4j
-// @Component // OAuth2 반영 안함
+@Component // OAuth2 반영 안함
 @RequiredArgsConstructor
 public class UserOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenizer jwtTokenizer;
@@ -77,7 +77,8 @@ public class UserOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHand
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
-                .path("/receive-token.html")
+                .port(3000)
+                //.path("/receive-token.html")
                 .queryParams(queryParams)
                 .build()
                 .toUri();
