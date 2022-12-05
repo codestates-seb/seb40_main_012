@@ -19,6 +19,7 @@ import {
 import { signInAsync } from 'store/modules/authSlice';
 import SignInTextFields from './SignInTextFields';
 import { setOpenSnackbar } from 'store/modules/snackbarSlice';
+import axios from 'api/axios';
 
 const LoginErrorMsgStyled = styled.div`
   font-size: 0.75rem;
@@ -72,6 +73,7 @@ const SignInPage = () => {
             message: '로그인이 완료되었습니다.',
           })
         );
+        axios.get('/api/notice');
         dispatch(setInitLoginInput());
 
         navigate('/', { replace: true });
