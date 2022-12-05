@@ -16,7 +16,7 @@ public class AsyncConfig extends AsyncConfigurerSupport {
         executor.setCorePoolSize(5); // 기본적으로 실행 대기 중인 Thread 개수
         executor.setMaxPoolSize(50); // 동시에 동작하는 최대 Thread 개수
         executor.setQueueCapacity(500); // CorePool이 초과될때 Queue에 저장하는 최대 개수
-        executor.setThreadNamePrefix("CherryPick_Async-"); // Thread 이름 접두사
+        executor.setThreadNamePrefix("Cherry_Async-"); // Thread 이름 접두사
         executor.initialize();
 //        executor.shutdown();
         return executor;

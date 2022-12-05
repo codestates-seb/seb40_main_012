@@ -2,6 +2,7 @@ package seb40_main_012.back.notification;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,6 @@ public class NotificationService {
     private final PairingRepository pairingRepository;
     private final EmitterRepository emitterRepository;
     private final UserService userService;
-
-//    ------------------------------------------------------------------------------------------------
-//    ------------------------------------------------------------------------------------------------
-//    ------------------------------------------------------------------------------------------------
-//    ------------------------------------------------------------------------------------------------
-//    ------------------------------------------------------------------------------------------------
 
     private static final Long DEFAULT_TIMEOUT = Long.MAX_VALUE;
 
@@ -112,7 +107,6 @@ public class NotificationService {
 //    ------------------------------------------------------------------------------------------------
 //    ------------------------------------------------------------------------------------------------
 //    ------------------------------------------------------------------------------------------------
-    @Async
     public void notifyUpdateLikeCommentEvent(Comment comment) { // 코멘트 좋아요 알림
 
         User findUser = userService.getLoginUser();
@@ -134,7 +128,6 @@ public class NotificationService {
         }
     }
 
-    @Async
     public void notifyUpdateLikePairingEvent(Pairing pairing) { // 페어링 좋아요 알림
 
         User findUser = userService.getLoginUser();
@@ -149,13 +142,15 @@ public class NotificationService {
                 sseEmitter.send(SseEmitter.event().name("updateLikePairing")
                         .data("작성하신 페어링 <" + pairing.getTitle() + ">에 " + findUser.getNickName() + "님이 좋아요를 눌렀습니다.\n"
                                 + "http://localhost:8080/api/books/pairings/" + pairing.getPairingId()));
+                sseEmitter.send(SseEmitter.event().name("updateLikePairing")
+                        .data("작성하신 페어링 <" + pairing.getTitle() + ">에 " + findUser.getNickName() + "님이 좋아요를 눌렀습니다.\n"
+                                + "http://localhost:8080/api/books/pairings/" + pairing.getPairingId()), MediaType.APPLICATION_JSON);
             } catch (Exception e) {
                 SseController.sseEmitters.remove(userId);
             }
         }
     }
 
-    @Async
     public void notifyPostPairingCommentEvent(Comment comment) { // 페어링 댓글 알림
 
         User findUser = userService.getLoginUser();
@@ -180,7 +175,6 @@ public class NotificationService {
         }
     }
 
-    @Async
     public void notifyPostBookCollectionCommentEvent(Comment comment) { // 컬렉션 댓글 알림
 
         User findUser = userService.getLoginUser();
@@ -205,7 +199,6 @@ public class NotificationService {
         }
     }
 
-    @Async
     public void notifyLikeCollectionEvent(BookCollection bookCollection) { // 컬렉션 좋아요 알림
 
         User findUser = userService.getLoginUser();

@@ -20,6 +20,16 @@ public class CookieManager {
                 .build();
     }
 
+    public ResponseCookie statCookie(String key, String value) {
+        return ResponseCookie.from(key, value)
+                .maxAge(2 * 60 * 60) // 두 시간
+                .path("/")
+                .secure(true)
+                .sameSite("None")
+                .httpOnly(true)
+                .build();
+    }
+
     public String outCookie(HttpServletRequest request, String key) {
         String[] cookies = request.getHeader("Cookie").split(";");
         Stream<String> stream = Arrays.stream(cookies)
