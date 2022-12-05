@@ -195,8 +195,8 @@ public class PairingController {
             } else { // 로그인 사용자이면서 Auth가 있는 경우
 
                 Pairing pairing = pairingService.updateView(pairingId);
-                pairing.setIsLiked(null);
-                pairing.setIsBookmarked(null);
+                pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
+                Pairing isLikedComments = pairingService.isLikedComments(pairingId);
 
                 response = pairingMapper.pairingToPairingResponse(pairing);
 
@@ -210,8 +210,8 @@ public class PairingController {
         } else {
             // 비로그인 사용자
             Pairing pairing = pairingService.updateView(pairingId);
-            //pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
-            //Pairing isLikedComments = pairingService.isLikedComments(pairingId);
+            pairing.setIsLiked(null);
+            pairing.setIsBookmarked(null);
 
             response = pairingMapper.pairingToPairingResponse(pairing);
 
