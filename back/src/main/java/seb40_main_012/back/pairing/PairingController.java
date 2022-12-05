@@ -210,7 +210,6 @@ public class PairingController {
                 Pairing pairing = pairingService.updateView(pairingId);
                 pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
                 Pairing isLikedComments = pairingService.isLikedComments(pairingId);
-
                 response = pairingMapper.pairingToPairingResponse(pairing);
 
                 if (pairing.getImage() != null) {

@@ -65,39 +65,39 @@ public class CherriPickAop {
     @Before(value = "execution(* seb40_main_012.back.book.BookController.carouselBooks())") // 메인화면 접근시
     public void createTable(JoinPoint joinPoint) { // 오늘의 첫 방문자가 있을 시 테이블 생성 및 정보 입력
 
-//        ServletRequestAttributes attr = (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
-//
-//        HttpServletRequest req = attr.getRequest(); // Http Request
-//        HttpServletResponse res = attr.getResponse(); // Http Response
-//        Cookie[] cookies = req.getCookies(); // Request Cookies
-//        String token = req.getHeader("Cookie"); // Cookie에서 뜯어온 토큰들
-//        List<String> refreshToken = Arrays.stream(token.split("refreshToken=")) // Refresh Token 골라내기
-//                .filter(a -> a.startsWith("ey"))
-//                .collect(Collectors.toList());
-//        String userEmail = null;
-//        if (refreshToken.size() != 0) {
-//            userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(0));
-//        }
-//        // Refresh Token으로 이메일 검색
+        ServletRequestAttributes attr = (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
+
+        HttpServletRequest req = attr.getRequest(); // Http Request
+        HttpServletResponse res = attr.getResponse(); // Http Response
+        Cookie[] cookies = req.getCookies(); // Request Cookies
+        String token = req.getHeader("Cookie"); // Cookie에서 뜯어온 토큰들
+        List<String> refreshToken = Arrays.stream(token.split("refreshToken=")) // Refresh Token 골라내기
+                .filter(a -> a.startsWith("ey"))
+                .collect(Collectors.toList());
+        String userEmail = null;
+        if (refreshToken.size() != 0) {
+            userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(0));
+        }
+        // Refresh Token으로 이메일 검색
 //        System.out.println("-----------------------------------------");
 //        Arrays.stream(cookies).map(Cookie::getValue).forEach(System.out::println);
 //        System.out.println(userEmail);
 //        System.out.println("-----------------------------------------");
-//
-//        ResponseCookie statCookie = cookieManager.statCookie("visit_cookie", "statisticss");
-//        res.setHeader("Set-Cookie", statCookie.toString());
-//
-//        if (cookies != null) { // 쿠키를 가진 경우
-//            for (Cookie cookie : cookies) {
-//                if (cookie.getValue().contains("statistics") && !cookie.getValue().contains(req.getHeader("Origin"))) {
-//                    cookie.setValue(cookie.getValue() + "_" + "[" + req.getHeader("Origin") + "]");
-//                    res.addCookie(cookie);
-//                }
-//            }
-//        }
-//        else {
-//
-//        }
+
+        ResponseCookie statCookie = cookieManager.statCookie("visit_cookie", "statisticss");
+        res.setHeader("Set-Cookie", statCookie.toString());
+
+        if (cookies != null) { // 쿠키를 가진 경우
+            for (Cookie cookie : cookies) {
+                if (cookie.getValue().contains("statistics") && !cookie.getValue().contains(req.getHeader("Origin"))) {
+                    cookie.setValue(cookie.getValue() + "_" + "[" + req.getHeader("Origin") + "]");
+                    res.addCookie(cookie);
+                }
+            }
+        }
+        else {
+
+        }
 
 //        System.out.println("-----------------------------------------");
 //        Arrays.stream(cookies).map(Cookie::getValue).forEach(System.out::println);
