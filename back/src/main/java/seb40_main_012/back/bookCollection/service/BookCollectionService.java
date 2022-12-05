@@ -186,10 +186,6 @@ public class BookCollectionService {
                 findCollection.setLikeCount(count);
             }
 
-//        ------------------------------------------------------------
-            noticeService.notifyLikeCollectionEvent(findCollection);
-//        ------------------------------------------------------------
-
             return true;
         } catch (BusinessLogicException e) {
             throw new BusinessLogicException(ExceptionCode.FAIL_TO_LIKE);

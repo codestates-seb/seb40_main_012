@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Validated
+@Transactional
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/search")
@@ -27,6 +29,7 @@ public class SearchController {
 
     private final BookInfoSearchService bookInfoSearchService;
     private final CherryPickSearchService cherryPickSearchService;
+    private final SearchMapper searchMapper;
     private final SearchService searchService;
 
     @GetMapping
@@ -40,7 +43,8 @@ public class SearchController {
 
 //        BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), sort, page, size);
         List<Pairing> pairingsResult = searchService.findAllPairingByQuery(queryParam.toLowerCase(), 1, 100);
-        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), 1, 100);
+        List<BookCollection> result = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), 1, 100);
+        List<BookCollection> collectionsResult = searchMapper.bookCollectionSearchsToBookCollections(result);
 
         if (category.equals("books") && sort.equals("accuracy")) {
 
@@ -98,29 +102,22 @@ public class SearchController {
 
         } else if (category.equals("collections") && sort == null) {
 
-//            SliceImpl<BookCollection> collectionSliceLikeCount =
-//                    new SliceImpl<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getLikeCount).reversed()).collect(Collectors.toList()));
-//            return new ResponseEntity<>(collectionSliceLikeCount, HttpStatus.OK);
             List<BookCollection> collectionPageLikeCount =
                     new ArrayList<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getLikeCount).reversed()).collect(Collectors.toList()));
             return new ResponseEntity<>(collectionPageLikeCount, HttpStatus.OK);
 
         } else if (category.equals("collections") && sort.equals("new")) {
 
-//            SliceImpl<BookCollection> collectionSliceNew =
-//                    new SliceImpl<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getCreatedAt).reversed()).collect(Collectors.toList()));
-//            return new ResponseEntity<>(collectionSliceNew, HttpStatus.OK);
             List<BookCollection> collectionPageNew =
                     new ArrayList<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getCreatedAt).reversed()).collect(Collectors.toList()));
+
             return new ResponseEntity<>(collectionPageNew, HttpStatus.OK);
 
         } else if (category.equals("collections") && sort.equals("view")) {
 
-//            SliceImpl<BookCollection> collectionSliceView =
-//                    new SliceImpl<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getView).reversed()).collect(Collectors.toList()));
-//            return new ResponseEntity<>(collectionSliceView, HttpStatus.OK);
             List<BookCollection> collectionPageView =
                     new ArrayList<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getView).reversed()).collect(Collectors.toList()));
+
             return new ResponseEntity<>(collectionPageView, HttpStatus.OK);
 
         } else {

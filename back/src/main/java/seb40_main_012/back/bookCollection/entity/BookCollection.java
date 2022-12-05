@@ -37,6 +37,7 @@ public class BookCollection {
     private String title;
 
     @ElementCollection
+    //@LazyCollection(LazyCollectionOption.FALSE)
     private List<String> collectionCover = new ArrayList<>(); // 컬렉션에 속한 책 커버 4개. 컬렉션에 추가된 순으로 오름차순
     private String content;
     private Long likeCount;
@@ -50,11 +51,12 @@ public class BookCollection {
 
     @JsonManagedReference
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     private List<BookCollectionTag> collectionTags = new ArrayList<>();
 
     @JsonManagedReference
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     private List<BookCollectionLike> collectionLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
@@ -63,11 +65,12 @@ public class BookCollection {
     private List<Bookmark> collectionBookmarks = new ArrayList<>();
 
     @ElementCollection
+    //@LazyCollection(LazyCollectionOption.FALSE)
     private List<String> bookIsbn13 = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<BookCollectionBook> collectionBooks = new ArrayList<>();
 

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookService;
@@ -20,6 +21,7 @@ import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Validated
+@Transactional
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
@@ -120,10 +122,6 @@ public class CommentController {
 //        Comment comment = commentMapper.commentLikeToComment(likeComment);
         Comment updatedLikeComment = commentService.removeLike(commentId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(updatedLikeComment);
-
-//        ------------------------------------------------------------
-        noticeService.notifyUpdateLikeCommentEvent(updatedLikeComment);
-//        ------------------------------------------------------------
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

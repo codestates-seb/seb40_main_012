@@ -179,9 +179,9 @@ public class NotificationService {
 
         User findUser = userService.getLoginUser();
 
-        Pairing pairing = comment.getPairing();
+        BookCollection collection = comment.getBookCollection();
 
-        long userId = pairing.getUser().getUserId();
+        long userId = collection.getUser().getUserId();
 
         if (SseController.sseEmitters.containsKey(userId)) {
             SseEmitter sseEmitter = SseController.sseEmitters.get(userId);

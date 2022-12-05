@@ -31,7 +31,7 @@ public class Like {
     @JsonBackReference
     @ManyToOne(fetch =  FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    @LazyCollection(LazyCollectionOption.FALSE)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     private User user;
 
     @Enumerated(EnumType.STRING)
