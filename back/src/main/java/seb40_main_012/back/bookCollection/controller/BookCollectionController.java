@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.BookService;
@@ -30,6 +31,7 @@ import java.util.stream.Collectors;
 
 @RequestMapping("/api/collections")
 @RestController
+@Transactional
 @RequiredArgsConstructor
 public class BookCollectionController {
 

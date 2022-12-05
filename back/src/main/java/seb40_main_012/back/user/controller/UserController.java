@@ -56,6 +56,7 @@ import java.util.stream.Collectors;
 
 @RequestMapping("/api")
 @RestController
+@Transactional
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
