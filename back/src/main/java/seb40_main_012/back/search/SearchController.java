@@ -39,8 +39,8 @@ public class SearchController {
     ) {
 
 //        BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), sort, page, size);
-        List<Pairing> pairingsResult = searchService.findAllPairingByQuery(queryParam, 1, 100);
-        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam, 1, 100);
+        List<Pairing> pairingsResult = searchService.findAllPairingByQuery(queryParam.toLowerCase(), 1, 100);
+        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), 1, 100);
 
         if (category.equals("books") && sort.equals("accuracy")) {
 
@@ -98,29 +98,22 @@ public class SearchController {
 
         } else if (category.equals("collections") && sort == null) {
 
-//            SliceImpl<BookCollection> collectionSliceLikeCount =
-//                    new SliceImpl<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getLikeCount).reversed()).collect(Collectors.toList()));
-//            return new ResponseEntity<>(collectionSliceLikeCount, HttpStatus.OK);
             List<BookCollection> collectionPageLikeCount =
                     new ArrayList<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getLikeCount).reversed()).collect(Collectors.toList()));
             return new ResponseEntity<>(collectionPageLikeCount, HttpStatus.OK);
 
         } else if (category.equals("collections") && sort.equals("new")) {
 
-//            SliceImpl<BookCollection> collectionSliceNew =
-//                    new SliceImpl<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getCreatedAt).reversed()).collect(Collectors.toList()));
-//            return new ResponseEntity<>(collectionSliceNew, HttpStatus.OK);
             List<BookCollection> collectionPageNew =
                     new ArrayList<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getCreatedAt).reversed()).collect(Collectors.toList()));
+
             return new ResponseEntity<>(collectionPageNew, HttpStatus.OK);
 
         } else if (category.equals("collections") && sort.equals("view")) {
 
-//            SliceImpl<BookCollection> collectionSliceView =
-//                    new SliceImpl<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getView).reversed()).collect(Collectors.toList()));
-//            return new ResponseEntity<>(collectionSliceView, HttpStatus.OK);
             List<BookCollection> collectionPageView =
                     new ArrayList<>(collectionsResult.stream().distinct().sorted(Comparator.comparing(BookCollection::getView).reversed()).collect(Collectors.toList()));
+
             return new ResponseEntity<>(collectionPageView, HttpStatus.OK);
 
         } else {
