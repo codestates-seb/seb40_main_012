@@ -36,7 +36,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
 
     @Query(nativeQuery = true, value = "select * " +
             "from book " +
-            "order by " + "rand " +
+            "order by " + "rand() " +
             "limit 5")
     List<Book> findRandomBooks();
 
