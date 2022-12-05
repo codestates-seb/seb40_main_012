@@ -55,6 +55,7 @@ public class SecurityConfiguration {
                 .addLogoutHandler(new UserLogoutHandler(jwtTokenizer, cookieManager))
                 .logoutSuccessHandler(new UserLogoutSuccessHandler())
                 .deleteCookies("refreshToken")
+                .deleteCookies("cookie")
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll());
