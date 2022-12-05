@@ -154,11 +154,11 @@ public class BookCollectionService {
         BookCollection findBookCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
 
-        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
-            isUserLike(collectionId);
-            isUserBookmark(collectionId);
-            isUserCollection(collectionId);
-        }
+//        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+//        }
+        isUserLike(collectionId);
+        isUserBookmark(collectionId);
+        isUserCollection(collectionId);
 
         findBookCollection.setView(findBookCollection.getView() + 1);
 
@@ -170,7 +170,7 @@ public class BookCollectionService {
         Long userId = findUser.getUserId();
 
         BookCollection findCollection = findVerifiedCollection(collectionId);
-        Long count = collectionLikeRepository.count();
+        Long count = collectionLikeRepository.countByBookCollectionCollectionId(collectionId);
         BookCollectionLike collectionLike = collectionLikeRepository.findByUserUserIdAndBookCollectionCollectionId(userId, collectionId);
         try {
             if (collectionLike != null) {
@@ -185,10 +185,6 @@ public class BookCollectionService {
                 count += 1L;
                 findCollection.setLikeCount(count);
             }
-
-//        ------------------------------------------------------------
-            noticeService.notifyLikeCollectionEvent(findCollection);
-//        ------------------------------------------------------------
 
             return true;
         } catch (BusinessLogicException e) {

@@ -8,7 +8,7 @@ spring:
         show_sql: true
     database: h2
     #    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    open-in-view: false
+    open-in-view: true
   profiles:
     include: database , oauth
   servlet:
