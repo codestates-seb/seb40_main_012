@@ -10,6 +10,7 @@
     "@mui/material": "^5.10.13",
     "@mui/styled-engine-sc": "^5.10.6",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
+    "@re_point/react-page-slides": "^0.2.6",
     "@reduxjs/toolkit": "^1.9.0",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.16.5",
