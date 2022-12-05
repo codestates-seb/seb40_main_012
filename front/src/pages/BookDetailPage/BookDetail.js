@@ -285,17 +285,6 @@ const BookDetail = () => {
       .catch((error) => console.error(error));
   };
 
-  const handleCommentEdit = (commentId, commentBody) => {
-    axios
-      .patch(`/api/books/${commentId}/edit`, {
-        commentBody,
-      })
-      .then(() => {
-        getBookData();
-      })
-      .catch((error) => console.error(error));
-  };
-
   const handleCommentLike = (commentId) => {
     axios
       .patch(`/api/comments/${commentId}/like`)
@@ -339,6 +328,10 @@ const BookDetail = () => {
   const handleModalOpen = () => setModalOpen(true);
   const handleModalClose = () => setModalOpen(false);
 
+  const [rateOpen, setRateOpen] = useState(false);
+  const handleRateOpen = () => setRateOpen(true);
+  const handleRateClose = () => setRateOpen(false);
+
   return (
     <PageContainer footer>
       <Wrapper>
@@ -378,11 +371,12 @@ const BookDetail = () => {
               <RateModal
                 isbn={isbn}
                 bookData={bookData}
-                setBookData={setBookData}
                 getBookData={getBookData}
                 handleRating={handleRating}
+                handleRateOpen={handleRateOpen}
+                handleRateClose={handleRateClose}
+                rateOpen={rateOpen}
                 handleCommentAdd={handleCommentAdd}
-                handleCommentEdit={handleCommentEdit}
               />
             ) : (
               <NeedLoginModal>
@@ -433,6 +427,7 @@ const BookDetail = () => {
               getBookData={getBookData}
               myComment={bookData.myComment}
               myRating={bookData.myRating}
+              handleRateOpen={handleRateOpen}
               commentId={bookData.myComment?.commentId}
               handleCommentDelete={handleCommentDelete}
             />

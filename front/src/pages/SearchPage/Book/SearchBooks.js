@@ -2,8 +2,12 @@ import styled from 'styled-components';
 import SearchBook from './SearchBook';
 import { useEffect, useState } from 'react';
 import axios from '../../../api/axios';
-import { useSelector } from 'react-redux';
-import { selectSearchKeyword } from 'store/modules/searchSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  selectSearchKeyword,
+  selectSearchMode,
+  setSearchMode,
+} from 'store/modules/searchSlice';
 
 const SearchBooksContainer = styled.div`
   display: flex;
@@ -35,6 +39,8 @@ export const NoResultContainer = styled.div`
 
 const SearchBooks = () => {
   const keyword = useSelector(selectSearchKeyword);
+  const mode = useSelector(selectSearchMode);
+  const dispatch = useDispatch();
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -44,10 +50,14 @@ const SearchBooks = () => {
       .get(`/api/search?Category=books&Query=${keyword}&Sort=accuracy`)
       .then((res) => {
         setBooks(res.data);
+        dispatch(setSearchMode({ mode: false }));
         setIsLoading(false);
       })
-      .catch((error) => console.error(error));
-  }, [keyword]);
+      .catch((error) => {
+        console.error(error);
+        dispatch(setSearchMode({ mode: false }));
+      });
+  }, [mode]);
 
   return (
     <SearchBooksContainer>
