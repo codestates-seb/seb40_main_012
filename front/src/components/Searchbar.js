@@ -3,8 +3,10 @@ import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSearchKeyword } from 'store/modules/searchSlice';
-import { selectSearchKeyword } from 'store/modules/searchSlice';
+import {
+  setSearchKeyword,
+  selectSearchKeyword,
+} from 'store/modules/searchSlice';
 
 const SearchbarContainer = styled(Box)`
   height: 40px;
