@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from '../../../api/axios';
-import { useSelector } from 'react-redux';
-import { selectSearchKeyword } from 'store/modules/searchSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  selectSearchKeyword,
+  selectSearchMode,
+  setSearchMode,
+} from 'store/modules/searchSlice';
 import { NoResultContainer } from '../Book/SearchBooks';
 import SearchPairing from './SearchPairing';
 
@@ -29,6 +33,8 @@ const LoadingContainer = styled.div`
 
 const SearchPairings = () => {
   const keyword = useSelector(selectSearchKeyword);
+  const mode = useSelector(selectSearchMode);
+  const dispatch = useDispatch();
   const [pairings, setPairings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -38,10 +44,14 @@ const SearchPairings = () => {
       .get(`/api/search?Category=pairings&Query=${keyword}`)
       .then((res) => {
         setPairings([...res.data]);
+        dispatch(setSearchMode({ mode: false }));
         setIsLoading(false);
       })
-      .catch((error) => console.error(error));
-  }, [keyword]);
+      .catch((error) => {
+        console.error(error);
+        dispatch(setSearchMode({ mode: false }));
+      });
+  }, [mode]);
 
   return (
     <SearchPairingsContainer>
