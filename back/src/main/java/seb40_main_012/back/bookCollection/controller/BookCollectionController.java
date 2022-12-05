@@ -72,30 +72,30 @@ public class BookCollectionController {
     public BookCollectionDto.CollectionDetails getCollection(HttpServletRequest request,
                                                              @RequestHeader(value = "Authorization", required = false) @Valid @Nullable String token,
                                                              @PathVariable("collection-id") Long collectionId) {
-        if(request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
+        if (request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
             String refreshToken = cookieManager.outCookie(request, "refreshToken");
-            if(refreshToken != null) {
-                if(refreshTokenRepository.findByTokenValue(refreshToken) != null && token == null) // 로그인 유저인데 authorization이 없는 경우
+            if (refreshToken != null) {
+                if (refreshTokenRepository.findByTokenValue(refreshToken) != null && token == null) // 로그인 유저인데 authorization이 없는 경우
                     throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
             } else {
                 // 제대로 요청 받은 로그인 유저
+                BookCollection collection = collectionService.getCollection(collectionId);
+                List<String> collectionCovers = collection.getBookIsbn13().stream()
+                        .map(a -> bookService.findBook(a).getCover())
+                        .limit(4)
+                        .collect(Collectors.toList());
+                return BookCollectionDto.CollectionDetails.of(collection, collectionCovers);
             }
         } else {
             // 비로그인 유저
+            BookCollection collection = collectionService.getCollectionAnonymousUser(collectionId);
+            List<String> collectionCovers = collection.getBookIsbn13().stream()
+                    .map(a -> bookService.findBook(a).getCover())
+                    .limit(4)
+                    .collect(Collectors.toList());
+            return BookCollectionDto.CollectionDetails.of(collection, collectionCovers);
         }
-
-        BookCollection collection = collectionService.getCollection(collectionId);
-        List<String> collectionCovers = collection.getBookIsbn13().stream()
-                .map(a -> bookService.findBook(a).getCover())
-                .limit(4)
-                .collect(Collectors.toList());
-//        collection.setCollectionCover(
-//                collection.getBookIsbn13().stream()
-//                        .map(a -> bookService.findBook(a).getCover())
-//                        .limit(4)
-//                        .collect(Collectors.toList())
-//        );
-        return BookCollectionDto.CollectionDetails.of(collection, collectionCovers);
+        return null;
     }
 
 

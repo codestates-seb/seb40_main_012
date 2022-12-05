@@ -153,12 +153,20 @@ public class BookCollectionService {
     public BookCollection getCollection(Long collectionId) {
         BookCollection findBookCollection = collectionRepository.findById(collectionId)
                 .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
-
-//        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
-//        }
         isUserLike(collectionId);
         isUserBookmark(collectionId);
         isUserCollection(collectionId);
+
+        findBookCollection.setView(findBookCollection.getView() + 1);
+
+        return findBookCollection;
+    }
+    public BookCollection getCollectionAnonymousUser(Long collectionId) {
+        BookCollection findBookCollection = collectionRepository.findById(collectionId)
+                .orElseThrow(() -> new BusinessLogicException(ExceptionCode.COLLECTION_NOT_FOUND));
+        findBookCollection.setUserLike(false);
+        findBookCollection.setUserBookmark(false);
+        findBookCollection.setUserCollection(false);
 
         findBookCollection.setView(findBookCollection.getView() + 1);
 
