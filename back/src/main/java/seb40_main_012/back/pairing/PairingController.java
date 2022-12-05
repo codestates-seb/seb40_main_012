@@ -167,7 +167,7 @@ public class PairingController {
 
     @GetMapping("/pairings/{pairing_id}")
     public ResponseEntity getPairing(
-            @RequestHeader("Authorization") @Valid @Nullable String token,
+            @RequestHeader("cookie") @Valid @Nullable String token,
             @PathVariable("pairing_id") @Positive long pairingId) {
         if (token == null) {
 
