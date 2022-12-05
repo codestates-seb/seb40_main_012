@@ -174,9 +174,11 @@ public class PairingController {
 
     @GetMapping("/pairings/{pairing_id}")
     public ResponseEntity getPairing(
+
             HttpServletRequest request,
             @RequestHeader(value = "Authorization", required = false) @Valid @Nullable String token,
             @PathVariable("pairing_id") @Positive long pairingId) {
+
 
         PairingDto.Response response = new PairingDto.Response();
 
