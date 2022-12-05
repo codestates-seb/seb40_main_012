@@ -143,7 +143,7 @@ const PairingCuration = ({ title, pairingData }) => {
             <h1>{pairingData[0]?.title}</h1>
           </FirstPhotoContents>
           <SecondContainer>
-            {twoToThree.map((el) => {
+            {twoToThree?.map((el) => {
               return (
                 <OtherPhotoContents
                   key={el.pairingId}
@@ -158,7 +158,7 @@ const PairingCuration = ({ title, pairingData }) => {
           </SecondContainer>
         </PhotoContainer>
         <ColumnContainer>
-          {fourToEight.map((el) => {
+          {fourToEight?.map((el) => {
             return (
               <LineContents
                 key={el.pairingId}
