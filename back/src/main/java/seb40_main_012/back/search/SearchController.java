@@ -29,6 +29,7 @@ public class SearchController {
 
     private final BookInfoSearchService bookInfoSearchService;
     private final CherryPickSearchService cherryPickSearchService;
+    private final SearchMapper searchMapper;
     private final SearchService searchService;
 
     @GetMapping
@@ -42,7 +43,8 @@ public class SearchController {
 
 //        BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), sort, page, size);
         List<Pairing> pairingsResult = searchService.findAllPairingByQuery(queryParam.toLowerCase(), 1, 100);
-        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), 1, 100);
+        List<BookCollection> result = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), 1, 100);
+        List<BookCollection> collectionsResult = searchMapper.bookCollectionSearchsToBookCollections(result);
 
         if (category.equals("books") && sort.equals("accuracy")) {
 
