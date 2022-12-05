@@ -170,7 +170,7 @@ public class BookCollectionService {
         Long userId = findUser.getUserId();
 
         BookCollection findCollection = findVerifiedCollection(collectionId);
-        Long count = collectionLikeRepository.count();
+        Long count = collectionLikeRepository.countByCollectionId(collectionId);
         BookCollectionLike collectionLike = collectionLikeRepository.findByUserUserIdAndBookCollectionCollectionId(userId, collectionId);
         try {
             if (collectionLike != null) {
