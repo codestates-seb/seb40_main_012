@@ -70,7 +70,7 @@ const RoutesComponent = () => {
           isLogin ? getElement(MainPage, null) : getElement(LandingPage, null)
         }
       />
-      <Route path="/book" element={getElement(MainPage, null)} />
+      <Route path="/home" element={getElement(MainPage, null)} />
       <Route path="/user/signin" element={getElement(SignInPage, false)} />
       <Route path="/user/signup" element={getElement(SignUpPage, false)} />
       <Route path="/book/:isbn" element={getElement(BookDetail, null)} />

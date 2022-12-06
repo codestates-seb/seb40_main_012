@@ -37,14 +37,14 @@ const LandingPC = () => {
       content: <div className="image"></div>,
       style: {
         backgroundImage:
-          'url("https://velog.velcdn.com/images/chichi_/post/ad87dd24-34d4-4d7c-a96f-9a0e06321a9a/image.png")',
+          'url("https://velog.velcdn.com/images/chichi_/post/c203eda6-22b1-4427-b178-e2aa7029a079/image.png")',
       },
     },
     {
       content: <div className="image"></div>,
       style: {
         backgroundImage:
-          'url("https://velog.velcdn.com/images/chichi_/post/7d4d69c8-852e-4ded-a668-3d696a6b2e4f/image.png")',
+          'url("https://velog.velcdn.com/images/chichi_/post/5b90408a-da6b-476e-9e94-132ac0ecede1/image.png")',
       },
     },
     {
@@ -58,7 +58,7 @@ const LandingPC = () => {
       content: <div className="image"></div>,
       style: {
         backgroundImage:
-          'url("https://velog.velcdn.com/images/chichi_/post/3728b4b1-0134-4ade-ac79-4b22c9712522/image.png")',
+          'url("https://velog.velcdn.com/images/chichi_/post/30d93ea2-5503-4068-8fad-72a8bd9463a4/image.png")',
       },
     },
     {

@@ -27,7 +27,7 @@ import { authApi } from 'api';
 import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 
 const drawerWidth = 240;
-const BOOK = '책';
+const HOME = '홈';
 const PAIRING = '페어링';
 const COLLECTION = '컬렉션';
 const MY_PAGE = '마이페이지';
@@ -35,7 +35,7 @@ const LOGOUT = '로그아웃';
 const SIGN_IN = '로그인';
 const SIGN_UP = '회원가입';
 
-const navItems = [BOOK, PAIRING, COLLECTION];
+const navItems = [HOME, PAIRING, COLLECTION];
 const loginUserItems = [
   { text: MY_PAGE, icon: <AccountCircle /> },
   { text: LOGOUT, icon: <LogoutIcon /> },
@@ -176,6 +176,18 @@ const Header = (props) => {
       });
       return;
     }
+    if (pathname.startsWith('/home')) {
+      setSelectedIndex({
+        ...selectedIndex,
+        left: navItems.indexOf(HOME),
+      });
+    }
+    if (isLogin && pathname.startsWith('/')) {
+      setSelectedIndex({
+        ...selectedIndex,
+        left: navItems.indexOf(HOME),
+      });
+    }
   }, [location]);
 
   const handleDrawerToggle = (anchor) => {
@@ -189,8 +201,8 @@ const Header = (props) => {
 
   const handleClickDrawerListItem = (e) => {
     switch (e.target.textContent) {
-      case BOOK:
-        navigate('/book');
+      case HOME:
+        navigate('/home');
         break;
       case PAIRING:
         navigate('/pairing');
