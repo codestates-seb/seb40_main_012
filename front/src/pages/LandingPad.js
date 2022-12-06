@@ -11,7 +11,6 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   position: relative;
-  overflow: hidden;
 
   .rps-slide-background {
     background-size: 100% !important;
