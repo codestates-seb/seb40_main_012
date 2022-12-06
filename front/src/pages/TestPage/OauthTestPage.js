@@ -5,8 +5,12 @@ const OauthTestPage = () => {
   useEffect(() => {
     const path = location.pathname;
     const code = location.search;
-    console.log(code);
-    axios.get(`http://localhost:8080${path}${code}`);
+    console.log('get 요청주소', `http://localhost:8080${path}${code}`);
+    axios.get(`http://localhost:8080${path}${code}`).then(() => {
+      console.log('성공', `http://localhost:8080${path}${code}`).catch(() => {
+        console.log('실패', `http://localhost:8080${path}${code}`);
+      });
+    });
   }, []);
   return (
     <div>
