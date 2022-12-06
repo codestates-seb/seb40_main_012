@@ -27,7 +27,7 @@ const LandingPage = () => {
       <div>
         <Btn
           onClick={() => {
-            navigate('/book');
+            navigate('/home');
           }}
         >
           시작하기
