@@ -24,7 +24,7 @@ const Container = styled.div`
 
 const MainContainer = styled.div`
   background-color: rgb(107 83 187);
-  margin-top: -43px;
+  margin-top: -44px;
   @media screen and (max-width: 700px) {
     display: none;
   }
