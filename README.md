@@ -13,8 +13,7 @@
    **PW**: password1234*
 
 ## 🛠 기술스택
-![Group 62](https://user-images.githubusercontent.com/70098708/205864857-c42f1274-dac9-4fb8-9401-412902a214aa.svg)
-
+<img src="https://user-images.githubusercontent.com/70098708/205864857-c42f1274-dac9-4fb8-9401-412902a214aa.svg" width="800" />
 
 ## 🔍 기능
 ### 유저 관리
