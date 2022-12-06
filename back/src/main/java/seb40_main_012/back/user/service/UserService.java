@@ -11,6 +11,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.entity.Book;
@@ -24,6 +26,7 @@ import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.config.auth.dto.LoginDto;
+import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 import seb40_main_012.back.email.EmailSenderService;
 import seb40_main_012.back.pairing.PairingRepository;
@@ -35,10 +38,10 @@ import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -56,6 +59,7 @@ public class UserService {
     private final MyPageRepositorySupport myPageRepositorySupport;
     private final ApplicationEventPublisher publisher;
     private final CustomAuthorityUtils authorityUtils;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -283,6 +287,26 @@ public class UserService {
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         return user;
+    }
+
+    public User getLoginUserSec() {
+
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+        HttpServletRequest req = attr.getRequest(); // Http Request
+        String token = req.getHeader("Cookie"); // Cookie에서 뜯어온 토큰들
+        List<String> refreshToken = Arrays.stream(token.split("refreshToken=")) // Refresh Token 골라내기
+                .filter(a -> a.startsWith("ey"))
+                .collect(Collectors.toList());
+
+        String userEmail = null;
+
+        if (refreshToken.size() != 0) {
+
+            userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(0));
+        }
+
+        return findUserByEmail(userEmail);
     }
 
     public List<String> getAllGenre(User user) { // AOP에서 로그인한 사용자만 사용하는 용도
