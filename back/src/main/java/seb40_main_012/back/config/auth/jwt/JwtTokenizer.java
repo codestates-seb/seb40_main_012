@@ -1,6 +1,7 @@
 package seb40_main_012.back.config.auth.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -11,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import seb40_main_012.back.advice.BusinessLogicException;
+import seb40_main_012.back.advice.ExceptionCode;
+import seb40_main_012.back.config.auth.cookie.CookieManager;
 import seb40_main_012.back.config.auth.entity.RefreshToken;
 import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.user.entity.User;
@@ -37,6 +41,7 @@ public class JwtTokenizer {
     private int refreshTokenExpirationMinutes;
 
     private final RefreshTokenRepository repository;
+    private final CookieManager cookieManager;
 
     public String delegateAccessToken(User user) {
         Map<String, Object> claims = new HashMap<>();
@@ -111,9 +116,9 @@ public class JwtTokenizer {
     }
 
     private String generateAccessToken(Map<String, Object> claims,
-                                      String subject,
-                                      Date expiration,
-                                      String base64EncodedSecretKey) {
+                                       String subject,
+                                       Date expiration,
+                                       String base64EncodedSecretKey) {
         Key key = getKeyFromBase64EncodedKey(base64EncodedSecretKey);
 
         return Jwts.builder()
@@ -149,5 +154,25 @@ public class JwtTokenizer {
         Key key = Keys.hmacShaKeyFor(keyBytes);
 
         return key;
+    }
+
+    public Boolean checkUserWithToken(HttpServletRequest request, String auth) {
+        if (request.getHeader("Cookie") == null)
+            return false;
+
+        String refreshToken = cookieManager.outCookie(request, "refreshToken");
+        if (refreshToken == null) return false;
+
+        try {
+            verifySignature(refreshToken);
+        } catch (ExpiredJwtException ee) {
+            removeRefreshToken(refreshToken);
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED); // 토큰 만료
+        }
+
+        if (getRefreshToken(refreshToken) == null || auth == null)
+            throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED); // 쿠키나 auth가 없는 경우
+
+        return true;
     }
 }

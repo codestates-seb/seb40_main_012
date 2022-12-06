@@ -18,8 +18,7 @@ import seb40_main_012.back.common.image.AwsS3Service;
 import seb40_main_012.back.common.image.ImageController;
 import seb40_main_012.back.common.image.ImageService;
 import seb40_main_012.back.common.like.LikeService;
-import seb40_main_012.back.config.auth.cookie.CookieManager;
-import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
+import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -50,8 +49,7 @@ public class PairingController {
     private final ImageService imageService;
     private final MultipartResolver multipartResolver;
     private final UserService userService;
-    private final CookieManager cookieManager;
-    private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtTokenizer jwtTokenizer;
     //    ------------------------------------------------------------
     private final NotificationService noticeService;
 //    ------------------------------------------------------------
@@ -181,6 +179,7 @@ public class PairingController {
 
         PairingDto.Response response = new PairingDto.Response();
 
+
         if (request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
 
             String refreshToken = cookieManager.outCookie(request, "refreshToken");
@@ -208,9 +207,10 @@ public class PairingController {
             }
         } else {
             // 비로그인 사용자
+
             Pairing pairing = pairingService.updateView(pairingId);
-            pairing.setIsLiked(null);
-            pairing.setIsBookmarked(null);
+            pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
+            Pairing isLikedComments = pairingService.isLikedComments(pairingId);
 
             response = pairingMapper.pairingToPairingResponse(pairing);
 
@@ -220,6 +220,17 @@ public class PairingController {
 
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
+        }
+
+        // 비로그인 사용자
+        Pairing pairing = pairingService.updateView(pairingId);
+        pairing.setIsLiked(null);
+        pairing.setIsBookmarked(null);
+
+        response = pairingMapper.pairingToPairingResponse(pairing);
+
+        if (pairing.getImage() != null) {
+            response.setImagePath(pairing.getImage().getStoredPath());
         }
 
         return new ResponseEntity<>(
