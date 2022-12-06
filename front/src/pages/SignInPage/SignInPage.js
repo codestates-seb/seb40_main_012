@@ -82,10 +82,12 @@ const SignInPage = () => {
   };
 
   const handleKakaoOauth = () => {
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${
-      process.env.REACT_APP_KAKAO_CLIENTID
-    }&redirect_uri=${'http://localhost:8080/oauth/kakao'}&response_type=code&prompt=login`;
-    window.location.replace(KAKAO_AUTH_URL);
+    // const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${
+    //   process.env.REACT_APP_KAKAO_CLIENTID
+    // }&redirect_uri=${'http://localhost:8080/oauth/kakao'}&response_type=code&prompt=login`;
+    window.location.replace(
+      'https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8080%252Foauth%252Fkakao%26through_account%3Dtrue%26client_id%3De50e158c20358065eb3d6e2eabd76f5c'
+    );
   };
 
   const handleGoogleOauth = () => {
