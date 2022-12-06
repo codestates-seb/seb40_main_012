@@ -35,8 +35,24 @@
 * 좋아요 수 기반 인기 컨텐츠 추천
 
 ### 마이페이지
+
+|나의 코멘트|나의 페어링|나의 컬렉션|나의 픽|
+|---|---|---|---|
+|![image](https://user-images.githubusercontent.com/70098708/205873499-f712e200-d007-4efe-a720-0cf5913177cc.png)|![image](https://user-images.githubusercontent.com/70098708/205873555-79f5b6be-9ccf-499c-86d4-e5d6dfea6ac8.png)|![image](https://user-images.githubusercontent.com/70098708/205873668-f6973b28-96a1-4bdd-8533-6dfaa697e092.png)|![image](https://user-images.githubusercontent.com/70098708/205873724-efb220da-a7c0-49af-9015-d6ec230f13e9.png)|
+* 내가 작성한 콘텐츠, 픽한 콘텐츠 조회 및 삭제 가능
+* 유저 활동에 기반한 책의 온기 점수 확인 가능
+
 ### 책 정보
+
+|책 기본 정보|유저 코멘트|관련 콘텐츠|
+|---|---|---|
+|![image](https://user-images.githubusercontent.com/70098708/205874300-dd3aee08-7750-4bdb-90c6-e6b82a8190e6.png)|![image](https://user-images.githubusercontent.com/70098708/205874422-21c73009-a02b-46bd-b46b-9318e6288cc6.png)|![image](https://user-images.githubusercontent.com/70098708/205874483-d15480a9-aaa1-4218-b8e3-d493b226f136.png)|
+* 알라딘 오픈 api 기반 책 정보 조회
+* 유저들의 코멘트와 별점 확인, 내 코멘트와 별점 작성 
+* 체리픽 내 다른 관련 콘텐츠 추천
+
 ### 페어링 🍷
+
 ### 컬렉션 📚
 ### 코멘트
 ### 검색
