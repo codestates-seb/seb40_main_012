@@ -1,8 +1,12 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from '../../../api/axios';
-import { useSelector } from 'react-redux';
-import { selectSearchKeyword } from 'store/modules/searchSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import {
+  selectSearchKeyword,
+  selectSearchMode,
+  setSearchMode,
+} from 'store/modules/searchSlice';
 import SearchCollection from './SearchCollection';
 import { NoResultContainer } from '../Book/SearchBooks';
 
@@ -28,6 +32,8 @@ const LoadingContainer = styled.div`
 
 const SearchCollections = () => {
   const keyword = useSelector(selectSearchKeyword);
+  const mode = useSelector(selectSearchMode);
+  const dispatch = useDispatch();
   const [collections, setCollections] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -37,10 +43,14 @@ const SearchCollections = () => {
       .get(`/api/search?Category=collections&Query=${keyword}`) //좋아요순 검색
       .then((res) => {
         setCollections([...res.data]);
+        dispatch(setSearchMode({ mode: false }));
         setIsLoading(false);
       })
-      .catch((error) => console.error(error));
-  }, [keyword]);
+      .catch((error) => {
+        console.error(error);
+        dispatch(setSearchMode({ mode: false }));
+      });
+  }, [mode]);
 
   return (
     <SearchCollectionsContainer>
@@ -69,6 +79,7 @@ const SearchCollections = () => {
                     like={el.likeCount}
                     comment={el.comments}
                     date={el.lastModifiedAt}
+                    cover={el.collectionCover}
                   />
                 );
               })}

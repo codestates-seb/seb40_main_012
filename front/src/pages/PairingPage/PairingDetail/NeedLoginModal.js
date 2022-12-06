@@ -55,7 +55,7 @@ const InfoContainer = styled.div`
 `;
 
 const DeleteIconContainer = styled.div`
-  width: 100%;
+  width: 90%;
   display: flex;
   justify-content: flex-end;
   position: absolute;
