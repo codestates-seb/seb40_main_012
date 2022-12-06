@@ -33,7 +33,7 @@ const CollectionDetailPage = () => {
 
   useEffect(() => {
     getCollectionData(collectionId);
-  }, []);
+  }, [isLogin]);
 
   const getCollectionData = (collectionId) => {
     //컬렉션 데이터 GET
@@ -143,6 +143,7 @@ const CollectionDetailPage = () => {
           handleCollectionDelete={handleCollectionDelete}
         />
         <CollectionHeaderBtns
+          isLogin={isLogin}
           likeCount={collectionData.likeCount}
           userLike={collectionData.userLike}
           userBookmark={collectionData.userBookmark}

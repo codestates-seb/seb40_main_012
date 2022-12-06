@@ -36,10 +36,12 @@ export default function RateModal({
   isbn,
   bookData,
   getBookData,
+  rateOpen,
+  handleRateOpen,
+  handleRateClose,
   handleRating,
   handleCommentAdd,
 }) {
-  const [open, setOpen] = useState(false);
   const myRating = bookData?.myRating;
   const myComment = bookData?.myComment?.body || '';
 
@@ -51,9 +53,6 @@ export default function RateModal({
     setStar(myRating);
     setComment(myComment);
   }, [myRating, myComment]);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   const handleComment = (e) => {
     setComment(e.target.value);
@@ -68,15 +67,15 @@ export default function RateModal({
       const ratingBody = { rating: star };
       handleRating(ratingBody);
     }
-    handleClose();
+    handleRateClose();
   };
 
   return (
     <>
-      <FillButton onClick={handleOpen}>평가하기</FillButton>
+      <FillButton onClick={handleRateOpen}>평가하기</FillButton>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={rateOpen}
+        onClose={handleRateClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

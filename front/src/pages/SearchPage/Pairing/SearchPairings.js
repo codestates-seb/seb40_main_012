@@ -7,10 +7,11 @@ import {
   selectSearchMode,
   setSearchMode,
 } from 'store/modules/searchSlice';
-import SearchCollection from './SearchCollection';
 import { NoResultContainer } from '../Book/SearchBooks';
+import SearchPairing from './SearchPairing';
 
-const SearchCollectionsContainer = styled.div`
+const SearchPairingsContainer = styled.div`
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
 `;
@@ -30,19 +31,19 @@ const LoadingContainer = styled.div`
   }
 `;
 
-const SearchCollections = () => {
+const SearchPairings = () => {
   const keyword = useSelector(selectSearchKeyword);
   const mode = useSelector(selectSearchMode);
   const dispatch = useDispatch();
-  const [collections, setCollections] = useState([]);
+  const [pairings, setPairings] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`/api/search?Category=collections&Query=${keyword}`) //좋아요순 검색
+      .get(`/api/search?Category=pairings&Query=${keyword}`)
       .then((res) => {
-        setCollections([...res.data]);
+        setPairings([...res.data]);
         dispatch(setSearchMode({ mode: false }));
         setIsLoading(false);
       })
@@ -53,7 +54,7 @@ const SearchCollections = () => {
   }, [mode]);
 
   return (
-    <SearchCollectionsContainer>
+    <SearchPairingsContainer>
       {isLoading ? (
         <LoadingContainer className={isLoading ? 'show' : 'hide'}>
           <img
@@ -63,23 +64,21 @@ const SearchCollections = () => {
         </LoadingContainer>
       ) : (
         <>
-          {collections.length === 0 ? (
+          {pairings.length === 0 ? (
             <NoResultContainer>
               검색 결과가 존재하지 않습니다.
             </NoResultContainer>
           ) : (
             <>
-              {collections?.map((el) => {
+              {pairings?.map((el) => {
                 return (
-                  <SearchCollection
-                    key={el.collectionId}
-                    collectionId={el.collectionId}
+                  <SearchPairing
+                    key={el.pairingId}
+                    pairingId={el.pairingId}
                     title={el.title}
-                    content={el.content}
+                    img={el.imagePath}
                     like={el.likeCount}
                     comment={el.comments}
-                    date={el.lastModifiedAt}
-                    cover={el.collectionCover}
                   />
                 );
               })}
@@ -87,8 +86,8 @@ const SearchCollections = () => {
           )}
         </>
       )}
-    </SearchCollectionsContainer>
+    </SearchPairingsContainer>
   );
 };
 
-export default SearchCollections;
+export default SearchPairings;

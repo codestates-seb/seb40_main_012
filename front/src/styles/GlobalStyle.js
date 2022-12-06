@@ -8,6 +8,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: RobotoInCjk, 'Noto Sans KR', 'Apple SD Gothic Neo',
       'Nanum Gothic', 'Malgun Gothic', sans-serif;
+      overflow: scroll !important;
   }
   
   a {

@@ -4,12 +4,15 @@ import CollectionSmallSet from './CollectionSmallSet/CollectionSmallSet';
 import CollectionMediumSet from './CollectionMediumSet/CollectionMediumSet';
 import CollectionLargeSet from './CollectionLargeSet/CollectionLargeSet';
 import BestCollections from 'pages/MainPage/BestCollections';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { selectIsLogin, selectnickName } from '../../store/modules/authSlice';
+import { setSearchKeyword } from 'store/modules/searchSlice';
 
 const CollectionPage = () => {
   const isLogin = useSelector(selectIsLogin);
   const nickName = useSelector(selectnickName);
+  const dispatch = useDispatch();
+  dispatch(setSearchKeyword({ keyword: '' }));
 
   return (
     <PageContainer footer>

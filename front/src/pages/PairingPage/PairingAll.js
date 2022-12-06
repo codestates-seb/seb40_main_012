@@ -14,6 +14,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { NextArrow, PrevArrow } from '../../components/CarouselArrows';
+import { setSearchKeyword } from 'store/modules/searchSlice';
 
 const SlickSlider = styled.div`
   width: 100%;
@@ -40,6 +41,7 @@ const PairingPage = () => {
     dispatch(asyncGetAllPairingLike());
     dispatch(asyncGetAllPairingNewest());
     dispatch(asyncGetAllPairingRandom());
+    dispatch(setSearchKeyword({ keyword: '' }));
   }, [dispatch]);
 
   const settings = {

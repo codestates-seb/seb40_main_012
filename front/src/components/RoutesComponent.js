@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectFirstLogin, selectIsLogin } from 'store/modules/authSlice';
-
+import LandingPage from 'pages/LandingPage';
 import {
   MainPage,
   SignUpPage,
@@ -29,6 +29,7 @@ import {
   SearchBookPage,
   CollectionEditPage,
   SearchCollectionPage,
+  SearchPairingPage,
 } from 'pages';
 
 //임시 페이지!
@@ -63,7 +64,13 @@ const RoutesComponent = () => {
 
   return (
     <Routes>
-      <Route path="/" element={getElement(MainPage, null)} />
+      <Route
+        path="/"
+        element={
+          isLogin ? getElement(MainPage, null) : getElement(LandingPage, null)
+        }
+      />
+      <Route path="/home" element={getElement(MainPage, null)} />
       <Route path="/user/signin" element={getElement(SignInPage, false)} />
       <Route path="/user/signup" element={getElement(SignUpPage, false)} />
       <Route path="/book/:isbn" element={getElement(BookDetail, null)} />
@@ -119,6 +126,14 @@ const RoutesComponent = () => {
       <Route
         path="/search/collection/:keyword"
         element={getElement(SearchCollectionPage, null)}
+      />
+      <Route
+        path="/search/pairing"
+        element={getElement(SearchPairingPage, null)}
+      />
+      <Route
+        path="/search/pairing/:keyword"
+        element={getElement(SearchPairingPage, null)}
       />
       <Route path="/redux" element={<ReduxPage />} />
       <Route path="/button-test" element={<ButtonTest />} />

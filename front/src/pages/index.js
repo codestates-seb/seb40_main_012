@@ -27,5 +27,6 @@ export { default as MyCollection } from './MyPage/MyCollection/MyCollection';
 
 export { default as SearchBookPage } from './SearchPage/SearchBookPage';
 export { default as SearchCollectionPage } from './SearchPage/SearchCollectionPage';
+export { default as SearchPairingPage } from './SearchPage/SearchPairingPage';
 
 export { default as NoMatch } from './NoMatch';

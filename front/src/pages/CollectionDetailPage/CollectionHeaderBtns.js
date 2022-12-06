@@ -3,6 +3,7 @@ import { useLocation, Link, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Modal from '@mui/material/Modal';
 import LinkCopyModal from '../../components/LinkCopyModal';
+import NeedLoginModal from 'pages/PairingPage/PairingDetail/NeedLoginModal';
 
 const CollectionHeaderBtnsContainer = styled.div`
   display: flex;
@@ -146,7 +147,12 @@ export const DeleteEditBtns = ({ userCollection, handleCollectionDelete }) => {
   );
 };
 
+const Container = styled.div`
+  display: flex;
+`;
+
 export const CollectionHeaderBtns = ({
+  isLogin,
   likeCount,
   userLike,
   userBookmark,
@@ -181,34 +187,81 @@ export const CollectionHeaderBtns = ({
 
   return (
     <CollectionHeaderBtnsContainer>
-      <CollectionBookmark onClick={handleClickBookmarkBtn}>
-        {isBookmarked ? (
-          <img
-            src={process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'}
-            alt="bookmark icon"
-          />
-        ) : (
-          <img
-            src={process.env.PUBLIC_URL + '/images/bookmark_unfilled_icon.svg'}
-            alt="bookmark icon"
-          />
-        )}
-        나의 픽
-      </CollectionBookmark>
-      <CollectionHeart onClick={handleClickLikeBtn}>
-        {isLiked ? (
-          <img
-            src={process.env.PUBLIC_URL + '/images/p_heart_filled_icon.svg'}
-            alt="heart icon"
-          />
-        ) : (
-          <img
-            src={process.env.PUBLIC_URL + '/images/p_heart_unfilled_icon.svg'}
-            alt="heart icon"
-          />
-        )}
-        {likeCount}
-      </CollectionHeart>
+      {isLogin ? (
+        <Container>
+          <CollectionBookmark onClick={handleClickBookmarkBtn}>
+            {isBookmarked ? (
+              <img
+                src={
+                  process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'
+                }
+                alt="bookmark icon"
+              />
+            ) : (
+              <img
+                src={
+                  process.env.PUBLIC_URL + '/images/bookmark_unfilled_icon.svg'
+                }
+                alt="bookmark icon"
+              />
+            )}
+            나의 픽
+          </CollectionBookmark>
+          <CollectionHeart onClick={handleClickLikeBtn}>
+            {isLiked ? (
+              <img
+                src={process.env.PUBLIC_URL + '/images/p_heart_filled_icon.svg'}
+                alt="heart icon"
+              />
+            ) : (
+              <img
+                src={
+                  process.env.PUBLIC_URL + '/images/p_heart_unfilled_icon.svg'
+                }
+                alt="heart icon"
+              />
+            )}
+            {likeCount}
+          </CollectionHeart>
+        </Container>
+      ) : (
+        <NeedLoginModal>
+          <CollectionBookmark onClick={handleClickBookmarkBtn}>
+            {isBookmarked ? (
+              <img
+                src={
+                  process.env.PUBLIC_URL + '/images/bookmark_filled_icon.svg'
+                }
+                alt="bookmark icon"
+              />
+            ) : (
+              <img
+                src={
+                  process.env.PUBLIC_URL + '/images/bookmark_unfilled_icon.svg'
+                }
+                alt="bookmark icon"
+              />
+            )}
+            나의 픽
+          </CollectionBookmark>
+          <CollectionHeart onClick={handleClickLikeBtn}>
+            {isLiked ? (
+              <img
+                src={process.env.PUBLIC_URL + '/images/p_heart_filled_icon.svg'}
+                alt="heart icon"
+              />
+            ) : (
+              <img
+                src={
+                  process.env.PUBLIC_URL + '/images/p_heart_unfilled_icon.svg'
+                }
+                alt="heart icon"
+              />
+            )}
+            {likeCount}
+          </CollectionHeart>
+        </NeedLoginModal>
+      )}
       <CollectionShare onClick={handleModalOpen}>
         <img
           src={process.env.PUBLIC_URL + '/images/share_icon.svg'}
