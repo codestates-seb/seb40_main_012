@@ -62,7 +62,7 @@ public class UserInfoDto {
         private String nickname;
         private double temp;
 //        private List<CategoryDto.Response> category;
-        private List<Genre> category;
+        private List<String> category;
 
 
         public static Response of(User user){
@@ -71,7 +71,7 @@ public class UserInfoDto {
             String genderType;
             String ageType;
             String profileImage;
-            List<Genre> category;
+            List<String> category;
             if(user.getGender()==null){
                 genderType = "";
             }
@@ -98,7 +98,7 @@ public class UserInfoDto {
             }
             if(!user.getCategories().isEmpty()){
                 category = user.getCategories().stream()
-                        .map(x -> x.getCategory().getGenre()).collect(Collectors.toList());
+                        .map(x -> x.getCategory().getGenre().name()).collect(Collectors.toList());
             }else {
                 category = null;
             }
