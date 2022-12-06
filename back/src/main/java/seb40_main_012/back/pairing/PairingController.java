@@ -180,34 +180,8 @@ public class PairingController {
         PairingDto.Response response = new PairingDto.Response();
 
 
-        if (request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
-
-            String refreshToken = cookieManager.outCookie(request, "refreshToken");
-
-            if (refreshToken != null) { // refreshToken 가진 경우
-
-                if (refreshTokenRepository.findByTokenValue(refreshToken) != null && token == null) { // 로그인 유저인데 authorization이 없는 경우
-
-                    throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
-
-                }
-            } else { // 로그인 사용자이면서 Auth가 있는 경우
-
-                Pairing pairing = pairingService.updateView(pairingId);
-                pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
-                Pairing isLikedComments = pairingService.isLikedComments(pairingId);
-                response = pairingMapper.pairingToPairingResponse(pairing);
-
-                if (pairing.getImage() != null) {
-                    response.setImagePath(pairing.getImage().getStoredPath());
-                }
-
-                return new ResponseEntity<>(
-                        new SingleResponseDto<>(response), HttpStatus.OK);
-            }
-        } else {
-            // 비로그인 사용자
-
+        if(jwtTokenizer.checkUserWithToken(request, token)) { // 로그인 사용자
+            // 로그인 사용자이면서 Auth가 있는 경우
             Pairing pairing = pairingService.updateView(pairingId);
             pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
             Pairing isLikedComments = pairingService.isLikedComments(pairingId);
