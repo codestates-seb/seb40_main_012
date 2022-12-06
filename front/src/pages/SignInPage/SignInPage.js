@@ -81,23 +81,22 @@ const SignInPage = () => {
       });
   };
 
-  const handleKakaoOauth = () => {
-    // const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${
-    //   process.env.REACT_APP_KAKAO_CLIENTID
-    // }&redirect_uri=${'http://localhost:8080/oauth/kakao'}&response_type=code&prompt=login`;
-    window.location.replace(
-      'https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8080%252Foauth%252Fkakao%26through_account%3Dtrue%26client_id%3De50e158c20358065eb3d6e2eabd76f5c'
-    );
-  };
+  // const handleKakaoOauth = () => {
+  //   // const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${
+  //   //   process.env.REACT_APP_KAKAO_CLIENTID
+  //   // }&redirect_uri=${'http://localhost:8080/oauth/kakao'}&response_type=code&prompt=login`;
+  //   window.location.replace(
+  //     'https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8080%252Foauth%252Fkakao%26through_account%3Dtrue%26client_id%3De50e158c20358065eb3d6e2eabd76f5c'
+  //   );
+  // };
 
-  const handleGoogleOauth = () => {
-    // const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=${
-    //   process.env.REACT_APP_GOOGLE_CLIENTID
-    // }&scope=email%20profile&redirect_uri=${'http://localhost:3000/oauth/google'}`;
-    window.location
-      .replace(`https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=293970161173-a059nllv4dpvc9quk4hqid4kservumh6.apps.googleusercontent.com
-    &scope=email%20profile&redirect_uri=http://localhost:3000/oauth/google`);
-  };
+  // const handleGoogleOauth = () => {
+  //   // const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=${
+  //   //   process.env.REACT_APP_GOOGLE_CLIENTID
+  //   // }&scope=email%20profile&redirect_uri=${'http://localhost:3000/oauth/google'}`;
+  //   window.location.href = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=293970161173-a059nllv4dpvc9quk4hqid4kservumh6.apps.googleusercontent.com
+  //     &scope=email%20profile&redirect_uri=http://localhost:3000/oauth/google`;
+  // };
 
   return (
     <PageContainer footer center maxWidth="xs" backdrop={backdropOpen}>
@@ -143,8 +142,14 @@ const SignInPage = () => {
           </Grid>
         </Grid>
       </Box>
-      <button onClick={handleKakaoOauth}>카카오톡 로그인</button>
-      <button onClick={handleGoogleOauth}>google 로그인</button>
+      {/* <button onClick={handleKakaoOauth}>카카오톡 로그인</button>
+      <button onClick={handleGoogleOauth}>google 로그인</button> */}
+      <a href="https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=293970161173-a059nllv4dpvc9quk4hqid4kservumh6.apps.googleusercontent.com&scope=email%20profile&redirect_uri=http://localhost:3000/oauth/google">
+        구글로그인
+      </a>
+      <a href="https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A8080%252Foauth%252Fkakao%26through_account%3Dtrue%26client_id%3De50e158c20358065eb3d6e2eabd76f5c">
+        카카오로그인
+      </a>
     </PageContainer>
   );
 };
