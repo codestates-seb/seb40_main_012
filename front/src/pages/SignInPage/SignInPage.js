@@ -19,7 +19,6 @@ import {
 import { signInAsync } from 'store/modules/authSlice';
 import SignInTextFields from './SignInTextFields';
 import { setOpenSnackbar } from 'store/modules/snackbarSlice';
-import axios from 'api/axios';
 
 const LoginErrorMsgStyled = styled.div`
   font-size: 0.75rem;
@@ -82,13 +81,18 @@ const SignInPage = () => {
       });
   };
 
+  const handleKakaoOauth = () => {
+    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${
+      process.env.REACT_APP_KAKAO_CLIENTID
+    }&redirect_uri=${'http://localhost:3000/oauth/kakao'}&response_type=code&prompt=login`;
+    window.location.replace(KAKAO_AUTH_URL);
+  };
+
   const handleGoogleOauth = () => {
-    axios
-      .get('http://localhost:8080/oauth2/authorization/google')
-      .then(() => {
-        console.log('구글 로그인 되나?');
-      })
-      .catch((error) => console.log(error));
+    const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=${
+      process.env.REACT_APP_GOOGLE_CLIENTID
+    }&scope=email%20profile&state=Xm-I8A9bXAsM-ZWgygWBbjfNIsLs-Z_80iyaZ83VIfA%3D&redirect_uri=${'http://localhost:3000/oauth/google'}`;
+    window.location.replace(GOOGLE_AUTH_URL);
   };
 
   return (
@@ -135,6 +139,7 @@ const SignInPage = () => {
           </Grid>
         </Grid>
       </Box>
+      <button onClick={handleKakaoOauth}>카카오톡 로그인</button>
       <button onClick={handleGoogleOauth}>google 로그인</button>
     </PageContainer>
   );
