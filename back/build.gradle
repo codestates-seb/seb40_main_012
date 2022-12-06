@@ -41,6 +41,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
     //    --------------------------------------------------------------------------------------------
+	implementation 'org.json:json:20190722' // OAuth
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1' // 책 정보 검색
 	implementation 'org.projectlombok:lombok:1.18.24'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
