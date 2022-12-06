@@ -33,7 +33,7 @@ const LandingMobile = () => {
       content: <div className="image"></div>,
       style: {
         backgroundImage:
-          'url("https://velog.velcdn.com/images/chichi_/post/227e77d9-06df-436e-8edb-fae313b76a25/image.png")',
+          'url("https://velog.velcdn.com/images/chichi_/post/b4b32370-a249-4eb8-803e-5a8f8a945ca8/image.png")',
       },
     },
     {

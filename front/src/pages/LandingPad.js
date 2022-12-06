@@ -36,7 +36,7 @@ const LandingPad = () => {
       content: <div className="image"></div>,
       style: {
         backgroundImage:
-          'url("https://velog.velcdn.com/images/chichi_/post/d57783a3-0518-4758-a5f8-de5b196cf866/image.png")',
+          'url("https://velog.velcdn.com/images/chichi_/post/706e1ace-af60-4755-b9a0-1d35375d7182/image.png")',
       },
     },
     {
