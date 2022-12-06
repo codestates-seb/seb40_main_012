@@ -12,6 +12,7 @@ const Container = styled.div`
   align-items: center;
   position: relative;
   overflow: hidden;
+  margin-top: -43px;
 
   .rps-slide-background {
     background-size: 100% !important;
@@ -28,6 +29,7 @@ const MainContainer = styled.div`
   @media screen and (max-width: 700px) {
     display: none;
   }
+  margin-top: -43px;
 `;
 
 const LandingPC = () => {

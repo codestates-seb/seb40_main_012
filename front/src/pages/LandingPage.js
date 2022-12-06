@@ -5,12 +5,7 @@ import LandingPad from './LandingPad';
 
 const LandingPage = () => {
   return (
-    <PageContainer
-      footer
-      center
-      // maxWidth="sm"
-      bmt={5}
-    >
+    <PageContainer footer center bmt={5}>
       <LandingPC />
       <LandingPad />
       <LandingMobile />

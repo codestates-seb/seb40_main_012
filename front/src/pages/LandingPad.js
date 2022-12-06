@@ -28,6 +28,7 @@ const MainContainer = styled.div`
   @media screen and (max-width: 410px) {
     display: none;
   }
+  margin-top: -43px;
 `;
 
 const LandingPad = () => {
