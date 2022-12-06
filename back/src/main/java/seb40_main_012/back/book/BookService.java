@@ -197,6 +197,7 @@ public class BookService {
         return genreList.stream()
                 .map(bookRepository::findRecommendedBooks)
                 .flatMap(Collection::stream)
+                .distinct()
                 .sorted(Comparator.comparing(Book::getView).reversed())
                 .limit(5)
                 .collect(Collectors.toList());

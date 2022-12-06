@@ -179,6 +179,7 @@ public class PairingController {
 
         PairingDto.Response response = new PairingDto.Response();
 
+
         if(jwtTokenizer.checkUserWithToken(request, token)) { // 로그인 사용자
             // 로그인 사용자이면서 Auth가 있는 경우
             Pairing pairing = pairingService.updateView(pairingId);

@@ -37,7 +37,7 @@ public class BookCollection {
     private String title;
 
     @ElementCollection
-    //@LazyCollection(LazyCollectionOption.FALSE)
+    @LazyCollection(LazyCollectionOption.FALSE)
     private List<String> collectionCover = new ArrayList<>(); // 컬렉션에 속한 책 커버 4개. 컬렉션에 추가된 순으로 오름차순
     private String content;
     private Long likeCount;
