@@ -84,14 +84,14 @@ const SignInPage = () => {
   const handleKakaoOauth = () => {
     const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${
       process.env.REACT_APP_KAKAO_CLIENTID
-    }&redirect_uri=${'http://localhost:3000/oauth/kakao'}&response_type=code&prompt=login`;
+    }&redirect_uri=${'http://localhost:8080/oauth/kakao'}&response_type=code&prompt=login`;
     window.location.replace(KAKAO_AUTH_URL);
   };
 
   const handleGoogleOauth = () => {
     const GOOGLE_AUTH_URL = `https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=${
       process.env.REACT_APP_GOOGLE_CLIENTID
-    }&scope=email%20profile&state=Xm-I8A9bXAsM-ZWgygWBbjfNIsLs-Z_80iyaZ83VIfA%3D&redirect_uri=${'http://localhost:3000/oauth/google'}`;
+    }&scope=email%20profile&redirect_uri=${'http://localhost:3000/oauth/google'}`;
     window.location.replace(GOOGLE_AUTH_URL);
   };
 
