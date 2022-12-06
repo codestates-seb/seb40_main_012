@@ -7,8 +7,10 @@
 * **팀**: 🥔 달리는 감자
 * **개발기간**: 2022.11.08 ~ 12.06
 * **배포링크**: https://cherry-pick.co.kr/
-
-테스트 계정 ID: guest1@email.com Password: code1234*
+  
+  테스트 계정
+   **ID**: cherry@email.com
+   **PW**: password1234*
 
 ## 🛠 기술스택
 ![Group 62](https://user-images.githubusercontent.com/70098708/205864857-c42f1274-dac9-4fb8-9401-412902a214aa.svg)
