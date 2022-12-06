@@ -115,12 +115,12 @@ public class UserService {
     /**
      * 리팩토링 필요
      */
+//    @Transactional
     public User editUserInfo(User user, List<Genre> categoryValue) {
         User findUser = getLoginUser();
-        userCategoryRepository.deleteAllByUser(findUser);
+//        List<UserCategory> test = userCategoryRepository.findAllByUser(findUser);
+        userCategoryRepository.deleteByUserUserId(findUser.getUserId());
 
-        //카테고리에 있는 값이면 > 유저 카테고리에 해당 카테고리가 저장돼있는지 확인 후 > 있으면 쓰루, 없으면 유저카테고리에 카테고리 저장
-        //카테고리에 없는 값이면 에러
         categoryValue.forEach(
                 value -> {
                     Category category = categoryRepository.findByGenre(value);
