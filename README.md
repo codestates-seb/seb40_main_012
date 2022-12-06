@@ -29,6 +29,10 @@
 * 마이페이지에서 비밀번호 변경 / 유저 정보 수정 가능
 * 비밀번호 확인 후 회원탈퇴 가능 
 
+### 랜딩 페이지
+|-|-|
+|---|---|
+|![image](https://user-images.githubusercontent.com/70098708/205883552-9859424a-b393-4e51-827d-7badbf44ed22.png)|![image](https://user-images.githubusercontent.com/70098708/205883620-8b63dde1-6962-48f5-8bff-87ad8c7ac5e7.png)|
 
 ### 메인 페이지
 
