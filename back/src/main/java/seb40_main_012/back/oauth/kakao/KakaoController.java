@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
@@ -66,21 +65,11 @@ public class KakaoController {
             session.setAttribute("access_Token", access_Token);
         }
 
-        String email = userInfo.get("email").toString();
+        String email = userInfo.get("email").toString() + LocalDateTime.now();
         String picture = userInfo.get("thumbnail_image").toString();
-        String nickName = userInfo.get("nickname").toString();
+        String nickName = userInfo.get("nickname").toString() + LocalDateTime.now();
         String password = userInfo.get("nickname").toString() + access_Token;
         String encodedPass = passwordEncoder.encode(password);
-
-        System.out.println("------------------------------------------");
-        System.out.println("이메일: " + email);
-        System.out.println("프로필 사진: " + picture);
-        System.out.println("닉네임: " + nickName);
-        System.out.println("비밀번호: " + password);
-        System.out.println("인코딩 된 비밀번호: " + encodedPass);
-        System.out.println("카카오 액세스 토큰: " + access_Token);
-        System.out.println("------------------------------------------");
-
 
         if (userRepository.findByEmail(email).isEmpty()) { // DB에 해당 메일주소로 된 회원이 없을 경우
 
@@ -132,12 +121,6 @@ public class KakaoController {
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");
 //        res.getWriter().write(json);
-
-        System.out.println("-------------------------------------------------------");
-        System.out.println(accessToken);
-        System.out.println(refreshToken);
-        System.out.println(responseDto.getEmail());
-        System.out.println("-------------------------------------------------------");
 
         LoginDto.ResponseDto response = userMapper.userToLoginResponse(findUser);
 
