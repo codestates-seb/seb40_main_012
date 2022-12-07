@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 @Validated
 @Transactional
@@ -80,6 +81,7 @@ public class KakaoController {
         System.out.println("카카오 액세스 토큰: " + access_Token);
         System.out.println("------------------------------------------");
 
+
         if (userRepository.findByEmail(email).isEmpty()) { // DB에 해당 메일주소로 된 회원이 없을 경우
 
             if (userRepository.findByNickName(nickName) == null) { // + 해당 닉네임을 가진 회원이 없는 경우
@@ -90,6 +92,7 @@ public class KakaoController {
                         .bookTemp(36.5)
                         .firstLogin(true)
                         .profileImage(picture)
+                        .roles(List.of("USER"))
                         .password(encodedPass)
                         .build();
 
@@ -136,8 +139,10 @@ public class KakaoController {
         System.out.println(responseDto.getEmail());
         System.out.println("-------------------------------------------------------");
 
+        LoginDto.ResponseDto response = userMapper.userToLoginResponse(findUser);
+
         return new ResponseEntity<>(
-                new SingleResponseDto<>(userInfo), HttpStatus.OK);
+                new SingleResponseDto<>(response), HttpStatus.OK);
 
 //        try {
 //            return new ResponseEntity<>(
