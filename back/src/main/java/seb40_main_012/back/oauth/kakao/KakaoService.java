@@ -9,6 +9,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,10 +39,13 @@ public class KakaoService {
             //    POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
-            sb.append("grant_type=authorization_code");
+            sb.append("content_type:" +  "application/x-www-form-urlencoded");
+            sb.append("&grant_type=authorization_code");
             sb.append("&client_id=e50e158c20358065eb3d6e2eabd76f5c");
             sb.append("&redirect_uri=http://localhost:3000/oauth/kakao");
-            sb.append("&code=" + authorize_code);
+            sb.append("&client_name=cherrypick");
+//            sb.append("&client_secret=Y4aPCredJvfOGMtsTZHT2i50nX3EyvZ7");
+            sb.append("&code=").append(authorize_code);
             bw.write(sb.toString());
             bw.flush();
 
@@ -103,7 +107,7 @@ public class KakaoService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-            System.out.println("response body : " + result);
+//            System.out.println("response body : " + result);
 
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
@@ -112,9 +116,11 @@ public class KakaoService {
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
 
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+            String picture = properties.getAsJsonObject().get("thumbnail_image").getAsString();
             String email = kakao_account.getAsJsonObject().get("email").getAsString();
 
             userInfo.put("nickname", nickname);
+            userInfo.put("thumbnail_image", picture);
             userInfo.put("email", email);
 
         } catch (IOException e) {

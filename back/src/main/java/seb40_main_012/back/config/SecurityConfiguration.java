@@ -1,9 +1,12 @@
 package seb40_main_012.back.config;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -16,21 +19,26 @@ import seb40_main_012.back.config.auth.filter.JwtVerificationFilter;
 import seb40_main_012.back.config.auth.handler.*;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 //import seb40_main_012.back.config.auth.service.OAuth2UserServiceImpl;
+import seb40_main_012.back.config.auth.service.OAuth2UserServiceImpl;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
+import seb40_main_012.back.oauth.kakao.KakaoAuthenticationSuccessHandler;
 import seb40_main_012.back.user.mapper.UserMapper;
 //import seb40_main_012.back.user.repository.UserRepository;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
+@Slf4j
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final UserMapper userMapper;
     private final CookieManager cookieManager;
-//    private final OAuth2UserServiceImpl oAuth2UserService;
+    private final KakaoAuthenticationSuccessHandler kakaoAuthenticationSuccessHandler;
+    private final OAuth2UserServiceImpl oAuth2UserService;
 //    private final UserRepository userRepository;
 
     @Bean
@@ -49,6 +57,12 @@ public class SecurityConfiguration {
                 .accessDeniedHandler(new UserAccessDeniedHandler())
                 .and()
                 .apply(new CustomFilterConfigurer())
+//                .and()
+//                .oauth2Login()
+//                .defaultSuccessUrl("/api/collections")
+//                .successHandler(kakaoAuthenticationSuccessHandler)
+                .and()
+                .apply(new CustomFilterConfigurerForKakao())
                 .and()
                 .logout()
                 .logoutUrl("/api/logout")
@@ -90,4 +104,23 @@ public class SecurityConfiguration {
                     .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
         }
     }
+
+    public class CustomFilterConfigurerForKakao extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
+        @Override
+        public void configure(HttpSecurity builder) throws Exception {
+            AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
+
+            JwtAuthenticationFilter jwtAuthenticationFilter =
+                    new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, userMapper, cookieManager);
+            jwtAuthenticationFilter.setFilterProcessesUrl("/api/login");
+            jwtAuthenticationFilter.setAuthenticationSuccessHandler(new UserAuthenticationSuccessHandler());
+            jwtAuthenticationFilter.setAuthenticationFailureHandler(new UserAuthenticationFailureHandler());
+
+            JwtVerificationFilter jwtVerificationFilter = new JwtVerificationFilter(jwtTokenizer, authorityUtils);
+
+            builder.addFilter(jwtAuthenticationFilter)
+                    .addFilterAfter(jwtVerificationFilter, JwtAuthenticationFilter.class);
+        }
+    }
+
 }
