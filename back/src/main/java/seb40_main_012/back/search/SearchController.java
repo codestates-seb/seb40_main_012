@@ -29,6 +29,7 @@ public class SearchController {
 
     private final BookInfoSearchService bookInfoSearchService;
     private final CherryPickSearchService cherryPickSearchService;
+    private final SearchMapper searchMapper;
     private final SearchService searchService;
 
     @GetMapping
@@ -42,7 +43,9 @@ public class SearchController {
 
 //        BookInfoSearchDto.BookList bookResult = bookInfoSearchService.listSearch(queryParam.toLowerCase(Locale.ROOT), sort, page, size);
         List<Pairing> pairingsResult = searchService.findAllPairingByQuery(queryParam.toLowerCase(), 1, 100);
-        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), 1, 100);
+//        List<BookCollection> collectionsResult = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), 1, 100);
+        List<BookCollection> result = searchService.findAllBookCollectionsByQuery(queryParam.toLowerCase(), 1, 100).stream().distinct().collect(Collectors.toList());
+        List<BookCollection> collectionsResult = searchMapper.bookCollectionsSearchToBookCollections(result);
 
         if (category.equals("books") && sort.equals("accuracy")) {
 
@@ -77,7 +80,7 @@ public class SearchController {
 //                    new SliceImpl<>(pairingsResult.stream().sorted(Comparator.comparing(Pairing::getLikeCount).reversed()).collect(Collectors.toList()));
 //            return new ResponseEntity<>(pairingSliceLikeCount, HttpStatus.OK);
             List<Pairing> pairingPageLikeCount =
-                    pairingsResult.stream().sorted(Comparator.comparing(Pairing::getLikeCount).reversed()).collect(Collectors.toList());
+                    pairingsResult.stream().distinct().sorted(Comparator.comparing(Pairing::getLikeCount).reversed()).collect(Collectors.toList());
             return new ResponseEntity<>(pairingPageLikeCount, HttpStatus.OK);
 
         } else if (category.equals("pairings") && sort.equals("new")) { // 페어링 - 작성일 순
@@ -86,7 +89,7 @@ public class SearchController {
 //                    new SliceImpl<>(pairingsResult.stream().sorted(Comparator.comparing(Pairing::getCreatedAt).reversed()).collect(Collectors.toList()));
 //            return new ResponseEntity<>(pairingSliceCreatedAt, HttpStatus.OK);
             List<Pairing> pairingPageCreatedAt =
-                    new ArrayList<>(pairingsResult.stream().sorted(Comparator.comparing(Pairing::getCreatedAt).reversed()).collect(Collectors.toList()));
+                    new ArrayList<>(pairingsResult.stream().distinct().sorted(Comparator.comparing(Pairing::getCreatedAt).reversed()).collect(Collectors.toList()));
             return new ResponseEntity<>(pairingPageCreatedAt, HttpStatus.OK);
 
         } else if (category.equals("pairings") && sort.equals("view")) { // 페어링 - 조회순
@@ -95,7 +98,7 @@ public class SearchController {
 //                    new SliceImpl<>(pairingsResult.stream().sorted(Comparator.comparing(Pairing::getView).reversed()).collect(Collectors.toList()));
 //            return new ResponseEntity<>(pairingSliceView, HttpStatus.OK);
             List<Pairing> pairingPageView =
-                    new ArrayList<>(pairingsResult.stream().sorted(Comparator.comparing(Pairing::getView).reversed()).collect(Collectors.toList()));
+                    new ArrayList<>(pairingsResult.stream().distinct().sorted(Comparator.comparing(Pairing::getView).reversed()).collect(Collectors.toList()));
             return new ResponseEntity<>(pairingPageView, HttpStatus.OK);
 
         } else if (category.equals("collections") && sort == null) {
