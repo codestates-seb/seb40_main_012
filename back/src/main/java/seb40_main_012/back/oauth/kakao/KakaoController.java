@@ -65,9 +65,9 @@ public class KakaoController {
             session.setAttribute("access_Token", access_Token);
         }
 
-        String email = userInfo.get("email").toString() + LocalDateTime.now();
+        String email = userInfo.get("email").toString();
         String picture = userInfo.get("thumbnail_image").toString();
-        String nickName = userInfo.get("nickname").toString() + LocalDateTime.now();
+        String nickName = userInfo.get("nickname").toString();
         String password = userInfo.get("nickname").toString() + access_Token;
         String encodedPass = passwordEncoder.encode(password);
 
@@ -101,7 +101,36 @@ public class KakaoController {
                 userRepository.save(user);
             }
 
-        } else throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
+        } else if (userRepository.findByEmail(email).isPresent()) {
+
+//            else throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
+
+            User findUser = userService.findUserByEmail(email);
+
+            String accessToken = jwtTokenizer.delegateAccessToken(findUser);
+            String refreshToken = jwtTokenizer.delegateRefreshToken(findUser);
+
+            res.setHeader("Authorization", "Bearer " + accessToken);
+
+            jwtTokenizer.addRefreshToken(findUser.getEmail(), refreshToken);
+
+            // refresh Token을 헤더에 Set-Cookie 해주기
+            ResponseCookie cookie = cookieManager.createCookie("refreshToken", refreshToken);
+            res.setHeader("Set-Cookie", cookie.toString());
+
+            LoginDto.ResponseDto responseDto = userMapper.userToLoginResponse(findUser);
+            String json = new Gson().toJson(responseDto);
+            res.setContentType("application/json");
+            res.setCharacterEncoding("UTF-8");
+//        res.getWriter().write(json);
+
+            LoginDto.ResponseDto response = userMapper.userToLoginResponse(findUser);
+
+            return new ResponseEntity<>(
+                    new SingleResponseDto<>(response), HttpStatus.OK);
+
+        }
+//        else throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
 
         User findUser = userService.findUserByEmail(email);
 
@@ -126,13 +155,5 @@ public class KakaoController {
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK);
-
-//        try {
-//            return new ResponseEntity<>(
-//                    new SingleResponseDto<>(kakaoService.getAccessToken(code)), HttpStatus.OK);
-//        } catch (BusinessLogicException e) {
-//            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-//        }
     }
-
 }
