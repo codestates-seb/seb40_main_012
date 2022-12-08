@@ -149,77 +149,42 @@ public class KakaoService {
         return userInfo;
     }
 
-//    public User createUser(HashMap<String, Object> userInfo) { // 인증이 끝나 유저 정보를 받을 경우
-//
-//        String email = userInfo.get("email").toString();
-//        String picture = userInfo.get("thumbnail_image").toString();
-//        String nickName = userInfo.get("nickname").toString();
-//        String encodedPass = bCryptPasswordEncoder.encode(userInfo.get("nickname").toString());
-//
-//        if (userRepository.findByEmail(email).isEmpty()) {
-//            // DB에 해당 메일주소로 된 회원이 없을 경우
-//        }
-//
-//        if (userRepository.findByNickName(nickName) == null) { // + 해당 닉네임을 가진 회원이 없는 경우
-//
-//            User user = User.builder()
-//                    .email(email)
-//                    .nickName(nickName)
-//                    .bookTemp(36.5)
-//                    .firstLogin(true)
-//                    .profileImage(picture)
-//                    .roles(List.of("USER"))
-//                    .password(encodedPass)
-//                    .build();
-//
-//            userRepository.save(user);
-//
-//        } else if (userRepository.findByNickName(nickName) != null) { // 해당 닉네임을 가진 회원이 있는 경우
-//
-//            User user = User.builder()
-//                    .email(email)
-//                    .nickName(nickName + LocalDateTime.now())
-//                    .bookTemp(36.5)
-//                    .firstLogin(true)
-//                    .profileImage(picture)
-//                    .password(encodedPass)
-//                    .build();
-//
-//            userRepository.save(user);
-//        }
-//
-//
-//        if (userRepository.findByEmail(email).isPresent()) {
-//
-////            else throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
-//
-//            User findUser = userService.findUserByEmail(email);
-//
-//            String accessToken = jwtTokenizer.delegateAccessToken(findUser);
-//            String refreshToken = jwtTokenizer.delegateRefreshToken(findUser);
-//
-//            res.setHeader("Authorization", "Bearer " + accessToken);
-//
-//            jwtTokenizer.addRefreshToken(findUser.getEmail(), refreshToken);
-//
-//            // refresh Token을 헤더에 Set-Cookie 해주기
-//            ResponseCookie cookie = cookieManager.createCookie("refreshToken", refreshToken);
-//            res.setHeader("Set-Cookie", cookie.toString());
-//
-//            LoginDto.ResponseDto responseDto = userMapper.userToLoginResponse(findUser);
-//            String json = new Gson().toJson(responseDto);
-//            res.setContentType("application/json");
-//            res.setCharacterEncoding("UTF-8");
-////        res.getWriter().write(json);
-//
-//            LoginDto.ResponseDto response = userMapper.userToLoginResponse(findUser);
-//
-//            return new ResponseEntity<>(
-//                    new SingleResponseDto<>(response), HttpStatus.OK);
-//
-//        }
-//
-//        return null;
-//    }
+    public User createUser(HashMap<String, Object> userInfo) { // 인증이 끝나 유저 정보를 받을 경우
 
+        String email = userInfo.get("email").toString();
+        String picture = userInfo.get("thumbnail_image").toString();
+        String nickName = userInfo.get("nickname").toString();
+        String encodedPass = bCryptPasswordEncoder.encode(userInfo.get("nickname").toString());
+        User user = new User();
+
+        if (userRepository.findByNickName(nickName) == null) { // + 해당 닉네임을 가진 회원이 없는 경우
+
+            user = User.builder()
+                    .email(email)
+                    .nickName(nickName)
+                    .bookTemp(36.5)
+                    .firstLogin(true)
+                    .profileImage(picture)
+                    .roles(List.of("USER"))
+                    .password(encodedPass)
+                    .build();
+
+            userRepository.save(user);
+
+        } else if (userRepository.findByNickName(nickName) != null) { // 해당 닉네임을 가진 회원이 있는 경우
+
+            user = User.builder()
+                    .email(email)
+                    .nickName(nickName + LocalDateTime.now())
+                    .bookTemp(36.5)
+                    .firstLogin(true)
+                    .profileImage(picture)
+                    .password(encodedPass)
+                    .build();
+
+            userRepository.save(user);
+        }
+
+        return user;
+    }
 }

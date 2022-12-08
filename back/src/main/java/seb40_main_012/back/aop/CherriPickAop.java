@@ -80,10 +80,10 @@ public class CherriPickAop {
             if (refreshToken.size() != 0) {
                 userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(refreshToken.size() - 1));
 
-                System.out.println("-----------------------------------------");
-                Arrays.stream(cookies).map(Cookie::getValue).forEach(System.out::println);
-                System.out.println(userEmail);
-                System.out.println("-----------------------------------------");
+//                System.out.println("-----------------------------------------");
+//                Arrays.stream(cookies).map(Cookie::getValue).forEach(System.out::println);
+//                System.out.println(userEmail);
+//                System.out.println("-----------------------------------------");
 
             }
         }

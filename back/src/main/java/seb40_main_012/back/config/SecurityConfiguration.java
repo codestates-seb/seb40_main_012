@@ -1,11 +1,9 @@
 package seb40_main_012.back.config;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -17,35 +15,26 @@ import seb40_main_012.back.config.auth.filter.JwtAuthenticationFilter;
 import seb40_main_012.back.config.auth.filter.JwtVerificationFilter;
 import seb40_main_012.back.config.auth.handler.*;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
-import seb40_main_012.back.config.auth.service.OAuth2UserServiceImpl;
+//import seb40_main_012.back.config.auth.service.OAuth2UserServiceImpl;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 import seb40_main_012.back.user.mapper.UserMapper;
+//import seb40_main_012.back.user.repository.UserRepository;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@Slf4j
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity(debug = true)
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
     private final JwtTokenizer jwtTokenizer;
     private final CustomAuthorityUtils authorityUtils;
     private final UserMapper userMapper;
     private final CookieManager cookieManager;
-    private final OAuth2UserServiceImpl oAuth2UserService;
-
-//    @Bean
-//    public WebSecurityCustomizer webSecurityCustomizer(){
-//        return web -> {
-//            web.ignoring()
-//                    .antMatchers("/oauth/**");
-//        };
-//    }
+//    private final OAuth2UserServiceImpl oAuth2UserService;
+//    private final UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-
         http
                 .headers().frameOptions().sameOrigin()
                 .and()
@@ -70,16 +59,10 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().permitAll());
-//                .oauth2Login()
-//                .defaultSuccessUrl("/login-success")
-//                .successHandler(oAuth2AuthenticationSuccessHandler)
-//                .userInfoEndpoint()
-//                .userService(oAuth2UserService);
 //                .oauth2Login(authorize -> { // OAuth2 반영 안함
 //                    authorize.userInfoEndpoint().userService(oAuth2UserService);
 //                    authorize.successHandler(new UserOAuth2SuccessHandler(jwtTokenizer, userRepository, cookieManager, userMapper));
 //                });
-
         return http.build();
     }
 
@@ -93,7 +76,6 @@ public class SecurityConfiguration {
     public class CustomFilterConfigurer extends AbstractHttpConfigurer<CustomFilterConfigurer, HttpSecurity> {
         @Override
         public void configure(HttpSecurity builder) throws Exception {
-
             AuthenticationManager authenticationManager = builder.getSharedObject(AuthenticationManager.class);
 
             JwtAuthenticationFilter jwtAuthenticationFilter =

@@ -1,5 +1,6 @@
 package seb40_main_012.back.user.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import seb40_main_012.back.book.entity.Genre;
 
@@ -22,6 +23,7 @@ public class Category {
     @Enumerated(EnumType.STRING)
     private Genre genre;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "category")
     private List<UserCategory> categories = new ArrayList<>();
 

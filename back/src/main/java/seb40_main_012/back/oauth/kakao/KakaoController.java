@@ -2,6 +2,7 @@ package seb40_main_012.back.oauth.kakao;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
@@ -31,6 +32,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 
+@Slf4j
 @Validated
 @Transactional
 @RestController
@@ -52,12 +54,11 @@ public class KakaoController {
     public ResponseEntity<Object> kakaoCallback(@RequestParam("code") String code, HttpSession session) throws URISyntaxException, IOException {
 
         ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-
-        HttpServletRequest req = attr.getRequest(); // Http Request
         HttpServletResponse res = attr.getResponse(); // Http Response
 
         String access_Token = kakaoService.getAccessToken(code);
-        HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token);
+
+        HashMap<String, Object> userInfo = kakaoService.getUserInfo(access_Token); // 카카오 액세스 토큰에서 유저 정보 가져다 등록
 
         //    클라이언트의 이메일이 존재할 때 세션에 해당 이메일과 토큰 등록
         if (userInfo.get("email") != null) {
@@ -66,90 +67,21 @@ public class KakaoController {
         }
 
         String email = userInfo.get("email").toString();
-        String picture = userInfo.get("thumbnail_image").toString();
-        String nickName = userInfo.get("nickname").toString();
-        String password = userInfo.get("nickname").toString() + access_Token;
-        String encodedPass = passwordEncoder.encode(password);
 
         if (userRepository.findByEmail(email).isEmpty()) { // DB에 해당 메일주소로 된 회원이 없을 경우
 
-            if (userRepository.findByNickName(nickName) == null) { // + 해당 닉네임을 가진 회원이 없는 경우
-
-                User user = User.builder()
-                        .email(email)
-                        .nickName(nickName)
-                        .bookTemp(36.5)
-                        .firstLogin(true)
-                        .profileImage(picture)
-                        .roles(List.of("USER"))
-                        .password(encodedPass)
-                        .build();
-
-                userRepository.save(user);
-
-            } else if (userRepository.findByNickName(nickName) != null) { // 해당 닉네임을 가진 회원이 있는 경우
-
-                User user = User.builder()
-                        .email(email)
-                        .nickName(nickName + LocalDateTime.now())
-                        .bookTemp(36.5)
-                        .firstLogin(true)
-                        .profileImage(picture)
-                        .password(encodedPass)
-                        .build();
-
-                userRepository.save(user);
-            }
-
-        } else if (userRepository.findByEmail(email).isPresent()) {
-
-//            else throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
-
-            User findUser = userService.findUserByEmail(email);
-
-            String accessToken = jwtTokenizer.delegateAccessToken(findUser);
-            String refreshToken = jwtTokenizer.delegateRefreshToken(findUser);
-
-            res.setHeader("Authorization", "Bearer " + accessToken);
-
-            jwtTokenizer.addRefreshToken(findUser.getEmail(), refreshToken);
-
-            // refresh Token을 헤더에 Set-Cookie 해주기
-            ResponseCookie cookie = cookieManager.createCookie("refreshToken", refreshToken);
-            res.setHeader("Set-Cookie", cookie.toString());
-
-            LoginDto.ResponseDto responseDto = userMapper.userToLoginResponse(findUser);
-            String json = new Gson().toJson(responseDto);
-            res.setContentType("application/json");
-            res.setCharacterEncoding("UTF-8");
-//        res.getWriter().write(json);
-
-            LoginDto.ResponseDto response = userMapper.userToLoginResponse(findUser);
-
-            return new ResponseEntity<>(
-                    new SingleResponseDto<>(response), HttpStatus.OK);
-
+            User user = kakaoService.createUser(userInfo);
         }
-//        else throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
 
         User findUser = userService.findUserByEmail(email);
 
         String accessToken = jwtTokenizer.delegateAccessToken(findUser);
         String refreshToken = jwtTokenizer.delegateRefreshToken(findUser);
-
-        res.setHeader("Authorization", "Bearer " + accessToken);
-
         jwtTokenizer.addRefreshToken(findUser.getEmail(), refreshToken);
 
-        // refresh Token을 헤더에 Set-Cookie 해주기
         ResponseCookie cookie = cookieManager.createCookie("refreshToken", refreshToken);
-        res.setHeader("Set-Cookie", cookie.toString());
-
-        LoginDto.ResponseDto responseDto = userMapper.userToLoginResponse(findUser);
-        String json = new Gson().toJson(responseDto);
-        res.setContentType("application/json");
-        res.setCharacterEncoding("UTF-8");
-//        res.getWriter().write(json);
+        res.setHeader("Authorization", "Bearer " + accessToken);
+        res.setHeader("Set-Cookie", cookie.toString()); // refresh Token을 헤더에 Set-Cookie 해주기
 
         LoginDto.ResponseDto response = userMapper.userToLoginResponse(findUser);
 
