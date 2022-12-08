@@ -124,11 +124,8 @@ public class KakaoService {
             while ((line = br.readLine()) != null) {
                 result += line;
             }
-//            System.out.println("response body : " + result);
 
-            Gson gson = new Gson();
-            JsonParser parser = new JsonParser();
-            JsonElement element = parser.parse(result);
+            JsonElement element = JsonParser.parseString(result);
 
             JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
@@ -149,7 +146,7 @@ public class KakaoService {
         return userInfo;
     }
 
-    public User createUser(HashMap<String, Object> userInfo) { // 인증이 끝나 유저 정보를 받을 경우
+    public User createUser(HashMap<String, Object> userInfo) { // OAuth 인증이 끝나 유저 정보를 받은 경우
 
         String email = userInfo.get("email").toString();
         String picture = userInfo.get("thumbnail_image").toString();
