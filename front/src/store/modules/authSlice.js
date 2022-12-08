@@ -24,6 +24,19 @@ export const signInAsync = createAsyncThunk(
   }
 );
 
+export const kakaoOauthAsync = createAsyncThunk(
+  'auth/kakaoOauth',
+  async ({ path, code }, thunkAPI) => {
+    try {
+      const response = await authApi.kakaoOauth({ path, code });
+      console.log('와야하는데유ㅠ', response.data.data);
+      return response.data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const firstLoginAsync = createAsyncThunk(
   'auth/firstLogin',
   async (params, thunkAPI) => {
@@ -73,6 +86,33 @@ export const authSlice = createSlice({
         state.profileImage = payload.profileImage;
       })
       .addCase(signInAsync.rejected, (state) => {
+        state.loading = false;
+        state.isLogin = false;
+        state.firstLogin = false;
+        state.nickName = '';
+        state.email = '';
+        state.roles = [];
+        state.profileImage = '';
+      })
+      .addCase(kakaoOauthAsync.pending, (state) => {
+        state.loading = true;
+        state.isLogin = false;
+        state.firstLogin = false;
+        state.nickName = '';
+        state.email = '';
+        state.roles = [];
+        state.profileImage = '';
+      })
+      .addCase(kakaoOauthAsync.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.isLogin = true;
+        state.firstLogin = payload.firstLogin;
+        state.nickName = payload.nickName;
+        state.email = payload.email;
+        state.roles = payload.roles;
+        state.profileImage = payload.profileImage;
+      })
+      .addCase(kakaoOauthAsync.rejected, (state) => {
         state.loading = false;
         state.isLogin = false;
         state.firstLogin = false;

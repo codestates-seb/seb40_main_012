@@ -77,6 +77,23 @@ const authApi = {
         .catch((error) => reject(error));
     });
   },
+  kakaoOauth: ({ path, code }) => {
+    return new Promise((resolve, reject) => {
+      return axios
+        .get(`http://localhost:8080${path}${code}`)
+        .then((response) => {
+          console.log(response);
+          console.log('성공', `http://localhost:8080${path}${code}`);
+          signInSuccess(response);
+          setTimeout(authApi.logout, REFRESH_EXPIRY_TIME);
+          return resolve(response);
+        })
+        .catch((error) => {
+          console.log('실패', `http://localhost:8080${path}${code}`);
+          return reject(error);
+        });
+    });
+  },
 };
 
 export default authApi;
