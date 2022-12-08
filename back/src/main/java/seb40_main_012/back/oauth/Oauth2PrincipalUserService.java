@@ -70,6 +70,11 @@ public class Oauth2PrincipalUserService extends DefaultOAuth2UserService {
             userRepository.save(findUser);
         }
 
+        System.out.println("----------------------------------------------------");
+        System.out.println("----------------------------------------------------");
+        System.out.println("----------------------------------------------------");
+        System.out.println("----------------------------------------------------");
+
         return new OAuth2PrincipalDetails(findUser, oAuth2UserInfo);
     }
 }

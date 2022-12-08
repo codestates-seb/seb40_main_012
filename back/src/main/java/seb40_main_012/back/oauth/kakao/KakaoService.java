@@ -7,23 +7,40 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.springframework.transaction.annotation.Transactional;
+import seb40_main_012.back.config.auth.dto.LoginDto;
+import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
+import seb40_main_012.back.dto.SingleResponseDto;
+import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.repository.UserRepository;
+import seb40_main_012.back.user.service.UserService;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class KakaoService {
 
-    public String getAccessToken (String authorize_code) {
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final JwtTokenizer jwtTokenizer;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public String getAccessToken(String authorize_code) {
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -39,7 +56,7 @@ public class KakaoService {
             //    POST 요청에 필요로 요구하는 파라미터 스트림을 통해 전송
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
-            sb.append("content_type:" +  "application/x-www-form-urlencoded");
+            sb.append("content_type:" + "application/x-www-form-urlencoded");
             sb.append("&grant_type=authorization_code");
             sb.append("&client_id=e50e158c20358065eb3d6e2eabd76f5c");
             sb.append("&redirect_uri=http://localhost:3000/oauth/kakao");
@@ -83,7 +100,7 @@ public class KakaoService {
         return access_Token;
     }
 
-    public HashMap<String, Object> getUserInfo (String access_Token) {
+    public HashMap<String, Object> getUserInfo(String access_Token) {
 
         // 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
         HashMap<String, Object> userInfo = new HashMap<>();
@@ -109,6 +126,7 @@ public class KakaoService {
             }
 //            System.out.println("response body : " + result);
 
+            Gson gson = new Gson();
             JsonParser parser = new JsonParser();
             JsonElement element = parser.parse(result);
 
@@ -130,5 +148,78 @@ public class KakaoService {
 
         return userInfo;
     }
+
+//    public User createUser(HashMap<String, Object> userInfo) { // 인증이 끝나 유저 정보를 받을 경우
+//
+//        String email = userInfo.get("email").toString();
+//        String picture = userInfo.get("thumbnail_image").toString();
+//        String nickName = userInfo.get("nickname").toString();
+//        String encodedPass = bCryptPasswordEncoder.encode(userInfo.get("nickname").toString());
+//
+//        if (userRepository.findByEmail(email).isEmpty()) {
+//            // DB에 해당 메일주소로 된 회원이 없을 경우
+//        }
+//
+//        if (userRepository.findByNickName(nickName) == null) { // + 해당 닉네임을 가진 회원이 없는 경우
+//
+//            User user = User.builder()
+//                    .email(email)
+//                    .nickName(nickName)
+//                    .bookTemp(36.5)
+//                    .firstLogin(true)
+//                    .profileImage(picture)
+//                    .roles(List.of("USER"))
+//                    .password(encodedPass)
+//                    .build();
+//
+//            userRepository.save(user);
+//
+//        } else if (userRepository.findByNickName(nickName) != null) { // 해당 닉네임을 가진 회원이 있는 경우
+//
+//            User user = User.builder()
+//                    .email(email)
+//                    .nickName(nickName + LocalDateTime.now())
+//                    .bookTemp(36.5)
+//                    .firstLogin(true)
+//                    .profileImage(picture)
+//                    .password(encodedPass)
+//                    .build();
+//
+//            userRepository.save(user);
+//        }
+//
+//
+//        if (userRepository.findByEmail(email).isPresent()) {
+//
+////            else throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
+//
+//            User findUser = userService.findUserByEmail(email);
+//
+//            String accessToken = jwtTokenizer.delegateAccessToken(findUser);
+//            String refreshToken = jwtTokenizer.delegateRefreshToken(findUser);
+//
+//            res.setHeader("Authorization", "Bearer " + accessToken);
+//
+//            jwtTokenizer.addRefreshToken(findUser.getEmail(), refreshToken);
+//
+//            // refresh Token을 헤더에 Set-Cookie 해주기
+//            ResponseCookie cookie = cookieManager.createCookie("refreshToken", refreshToken);
+//            res.setHeader("Set-Cookie", cookie.toString());
+//
+//            LoginDto.ResponseDto responseDto = userMapper.userToLoginResponse(findUser);
+//            String json = new Gson().toJson(responseDto);
+//            res.setContentType("application/json");
+//            res.setCharacterEncoding("UTF-8");
+////        res.getWriter().write(json);
+//
+//            LoginDto.ResponseDto response = userMapper.userToLoginResponse(findUser);
+//
+//            return new ResponseEntity<>(
+//                    new SingleResponseDto<>(response), HttpStatus.OK);
+//
+//        }
+//
+//        return null;
+//    }
 
 }
