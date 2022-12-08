@@ -77,10 +77,10 @@ const authApi = {
         .catch((error) => reject(error));
     });
   },
-  kakaoOauth: ({ path, code }) => {
+  oauth: ({ path, code }) => {
     return new Promise((resolve, reject) => {
       return axios
-        .get(`http://localhost:8080${path}${code}`)
+        .get(`${path}${code}`)
         .then((response) => {
           signInSuccess(response);
           setTimeout(authApi.logout, REFRESH_EXPIRY_TIME);

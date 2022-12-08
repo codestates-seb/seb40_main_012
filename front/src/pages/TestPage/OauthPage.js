@@ -1,22 +1,22 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { kakaoOauthAsync } from 'store/modules/authSlice';
+import { oauthAsync } from 'store/modules/authSlice';
 import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 import PageContainer from 'containers/PageContainer';
 import Loading from 'components/Loading';
 
-const OauthTestPage = () => {
+const OauthPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
     const path = location.pathname;
     const code = location.search;
-    getKaKao(path, code);
+    getOauthCode(path, code);
   }, []);
 
-  const getKaKao = (path, code) => {
-    dispatch(kakaoOauthAsync({ path, code }))
+  const getOauthCode = (path, code) => {
+    dispatch(oauthAsync({ path, code }))
       .unwrap()
       .then(() => {
         dispatch(
@@ -45,4 +45,4 @@ const OauthTestPage = () => {
   );
 };
 
-export default OauthTestPage;
+export default OauthPage;
