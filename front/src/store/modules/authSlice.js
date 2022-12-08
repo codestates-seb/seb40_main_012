@@ -29,7 +29,6 @@ export const kakaoOauthAsync = createAsyncThunk(
   async ({ path, code }, thunkAPI) => {
     try {
       const response = await authApi.kakaoOauth({ path, code });
-      console.log('와야하는데유ㅠ', response.data.data);
       return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
