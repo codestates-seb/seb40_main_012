@@ -34,6 +34,36 @@ const AvatarStyled = styled(Avatar)`
   background-color: ${({ theme }) => theme.colors.purple_2};
 `;
 
+const OauthBtns = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-top: -5px;
+  .google {
+    border: 1px solid rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const BtnStyled = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  margin: 5px;
+  border-radius: 20px;
+  overflow: hidden;
+  &:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+  img {
+    margin-top: 5px;
+    height: 45px;
+  }
+`;
+
 const SignInPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -110,21 +140,47 @@ const SignInPage = () => {
             입력하신 내용을 다시 확인해주세요.
           </LoginErrorMsgStyled>
         ) : null}
-        <Grid container justifyContent="flex-end">
-          {/* <Grid container> */}
-          {/* <Grid item xs>
+      </Box>
+      <OauthBtns>
+        <BtnStyled className="google">
+          <a href="https://accounts.google.com/o/oauth2/v2/auth/oauthchooseaccount?response_type=code&client_id=293970161173-a059nllv4dpvc9quk4hqid4kservumh6.apps.googleusercontent.com&scope=email%20profile&redirect_uri=http://localhost:3000/oauth/google">
+            <img
+              src={process.env.PUBLIC_URL + '/images/googleLoginBtn.png'}
+              alt="google oauth login button"
+            />
+          </a>
+        </BtnStyled>
+        <BtnStyled>
+          <a href="https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26redirect_uri%3Dhttp%253A%252F%252Flocalhost%253A3000%252Foauth%252Fkakao%26through_account%3Dtrue%26client_id%3De50e158c20358065eb3d6e2eabd76f5c">
+            <img
+              src={process.env.PUBLIC_URL + '/images/kakaoLoginBtn.png'}
+              alt="kakao oauth login button"
+            />
+          </a>
+        </BtnStyled>
+        <BtnStyled>
+          <a href="https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=RZfvwjjGuUVmm8x8TDnY&redirect_uri=http://localhost:3000/oauth/naver">
+            <img
+              src={process.env.PUBLIC_URL + '/images/naverLoginBtn.png'}
+              alt="naver oauth login button"
+            />
+          </a>
+        </BtnStyled>
+      </OauthBtns>
+      <Grid container justifyContent="flex-end">
+        {/* <Grid container> */}
+        {/* <Grid item xs>
                   <Link to="#" variant="body2">
                     Forgot password?
                   </Link>
                 </Grid> */}
-          <Grid item>
-            계정이 없으신가요?{' '}
-            <SignUpLinkStyled to="/user/signup" variant="body2">
-              회원가입
-            </SignUpLinkStyled>
-          </Grid>
+        <Grid item>
+          계정이 없으신가요?{' '}
+          <SignUpLinkStyled to="/user/signup" variant="body2">
+            회원가입
+          </SignUpLinkStyled>
         </Grid>
-      </Box>
+      </Grid>
     </PageContainer>
   );
 };

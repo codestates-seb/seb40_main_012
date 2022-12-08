@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectFirstLogin, selectIsLogin } from 'store/modules/authSlice';
 import LandingPage from 'pages/LandingPage';
+import OauthPage from 'pages/TestPage/OauthPage';
 import {
   MainPage,
   SignUpPage,
@@ -138,6 +139,7 @@ const RoutesComponent = () => {
       <Route path="/redux" element={<ReduxPage />} />
       <Route path="/button-test" element={<ButtonTest />} />
       <Route path="/img-test" element={<ImgTest />} />
+      <Route path="/oauth/:site" element={<OauthPage />} />
       <Route path="*" element={getElement(NoMatch, null)} />
     </Routes>
   );

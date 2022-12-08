@@ -24,6 +24,21 @@ export const signInAsync = createAsyncThunk(
   }
 );
 
+export const oauthAsync = createAsyncThunk(
+  'auth/oauth',
+  async ({ path, code }, thunkAPI) => {
+    console.log('path', path);
+    console.log('code', code);
+    try {
+      const response = await authApi.oauth({ path, code });
+      console.log('성공하면 오는 res', response.data);
+      return response.data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const firstLoginAsync = createAsyncThunk(
   'auth/firstLogin',
   async (params, thunkAPI) => {
@@ -73,6 +88,33 @@ export const authSlice = createSlice({
         state.profileImage = payload.profileImage;
       })
       .addCase(signInAsync.rejected, (state) => {
+        state.loading = false;
+        state.isLogin = false;
+        state.firstLogin = false;
+        state.nickName = '';
+        state.email = '';
+        state.roles = [];
+        state.profileImage = '';
+      })
+      .addCase(oauthAsync.pending, (state) => {
+        state.loading = true;
+        state.isLogin = false;
+        state.firstLogin = false;
+        state.nickName = '';
+        state.email = '';
+        state.roles = [];
+        state.profileImage = '';
+      })
+      .addCase(oauthAsync.fulfilled, (state, { payload }) => {
+        state.loading = false;
+        state.isLogin = true;
+        state.firstLogin = payload.firstLogin;
+        state.nickName = payload.nickName;
+        state.email = payload.email;
+        state.roles = payload.roles;
+        state.profileImage = payload.profileImage;
+      })
+      .addCase(oauthAsync.rejected, (state) => {
         state.loading = false;
         state.isLogin = false;
         state.firstLogin = false;

@@ -77,6 +77,20 @@ const authApi = {
         .catch((error) => reject(error));
     });
   },
+  oauth: ({ path, code }) => {
+    return new Promise((resolve, reject) => {
+      return axios
+        .get(`${path}${code}`)
+        .then((response) => {
+          signInSuccess(response);
+          setTimeout(authApi.logout, REFRESH_EXPIRY_TIME);
+          return resolve(response);
+        })
+        .catch((error) => {
+          return reject(error);
+        });
+    });
+  },
 };
 
 export default authApi;
