@@ -4,8 +4,8 @@ spring:
       client:
         registration:
           google:
-            clientId: 293970161173-a059nllv4dpvc9quk4hqid4kservumh6.apps.googleusercontent.com
-            clientSecret: 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
+            clientId: 
+            clientSecret:
           kakao:
             client-id: e50e158c20358065eb3d6e2eabd76f5c
             redirectUri: http://localhost:3000/oauth/kakao
