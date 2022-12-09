@@ -3,12 +3,9 @@ spring:
     oauth2:
       client:
         registration:
-#          google:
-#            clientId: ${OAUTH_ID}
-#            clientSecret: ${OAUTH_SECRET}
-#            scope:
-#              - email
-#              - profile
+          google:
+            clientId: 293970161173-a059nllv4dpvc9quk4hqid4kservumh6.apps.googleusercontent.com
+            clientSecret: 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
           kakao:
             client-id: e50e158c20358065eb3d6e2eabd76f5c
             redirectUri: http://localhost:3000/oauth/kakao
