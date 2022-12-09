@@ -74,6 +74,10 @@ public class OAuth2PrincipalDetails implements UserDetails, OAuth2User {
         return user.getNickName();
     }
 
+    public String getEmail() {
+        return user.getEmail();
+    }
+
     /**
      * UserDetails 구현
      * 계정 만료 여부

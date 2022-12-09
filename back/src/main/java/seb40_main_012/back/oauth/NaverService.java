@@ -1,4 +1,4 @@
-package seb40_main_012.back.oauth.kakao;
+package seb40_main_012.back.oauth;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -20,7 +20,7 @@ import java.util.List;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class KakaoService {
+public class NaverService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -28,7 +28,7 @@ public class KakaoService {
     public String getAccessToken(String authorize_code) {
         String access_Token = "";
         String refresh_Token = "";
-        String reqURL = "https://kauth.kakao.com/oauth/token";
+        String reqURL = "https://nid.naver.com/oauth2.0/token";
 
         try {
             URL url = new URL(reqURL);
@@ -43,9 +43,10 @@ public class KakaoService {
             StringBuilder sb = new StringBuilder();
             sb.append("content_type:" + "application/x-www-form-urlencoded");
             sb.append("&grant_type=authorization_code");
-            sb.append("&client_id=e50e158c20358065eb3d6e2eabd76f5c");
-            sb.append("&redirect_uri=http://localhost:3000/oauth/kakao");
-            sb.append("&client_name=cherrypick");
+            sb.append("&client_id=RZfvwjjGuUVmm8x8TDnY");
+            sb.append("&client_secret=Ic8fG8dNR6");
+            sb.append("&redirect_uri=http://localhost:3000/oauth/naver");
+            sb.append("&client_name=Cherry_Pick");
 //            sb.append("&client_secret=Y4aPCredJvfOGMtsTZHT2i50nX3EyvZ7");
             sb.append("&code=").append(authorize_code);
             bw.write(sb.toString());
@@ -88,7 +89,7 @@ public class KakaoService {
 
         // 요청하는 클라이언트마다 가진 정보가 다를 수 있기에 HashMap타입으로 선언
         HashMap<String, Object> userInfo = new HashMap<>();
-        String reqURL = "https://kapi.kakao.com/v2/user/me";
+        String reqURL = "https://openapi.naver.com/v1/nid/me";
         try {
             URL url = new URL(reqURL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -111,15 +112,15 @@ public class KakaoService {
 
             JsonElement element = JsonParser.parseString(result);
 
-            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
-            JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+            JsonObject properties = element.getAsJsonObject().get("response").getAsJsonObject();
+//            JsonObject naver_account = element.getAsJsonObject().get("naver_account").getAsJsonObject();
 
             String nickname = properties.getAsJsonObject().get("nickname").getAsString();
-            String picture = properties.getAsJsonObject().get("thumbnail_image").getAsString();
-            String email = kakao_account.getAsJsonObject().get("email").getAsString();
+            String picture = properties.getAsJsonObject().get("profile_image").getAsString();
+            String email = properties.getAsJsonObject().get("email").getAsString();
 
             userInfo.put("nickname", nickname);
-            userInfo.put("thumbnail_image", picture);
+            userInfo.put("profile_image", picture);
             userInfo.put("email", email);
 
         } catch (IOException e) {
@@ -127,13 +128,14 @@ public class KakaoService {
             e.printStackTrace();
         }
 
+
         return userInfo;
     }
 
     public User createUser(HashMap<String, Object> userInfo) { // OAuth 인증이 끝나 유저 정보를 받은 경우
 
         String email = userInfo.get("email").toString();
-        String picture = userInfo.get("thumbnail_image").toString();
+        String picture = userInfo.get("profile_image").toString();
         String nickName = userInfo.get("nickname").toString();
         String encodedPass = bCryptPasswordEncoder.encode(userInfo.get("nickname").toString());
 
@@ -169,4 +171,5 @@ public class KakaoService {
 
         return user;
     }
+
 }

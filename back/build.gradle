@@ -82,7 +82,8 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 	//    --------------------------------------------------------------------------------------------
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // OAuth2
+//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // OAuth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.6.2'
 	implementation 'io.github.redouane59.twitter:twittered:2.21' // OAuth2 Tweeter
 
 }
