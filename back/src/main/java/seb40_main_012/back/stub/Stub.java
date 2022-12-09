@@ -1,78 +1,78 @@
-//package seb40_main_012.back.stub;
+package seb40_main_012.back.stub;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+import seb40_main_012.back.book.BookRepository;
+import seb40_main_012.back.book.BookService;
+import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.book.entity.Genre;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.bookCollection.repository.BookCollectionTagRepository;
+import seb40_main_012.back.bookCollection.repository.TagRepository;
+import seb40_main_012.back.bookCollection.service.BookCollectionService;
+import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
+import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
+import seb40_main_012.back.common.bookmark.Bookmark;
+import seb40_main_012.back.common.bookmark.BookmarkRepository;
+import seb40_main_012.back.common.bookmark.BookmarkType;
+import seb40_main_012.back.common.comment.CommentRepository;
+import seb40_main_012.back.common.comment.CommentService;
+import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.follow.FollowRepository;
+import seb40_main_012.back.pairing.PairingRepository;
+import seb40_main_012.back.pairing.PairingService;
+import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.pairing.entity.ParingCategory;
+import seb40_main_012.back.user.entity.Category;
+import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.entity.UserCategory;
+import seb40_main_012.back.user.entity.enums.AgeType;
+import seb40_main_012.back.user.entity.enums.GenderType;
+import seb40_main_012.back.user.repository.CategoryRepository;
+import seb40_main_012.back.user.repository.UserRepository;
+import seb40_main_012.back.user.service.UserService;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+@Configuration
+public class Stub {
+
+    private static final Logger log = LoggerFactory.getLogger(Stub.class);
+
+    @Bean
+    @Transactional
+    CommandLineRunner stubInit(UserRepository userRepository, UserService userService,
+                               BookRepository bookRepository, BookService bookService,
+                               BookCollectionTagRepository collectionTagRepository,
+                               BookCollectionBookRepository collectionBookRepository,
+                               TagRepository tagRepository,
+                               BookCollectionRepository bookCollectionRepository, BookCollectionService bookCollectionService,
+                               PairingRepository pairingRepository, PairingService pairingService,
+                               CommentRepository commentRepository, CommentService commentService,
+                               CategoryRepository categoryRepository, FollowRepository followRepository,
+                               BCryptPasswordEncoder encoder, BookmarkRepository bookmarkRepository) {
+
+        for (int i = 0; i < 9; i++) {
+            Category category = new Category();
+            category.setGenre(Genre.values()[i]);
+            categoryRepository.save(category);
+        }
 //
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.boot.CommandLineRunner;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.transaction.annotation.Transactional;
-//import seb40_main_012.back.book.BookRepository;
-//import seb40_main_012.back.book.BookService;
-//import seb40_main_012.back.book.entity.Book;
-//import seb40_main_012.back.book.entity.Genre;
-//import seb40_main_012.back.bookCollection.entity.BookCollection;
-//import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
-//import seb40_main_012.back.bookCollection.repository.BookCollectionTagRepository;
-//import seb40_main_012.back.bookCollection.repository.TagRepository;
-//import seb40_main_012.back.bookCollection.service.BookCollectionService;
-//import seb40_main_012.back.bookCollectionBook.BookCollectionBook;
-//import seb40_main_012.back.bookCollectionBook.BookCollectionBookRepository;
-//import seb40_main_012.back.common.bookmark.Bookmark;
-//import seb40_main_012.back.common.bookmark.BookmarkRepository;
-//import seb40_main_012.back.common.bookmark.BookmarkType;
-//import seb40_main_012.back.common.comment.CommentRepository;
-//import seb40_main_012.back.common.comment.CommentService;
-//import seb40_main_012.back.common.comment.entity.Comment;
-//import seb40_main_012.back.common.comment.entity.CommentType;
-//import seb40_main_012.back.follow.FollowRepository;
-//import seb40_main_012.back.pairing.PairingRepository;
-//import seb40_main_012.back.pairing.PairingService;
-//import seb40_main_012.back.pairing.entity.Pairing;
-//import seb40_main_012.back.pairing.entity.ParingCategory;
-//import seb40_main_012.back.user.entity.Category;
-//import seb40_main_012.back.user.entity.User;
-//import seb40_main_012.back.user.entity.UserCategory;
-//import seb40_main_012.back.user.entity.enums.AgeType;
-//import seb40_main_012.back.user.entity.enums.GenderType;
-//import seb40_main_012.back.user.repository.CategoryRepository;
-//import seb40_main_012.back.user.repository.UserRepository;
-//import seb40_main_012.back.user.service.UserService;
-//
-//import java.time.LocalDate;
-//import java.time.LocalDateTime;
-//import java.util.List;
-//import java.util.Random;
-//import java.util.stream.Collectors;
-//import java.util.stream.Stream;
-//
-//@Configuration
-//public class Stub {
-//
-//    private static final Logger log = LoggerFactory.getLogger(Stub.class);
-//
-//    @Bean
-//    @Transactional
-//    CommandLineRunner stubInit(UserRepository userRepository, UserService userService,
-//                               BookRepository bookRepository, BookService bookService,
-//                               BookCollectionTagRepository collectionTagRepository,
-//                               BookCollectionBookRepository collectionBookRepository,
-//                               TagRepository tagRepository,
-//                               BookCollectionRepository bookCollectionRepository, BookCollectionService bookCollectionService,
-//                               PairingRepository pairingRepository, PairingService pairingService,
-//                               CommentRepository commentRepository, CommentService commentService,
-//                               CategoryRepository categoryRepository, FollowRepository followRepository,
-//                               BCryptPasswordEncoder encoder, BookmarkRepository bookmarkRepository) {
-//
-//        for (int i = 0; i < 9; i++) {
-//            Category category = new Category();
-//            category.setGenre(Genre.values()[i]);
-//            categoryRepository.save(category);
-//        }
-//
-//        // ------------------------------------------------------------------------------------------
-//        // USER STUB
-//        // ------------------------------------------------------------------------------------------
+////         ------------------------------------------------------------------------------------------
+////         USER STUB
+////         ------------------------------------------------------------------------------------------
 //
 //        for (long i = 1; i <= 18; i++) {
 //            User user = new User();
@@ -659,8 +659,8 @@
 //
 ////        ------------------------------------------------------------------------------------------
 ////        ------------------------------------------------------------------------------------------
-//
-//        return null;
-//    }
-//
-//}
+
+        return null;
+    }
+
+}

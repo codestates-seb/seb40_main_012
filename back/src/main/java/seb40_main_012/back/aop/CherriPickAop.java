@@ -65,50 +65,54 @@ public class CherriPickAop {
     @Before(value = "execution(* seb40_main_012.back.book.BookController.carouselBooks())") // 메인화면 접근시
     public void createTable(JoinPoint joinPoint) { // 오늘의 첫 방문자가 있을 시 테이블 생성 및 정보 입력
 
-//        ServletRequestAttributes attr = (ServletRequestAttributes)RequestContextHolder.currentRequestAttributes();
-//
-//        HttpServletRequest req = attr.getRequest(); // Http Request
-//        HttpServletResponse res = attr.getResponse(); // Http Response
-//        Cookie[] cookies = req.getCookies(); // Request Cookies
-//        String token = req.getHeader("Cookie"); // Cookie에서 뜯어온 토큰들
-//        List<String> refreshToken = Arrays.stream(token.split("refreshToken=")) // Refresh Token 골라내기
-//                .filter(a -> a.startsWith("ey"))
-//                .collect(Collectors.toList());
-//        String userEmail = null;
-//        if (refreshToken.size() != 0) {
-//            userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(0));
-//        }
-//        // Refresh Token으로 이메일 검색
-//        System.out.println("-----------------------------------------");
-//        Arrays.stream(cookies).map(Cookie::getValue).forEach(System.out::println);
-//        System.out.println(userEmail);
-//        System.out.println("-----------------------------------------");
-//
-//        ResponseCookie statCookie = cookieManager.statCookie("visit_cookie", "statisticss");
-//        res.setHeader("Set-Cookie", statCookie.toString());
-//
-//        if (cookies != null) { // 쿠키를 가진 경우
-//            for (Cookie cookie : cookies) {
-//                if (cookie.getValue().contains("statistics") && !cookie.getValue().contains(req.getHeader("Origin"))) {
-//                    cookie.setValue(cookie.getValue() + "_" + "[" + req.getHeader("Origin") + "]");
-//                    res.addCookie(cookie);
-//                }
-//            }
-//        }
-//        else {
-//
-//        }
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 
-//        System.out.println("-----------------------------------------");
-//        Arrays.stream(cookies).map(Cookie::getValue).forEach(System.out::println);
-//        System.out.println("-----------------------------------------");
+        HttpServletRequest req = attr.getRequest(); // Http Request
+        HttpServletResponse res = attr.getResponse(); // Http Response
+        Cookie[] cookies = req.getCookies(); // Request Cookies
+        String token = req.getHeader("Cookie"); // Cookie에서 뜯어온 토큰들
+        String userEmail = null; // 토큰으로 검색한 유저 이메일
+
+        if (cookies != null) {
+            List<String> refreshToken = Arrays.stream(token.split("refreshToken=")) // Refresh Token 골라내기
+                    .filter(a -> a.startsWith("ey"))
+                    .collect(Collectors.toList());
+            if (refreshToken.size() != 0) {
+                userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(refreshToken.size() - 1));
+
+//                System.out.println("-----------------------------------------");
+//                Arrays.stream(cookies).map(Cookie::getValue).forEach(System.out::println);
+//                System.out.println(userEmail);
+//                System.out.println("-----------------------------------------");
+
+            }
+        }
+
+//        ResponseCookie statCookie = cookieManager.statCookie("visit_cookie", "statistic" + "_" + "[" + LocalDateTime.now() + "]");
+//        res.setHeader("Set-Cookie", statCookie.toString());
+
+        if (cookies != null) { // 쿠키를 가진 경우
+            for (Cookie cookie : cookies) {
+                if (cookie.getValue().contains("statistic") && !cookie.getValue().contains(req.getHeader("Origin"))) { // 통계 쿠키가 있지만 방문한 적 없을 경우
+
+                    ResponseCookie newStatCookie = cookieManager.statCookie("visit_cookie", "statistic" + "_" + "[" + LocalDateTime.now() + "]" + "_" +"[" + req.getHeader("Origin") + "]");
+
+                    cookie.setMaxAge(0);
+
+                    res.setHeader("Set-Cookie", newStatCookie.toString());
+//                    res.addCookie(cookie);
+                } else if (!cookie.getValue().contains("statistic")) { // 통계 쿠키가 없는 경우
+
+                    ResponseCookie statCookie = cookieManager.statCookie("visit_cookie", "statistic" + "_" + "[" + LocalDateTime.now() + "]" + "_" +"[" + req.getHeader("Origin") + "]");
+                    res.setHeader("Set-Cookie", statCookie.toString());
+                }
+            }
+        } else { // 쿠키가 없는 경우
+
+        }
 
         // 유저 인증 정보
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-//        System.out.println("------------------------------------------------------");
-//        System.out.println(authentication.getName());
-//        System.out.println("------------------------------------------------------");
 
         if (statisticsRepository.findByDate(LocalDate.now()) == null && authentication.getName().equals("anonymousUser")) { // 오늘의 첫 방문자이면서 로그인 하지 않은 상태
 
@@ -316,7 +320,6 @@ public class CherriPickAop {
 //            statisticsRepository.save(statistics);
 //        }
 //    }
-
 
 
     public void firstVisitWithAuth(User findUser, List<String> genre, Statistics newStatistics) {

@@ -1,29 +1,29 @@
 package seb40_main_012.back.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
-import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
-import seb40_main_012.back.common.mypage.MyPageRepositorySupport;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
-import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.common.mypage.MyPageRepositorySupport;
 import seb40_main_012.back.config.auth.dto.LoginDto;
+import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 import seb40_main_012.back.email.EmailSenderService;
 import seb40_main_012.back.pairing.PairingRepository;
@@ -35,7 +35,8 @@ import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 
-import java.util.ArrayList;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -56,6 +57,7 @@ public class UserService {
     private final MyPageRepositorySupport myPageRepositorySupport;
     private final ApplicationEventPublisher publisher;
     private final CustomAuthorityUtils authorityUtils;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -111,12 +113,12 @@ public class UserService {
     /**
      * 리팩토링 필요
      */
+//    @Transactional
     public User editUserInfo(User user, List<Genre> categoryValue) {
         User findUser = getLoginUser();
-        userCategoryRepository.deleteAllByUser(findUser);
+//        List<UserCategory> test = userCategoryRepository.findAllByUser(findUser);
+        userCategoryRepository.deleteByUserUserId(findUser.getUserId());
 
-        //카테고리에 있는 값이면 > 유저 카테고리에 해당 카테고리가 저장돼있는지 확인 후 > 있으면 쓰루, 없으면 유저카테고리에 카테고리 저장
-        //카테고리에 없는 값이면 에러
         categoryValue.forEach(
                 value -> {
                     Category category = categoryRepository.findByGenre(value);
@@ -283,6 +285,26 @@ public class UserService {
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         return user;
+    }
+
+    public User getLoginUserSec() {
+
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+        HttpServletRequest req = attr.getRequest(); // Http Request
+        String token = req.getHeader("Cookie"); // Cookie에서 뜯어온 토큰들
+        List<String> refreshToken = Arrays.stream(token.split("refreshToken=")) // Refresh Token 골라내기
+                .filter(a -> a.startsWith("ey"))
+                .collect(Collectors.toList());
+
+        String userEmail = null;
+
+        if (refreshToken.size() != 0) {
+
+            userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(0));
+        }
+
+        return findUserByEmail(userEmail);
     }
 
     public List<String> getAllGenre(User user) { // AOP에서 로그인한 사용자만 사용하는 용도

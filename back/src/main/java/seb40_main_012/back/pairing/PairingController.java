@@ -10,18 +10,22 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
+import seb40_main_012.back.advice.BusinessLogicException;
+import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.image.AwsS3Service;
 import seb40_main_012.back.common.image.ImageController;
 import seb40_main_012.back.common.image.ImageService;
 import seb40_main_012.back.common.like.LikeService;
+import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.Collections;
@@ -45,6 +49,7 @@ public class PairingController {
     private final ImageService imageService;
     private final MultipartResolver multipartResolver;
     private final UserService userService;
+    private final JwtTokenizer jwtTokenizer;
     //    ------------------------------------------------------------
     private final NotificationService noticeService;
 //    ------------------------------------------------------------
@@ -167,27 +172,21 @@ public class PairingController {
 
     @GetMapping("/pairings/{pairing_id}")
     public ResponseEntity getPairing(
-            @RequestHeader(value = "cookie", required = false) @Valid @Nullable String token,
+            HttpServletRequest request,
+            @RequestHeader(value = "Authorization", required = false) @Valid @Nullable String token,
             @PathVariable("pairing_id") @Positive long pairingId) {
-        if (!token.contains("refreshToken")) {
 
-            Pairing pairing = pairingService.updateView(pairingId);
-            pairing.setIsLiked(null);
-            pairing.setIsBookmarked(null);
-            PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
 
-            if (pairing.getImage() != null) {
-                response.setImagePath(pairing.getImage().getStoredPath());
-            }
+        PairingDto.Response response = new PairingDto.Response();
 
-            return new ResponseEntity<>(
-                    new SingleResponseDto<>(response), HttpStatus.OK);
-        } else {
 
+        if(jwtTokenizer.checkUserWithToken(request, token)) { // 로그인 사용자
+            // 로그인 사용자이면서 Auth가 있는 경우
             Pairing pairing = pairingService.updateView(pairingId);
             pairingService.isBookMarkedPairing(pairing);   //북마크 여부 확인용 로직 추가
             Pairing isLikedComments = pairingService.isLikedComments(pairingId);
-            PairingDto.Response response = pairingMapper.pairingToPairingResponse(pairing);
+
+            response = pairingMapper.pairingToPairingResponse(pairing);
 
             if (pairing.getImage() != null) {
                 response.setImagePath(pairing.getImage().getStoredPath());
@@ -196,6 +195,20 @@ public class PairingController {
             return new ResponseEntity<>(
                     new SingleResponseDto<>(response), HttpStatus.OK);
         }
+
+        // 비로그인 사용자
+        Pairing pairing = pairingService.updateView(pairingId);
+        pairing.setIsLiked(null);
+        pairing.setIsBookmarked(null);
+
+        response = pairingMapper.pairingToPairingResponse(pairing);
+
+        if (pairing.getImage() != null) {
+            response.setImagePath(pairing.getImage().getStoredPath());
+        }
+
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.OK);
     }
 
     //    --------------------------------------------------------------------------------------------
