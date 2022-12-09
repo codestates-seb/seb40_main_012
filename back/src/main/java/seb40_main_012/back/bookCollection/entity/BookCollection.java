@@ -1,6 +1,7 @@
 package seb40_main_012.back.bookCollection.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import lombok.Getter;
@@ -27,35 +28,49 @@ import java.util.List;
 @Builder
 @Entity
 @AllArgsConstructor
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class BookCollection {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long collectionId;
     private String title;
+
+    @ElementCollection
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<String> collectionCover = new ArrayList<>(); // 컬렉션에 속한 책 커버 4개. 컬렉션에 추가된 순으로 오름차순
     private String content;
     private Long likeCount;
+    @Transient
     private boolean userLike;
+    @Transient
     private boolean userBookmark;
+    @Transient
     private boolean userCollection;
     private Long view;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     private List<BookCollectionTag> collectionTags = new ArrayList<>();
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     private List<BookCollectionLike> collectionLikes = new ArrayList<>();
 
     @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
-    @LazyCollection(LazyCollectionOption.FALSE)
+//    @LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<Bookmark> collectionBookmarks = new ArrayList<>();
 
     @ElementCollection
+    //@LazyCollection(LazyCollectionOption.FALSE)
     private List<String> bookIsbn13 = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+
+    @OneToMany(mappedBy = "bookCollection",cascade = CascadeType.REMOVE)
+    //@LazyCollection(LazyCollectionOption.FALSE)
     @JsonManagedReference
     private List<BookCollectionBook> collectionBooks = new ArrayList<>();
 
@@ -69,10 +84,10 @@ public class BookCollection {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "isbn13")
-    private Book book;
+//    @JsonBackReference
+//    @ManyToOne
+//    @JoinColumn(name = "isbn13")
+//    private Book book;
 
     @CreatedDate
     @Column(updatable = false)

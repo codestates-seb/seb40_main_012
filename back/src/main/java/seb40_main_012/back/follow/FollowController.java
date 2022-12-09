@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import seb40_main_012.back.dto.SingleResponseDto;
@@ -15,6 +16,7 @@ import java.util.List;
 
 @Validated
 @RestController
+@Transactional
 @RequiredArgsConstructor
 @RequestMapping("/api/follow")
 public class FollowController {

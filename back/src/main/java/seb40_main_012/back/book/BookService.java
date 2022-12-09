@@ -2,6 +2,8 @@ package seb40_main_012.back.book;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.advice.BusinessLogicException;
@@ -11,9 +13,15 @@ import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchService;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
+import seb40_main_012.back.bookCollection.service.BookCollectionService;
+import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
+import seb40_main_012.back.common.comment.CommentService;
+import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.PairingRepository;
+import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
@@ -27,6 +35,7 @@ public class BookService {
 
     private final BookInfoSearchController bookInfoSearchController;
     private final BookInfoSearchService bookInfoSearchService;
+    private final BookmarkRepository bookmarkRepository;
     private final BookRepository bookRepository;
     private final CommentRepository commentRepository;
     private final PairingRepository pairingRepository;
@@ -97,11 +106,12 @@ public class BookService {
 
             BookInfoSearchDto.BookInfo.Item bookItem = bookInfoSearchService.bookSearch(isbn13).getItem().get(0);
 
-            LinkedHashMap map = (LinkedHashMap<String ,String>)bookItem.subInfo;
+            LinkedHashMap map = (LinkedHashMap<String, String>) bookItem.subInfo;
 
             String categoryName = bookItem.categoryName;
 
             Genre genre = null;
+
 
             if (categoryName.matches(".*소설/시/희곡>.*소설")) genre = Genre.NOVEL;
             else if (categoryName.matches(".*에세이>.*에세이")) genre = Genre.ESSAY;
@@ -131,9 +141,8 @@ public class BookService {
                             .build();
 
 
-
             System.out.println(map.get("itemPage"));
-            
+
             return bookRepository.save(savedBook);
 
         } else {
@@ -144,7 +153,7 @@ public class BookService {
 
             long pairingCount = findBook.getPairings().size();
 
-            long bookCollectionCount = findBook.getBookCollections().size();
+            long bookCollectionCount = bookCollectionRepository.findAllCollectionsForTheBook(isbn13).size();
 
             findBook.setView(findBook.getView() + 1); // 별점 업데이트
             findBook.setCommentCount(commentCount);
@@ -154,71 +163,6 @@ public class BookService {
             return bookRepository.save(findBook);
         }
     }
-
-//    public Book updateRating(BookDto.Rating ratingBook, String isbn13) {
-//
-//        User findUser = userService.getLoginUser();
-//
-//        double rating = ratingBook.getRating(); // 입력받은 별점
-//
-//        Book findBook = findVerifiedBook(isbn13);
-//
-//        double averageRating = findBook.getAverageRating(); // 현재 평균 별점
-//        long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
-//
-//        double numerator = (averageRating * ratingCount) + rating; // 분자
-//        long denominator = ratingCount + 1; // 분모
-//
-//        double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
-//
-//        findBook.setAverageRating(newAverageRating); // 별점 업데이트
-//
-//        return bookRepository.save(findBook);
-
-//        Optional<Book> optionalBook = bookRepository.findByIsbn13(isbn13);
-//
-//        if (optionalBook.isEmpty()) {
-//
-//            String categoryName = bookInfoSearchService.bookSearch(isbn13).getItem().get(0).categoryName;
-//
-//            Book savedBook =
-//                    Book.builder()
-//                            .isbn13(isbn13)
-//                            .build();
-//
-//            if (categoryName.matches(".*소설/시/희곡>.*소설")) savedBook.setGenre(Genre.NOVEL);
-//            else if (categoryName.matches(".*에세이>.*에세이")) savedBook.setGenre(Genre.ESSAY);
-//            else if (categoryName.matches(".*소설/시/희곡>.*시")) savedBook.setGenre(Genre.POEM);
-//            else if (categoryName.matches(".*예술/대중문화>.*")) savedBook.setGenre(Genre.ART);
-//            else if (categoryName.matches(".*>인문학>.*")) savedBook.setGenre(Genre.HUMANITIES);
-//            else if (categoryName.matches(".*>사회과학>.*")) savedBook.setGenre(Genre.SOCIAL);
-//            else if (categoryName.matches(".*>과학>.*")) savedBook.setGenre(Genre.NATURAL);
-//            else if (categoryName.matches(".*>만화>.*")) savedBook.setGenre(Genre.COMICS);
-//            else savedBook.setGenre(Genre.ETC);
-//
-//            bookRepository.save(savedBook);
-//
-//            savedBook.setAverageRating(rating);
-//
-//            return bookRepository.save(savedBook);
-//
-//        } else {
-//
-//            Book findBook = optionalBook.get();
-//
-//            double averageRating = findBook.getAverageRating(); // 현재 평균 별점
-//            long ratingCount = findBook.getRatingCount(); // 현재 별점 개수
-//
-//            double numerator = (averageRating * ratingCount) + rating; // 분자
-//            long denominator = ratingCount + 1; // 분모
-//
-//            double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
-//
-//            findBook.setAverageRating(newAverageRating); // 별점 업데이트
-//
-//            return bookRepository.save(findBook);
-//        }
-//    }
 
     public Book findBook(String isbn13) {
         return findVerifiedBook(isbn13);
@@ -245,10 +189,15 @@ public class BookService {
                 .map(userCategory -> userCategory.getCategory().getGenre().toString())
                 .collect(Collectors.toList());
 
+        if (genreList.isEmpty()) {
+            return bookRepository.findRandomBooks();
+        }
+
         // 각각 5권씩 조회수대로 불러온 후 다시 조회수 순으로 5권 정렬 후 반환
         return genreList.stream()
                 .map(bookRepository::findRecommendedBooks)
                 .flatMap(Collection::stream)
+                .distinct()
                 .sorted(Comparator.comparing(Book::getView).reversed())
                 .limit(5)
                 .collect(Collectors.toList());
@@ -266,4 +215,17 @@ public class BookService {
         return optionalBook.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.BOOK_NOT_FOUND));
     }
+
+    public void isBookMarkedBook(Book book) {
+        User findUser = userService.getLoginUser();
+        Boolean isBookmarked;
+
+        if (bookmarkRepository.findByUserAndBook(findUser,book) == null) { //북마크 안 누른 경우
+            isBookmarked = false;
+        } else {
+            isBookmarked = true;
+        }
+        book.setIsBookmarked(isBookmarked);
+    }
+
 }

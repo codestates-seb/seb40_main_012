@@ -1,25 +1,29 @@
 package seb40_main_012.back.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import seb40_main_012.back.advice.BusinessLogicException;
 import seb40_main_012.back.advice.ExceptionCode;
-import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.bookmark.Bookmark;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
-import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.common.mypage.MyPageRepositorySupport;
 import seb40_main_012.back.config.auth.dto.LoginDto;
-import seb40_main_012.back.config.auth.event.UserRegistrationApplicationEvent;
+import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
 import seb40_main_012.back.email.EmailSenderService;
 import seb40_main_012.back.pairing.PairingRepository;
@@ -31,10 +35,11 @@ import seb40_main_012.back.user.repository.CategoryRepository;
 import seb40_main_012.back.user.repository.UserCategoryRepository;
 import seb40_main_012.back.user.repository.UserRepository;
 
-import java.io.UnsupportedEncodingException;
-import java.security.GeneralSecurityException;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -49,15 +54,17 @@ public class UserService {
     private final PairingRepository pairingRepository;
     private final BookCollectionRepository collectionRepository;
     private final BookmarkRepository bookmarkRepository;
+    private final MyPageRepositorySupport myPageRepositorySupport;
     private final ApplicationEventPublisher publisher;
     private final CustomAuthorityUtils authorityUtils;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
     public User createUser(User user) {
         verifyEmail(user.getEmail());
         verifyNickName(user.getNickName());
-
+//
         String encryptedPassword = passwordEncoder.encode(user.getPassword());
         user.setPassword(encryptedPassword);
 
@@ -65,15 +72,11 @@ public class UserService {
         user.setRoles(roles);
         user.setBookTemp(36.5);
         user.setFirstLogin(true);
+        //user.setProviderType(ProviderType.LOCAL);
         User savedUser = userRepository.save(user);
 
-        try {
-            emailSenderService.sendEmail(user.getEmail());
-        } catch (GeneralSecurityException e) {
-            throw new RuntimeException(e);
-        }
-
-        publisher.publishEvent(new UserRegistrationApplicationEvent(this, savedUser));
+//        UserRegistrationApplicationEvent signupEvent = new UserRegistrationApplicationEvent(this, savedUser);
+//        publisher.publishEvent(signupEvent);
         return savedUser;
     }
 
@@ -110,17 +113,17 @@ public class UserService {
     /**
      * 리팩토링 필요
      */
+//    @Transactional
     public User editUserInfo(User user, List<Genre> categoryValue) {
         User findUser = getLoginUser();
-        userCategoryRepository.deleteAllByUser(findUser);
+//        List<UserCategory> test = userCategoryRepository.findAllByUser(findUser);
+        userCategoryRepository.deleteByUserUserId(findUser.getUserId());
 
-        //카테고리에 있는 값이면 > 유저 카테고리에 해당 카테고리가 저장돼있는지 확인 후 > 있으면 쓰루, 없으면 유저카테고리에 카테고리 저장
-        //카테고리에 없는 값이면 에러
         categoryValue.forEach(
                 value -> {
                     Category category = categoryRepository.findByGenre(value);
 
-                    if(categoryRepository.findByGenre(value)!=null){
+                    if (categoryRepository.findByGenre(value) != null) {
                         UserCategory userCategory = new UserCategory(category, findUser);
                         userCategoryRepository.save(userCategory);
                         findUser.addUserCategory(userCategory);
@@ -142,27 +145,29 @@ public class UserService {
         User findUser = getLoginUser();
         List<Comment> comments = findUser.getComments();
         comments.forEach(
-                x ->{
-                    if(x.getCommentType()== CommentType.BOOK) {
+                x -> {
+                    if (x.getCommentType() == CommentType.BOOK) {
 
-                    }
-                    else if(x.getCommentType()==CommentType.PAIRING);
-                    else if(x.getCommentType()==CommentType.BOOK_COLLECTION);
+                    } else if (x.getCommentType() == CommentType.PAIRING) ;
+                    else if (x.getCommentType() == CommentType.BOOK_COLLECTION) ;
                 }
         );
         return comments;
     }
 
-    public List<Pairing> getUserPairing() {
+    public Slice<Pairing> getUserPairing(Long lastStoreId) {
         User findUser = getLoginUser();
-        return pairingRepository.findByUser_UserId(findUser.getUserId());
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        return myPageRepositorySupport.findUserPairing(pageRequest, lastStoreId, findUser.getUserId());
     }
 
-    public List<BookCollection> getUserCollection() {
-        User findUser = getLoginUser();
-        return collectionRepository.findByUserUserId(findUser.getUserId());
 
+    public Slice<BookCollection> getUserCollection(Long lastStoreId) {
+        User findUser = getLoginUser();
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        return myPageRepositorySupport.findUserCollection(pageRequest, lastStoreId, findUser.getUserId());
     }
+
 
     public User findUser() {
         User findUser = getLoginUser();
@@ -176,25 +181,39 @@ public class UserService {
         return findUser;
     }
 
-    public List<BookCollection> getBookmarkByBookCollection() {
+//    public List<BookCollection> getBookmarkByBookCollection() {
+//        User findUser = getLoginUser();
+//        PageRequest pageRequest = PageRequest.of(0,5)
+//        List<Bookmark> allBookmarks = bookmarkRepository.findByUser(findUser);
+//        List<Bookmark> bookmarks = new ArrayList<>();
+//        allBookmarks.forEach(
+//                x -> {
+//                    if (x.getBookCollection()!=null) bookmarks.add(x);
+//                }
+//        );
+//        List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
+//        return collections;
+//    }
+
+    public Slice<Bookmark> getBookmarkByBookCollection(Long lastStoreId) {
         User findUser = getLoginUser();
-        List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
-        List<BookCollection> collections = bookmarks.stream().map(x -> x.getBookCollection()).collect(Collectors.toList());
-        return collections;
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkCollection(pageRequest, lastStoreId, findUser.getUserId());
+        return bookmarks;
     }
 
-    public List<Pairing> getBookmarkByPairing() {
+    public Slice<Bookmark> getBookmarkByPairing(Long lastStoreId) {
         User findUser = getLoginUser();
-        List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
-        List<Pairing> pairings = bookmarks.stream().map(x -> x.getPairing()).collect(Collectors.toList());
-        return pairings;
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkPairing(pageRequest, lastStoreId, findUser.getUserId());
+        return bookmarks;
     }
 
-    public List<Book> getBookmarkByBook() {
+    public Slice<Bookmark> getBookmarkByBook(Long lastStoreId) {
         User findUser = getLoginUser();
-        List<Bookmark> bookmarks = bookmarkRepository.findByUser(findUser);
-        List<Book> books = bookmarks.stream().map(x -> x.getBook()).collect(Collectors.toList());
-        return books;
+        PageRequest pageRequest = PageRequest.of(0, 5);
+        Slice<Bookmark> bookmarks = myPageRepositorySupport.findBookmarkBook(pageRequest, lastStoreId, findUser.getUserId());
+        return bookmarks;
     }
 
 
@@ -216,6 +235,11 @@ public class UserService {
 
         if (findUser.getBookTemp() == 99.9) return findUser.getBookTemp();
         else return Math.round(temperature * 10) / 10.0;
+    }
+
+    public void deleteAllUserCollection() {
+        User findUser = getLoginUser();
+        collectionRepository.deleteAllByUser(findUser);
     }
 
 //    public List<Pairing> getBookMarkByPairing(Long id){
@@ -251,6 +275,7 @@ public class UserService {
     }
 
     public User getLoginUser() { // 로그인된 유저 가져오기
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || authentication.getName() == null || authentication.getName().equals("anonymousUser"))
@@ -260,6 +285,32 @@ public class UserService {
         User user = optionalUser.orElseThrow(() -> new BusinessLogicException(ExceptionCode.USER_NOT_FOUND));
 
         return user;
+    }
+
+    public User getLoginUserSec() {
+
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+        HttpServletRequest req = attr.getRequest(); // Http Request
+        String token = req.getHeader("Cookie"); // Cookie에서 뜯어온 토큰들
+        List<String> refreshToken = Arrays.stream(token.split("refreshToken=")) // Refresh Token 골라내기
+                .filter(a -> a.startsWith("ey"))
+                .collect(Collectors.toList());
+
+        String userEmail = null;
+
+        if (refreshToken.size() != 0) {
+
+            userEmail = refreshTokenRepository.findUserEmailByToken(refreshToken.get(0));
+        }
+
+        return findUserByEmail(userEmail);
+    }
+
+    public List<String> getAllGenre(User user) { // AOP에서 로그인한 사용자만 사용하는 용도
+
+        return categoryRepository.findAllGenreByUserId(user.getUserId());
+
     }
 
     public User findUserByEmail(String email) { // 이메일로 유저 찾기
@@ -274,5 +325,27 @@ public class UserService {
         if (verifiedUser.isPresent())
             throw new BusinessLogicException(ExceptionCode.EMAIL_EXISTS);
         return true;
+    }
+
+    public String createCode() { // 인증 코드 만들기
+        Random random = new Random();
+        StringBuffer key = new StringBuffer();
+
+        for(int i = 0; i < 8; i++) {
+            int index = random.nextInt(3);
+
+            switch (index) {
+                case 0 :
+                    key.append((char) ((int)random.nextInt(26) + 97));
+                    break;
+                case 1:
+                    key.append((char) ((int)random.nextInt(26) + 65));
+                    break;
+                case 2:
+                    key.append(random.nextInt(9));
+                    break;
+            }
+        }
+        return key.toString();
     }
 }

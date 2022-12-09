@@ -42,7 +42,7 @@ public class RatingService {
 
                 return findBook; // 책 정보 그대로 리턴
 
-            } else { // 별점을 매기면(즉, 0.0 ~ 5.0 사이의 별점을 매기면
+            } else { // 별점을 매기면(즉, 0.5 ~ 5.0 사이의 별점을 매기면
 
                 findRating = // 유저가 입력한 별점 정보 생성
                         Rating.builder()
@@ -84,8 +84,8 @@ public class RatingService {
 
                 } else { // 기존에 0이 아닌 점수를 입력했을 경우
 
-                    numerator = (averageRating * ratingCount) - findRating.getUserBookRating() + bookRating;
-                    denominator = ratingCount;
+                    numerator = (averageRating * ratingCount) - findRating.getUserBookRating();
+                    denominator = ratingCount - 1;
 
                     double newAverageRating = Math.round((numerator / denominator) * 100) / 100.0; // 업데이트된 별점 -> 소수점 둘째 자리까지 표시
 
@@ -93,7 +93,7 @@ public class RatingService {
 
                     findRating.setUserBookRating(0); // 유저 별점 업데이트
 
-                    findBook.setRatingCount(findBook.getRatingCount() - 1); // 별점 인원 + 1
+                    findBook.setRatingCount(findBook.getRatingCount() - 1); // 별점 인원 - 1
 
                     return bookRepository.save(findBook);
 

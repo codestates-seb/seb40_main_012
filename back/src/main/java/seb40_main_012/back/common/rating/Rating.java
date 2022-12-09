@@ -29,7 +29,7 @@ public class Rating {
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "Long")
+    @JoinColumn(name = "isbn13")
     private Book book;
 
     @JsonBackReference

@@ -9,7 +9,6 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.stereotype.Service;
 import seb40_main_012.back.book.entity.Book;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.common.like.entity.Like;
@@ -19,7 +18,9 @@ import seb40_main_012.back.user.entity.User;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -53,6 +54,10 @@ public class Comment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ElementCollection
+    //@LazyCollection(LazyCollectionOption.FALSE)
+    private Map<String, String> userInformation = new HashMap<>();
 
     @JsonBackReference
     @ManyToOne(fetch = FetchType.LAZY)

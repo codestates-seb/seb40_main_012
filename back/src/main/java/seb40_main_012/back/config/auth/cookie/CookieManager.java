@@ -14,6 +14,15 @@ public class CookieManager {
         return ResponseCookie.from(key, value)
                 .maxAge(24 * 60 * 60) // 하루 설정
                 .path("/")
+                .secure(true)
+                .sameSite("None")
+                .httpOnly(true)
+                .build();
+    }
+
+    public ResponseCookie statCookie(String key, String value) {
+        return ResponseCookie.from(key, value)
+                .maxAge(2 * 60 * 60) // 두 시간
                 .path("/")
                 .secure(true)
                 .sameSite("None")

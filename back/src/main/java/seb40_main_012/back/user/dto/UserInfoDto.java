@@ -30,7 +30,7 @@ public class UserInfoDto {
         public User toEntity(){
             /** 로직 dto에서 제거 예정 */
             if(profileImage==null) {
-                profileImage = "http://url";
+                profileImage = "";
             }
             if(gender == "NONE"){
                 gender = "NONE";
@@ -62,7 +62,7 @@ public class UserInfoDto {
         private String nickname;
         private double temp;
 //        private List<CategoryDto.Response> category;
-        private List<Genre> category;
+        private List<String> category;
 
 
         public static Response of(User user){
@@ -71,7 +71,7 @@ public class UserInfoDto {
             String genderType;
             String ageType;
             String profileImage;
-            List<Genre> category;
+            List<String> category;
             if(user.getGender()==null){
                 genderType = "";
             }
@@ -91,17 +91,14 @@ public class UserInfoDto {
                 introduction = user.getIntroduction();
             }
             if(user.getProfileImage()==null){
-                profileImage = "http://url";
+                profileImage = "";
             }
             else{
                 profileImage = user.getProfileImage();
             }
             if(!user.getCategories().isEmpty()){
-                System.out.println("=====================");
-                System.out.println(user.getCategories().size());
-                System.out.println("=====================");
                 category = user.getCategories().stream()
-                        .map(x -> x.getCategory().getGenre()).collect(Collectors.toList());
+                        .map(x -> x.getCategory().getGenre().name()).collect(Collectors.toList());
             }else {
                 category = null;
             }

@@ -1,26 +1,45 @@
 package seb40_main_012.back.book;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import seb40_main_012.back.advice.BusinessLogicException;
+import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.entity.Book;
+import seb40_main_012.back.bookCollection.entity.BookCollection;
+import seb40_main_012.back.bookCollection.service.BookCollectionService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.CommentMapper;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.rating.Rating;
 import seb40_main_012.back.common.rating.RatingService;
+import seb40_main_012.back.config.auth.cookie.CookieManager;
+import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
+import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.dto.SingleResponseDto;
+import seb40_main_012.back.user.entity.User;
+import seb40_main_012.back.user.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Validated
+@Transactional
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/books")
@@ -28,28 +47,38 @@ public class BookController {
 
     private final CommentService commentService;
     private final CommentMapper commentMapper;
+    private final BookCollectionService bookCollectionService;
     private final BookService bookService;
     private final BookmarkService bookmarkService;
     private final BookMapper bookMapper;
     private final RatingService ratingService;
 
-//    @PostMapping("/{add}")
-//    public ResponseEntity postBook(@Valid @RequestBody BookDto.Post postBook) {
-//
-//        Book book = bookMapper.bookPostToBook(postBook);
-//        Book createBook = bookService.createBook(book);
-//        BookDto.Response response = bookMapper.bookToBookResponse(createBook);
-//
-//        return new ResponseEntity<>(
-//                new SingleResponseDto<>(response), HttpStatus.CREATED);
-//    }
+    private final UserService userService;
+    private final CookieManager cookieManager;
+    private final RefreshTokenRepository refreshTokenRepository;
+    private final JwtTokenizer jwtTokenizer;
 
     @GetMapping("/{isbn13}")
-    public ResponseEntity getBook(
-            @RequestHeader("Authorization") @Valid @Nullable String token,
-            @PathVariable("isbn13") @Positive String isbn13) {
+    public ResponseEntity getBook(HttpServletRequest request,
+            @RequestHeader(value = "Authorization", required = false) @Valid @Nullable String token,
+                                  @PathVariable("isbn13") @Positive String isbn13) {
+        if(request.getHeader("Cookie") != null) { // 쿠키가 있는 경우
+            String refreshToken = cookieManager.outCookie(request, "refreshToken");
+            if(refreshToken != null) {
+                try {
+                    jwtTokenizer.verifySignature(refreshToken);
+                } catch (ExpiredJwtException ee) {
+                    throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+                }
+                if(refreshTokenRepository.findByTokenValue(refreshToken).isPresent() && token == null) // 로그인 유저인데 authorization이 없는 경우
+                    throw new BusinessLogicException(ExceptionCode.UNAUTHORIZED);
+            }
+        }
 
         Book book = bookService.updateView(isbn13);
+        if (!SecurityContextHolder.getContext().getAuthentication().getName().equals("anonymousUser")) {
+            bookService.isBookMarkedBook(book);
+        }
 
         if (token == null && book.getComments() != null) { // 로그인 안 했을 때 isLiked == null
 
@@ -64,7 +93,24 @@ public class BookController {
                     .collect(Collectors.toList());
         }
 
-        BookDto.Response response = bookMapper.bookToBookResponse(book);
+        List<BookCollection> collections = bookCollectionService.getAllCollectionsForTheBook(isbn13);
+
+        BookDto.Response response = bookMapper.bookToBookResponses(book, collections);
+//        if ( response.getComments() == null ) {
+//            response.setComments(commentService.findBookComments(book.getIsbn13())); // 이거 주석 해제하면 무한스크롤
+//        }
+        if (response.getComments() == null) {
+            response.setComments(new PageImpl<>(commentService.findBookCommentsWithoutPage(book.getIsbn13())));
+            response.getComments().stream()
+                    .forEach(comment -> comment.setUserInformation(
+                            new LinkedHashMap<>() {{
+                                put("profileImage", comment.getUser().getProfileImage());
+                                put("nickName", comment.getUser().getNickName());
+                                put("email", comment.getUser().getEmail());
+                                put("bookTemp", Double.toString(comment.getUser().getBookTemp()));
+                            }}
+                    ));
+        }
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
@@ -116,6 +162,7 @@ public class BookController {
     public ResponseEntity carouselBooks() { // 별점으로 5개 내림차순
 
         List<Book> response = bookService.findCarouselBooks();
+        List<BookDto.Response> result = bookMapper.booksToBookResponses(response);
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK
@@ -143,10 +190,12 @@ public class BookController {
     }
     @PostMapping("/{isbn13}/bookmark")
     @ResponseStatus(HttpStatus.OK)
-    public BookDto.BookmarkResponse bookmarkBook(@PathVariable("isbn13") String isbn13){
+    public BookDto.Response bookmarkBook(@PathVariable("isbn13") String isbn13){
         Book findBook = bookService.findVerifiedBook(isbn13);
-        boolean result = bookmarkService.bookmarkBook(isbn13);
-        return BookDto.BookmarkResponse.of(findBook,result);
+        bookmarkService.bookmarkBook(isbn13);
+        bookService.isBookMarkedBook(findBook);
+        BookDto.Response response = bookMapper.bookToBookResponse(findBook);
+        return response;
     }
 
 }

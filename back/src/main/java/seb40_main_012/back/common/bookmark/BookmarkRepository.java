@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface BookmarkRepository extends JpaRepository<Bookmark,Long> {
     Bookmark findByUserAndBookCollection(User user, BookCollection collection);
-
     Bookmark findByUserAndPairing(User user, Pairing pairing);
     Bookmark findByUserAndBook(User user, Book book);
 
     List<Bookmark> findByUser(User user);
+    Long countByUserAndBookmarkType(User user,BookmarkType book);
 }

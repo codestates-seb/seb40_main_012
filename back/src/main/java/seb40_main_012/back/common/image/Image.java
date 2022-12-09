@@ -36,8 +36,13 @@ public class Image {
     @JoinColumn(name = "pairing_id")
     private Pairing pairing;
 
+//    @JsonBackReference
+//    @OneToOne
+//    @JoinColumn(name = "user_id")
+//    private User user;
+
     @JsonBackReference
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 

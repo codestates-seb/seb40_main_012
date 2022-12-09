@@ -1,5 +1,6 @@
 package seb40_main_012.back.bookCollection.repository;
 
+import com.querydsl.core.QueryResults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,21 +16,20 @@ import java.util.List;
 
 public interface BookCollectionRepository extends JpaRepository<BookCollection, Long> {
     Long countBy();
-    Long countByUserUserId(Long userId);
+    Long countByUser(User user);
     List<BookCollection> findByUserUserId(Long userId);
-//    Page<BookCollection> findCollectionByNoOffset(Pageable pageable, Long collectionId, Long userId){
-//        QueryResults<>
-//         return queryFactory
-//    }
 
+    BookCollection findByTitle(String title);
 
+    void deleteAllByUser(User user);
 
-    //    @Query()
-//    List<BookCollection> findByTag(List<Tag> tags);
 
     @Query(nativeQuery = true,
             value = "SELECT * FROM BOOK_COLLECTION " +
-                    "CROSS JOIN BOOK " +
+                    "INNER JOIN BOOK_COLLECTION_BOOK " +
+                    "ON BOOK_COLLECTION.COLLECTION_ID = BOOK_COLLECTION_BOOK.COLLECTION_ID " +
+                    "INNER JOIN BOOK " +
+                    "ON BOOK_COLLECTION_BOOK.BOOK_ID = BOOK.ISBN13 " +
                     "WHERE LOWER(TITLE) LIKE %:queryParam% " +
                     "OR LOWER(BOOK_TITLE) LIKE %:queryParam% " +
                     "OR LOWER(CONTENT) LIKE %:queryParam%")
@@ -43,4 +43,10 @@ public interface BookCollectionRepository extends JpaRepository<BookCollection, 
                     "OR LOWER(CONTENT) LIKE %:queryParam%")
     List<BookCollection> findTest(@Param("queryParam") String queryParam);
 
+    @Query(nativeQuery = true,
+            value = "SELECT * FROM BOOK_COLLECTION " +
+            "INNER JOIN BOOK_COLLECTION_BOOK " +
+            "ON BOOK_COLLECTION.COLLECTION_ID = BOOK_COLLECTION_BOOK.COLLECTION_ID " +
+            "WHERE BOOK_ID = :isbn13")
+    List<BookCollection> findAllCollectionsForTheBook(String isbn13);
 }

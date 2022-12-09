@@ -16,9 +16,11 @@ import java.io.IOException;
 @Component
 public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
     // Exception 발생으로 SecurityContext에 Authentication이 저장되지 않을 경우
+
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws ServletException, IOException {
+
         Exception exception = (Exception) request.getAttribute("exception");
         ErrorResponder.sendErrorResponse(response, HttpStatus.UNAUTHORIZED);
 
@@ -26,6 +28,7 @@ public class UserAuthenticationEntryPoint implements AuthenticationEntryPoint {
     }
 
     private void logExceptionMessage(AuthenticationException authException, Exception exception) {
+
         String message = exception != null ? exception.getMessage() : authException.getMessage();
         log.warn("Unauthorized error happend: {}", message);
     }

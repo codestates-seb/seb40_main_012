@@ -18,7 +18,7 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     @Query(nativeQuery = true, value = "select * " +
             "from Book " +
             "order by " + "average_rating " + "desc " +
-            "limit 5")
+            "limit 6")
     List<Book> findCarouselBooks();
 
     @Query(nativeQuery = true, value = "select * " +
@@ -33,6 +33,12 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
             "order by " + "view " + "desc " +
             "limit 5")
     List<Book> findRecommendedBooks(@Param("name") String name);
+
+    @Query(nativeQuery = true, value = "select * " +
+            "from book " +
+            "order by " + "rand() " +
+            "limit 5")
+    List<Book> findRandomBooks();
 
     @Query(nativeQuery = true, value = "select *" +
             "from book " +
