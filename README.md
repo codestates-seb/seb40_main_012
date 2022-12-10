@@ -100,6 +100,6 @@
 
 |메인|페어링|컬렉션|마이페이지|
 |---|---|---|---|
-|![IMG_5714](https://user-images.githubusercontent.com/70098708/205879913-8deda7f3-c959-4a00-ae95-87a3ba67a87c.jpg)|![IMG_5715](https://user-images.githubusercontent.com/70098708/205879962-8001d256-0bc1-4d75-b257-88e0af70bce5.jpg)|![IMG_5716](https://user-images.githubusercontent.com/70098708/205880000-4e8bc792-7167-4be6-9cbe-433289f5e6e2.jpg)|![IMG_5717](https://user-images.githubusercontent.com/70098708/205880032-e3d8a63a-148f-496a-a0e4-92fd6afee23f.jpg)|
+|![image](https://user-images.githubusercontent.com/107830853/206853329-8d5c37bd-d32d-4b1e-aa8c-eaae3a0cb9f2.png)|![image](https://user-images.githubusercontent.com/107830853/206853335-8fc5dd5f-a14c-4020-919e-503653b23515.png)|![image](https://user-images.githubusercontent.com/107830853/206853344-1d259e29-7621-47ae-a120-6089c4eb604f.png)|![image](https://user-images.githubusercontent.com/107830853/206853364-39115847-ac46-4117-8794-3cdc64d1a57d.png)|
 * 모든 페이지 모바일 사이즈까지 대응
 
