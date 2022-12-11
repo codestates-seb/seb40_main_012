@@ -1,6 +1,8 @@
 package seb40_main_012.back.user.entity;
 
 import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -25,6 +27,7 @@ public class UserCategory {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @NotFound(action = NotFoundAction.IGNORE)
     private User user;
 
     public UserCategory(Category category, User user) {

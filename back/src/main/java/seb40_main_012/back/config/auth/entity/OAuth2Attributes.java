@@ -2,7 +2,7 @@ package seb40_main_012.back.config.auth.entity;
 
 import lombok.Builder;
 import lombok.Getter;
-//import seb40_main_012.back.config.auth.entity.enums.ProviderType;
+import seb40_main_012.back.config.auth.entity.enums.ProviderType;
 import seb40_main_012.back.user.entity.User;
 
 import java.util.List;
@@ -68,7 +68,7 @@ public class OAuth2Attributes {
         user.setBookTemp(0.0);
         user.setProfileImage(picture);
         user.setRoles(List.of("USER"));
-//        user.setProviderType(ProviderType.valueOf(site.toUpperCase()));  // OAuth2 반영 안함
+        user.setProviderType(ProviderType.valueOf(site.toUpperCase()));  // OAuth2 반영 안함
 
         return user;
     }

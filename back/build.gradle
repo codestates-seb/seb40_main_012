@@ -41,6 +41,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
     //    --------------------------------------------------------------------------------------------
+	implementation 'org.json:json:20220924' // OAuth
 	implementation 'com.googlecode.json-simple:json-simple:1.1.1' // 책 정보 검색
 	implementation 'org.projectlombok:lombok:1.18.24'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
@@ -81,7 +82,10 @@ dependencies {
 	implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
 	implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
 	//    --------------------------------------------------------------------------------------------
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // OAuth2
+//	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client' // OAuth2
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client:2.6.2'
+	implementation 'io.github.redouane59.twitter:twittered:2.21' // OAuth2 Tweeter
+
 }
 
 //tasks.named('test') {

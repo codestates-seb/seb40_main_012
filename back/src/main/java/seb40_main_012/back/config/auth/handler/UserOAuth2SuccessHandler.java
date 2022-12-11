@@ -7,7 +7,7 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
-//import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -24,8 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
 
-@Slf4j
-// @Component // OAuth2 반영 안함
+//@Slf4j
+@Component // OAuth2 반영 안함
 @RequiredArgsConstructor
 public class UserOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtTokenizer jwtTokenizer;
@@ -37,11 +37,11 @@ public class UserOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHand
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         var oAuth2User = (OAuth2User) authentication.getPrincipal();
-        log.info("authentication.getPrincipal():"+oAuth2User);
+        //log.info("authentication.getPrincipal():"+oAuth2User);
 
         String registrationId = response.getHeader("registrationId");
         String email = String.valueOf(oAuth2User.getAttributes().get("email"));
-        log.info("oAuth2User email:"+email);
+        //log.info("oAuth2User email:"+email);
 
         User user = userRepository.findByEmail(email).orElse(null);
         String accessToken = jwtTokenizer.delegateAccessToken(user);
@@ -61,24 +61,26 @@ public class UserOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHand
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);
 
-        // check
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("accessToken", "Bearer " + accessToken);
-        queryParams.add("refreshToken", cookie.toString());
-        queryParams.add("responseDto", json);
+//        // check
+//        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
+//        queryParams.add("accessToken", "Bearer " + accessToken);
+//        queryParams.add("refreshToken", cookie.toString());
+//        queryParams.add("responseDto", json);
 
-        String uri = createURI(queryParams).toString();
+        String uri = createURI().toString();
 
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
-    private URI createURI(MultiValueMap<String, String> queryParams) {
+    private URI createURI() {
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
-                .path("/receive-token.html")
-                .queryParams(queryParams)
+                .port(3000)
+                .path("/oauth")
+                //.path("/receive-token.html")
+                //.queryParams(queryParams)
                 .build()
                 .toUri();
     }
