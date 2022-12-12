@@ -48,7 +48,7 @@ public class KakaoController {
 
 
     @ResponseBody
-    @GetMapping("/kakao")
+    @GetMapping("/ka")
     public ResponseEntity<Object> kakaoCallback(@RequestParam("code") String code, HttpSession session, HttpServletResponse res) throws URISyntaxException, IOException {
 
         String access_Token = kakaoService.getAccessToken(code);
@@ -116,7 +116,7 @@ public class KakaoController {
     }
 
     // 통합 리팩토링 준비
-    @GetMapping("/login")
+    @GetMapping("/kakao")
     @ResponseBody
     public String oAuthCallBack(Authentication authentication, @AuthenticationPrincipal OAuth2User oAuth2UserPrincipal){
 

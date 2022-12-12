@@ -3,9 +3,9 @@ spring:
     oauth2:
       client:
         registration:
-          google:
-            clientId: 
-            clientSecret:
+#          google:
+#            clientId:
+#            clientSecret:
           kakao:
             client-id: e50e158c20358065eb3d6e2eabd76f5c
             redirectUri: http://localhost:3000/oauth/kakao
