@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.domain.Slice;
 
-import java.util.List;
-
 @Getter
 @AllArgsConstructor
 public class SliceResponseDto<T> {

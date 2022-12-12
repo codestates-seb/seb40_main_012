@@ -1,17 +1,14 @@
 package seb40_main_012.back.common.comment;
 
 import lombok.*;
-import lombok.*;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.user.dto.UserDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter
@@ -107,13 +104,13 @@ public class CommentDto {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class CommentList{
-        private List<CommentDto.BookComment> bookComment;
-        private List<CommentDto.PairingComment> pairingComment;
-        private List<CommentDto.CollectionComment> collectionComment;
+        private List<BookComment> bookComment;
+        private List<PairingComment> pairingComment;
+        private List<CollectionComment> collectionComment;
 
-        public static CommentList of(List<CommentDto.BookComment> bookComment,
-                                     List<CommentDto.PairingComment> pairingComment,
-                                     List<CommentDto.CollectionComment> collectionComment){
+        public static CommentList of(List<BookComment> bookComment,
+                                     List<PairingComment> pairingComment,
+                                     List<CollectionComment> collectionComment){
             if(bookComment==null) bookComment=null;
             if(pairingComment==null) pairingComment=null;
             if(collectionComment==null) collectionComment=null;

@@ -2,7 +2,6 @@ package seb40_main_012.back.pairing;
 
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.SliceImpl;
-import seb40_main_012.back.common.bookmark.BookmarkRepository;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.entity.Pairing;
@@ -11,7 +10,6 @@ import seb40_main_012.back.user.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")

@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import seb40_main_012.back.user.entity.User;
 
 import javax.persistence.*;
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 

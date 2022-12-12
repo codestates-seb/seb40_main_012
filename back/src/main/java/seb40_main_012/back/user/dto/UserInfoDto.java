@@ -1,9 +1,7 @@
 package seb40_main_012.back.user.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import seb40_main_012.back.book.entity.Genre;
-import seb40_main_012.back.user.entity.Category;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.enums.AgeType;
 import seb40_main_012.back.user.entity.enums.GenderType;

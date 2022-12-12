@@ -8,7 +8,6 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-//import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Service;
 import seb40_main_012.back.config.auth.entity.OAuth2Attributes;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;

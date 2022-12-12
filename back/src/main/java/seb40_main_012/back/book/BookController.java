@@ -20,22 +20,18 @@ import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.CommentMapper;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
-import seb40_main_012.back.common.rating.Rating;
 import seb40_main_012.back.common.rating.RatingService;
 import seb40_main_012.back.config.auth.cookie.CookieManager;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.dto.SingleResponseDto;
-import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
-import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Validated

@@ -1,40 +1,29 @@
 package seb40_main_012.back.user.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.lang.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.book.BookRepository;
-import seb40_main_012.back.book.entity.Book;
-
-import seb40_main_012.back.common.bookmark.*;
-import seb40_main_012.back.common.comment.CommentMapper;
-import seb40_main_012.back.common.comment.CommentService;
-import seb40_main_012.back.common.comment.entity.CommentType;
-import seb40_main_012.back.common.image.AwsS3Service;
-import seb40_main_012.back.common.rating.RatingRepository;
-import seb40_main_012.back.config.auth.dto.LoginDto;
-
 import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.repository.BookCollectionRepository;
-import seb40_main_012.back.common.mypage.MyPageRepositorySupport;
+import seb40_main_012.back.common.bookmark.Bookmark;
+import seb40_main_012.back.common.bookmark.BookmarkDto;
 import seb40_main_012.back.common.bookmark.BookmarkRepository;
-import seb40_main_012.back.common.bookmark.BookmarkType;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.common.comment.CommentMapper;
 import seb40_main_012.back.common.comment.CommentRepository;
 import seb40_main_012.back.common.comment.CommentService;
 import seb40_main_012.back.common.comment.entity.Comment;
+import seb40_main_012.back.common.comment.entity.CommentType;
+import seb40_main_012.back.common.image.AwsS3Service;
+import seb40_main_012.back.common.mypage.MyPageRepositorySupport;
+import seb40_main_012.back.common.rating.RatingRepository;
 import seb40_main_012.back.config.auth.dto.LoginDto;
-import seb40_main_012.back.dto.ListResponseDto;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.dto.SliceResponseDto;
 import seb40_main_012.back.email.EmailSenderService;
@@ -50,7 +39,6 @@ import seb40_main_012.back.user.service.UserService;
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import javax.websocket.server.PathParam;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

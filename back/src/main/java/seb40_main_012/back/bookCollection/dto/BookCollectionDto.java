@@ -5,15 +5,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import seb40_main_012.back.book.BookDto;
-import seb40_main_012.back.book.bookInfoSearchAPI.BookInfoSearchDto;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.common.comment.CommentDto;
 import seb40_main_012.back.user.dto.UserDto;
 
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -149,7 +146,7 @@ public class BookCollectionDto {
         private boolean userLike;
         private List<BookDto.CollectionBook> books;
 
-        public static BookCollectionDto.UserCollection of(BookCollection collection) {
+        public static UserCollection of(BookCollection collection) {
             return UserCollection.builder()
                     .collectionId(collection.getCollectionId())
                     .content(collection.getContent())
@@ -214,7 +211,7 @@ public class BookCollectionDto {
         private String author;
         private List<BookDto.CollectionBook> books;
 
-        public static BookCollectionDto.TagCollection of(BookCollection collection) {
+        public static TagCollection of(BookCollection collection) {
             return TagCollection.builder()
                     .collectionId(collection.getCollectionId())
                     .books(collection.getCollectionBooks().stream().map(x -> BookDto.CollectionBook.of(x.getBook())).collect(Collectors.toList()))

@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.user.entity.User;
 
 import javax.persistence.*;

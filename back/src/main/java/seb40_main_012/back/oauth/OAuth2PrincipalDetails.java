@@ -2,6 +2,7 @@ package seb40_main_012.back.oauth;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,18 +10,24 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import seb40_main_012.back.oauth.userInfo.OAuth2UserInfo;
 import seb40_main_012.back.user.entity.User;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Map;
+import java.util.*;
 
 @Getter
+@Setter
 @ToString
 @RequiredArgsConstructor
 public class OAuth2PrincipalDetails implements UserDetails, OAuth2User {
 
     private User user;
     //private Map<String, Object> attributes;
+    private String accessToken;
+
     private OAuth2UserInfo oAuth2UserInfo;
+
+//    private String username;
+    private Set<GrantedAuthority> authorities;
+
+    private List<String> roles = new ArrayList<>();
 
     //UserDetails : Form 로그인 시 사용
     public OAuth2PrincipalDetails(User user) {
@@ -142,5 +149,17 @@ public class OAuth2PrincipalDetails implements UserDetails, OAuth2User {
         //String sub = attributes.get("sub").toString();
         //return sub;
         return oAuth2UserInfo.getProviderId();
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public OAuth2UserInfo getoAuth2UserInfo() {
+        return oAuth2UserInfo;
     }
 }

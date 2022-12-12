@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 public class NotificationDto {
@@ -24,7 +23,7 @@ public class NotificationDto {
         private boolean isRead;
         private LocalDateTime createdAt;
 
-        public static NotificationDto.Response from(Notification notification) {
+        public static Response from(Notification notification) {
             return Response.builder()
                     .likeUserNickName(notification.getLikeUserNickName())
                     .commentUserNickName(notification.getCommentUserNickName())

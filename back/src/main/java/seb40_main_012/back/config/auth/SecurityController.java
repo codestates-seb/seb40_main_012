@@ -2,7 +2,9 @@ package seb40_main_012.back.config.auth;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import seb40_main_012.back.config.auth.cookie.CookieManager;
 import seb40_main_012.back.config.auth.entity.RefreshToken;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;

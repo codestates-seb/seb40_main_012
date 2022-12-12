@@ -7,7 +7,6 @@ import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.SliceImpl;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
-import seb40_main_012.back.book.entity.QBook;
 import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.bookCollection.entity.QBookCollection;
 import seb40_main_012.back.common.bookmark.Bookmark;

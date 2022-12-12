@@ -1,6 +1,5 @@
 package seb40_main_012.back.user.mapper;
 
-import lombok.Getter;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 import seb40_main_012.back.config.auth.dto.LoginDto;

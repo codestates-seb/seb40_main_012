@@ -1,11 +1,9 @@
 package seb40_main_012.back.pairing;
 
 import lombok.*;
-import org.springframework.lang.Nullable;
-import org.springframework.util.Assert;
 import seb40_main_012.back.common.comment.CommentDto;
-import seb40_main_012.back.pairing.entity.ParingCategory;
 import seb40_main_012.back.pairing.entity.Pairing;
+import seb40_main_012.back.pairing.entity.ParingCategory;
 import seb40_main_012.back.user.dto.UserDto;
 
 import javax.persistence.Lob;
@@ -123,7 +121,7 @@ public class PairingDto {
         private String bookCover;
         private Long pairingLike;
 
-        public static PairingDto.UserPairing of(Pairing pairing){
+        public static UserPairing of(Pairing pairing){
             return UserPairing.builder()
                     .pairingId(pairing.getPairingId())
                     .pairingCover(pairing.getImagePath())
@@ -150,7 +148,7 @@ public class PairingDto {
         private String bookCover;
         private Long pairingLike;
 
-        public static PairingDto.BookmarkedPairing of(Pairing pairing){
+        public static BookmarkedPairing of(Pairing pairing){
             return BookmarkedPairing.builder()
                     .pairingId(pairing.getPairingId())
                     .pairingCover(pairing.getImagePath())

@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import seb40_main_012.back.book.entity.Genre;
 import seb40_main_012.back.user.entity.Category;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.UserCategory;

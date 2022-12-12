@@ -1,11 +1,6 @@
 package seb40_main_012.back.user.entity.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 
 
 public enum GenderType {

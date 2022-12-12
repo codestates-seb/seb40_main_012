@@ -7,10 +7,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import seb40_main_012.back.config.auth.cookie.CookieManager;
@@ -19,9 +17,8 @@ import seb40_main_012.back.config.auth.filter.JwtVerificationFilter;
 import seb40_main_012.back.config.auth.handler.*;
 import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.config.auth.utils.CustomAuthorityUtils;
+import seb40_main_012.back.oauth.OAuth2AuthenticationFilter;
 import seb40_main_012.back.oauth.OAuth2AuthenticationSuccessHandler;
-import seb40_main_012.back.oauth.OAuth2PrincipalUserService;
-import seb40_main_012.back.oauth.kakao.KakaoAuthenticationSuccessHandler;
 import seb40_main_012.back.user.mapper.UserMapper;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -35,7 +32,8 @@ public class SecurityConfiguration {
     private final CustomAuthorityUtils authorityUtils;
     private final UserMapper userMapper;
     private final CookieManager cookieManager;
-    private final OAuth2PrincipalUserService oAuth2PrincipalUserService;
+    private final OAuth2AuthenticationFilter oAuth2AuthenticationFilter;
+//    private final OAuth2PrincipalUserService oAuth2PrincipalUserService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 //    @Bean
 //    public WebSecurityCustomizer webSecurityCustomizer() {
@@ -77,17 +75,18 @@ public class SecurityConfiguration {
                 .deleteCookies("visit_cookie")
                 .and()
                 .authorizeHttpRequests(authorize -> authorize
-                        .anyRequest().permitAll())
+                        .anyRequest().permitAll());
 //                .and()//추가
 //                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager, jwtTokenizer, userMapper, cookieManager),
 //                        UsernamePasswordAuthenticationFilter.class)
-                .oauth2Login() // OAuth2기반의 로그인인 경우
-                .loginPage("/kakao")
+//                .oauth2Login() // OAuth2기반의 로그인인 경우
+//                .loginPage("/kakao")
 //                .successHandler(oAuth2AuthenticationSuccessHandler)
                 // 인증이 필요한 URL에 접근하면 /loginForm으로 이동
-                .userInfoEndpoint(userInfo -> userInfo			// 로그인 성공 후 사용자정보를 가져온다
-                .userService(oAuth2PrincipalUserService))
-                ;
+//                .userInfoEndpoint(userInfo -> userInfo			// 로그인 성공 후 사용자정보를 가져온다
+//                .userService(oAuth2PrincipalUserService));
+
+        http.addFilterBefore(oAuth2AuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 //                .oauth2Login(authorize -> { // OAuth2 반영 안함
 //                    authorize.userInfoEndpoint().userService(oAuth2UserService);
 //                    authorize.successHandler(new UserOAuth2SuccessHandler(jwtTokenizer, userRepository, cookieManager, userMapper));

@@ -5,8 +5,6 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 @Setter
 @Getter

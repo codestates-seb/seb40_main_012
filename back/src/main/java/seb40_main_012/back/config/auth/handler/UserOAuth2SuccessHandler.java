@@ -2,14 +2,11 @@ package seb40_main_012.back.config.auth.handler;
 
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseCookie;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 import seb40_main_012.back.config.auth.cookie.CookieManager;
 import seb40_main_012.back.config.auth.dto.LoginDto;

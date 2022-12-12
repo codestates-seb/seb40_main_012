@@ -4,15 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.SliceImpl;
 import seb40_main_012.back.book.BookDto;
 import seb40_main_012.back.bookCollection.dto.BookCollectionDto;
-import seb40_main_012.back.bookCollection.entity.BookCollection;
 import seb40_main_012.back.pairing.PairingDto;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class BookmarkDto {
     @Getter
