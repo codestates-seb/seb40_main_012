@@ -22,7 +22,6 @@ public class OAuth2UserDetails implements UserDetails {
     private String email;
     private String thumbnail_image;
     private String nickname;
-//    private List<String> roles = new ArrayList<>();
     private Set<GrantedAuthority> authorities;
     private String accessToken;
 

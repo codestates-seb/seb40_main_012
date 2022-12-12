@@ -38,8 +38,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException {
 
-        System.out.println(request.getParameter("code"));
-        System.out.println(((OAuth2UserDetails)authentication.getPrincipal()).getNickname());
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         log.info("authentication.getPrincipal():" + oAuth2User);
 
