@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectFirstLogin, selectIsLogin } from 'store/modules/authSlice';
-import LandingPage from 'pages/LandingPage';
 import {
   MainPage,
+  LandingPage,
   SignUpPage,
   SignInPage,
   FirstLoginPage,
