@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import { Link, useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectSearchKeyword } from 'store/modules/searchSlice';
 
 const SearchTabContainer = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
@@ -19,6 +21,13 @@ const SearchTabBtn = styled.button`
     cursor: pointer;
     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
   }
+  @media screen and (max-width: 640px) {
+    font-size: 18px;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 15px;
+    padding: 10px;
+  }
 `;
 
 const SearchBookBtn = styled(SearchTabBtn)`
@@ -26,32 +35,33 @@ const SearchBookBtn = styled(SearchTabBtn)`
     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
   }
 `;
-// const SearchPairingBtn = styled(SearchTabBtn)`
-//   &.pairing {
-//     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
-//   }
-// `;
-// const SearchCollectionBtn = styled(SearchTabBtn)`
-//   &.collection {
-//     border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
-//   }
-// `;
+const SearchPairingBtn = styled(SearchTabBtn)`
+  &.pairing {
+    border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
+  }
+`;
+const SearchCollectionBtn = styled(SearchTabBtn)`
+  &.collection {
+    border-bottom: 2px solid ${({ theme }) => theme.colors.mainColor};
+  }
+`;
 
 const SearchTab = () => {
   const location = useLocation();
-  const current = location.pathname.split('/')[2];
+  const type = location.pathname.split('/')[2];
+  const keyword = useSelector(selectSearchKeyword);
 
   return (
     <SearchTabContainer>
-      <Link to="/search/book">
-        <SearchBookBtn className={current}>검색 결과</SearchBookBtn>
+      <Link to={`/search/book/${keyword}`}>
+        <SearchBookBtn className={type}>책</SearchBookBtn>
       </Link>
-      {/* <Link to="/search/pairing">
-        <SearchPairingBtn className={current}>페어링</SearchPairingBtn>
+      <Link to={`/search/pairing/${keyword}`}>
+        <SearchPairingBtn className={type}>페어링</SearchPairingBtn>
       </Link>
-      <Link to="/search/collection">
-        <SearchCollectionBtn className={current}>컬렉션</SearchCollectionBtn>
-      </Link> */}
+      <Link to={`/search/collection/${keyword}`}>
+        <SearchCollectionBtn className={type}>컬렉션</SearchCollectionBtn>
+      </Link>
     </SearchTabContainer>
   );
 };

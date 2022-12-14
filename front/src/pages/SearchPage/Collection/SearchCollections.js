@@ -1,6 +1,5 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import SearchBook from './SearchBook';
-import { useEffect, useState } from 'react';
 import axios from '../../../api/axios';
 import { useSelector, useDispatch } from 'react-redux';
 import {
@@ -8,8 +7,10 @@ import {
   selectSearchMode,
   setSearchMode,
 } from 'store/modules/searchSlice';
+import SearchCollection from './SearchCollection';
+import { NoResultContainer } from '../Book/SearchBooks';
 
-const SearchBooksContainer = styled.div`
+const SearchCollectionsContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
 `;
@@ -29,27 +30,19 @@ const LoadingContainer = styled.div`
   }
 `;
 
-export const NoResultContainer = styled.div`
-  width: 100%;
-  height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const SearchBooks = () => {
+const SearchCollections = () => {
   const keyword = useSelector(selectSearchKeyword);
   const mode = useSelector(selectSearchMode);
   const dispatch = useDispatch();
-  const [books, setBooks] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     setIsLoading(true);
     axios
-      .get(`/api/search?Category=books&Query=${keyword}&Sort=accuracy`)
+      .get(`/api/search?Category=collections&Query=${keyword}`) //좋아요순 검색
       .then((res) => {
-        setBooks(res.data);
+        setCollections([...res.data]);
         dispatch(setSearchMode({ mode: false }));
         setIsLoading(false);
       })
@@ -60,7 +53,7 @@ const SearchBooks = () => {
   }, [mode]);
 
   return (
-    <SearchBooksContainer>
+    <SearchCollectionsContainer>
       {isLoading ? (
         <LoadingContainer className={isLoading ? 'show' : 'hide'}>
           <img
@@ -70,21 +63,23 @@ const SearchBooks = () => {
         </LoadingContainer>
       ) : (
         <>
-          {books.length === 0 ? (
+          {collections.length === 0 ? (
             <NoResultContainer>
               검색 결과가 존재하지 않습니다.
             </NoResultContainer>
           ) : (
             <>
-              {books.map((el, idx) => {
+              {collections?.map((el) => {
                 return (
-                  <SearchBook
-                    key={idx}
-                    cover={el.cover}
+                  <SearchCollection
+                    key={el.collectionId}
+                    collectionId={el.collectionId}
                     title={el.title}
-                    author={el.author}
-                    year={el.pubDate}
-                    isbn={el.isbn13}
+                    content={el.content}
+                    like={el.likeCount}
+                    comment={el.comments}
+                    date={el.lastModifiedAt}
+                    cover={el.collectionCover}
                   />
                 );
               })}
@@ -92,8 +87,8 @@ const SearchBooks = () => {
           )}
         </>
       )}
-    </SearchBooksContainer>
+    </SearchCollectionsContainer>
   );
 };
 
-export default SearchBooks;
+export default SearchCollections;

@@ -5,6 +5,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import theme from 'styles/theme';
 import { Header, Footer } from 'containers';
 import { Backdrop } from 'components';
+import ScrollTopBtn from 'components/ScrollTopBtn';
 
 const PageContainer = ({
   children,
@@ -19,6 +20,7 @@ const PageContainer = ({
 }) => {
   return (
     <ThemeProvider theme={theme}>
+      <ScrollTopBtn />
       <Box
         sx={{
           display: 'flex',

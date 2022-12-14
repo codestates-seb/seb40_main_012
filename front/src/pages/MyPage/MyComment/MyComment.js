@@ -10,6 +10,7 @@ import { COMMENT_URL } from '../../../api/requests';
 import Scroll from '../Scroll';
 import { setOpenSnackbar } from 'store/modules/snackbarSlice';
 import { useDispatch } from 'react-redux';
+import { setSearchKeyword } from 'store/modules/searchSlice';
 
 const Void = styled.div`
   min-width: 50vw;
@@ -32,6 +33,7 @@ const MyComment = () => {
   const [content, setContent] = useState({
     data: [],
   });
+  dispatch(setSearchKeyword({ keyword: '' }));
 
   const fetchData = async () => {
     try {

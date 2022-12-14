@@ -1,7 +1,12 @@
 import Box from '@mui/material/Box';
 import styled from 'styled-components';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  setSearchKeyword,
+  selectSearchKeyword,
+  setSearchMode,
+} from 'store/modules/searchSlice';
 
 const SearchbarContainer = styled(Box)`
   height: 40px;
@@ -32,17 +37,18 @@ const SearchbarInput = styled.input`
 `;
 
 const Searchbar = () => {
-  const [input, setInput] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const keyword = useSelector(selectSearchKeyword);
 
   const handleChangeInput = (e) => {
-    setInput(e.target.value);
+    dispatch(setSearchKeyword({ keyword: e.target.value }));
   };
 
   const handleOnKeyPressEnter = (e) => {
     if (e.key === 'Enter') {
-      navigate(`/search/book/${input}`);
-      window.location.reload();
+      dispatch(setSearchMode({ mode: true }));
+      navigate(`/search/book/${keyword}`);
     }
   };
 
@@ -56,9 +62,10 @@ const Searchbar = () => {
       </SearchIconContainer>
       <SearchbarInput
         type="text"
-        placeholder="책을 검색해보세요"
+        placeholder="책, 페어링, 컬렉션을 검색해보세요"
         onChange={handleChangeInput}
         onKeyPress={handleOnKeyPressEnter}
+        value={keyword}
       />
     </SearchbarContainer>
   );
