@@ -1,11 +1,12 @@
 package seb40_main_012.back.config.auth.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import seb40_main_012.back.config.auth.entity.RefreshToken;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Transactional
@@ -25,4 +26,10 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
     String findUserEmailByToken(String token);
 
     Optional<RefreshToken> deleteByTokenValue(String tokenValue);
+
+    @Modifying
+    @Query(nativeQuery = true, value =
+            "DELETE FROM REFRESH_TOKEN " +
+                    "WHERE EXPIRYDATE <= ?1")
+    void deleteAllByExpiredSince(LocalDateTime now);
 }

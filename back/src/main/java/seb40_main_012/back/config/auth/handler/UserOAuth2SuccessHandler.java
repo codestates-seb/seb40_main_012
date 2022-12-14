@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.URI;
+import java.time.LocalDateTime;
 
 //@Slf4j
 @Component // OAuth2 반영 안함
@@ -49,7 +50,7 @@ public class UserOAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHand
 
         // refresh Token을 헤더에 Set-Cookie 해주기
         String refreshToken = jwtTokenizer.delegateRefreshToken(user);
-        jwtTokenizer.addRefreshToken(user.getEmail(), refreshToken);
+        jwtTokenizer.addRefreshToken(user.getEmail(), refreshToken, LocalDateTime.now().plusDays(1));
 
         ResponseCookie cookie = cookieManager.createCookie("refreshToken", refreshToken);
         response.setHeader("Set-Cookie", cookie.toString());

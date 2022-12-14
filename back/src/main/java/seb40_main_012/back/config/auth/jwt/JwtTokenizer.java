@@ -22,8 +22,8 @@ import seb40_main_012.back.user.entity.User;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Stream;
 
 @Component
 @RequiredArgsConstructor
@@ -79,10 +79,11 @@ public class JwtTokenizer {
                 .orElse(null);
     }
 
-    public void addRefreshToken(String email, String jws) {
+    public void addRefreshToken(String email, String jws, LocalDateTime expiryDate) {
         repository.save(RefreshToken.builder()
                 .email(email)
                 .tokenValue(jws)
+                .expiryDate(expiryDate)
                 .build());
     }
 

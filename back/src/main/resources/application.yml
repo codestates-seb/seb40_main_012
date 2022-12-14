@@ -56,4 +56,5 @@ jwt:
 aladin:
   url: http://www.aladin.co.kr/ttb/api/ItemSearch.aspx
   ttb: ttbgcnb871441001
+purge.cron.expression=0 0 5 * * ? # 5am every day
 

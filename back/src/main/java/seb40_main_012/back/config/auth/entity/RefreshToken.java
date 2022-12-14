@@ -3,6 +3,7 @@ package seb40_main_012.back.config.auth.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,9 +15,12 @@ public class RefreshToken {
     @Id
     private String tokenValue;
 
+    private LocalDateTime expiryDate;
+
     @Builder
-    public RefreshToken(String email, String tokenValue) {
+    public RefreshToken(String email, String tokenValue, LocalDateTime expiryDate) {
         this.email = email;
         this.tokenValue = tokenValue;
+        this.expiryDate = expiryDate;
     }
 }

@@ -22,6 +22,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @Builder
 @RequiredArgsConstructor
@@ -52,7 +53,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         response.setHeader("Authorization", "Bearer " + accessToken);
 
         String refreshToken = jwtTokenizer.delegateRefreshToken(user);
-        jwtTokenizer.addRefreshToken(user.getEmail(), refreshToken);
+        jwtTokenizer.addRefreshToken(user.getEmail(), refreshToken, LocalDateTime.now().plusDays(1));
 
         // refresh Token을 헤더에 Set-Cookie 해주기
         ResponseCookie cookie = cookieManager.createCookie("refreshToken", refreshToken);
