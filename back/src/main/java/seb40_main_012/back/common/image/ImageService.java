@@ -12,11 +12,8 @@ import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 

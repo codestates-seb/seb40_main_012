@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.user.entity.User;

@@ -1,17 +1,14 @@
 package seb40_main_012.back.common.comment;
 
 import lombok.*;
-import lombok.*;
 import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.common.comment.entity.CommentType;
 import seb40_main_012.back.user.dto.UserDto;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.awt.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Getter

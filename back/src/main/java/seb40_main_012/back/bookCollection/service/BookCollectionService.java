@@ -191,6 +191,9 @@ public class BookCollectionService {
                 findUser.addCollectionLike(bookCollectionLike);
                 findCollection.addCollectionLike(bookCollectionLike); //순환참조
                 count += 1L;
+ //        ------------------------------------------------------------
+                noticeService.notifyLikeCollectionEvent(findCollection);
+//        ------------------------------------------------------------
                 findCollection.setLikeCount(count);
             }
 

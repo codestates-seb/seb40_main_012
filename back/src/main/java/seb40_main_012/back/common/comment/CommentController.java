@@ -28,15 +28,8 @@ import java.util.List;
 public class CommentController {
 
     private final CommentService commentService;
-    private final BookService bookService;
-    private final PairingService pairingService;
-    private final BookCollectionService bookCollectionService;
     private final CommentMapper commentMapper;
     private final LikeService likeService;
-
-    //    ------------------------------------------------------------
-    private final NotificationService noticeService; // 알림 설정을 위한 의존성 주입
-    //    ------------------------------------------------------------
 
     @PostMapping("/books/{isbn13}/comments/add")
     public ResponseEntity postBookComment(@PathVariable("isbn13") @Positive String isbn13,
@@ -59,9 +52,6 @@ public class CommentController {
         Comment createdComment = commentService.createPairingComment(comment, pairingId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
 
-//        ------------------------------------------------------------
-        noticeService.notifyPostPairingCommentEvent(createdComment);
-//        ------------------------------------------------------------
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.CREATED
@@ -70,17 +60,15 @@ public class CommentController {
 
     @PostMapping("/collections/{collection-id}/comments/add")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentDto.Response postBookCollectionComment(@PathVariable("collection-id") Long collectionId, @Valid @RequestBody CommentDto.Post request) {
+    public ResponseEntity postBookCollectionComment(@PathVariable("collection-id") Long collectionId, @Valid @RequestBody CommentDto.Post request) {
 
         Comment comment = commentMapper.commentPostToComment(request);
         Comment createdComment = commentService.createBookCollectionComment(comment, collectionId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(createdComment);
 
-//        ------------------------------------------------------------
-        noticeService.notifyPostBookCollectionCommentEvent(createdComment);
-//        ------------------------------------------------------------
-
-        return response;
+        return new ResponseEntity<>(
+                new SingleResponseDto<>(response), HttpStatus.CREATED
+        );
     }
 
     @PatchMapping("/comments/{comment_id}/edit")
@@ -104,10 +92,6 @@ public class CommentController {
 //        Comment comment = commentMapper.commentLikeToComment(likeComment);
         Comment updatedLikeComment = commentService.addLike(commentId);
         CommentDto.Response response = commentMapper.commentToCommentResponse(updatedLikeComment);
-
-//        ------------------------------------------------------------
-        noticeService.notifyUpdateLikeCommentEvent(updatedLikeComment);
-//        ------------------------------------------------------------
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

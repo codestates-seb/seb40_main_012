@@ -10,8 +10,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartResolver;
-import seb40_main_012.back.advice.BusinessLogicException;
-import seb40_main_012.back.advice.ExceptionCode;
 import seb40_main_012.back.book.BookService;
 import seb40_main_012.back.common.bookmark.BookmarkService;
 import seb40_main_012.back.common.image.AwsS3Service;
@@ -22,7 +20,6 @@ import seb40_main_012.back.config.auth.jwt.JwtTokenizer;
 import seb40_main_012.back.dto.SingleResponseDto;
 import seb40_main_012.back.notification.NotificationService;
 import seb40_main_012.back.pairing.entity.Pairing;
-import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,7 +27,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Positive;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 
 @Validated
 @RestController
@@ -42,17 +38,10 @@ public class PairingController {
     private final PairingService pairingService;
     private final BookmarkService bookmarkService;
     private final PairingMapper pairingMapper;
-    private final BookService bookService;
     private final LikeService likeService;
-    private final ImageController imageController;
     private final AwsS3Service awsS3Service;
-    private final ImageService imageService;
-    private final MultipartResolver multipartResolver;
-    private final UserService userService;
     private final JwtTokenizer jwtTokenizer;
-    //    ------------------------------------------------------------
-    private final NotificationService noticeService;
-//    ------------------------------------------------------------
+
 
     @PostMapping("/{isbn13}/pairings/add")
     public ResponseEntity postPairing(
@@ -145,10 +134,6 @@ public class PairingController {
 //        Pairing pairing = pairingMapper.pairingLikeToPairing(likePairing);
         Pairing updatedLikePairing = pairingService.addLike(pairingId);
         PairingDto.Response response = pairingMapper.pairingToPairingResponse(updatedLikePairing);
-
-//        ------------------------------------------------------------
-        noticeService.notifyUpdateLikePairingEvent(updatedLikePairing);
-//        ------------------------------------------------------------
 
         return new ResponseEntity<>(
                 new SingleResponseDto<>(response), HttpStatus.OK

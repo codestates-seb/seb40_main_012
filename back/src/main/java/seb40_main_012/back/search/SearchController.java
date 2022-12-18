@@ -28,7 +28,6 @@ import java.util.stream.Collectors;
 public class SearchController {
 
     private final BookInfoSearchService bookInfoSearchService;
-    private final CherryPickSearchService cherryPickSearchService;
     private final SearchMapper searchMapper;
     private final SearchService searchService;
 

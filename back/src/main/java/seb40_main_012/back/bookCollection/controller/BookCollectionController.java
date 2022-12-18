@@ -102,10 +102,6 @@ public class BookCollectionController {
 
         BookCollection findCollection = bookCollectionService.findVerifiedCollection(collectionId);
 
-//        ------------------------------------------------------------
-        noticeService.notifyLikeCollectionEvent(findCollection);
-//        ------------------------------------------------------------
-
         return collectionService.likeCollection(collectionId);
     }
 

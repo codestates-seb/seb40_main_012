@@ -1,8 +1,8 @@
 package seb40_main_012.back.aop;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -13,15 +13,20 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import org.springframework.web.context.request.ServletWebRequest;
+import seb40_main_012.back.common.comment.CommentDto;
+import seb40_main_012.back.common.comment.CommentMapper;
+import seb40_main_012.back.common.comment.CommentService;
+import seb40_main_012.back.common.comment.entity.Comment;
 import seb40_main_012.back.config.auth.cookie.CookieManager;
 import seb40_main_012.back.config.auth.repository.RefreshTokenRepository;
 import seb40_main_012.back.email.EmailSenderService;
+import seb40_main_012.back.notification.NotificationService;
+import seb40_main_012.back.pairing.PairingService;
+import seb40_main_012.back.pairing.entity.Pairing;
 import seb40_main_012.back.statistics.*;
 import seb40_main_012.back.user.dto.UserDto;
 import seb40_main_012.back.user.entity.User;
 import seb40_main_012.back.user.entity.enums.GenderType;
-import seb40_main_012.back.user.repository.UserRepository;
 import seb40_main_012.back.user.service.UserService;
 
 import javax.servlet.annotation.WebListener;
@@ -37,19 +42,22 @@ import java.util.stream.LongStream;
 
 
 @Aspect
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CherriPickAop {
 
+    private final NotificationService notificationService;
+    private final PairingService pairingService;
+    private final CommentService commentService;
+    private final CommentMapper commentMapper;
     private final UserService userService;
-    private final UserRepository userRepository;
     private final EmailSenderService emailSenderService;
     private final StatisticsService statisticsService;
     private final StatisticsRepository statisticsRepository;
     private final StayTimeService stayTimeService;
     private final StayTimeRepository stayTimeRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-
     private final CookieManager cookieManager;
 
     @AfterReturning(value = "execution(* seb40_main_012.back.user.controller.UserController.postUser(..)) && args(postDto))", returning = "response")
@@ -59,6 +67,53 @@ public class CherriPickAop {
             emailSenderService.sendSignupEmail(postDto.getEmail());
         } catch (GeneralSecurityException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    @AfterReturning(value = "CommonPointcuts.createLike()", returning = "response")
+    public void createLikeNotification(JoinPoint joinPoint, ResponseEntity response) { // 좋아요 알림 보내기
+
+        User findUser = userService.getLoginUser();
+
+        String method = joinPoint.getSignature().getName(); // 좋아요 달린 대상
+        long idx = Long.parseLong(joinPoint.getArgs()[0].toString()); // 대상 ID
+
+        if (method.equals("createPairingLike")) {
+
+            Pairing pairing = pairingService.findPairing(idx);
+            notificationService.notifyUpdateLikePairingEvent(pairing);
+            log.info("Pairing Like Notification Sent");
+
+        } else if (method.equals("createCommentLike")) {
+
+            Comment comment = commentService.findComment(idx);
+            notificationService.notifyUpdateLikeCommentEvent(comment);
+            log.info("Comment Like Notification Sent");
+        }
+    }
+
+    @AfterReturning(value = "CommonPointcuts.createComment()", returning = "response")
+    public void createCommentNotification(JoinPoint joinPoint, ResponseEntity response) { // 코멘트 알림 보내기
+
+        User findUser = userService.getLoginUser();
+
+        String method = joinPoint.getSignature().getName(); // 좋아요 달린 대상
+        long idx = Long.parseLong(joinPoint.getArgs()[0].toString()); // 대상 ID
+        CommentDto.Post commentDto = (CommentDto.Post) joinPoint.getArgs()[1]; // 달린 댓글 DTO
+
+        if (method.equals("postPairingComment")) {
+
+            Comment comment = commentMapper.commentPostToComment(commentDto);
+            Comment createdComment = commentService.createPairingComment(comment, idx);
+            notificationService.notifyPostPairingCommentEvent(createdComment);
+            log.info("Pairing Comment Notification Sent");
+
+        } else if (method.equals("postBookCollectionComment")) {
+
+            Comment comment = commentMapper.commentPostToComment(commentDto);
+            Comment createdComment = commentService.createPairingComment(comment, idx);
+            notificationService.notifyPostBookCollectionCommentEvent(createdComment);
+            log.info("Book Collection Comment Notification Sent");
         }
     }
 
